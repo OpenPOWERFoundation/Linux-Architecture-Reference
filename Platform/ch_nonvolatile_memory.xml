@@ -1,0 +1,740 @@
+<?xml version="1.0"?>
+<chapter xmlns="http://docbook.org/ns/docbook" 
+xmlns:xl="http://www.w3.org/1999/xlink" 
+xml:id="dbdoclet.50569333_15433"
+version="5.0" xml:lang="en">
+  <title>Non-Volatile Memory</title>
+
+  <para>This chapter describes the requirements relating to Non-Volatile 
+  Memory. Non-Volatile Memory is the repository for system information that must 
+  be persistent across reboots and power cycles. </para>
+  
+  <section xml:id="sec_nvram_sys_req">
+    <title>System Requirements</title>
+
+    <variablelist>
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_nvram_sys_req" 
+        xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+          <listitem>
+            <para>Platforms must implement at least 8 KB of 
+            Non-Volatile Memory. The actual amount is platform dependent and must allow for 
+            4 KB for the OS. Platforms must provide an additional 4 KB for each installed 
+            OS beyond the first.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_nvram_sys_req" 
+        xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+          <listitem>
+            <para>Non-Volatile Memory must maintain its 
+            contents in the absence of system power.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_nvram_sys_req" 
+        xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+          <listitem>
+            <para>Firmware must reinitialize NVRAM to a 
+            bootable state if NVRAM data corruption is detected.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_nvram_sys_req" 
+        xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+          <listitem>
+            <para>OSs must reinitialize their own NVRAM 
+            partitions if NVRAM data corruption is detected. OSs may create free space from 
+            the first corrupted NVRAM partition header to the end of NVRAM and utilize this 
+            area to initialize their NVRAM partitions.</para>
+          </listitem>
+     	</varlistentry>
+    </variablelist>
+
+    <para><emphasis role="bold">Hardware Implementation Note:</emphasis> The NVRAM terminology used in this 
+    chapter goes back to historic implementations that have used battery-powered 
+    RAM to implement the non-volatile memory. It should be understood that this is 
+    not the only possible implementation. Implementers need to understand that 
+    there are no limits on the frequency of writing to the non-volatile memory, so 
+    certain technologies may not be applicable. Also, it should be noted that the 
+    <emphasis>nvram-fetch</emphasis> and <emphasis>nvram-store</emphasis> RTAS 
+    calls do not allow a &#x201C;busy&#x201D; Status return, and this may further 
+    limit the implementation choices.</para>
+    <para><emphasis role="bold">Software Implementation Note:</emphasis> Refer to <xref linkend="LoPAR.RTAS"/> 
+    for information on accessing NVRAM.</para>
+  </section>
+  
+  <section xml:id="sec_nvram_structure">
+    <title>Structure</title>
+    <para>NVRAM is formatted as a set of NVRAM partitions that adhere to the 
+    structure in <xref linkend="dbdoclet.50569333_37259"/>. NVRAM partitions are 
+    prefixed with a header containing <emphasis>signature</emphasis>, 
+    <emphasis>checksum</emphasis>, <emphasis>length</emphasis>, and 
+    <emphasis>name</emphasis> fields. The structure of the <emphasis>data</emphasis> field 
+    is defined by the NVRAM partition creator/owner (designated by 
+    <emphasis>signature</emphasis> and <emphasis>name</emphasis>). </para>
+
+    <variablelist>
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_nvram_structure" 
+        xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+          <listitem>
+            <para>NVRAM partitions must be structured as shown 
+            in <xref linkend="dbdoclet.50569333_37259"/>.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_nvram_structure" 
+        xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+          <listitem>
+            <para>All NVRAM space must be accounted for by 
+            NVRAM partitions.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_nvram_structure" 
+        xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+          <listitem>
+            <para>All IBM-defined NVRAM partitions that are 
+            intended to be IBM-unique must have names prefixed with the ASCII 
+            representation of the four characters: <emphasis>ibm,</emphasis>.</para>
+          </listitem>
+     	</varlistentry>
+    </variablelist>
+
+    <para><emphasis role="bold">Software Implementation Note:</emphasis> Although the data 
+    areas of NVRAM partitions are not required to have error checking, it is 
+    strongly recommended that the system software implement robust data structures 
+    and error checking. Loss of NVRAM structures due to data corruption can be 
+    catastrophic, potentially leading to OS reinstallation and/or complete system 
+    initialization.</para>
+  </section>
+  
+  <section>
+    <title>Signatures</title>
+    <para>The <emphasis>signature</emphasis> field is used as the first level 
+    of NVRAM partition identification. <xref linkend="dbdoclet.50569333_24820"/> 
+    lists all the currently defined signature types and their ownership classes. 
+    The ownership class determines the permission of a particular system software 
+    component to create and/or modify NVRAM partitions and/or NVRAM partition 
+    contents. All NVRAM partitions may be read by any system software component, 
+    but the ownership class has exclusive write permission. Global ownership gives 
+    read/write permission to all system software components. These restrictions are 
+    made to minimize the possibility of corruption of NVRAM during update 
+    activities.</para>
+    <para><emphasis role="bold">Hardware and Software Implementation Note:</emphasis> It is recommended that 
+    NVRAM partitions be ordered on the signature field with the lowest value 
+    signature NVRAM partition at the lowest NVRAM address (with the exception of 
+    signature = 0x7F, free space). This will minimize the effect of NVRAM data 
+    corruption on system operation.</para>
+
+    <table frame="all" pgwide="1" xml:id="dbdoclet.50569333_37259">
+      <title>NVRAM Structure </title>
+      <tgroup cols="3">
+        <colspec colname="c1" colwidth="15*" align="center"/>
+        <colspec colname="c2" colwidth="15*" align="center"/>
+        <colspec colname="c3" colwidth="70*"/>
+        <thead valign="middle">
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">Field Name</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">Size</emphasis>
+              </para>
+            </entry>
+            <entry align="center">
+              <para>
+                <emphasis role="bold">Description</emphasis>
+              </para>
+            </entry>
+          </row>
+        </thead>
+        <tbody valign="middle">
+          <row>
+            <entry>
+              <para> signature</para>
+            </entry>
+            <entry>
+              <para> 1 byte</para>
+            </entry>
+            <entry>
+              <para> The <emphasis>signature</emphasis> field is used to 
+              identify the NVRAM partition type and provide some level of checking for 
+              overall NVRAM contamination. Signature assignments are given in 
+              <xref linkend="dbdoclet.50569333_24820"/>.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>checksum</para>
+            </entry>
+            <entry>
+              <para> 1 byte</para>
+            </entry>
+            <entry>
+              <para> The <emphasis>checksum</emphasis> field is included to 
+              provide a check on the validity of the header. The checksum covers the 
+              <emphasis>signature</emphasis>, <emphasis>length</emphasis>, and 
+              <emphasis>name</emphasis> fields and is calculated (on a byte by byte or equivalent 
+              basis) by: add, and add 1 back to the sum if a carry resulted as demonstrated 
+              with the following program listing.<programlisting><![CDATA[unsigned char sumcheck(bp,nbytes)
+unsigned char *bp; /* buffer pointer */
+unsigned int nbytes; /* number of bytes to sum */
+{
+  unsigned char b_data; /* byte data */
+  unsigned char i_sum; /* intermediate sum */
+  unsigned char c_sum; /* current sum */
+  for (c_sum = 0; nbytes; nbytes--)
+  {
+    b_data = *bp++; /* read byte from buffer */
+    i_sum = c_sum + b_data; /* add to current sum */
+    if(i_sum < c_sum) /* did a carry out result? */
+      i_sum += 1; /* if so, add 1 */
+    c_sum = i_sum; /* copy to current sum */
+  }
+  return (c_sum);
+}]]></programlisting></para>
+              <para>This checksum algorithm guarantees 0 to be an impossible 
+              calculated value. A valid header cannot have a checksum of zero.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> length</para>
+            </entry>
+            <entry>
+              <para> 2 bytes</para>
+            </entry>
+            <entry>
+              <para> The <emphasis>length</emphasis> field designates the 
+              total length of the NVRAM partition, in 16-byte blocks, beginning with the 
+              signature and ending with the last byte of the data area. A length of zero is 
+              invalid.</para>
+              <para><emphasis role="bold">Software Implementation Note:</emphasis> The 
+              <emphasis>length</emphasis> field must always provide valid offsets to the 
+              next header since an invalid length effectively causes the loss of access to 
+              every NVRAM partition beyond it.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> name</para>
+            </entry>
+            <entry>
+              <para> 12 bytes</para>
+            </entry>
+            <entry>
+              <para> The <emphasis>name</emphasis> field is a 12 byte string 
+              (or a NULL-terminated string of less than 12 bytes) used to identify a 
+              particular NVRAM partition within a signature group. In order to reduce the 
+              likelihood of a naming conflict, each platform-specific or OS-specific NVRAM 
+              partition name should be prefixed with a company name as specified under the 
+              description of the &#x201C;name&#x201D; string in the 
+              <emphasis><xref linkend="dbdoclet.50569387_45524"/>,</emphasis> that is, a company name string 
+              in one of the three forms described in the reference, followed by a comma 
+              (&#x201C;,&#x201D;). If the company name string is null, the name will be 
+              interpreted as &#x201C;other&#x201D;.</para>
+              <para>Before assigning a new name to a NVRAM partition, software 
+              should scan the existing NVRAM partitions and ensure that an unwanted name 
+              conflict is not created.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> data</para>
+            </entry>
+            <entry>
+              <para><emphasis>length</emphasis> minus 16 bytes</para>
+            </entry>
+            <entry>
+              <para>  The structure of the <emphasis>data</emphasis> area is 
+              controlled by the creator/owner of the NVRAM partition.</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+
+    <table frame="all" pgwide="1" xml:id="dbdoclet.50569333_24820">
+      <title>NVRAM Signatures </title>
+      <tgroup cols="5">
+        <colspec colname="c1" colwidth="15*" align="center"/>
+        <colspec colname="c2" colwidth="15*" align="center"/>
+        <colspec colname="c3" colwidth="15*" align="center"/>
+        <colspec colname="c4" colwidth="15*" align="center"/>
+        <colspec colname="c5" colwidth="40*"/>
+        <thead valign="middle">
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">Signature <?linebreak?>(see note)</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">Signature Type</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">Ownership Class</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold"># Required</emphasis>
+              </para>
+            </entry>
+            <entry align="center">
+              <para>
+                <emphasis role="bold">Description</emphasis>
+              </para>
+            </entry>
+          </row>
+        </thead>
+        <tbody valign="middle">
+          <row>
+            <entry>
+              <para> 0x70</para>
+            </entry>
+            <entry>
+              <para> System</para>
+            </entry>
+            <entry>
+              <para> Global</para>
+            </entry>
+            <entry>
+              <para> 1</para>
+            </entry>
+            <entry>
+              <para> For configuration variables.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> 0x7E</para>
+            </entry>
+            <entry>
+              <para> Vendor-defined </para>
+            </entry>
+            <entry>
+              <para> Global</para>
+            </entry>
+            <entry>
+              <para> 0 to n</para>
+            </entry>
+            <entry>
+              <para> &#x201C;name&#x201D; prefix required.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> 0x7F</para>
+            </entry>
+            <entry>
+              <para> Free Space</para>
+            </entry>
+            <entry>
+              <para> Global</para>
+            </entry>
+            <entry>
+              <para> 0 to n</para>
+            </entry>
+            <entry>
+              <para> This signature is used to mark free space in the NVRAM 
+              array. The <emphasis>name</emphasis> field of all signature 0x7F NVRAM 
+              partitions must be set to 0x7...77.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> 0xA0</para>
+            </entry>
+            <entry>
+              <para> OS</para>
+            </entry>
+            <entry>
+              <para> Any OS</para>
+            </entry>
+            <entry>
+              <para> 0 to n</para>
+            </entry>
+            <entry>
+              <para> General OS usage.</para>
+            </entry>
+          </row>
+          <row>
+            <entry nameend="c5" namest="c1" align="left">
+              <para><emphasis  role="bold">Note:</emphasis> Any signature not defined above is reserved, and 
+              signatures 0x02, 0x50, 0x51, 0x52, 0x71, and 0x72 are reserved for legacy 
+              reasons.</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </section>
+  
+  <section>
+    <title>Architected NVRAM Partitions</title>
+
+    <section xml:id="dbdoclet.50569333_25869">
+      <title>System (0x70)</title>
+      <para>System NVRAM partitions are used for storing information 
+      (typically, configuration variables) accessible to both OF and the OS. Refer to 
+      <xref linkend="LoPAR.DeviceTree"/> for the definition of the contents of the 
+      System NVRAM partition named <emphasis role="bold"><literal>common</literal></emphasis>.</para>
+
+      <variablelist>
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569333_25869" 
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+            <listitem>
+              <para>Every system NVRAM must contain a System 
+              NVRAM partition with the NVRAM partition name = <emphasis role="bold"><literal>common</literal></emphasis>.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569333_25869" 
+          xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+            <listitem>
+              <para>Data in the <emphasis role="bold"><literal>common</literal></emphasis> 
+              NVRAM partition must be stored as NULL-terminated strings of the form: 
+              <emphasis>&lt;name&gt;=&lt;string&gt;</emphasis> and the 
+              <emphasis>data</emphasis> area must be terminated with at least two NULL 
+              characters.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569333_25869" 
+          xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+            <listitem>
+              <para>All <emphasis>names</emphasis> used in 
+              the <emphasis role="bold"><literal>common</literal></emphasis> NVRAM partition must be unique.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569333_25869" 
+          xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+            <listitem>
+              <para>Device and file specifications used in 
+              the <emphasis role="bold"><literal>common</literal></emphasis> NVRAM partition must follow IEEE Std 1275 
+              nomenclature conventions.</para>
+            </listitem>
+       	</varlistentry>
+      </variablelist>
+    
+      <section>
+        <title>System NVRAM Partition</title>
+        <para>The System NVRAM partition, with name = <emphasis role="bold"><literal>common</literal></emphasis>, 
+        contains information that is accessible to both OF and OSs. 
+        The contents of this NVRAM partition are represented in the OF device tree as 
+        properties (i.e., (<emphasis>name</emphasis>, <emphasis>value</emphasis>) 
+        pairs) in the <emphasis role="bold"><literal>/options</literal></emphasis> node. While OF is available, the 
+        OS can alter the contents of these properties by using the 
+        <emphasis>setprop</emphasis> client interface service. When OF is no longer available, 
+        the OS can alter the contents of the System NVRAM partition itself, following 
+        the rules below for the formats of the <emphasis>name</emphasis> and 
+        <emphasis>value</emphasis>. Information is stored in the System NVRAM 
+        partition as a sequence of (<emphasis>name</emphasis>, 
+        <emphasis>value</emphasis>) pairs in the following format: </para>
+        <para><emphasis>name = value</emphasis></para>
+        <para>where <emphasis>name</emphasis> follows the rules defined in 
+        <xref linkend="dbdoclet.50569333_24970"/> and <emphasis>value</emphasis> follows the 
+        rules defined in <xref linkend="dbdoclet.50569333_36194"/>. The end of the 
+        sequence of pairs is denoted by a NULL (0x00) byte. </para>
+      
+        <section xml:id="dbdoclet.50569333_24970">
+          <title>Name</title>
+          <para>Since the data in the System NVRAM partition is an external 
+          representation of properties of the <emphasis role="bold"><literal>/option</literal></emphasis> node, the 
+          name component must follow the rules for <emphasis role="bold"><literal>property names</literal></emphasis> 
+          as defined by Section 3.2.2.1.1 Property names of
+          <xref linkend="dbdoclet.50569387_45524"/>; i.e., a string of 1-31 printable 
+          characters containing no uppercase characters or the characters 
+          &#x201C;/&#x201D;, &#x201C;\&#x201D;, &#x201C;:&#x201D;, &#x201C;[&#x201C;, 
+          &#x201C;]&#x201D; or &#x201C;@&#x201D;. In addition to these rules, a naming 
+          convention is required for OS specific names to avoid name conflicts. Each such 
+          name must begin with the OS vendor&#x2019;s OUI followed by a 
+          &#x201C;,&#x201D;; e.g., aapl,<emphasis>xxx</emphasis> or 
+          ibm,<emphasis>xxx</emphasis>. This introduces separate name spaces for each vendor in which 
+          it manages its own naming conventions. </para>
+        </section>
+        
+        <section xml:id="dbdoclet.50569333_36194">
+          <title>Value </title>
+          <para>The value component of System NVRAM partition data can contain an 
+          arbitrary number of bytes in the range 0x01 to 0xFF, terminated by a NULL 
+          (0x00) byte. Bytes in the range 0x01 to 0xFE represent themselves. In order to 
+          allow arbitrary byte data to be represented, an encoding is used to represent 
+          strings of 0x00 or 0xFF bytes. This encoding uses the 0xFF byte as an escape, 
+          indicating that the following byte is encoded as:</para>
+          <para>bnnnnnnn</para>
+          <para>where b, the most-significant bit, is 0 to represent a sequence of 
+          0x00 bytes or 1 to represent a sequence of 0xFF bytes. nnnnnnn, the 
+          least-significant 7 bits, is a binary number (in the range 0x01 to 0x7F) that 
+          represents the number of repetitions of 0x00 or 0xFF. </para>
+        </section>
+        
+        <section>
+          <title>OF Configuration Variables</title>
+          <para>OF configuration variables control the operation of OF. In addition 
+          to the standard configuration variables defined in 
+          <xref linkend="dbdoclet.50569387_45524"/>, other configuration variables are defined 
+          in <xref linkend="LoPAR.RTAS"/>. While such variables are stored in the System 
+          NVRAM partition as described above, they have additional rules placed on the 
+          format of the value component. Each configuration variable is also represented 
+          by a user interface word (of the same name) that returns stack value(s) when 
+          that word is evaluated. Each also has a platform defined default value; the 
+          absence of a configuration variable in the System NVRAM partition indicates 
+          that the value is set to its default value. The format of the external 
+          representation of configuration variables, and their stack representation, is 
+          defined by Section 7.4.4.1 Configuration Variables of 
+          <xref linkend="dbdoclet.50569387_45524"/>; the format depends upon the data type of 
+          the configuration variable. Whereas the internal storage format is not defined 
+          by <xref linkend="dbdoclet.50569387_45524"/>, this architecture specifies them 
+          as described below. The names of configuration variables are defined in <xref 
+          linkend="dbdoclet.50569387_45524"/>, except as noted otherwise.</para>
+        
+          <section>
+            <title>Boolean Configuration Variables </title>
+            <para>The value of a boolean configuration variable is represented in the 
+            System NVRAM partition as the string &#x201C;true&#x201D; or 
+            &#x201C;false&#x201D;. The following configuration variables are of type 
+            boolean: </para>
+            <itemizedlist mark="none">
+              <listitem>
+                <para><emphasis role="bold"><literal>auto-boot?</literal></emphasis></para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold"><literal>diag-switch?</literal></emphasis></para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold"><literal>fcode-debug?</literal></emphasis></para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold"><literal>oem-banner?</literal></emphasis></para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold"><literal>oem-logo?</literal></emphasis></para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold"><literal>use-nvramrc?</literal></emphasis></para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold"><literal>little-endian?</literal></emphasis></para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold"><literal>real-mode?</literal></emphasis></para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold"><literal>menu?</literal></emphasis> (see <xref linkend="dbdoclet.50569327_26247"/>). </para>
+              </listitem>
+            </itemizedlist>
+          </section>
+
+          <section>
+            <title>Integer Configuration Variables </title>
+            <para>The value of an integer configuration variable is represented in 
+            the System NVRAM partition as a decimal number or a hexadecimal number preceded 
+            by &#x201C;0x&#x201D;. The following configuration variables are of type 
+            integer:</para>
+            <itemizedlist mark="none">
+              <listitem>
+                <para><emphasis role="bold"><literal>screen-#columns</literal></emphasis></para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold"><literal>screen-#rows</literal></emphasis></para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold"><literal>security-#badlogins</literal></emphasis></para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold"><literal>security-mode</literal></emphasis></para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold"><literal>selftest-#megs</literal></emphasis></para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold"><literal>real-base</literal></emphasis></para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold"><literal>real-size</literal></emphasis></para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold"><literal>virt-base</literal></emphasis></para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold"><literal>virt-size</literal></emphasis></para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold"><literal>load-base</literal></emphasis></para>
+              </listitem>
+            </itemizedlist>
+          </section>
+          
+          <section>
+            <title>String Configuration Variables</title>
+            <para>The value of a string configuration variable is represented in the 
+            System NVRAM partition as the characters of the string. Where multiple 
+            &#x201C;lines&#x201D; of text are represented, each line is terminated by a 
+            carriage-return (0x0D), a line-feed (0x0A), or carriage-return, line-feed 
+            sequence (0x0D, 0x0A). The following configuration variables are of type 
+            string: </para>
+            <itemizedlist mark="none">
+              <listitem>
+                <para><emphasis role="bold"><literal>boot-command</literal></emphasis> [1]</para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold"><literal>boot-device</literal></emphasis> [1] </para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold"><literal>boot-file</literal></emphasis> [1] </para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold"><literal>diag-device</literal></emphasis> [1] </para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold"><literal>diag-file</literal></emphasis> [1] </para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold"><literal>input-device</literal></emphasis> [1] </para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold"><literal>nvramrc</literal></emphasis> [1] </para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold"><literal>oem-banner</literal></emphasis> [1] </para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold"><literal>output-device</literal></emphasis> [1] </para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold"><literal>security-password</literal></emphasis> [1] </para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold"><literal>bootinfo-nnnnn</literal></emphasis> [*] </para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold"><literal>reboot-command</literal></emphasis> [*]</para>
+              </listitem>
+            </itemizedlist>
+          </section>
+
+          <section>
+            <title>Byte Configuration Variables </title>
+            <para>The value of a bytes configuration variable is represented by an 
+            arbitrary number of bytes, using the encoding escape for values of 0x00 and 
+            0xFF. The following configuration variables are of type bytes:</para>
+            <itemizedlist mark="none">
+              <listitem>
+                <para><emphasis role="bold"><literal>oem-logo</literal></emphasis> [1] </para>
+              </listitem>
+            </itemizedlist>
+          </section>
+        </section>
+      </section>
+
+      <section xml:id="sec_disk_startup">
+        <title>DASD Spin-up Control</title>
+        <para> In order to reduce the boot time of platforms, a configuration 
+        variable is defined to communicate from the platform to the OS to what extent 
+        spin-up of hard disk drives can be overlapped. Disk drives generally draw more 
+        current as the motors spin up to operating speed, thus the capacity of the 
+        power supply limits the ability to spin up drives simultaneously.</para>
+        <para>The configuration variable 
+        <emphasis role="bold"><literal>ibm,dasd-spin-interval</literal></emphasis> indicates the minimum time, in seconds, that 
+        must be allowed between initiating the spin-up of hard disk drives on the 
+        platform. Presence of this variable potentially allows starting up a drive 
+        prior to receiving completion status from a drive previously started. The 
+        absence of this variable implies no platform knowledge regarding the capability 
+        to overlap and, hence, the OS should wait for the appropriate device status 
+        before proceeding to subsequent drives (no overlap).</para>
+
+        <variablelist>
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_disk_startup" 
+            xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+              <listitem>
+                <para>If a platform wants to overlap spinning 
+                up it's hard disk drives to improve boot performance, it must create the 
+                <emphasis role="bold"><literal>ibm,dasd-spin-interval</literal></emphasis> OF configuration variable in the 
+                NVRAM signature 0x70 NVRAM partition named <emphasis role="bold"><literal>common</literal></emphasis> and set 
+                it equal to an integer that represents the minimum time, in seconds, that must 
+                be allowed between initiating the spin-up of drives on the platform.</para>
+              </listitem>
+         	</varlistentry>
+        </variablelist>
+
+        <para><emphasis role="bold">Firmware Implementation Note:</emphasis> The platform 
+        should provide a user-friendly interface to this variable to allow for the 
+        possibility of a user installing hard disks that do not conform to the original 
+        setting of the variable.</para>
+      </section>
+    </section>
+    
+    <section xml:id="sec_free_space">
+      <title>Free Space (0x7F)</title>
+
+      <variablelist>
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_free_space" 
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+            <listitem>
+              <para>All unused NVRAM space must be included 
+              in a signature = 0x7F Free Space NVRAM partition.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_free_space" 
+          xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+            <listitem>
+              <para>All Free Space NVRAM partitions must have 
+              the <emphasis>name</emphasis> field set to 0x7...77.</para>
+            </listitem>
+       	</varlistentry>
+      </variablelist>
+    </section>
+  </section>
+  
+  <section xml:id="dbdoclet.50569333_13442">
+    <title>NVRAM Space Management</title>
+    <para>The only NVRAM partitions whose size an OS can modify are OS and Free 
+    Space signature NVRAM partitions. As NVRAM partitions are created and modified 
+    by an OS, it is likely that free space will become fragmented; free space 
+    consolidation may become necessary.</para>
+
+    <variablelist>
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569333_13442" 
+        xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+          <listitem>
+            <para>An OS must not move or delete any NVRAM 
+            partition, except OS and Free Space signature NVRAM partitions. </para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569333_13442" 
+        xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+          <listitem>
+            <para>The NVRAM partition header checksum must be 
+            calculated as shown in <xref linkend="dbdoclet.50569333_37259"/>.</para>
+          </listitem>
+     	</varlistentry>
+    </variablelist>
+  </section>
+</chapter>

@@ -1,0 +1,2560 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2016 OpenPOWER Foundation
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<chapter xmlns="http://docbook.org/ns/docbook" 
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xmlns:xlink="http://www.w3.org/1999/xlink" 
+         version="5.0"
+         xml:id="ch_environment">
+         
+  <title>Environment</title>
+  
+    <para>RTAS provides an interface definition between the OS and the firmware
+    provided by the platform. This chapter defines the calling conventions used
+    by both the OS and the platform&#8217;s RTAS firmware.</para>
+    <para>RTAS runs with instruction and data relocate as well as processing
+    exceptions disabled. To not interfere with the OS, RTAS may not cause any
+    exceptions, nor can it depend on any particular virtual memory
+    mappings.</para>
+    <para>All RTAS functions are invoked from the OS by calling the 
+    <emphasis>rtas-call</emphasis> function. The address of this 
+    function is obtained from OF when
+    RTAS is instantiated. See Requirement 
+    <xref linkend="dbdoclet.50569332_37615" /> for more details. RTAS determines
+    what function to invoke based on the data passed into the 
+    <emphasis>rtas-call</emphasis> function. This section describes the 
+    mechanisms used to invoke the <emphasis>rtas-call</emphasis> function,
+    the machine state, register usage, resource
+    allocation, and the invocation requirements.</para>
+    <para>If the LPAR option is enabled, multiple partitions may exist, each
+    with its own OS instance. This requires some changes to the RTAS
+    environment. These changes are discussed in 
+    <xref linkend="LoPAR.Virtualization" />.</para>
+    
+    <section xml:id="sec_machine_state">
+      <title>Machine State</title>
+      <para>When RTAS functions are invoked, the calling processor shall have
+      address translations, floating point, and most other exceptions disabled
+      and it shall be running in privileged state.</para>
+
+      <variablelist>
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_machine_state" 
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+            <listitem>
+              <para>RTAS must be called in &#8220;real
+              mode,&#8221; that is, all address translation must be disabled. Bits MSR<subscript>IR</subscript> and 
+              MSR<subscript>DR</subscript> of the MSR register must be zero.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_machine_state" 
+          xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+            <listitem>
+              <para>RTAS must be called in privileged mode, and
+              the MSR<subscript>PR</subscript> bit must be set to 0.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_machine_state" 
+          xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+            <listitem>
+              <para>RTAS must be called with external
+              interrupts disabled, and the MSR<subscript>EE</subscript> bit must be set to 0.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_machine_state" 
+          xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+            <listitem>
+              <para>RTAS must be called with trace disabled,
+              and the MSR<subscript>SE</subscript> and 
+              MSR<subscript>BE</subscript> bits must be set to 0.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry xml:id="dbdoclet.50569332_30796">
+          <term><emphasis role="bold">R1-<xref linkend="sec_machine_state" 
+          xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
+            <listitem>
+              <para>RTAS must be
+              called with floating point disabled, and the 
+              MSR<subscript>FE0</subscript>, 
+              MSR<subscript>FE1</subscript>, and 
+              MSR<subscript>FP</subscript> bits must be set to 0.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry xml:id="dbdoclet.50569332_20114">
+          <term><emphasis role="bold">R1-<xref linkend="sec_machine_state" 
+          xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
+            <listitem>
+              <para>RTAS must be called with the MSR<subscript>SF</subscript>, 
+              (MSR<subscript>ISF</subscript>, and ASR<subscript>V</subscript> 
+              bits if applicable on the specific processor) set
+              to match the mode used to instantiate RTAS (0 for
+              <emphasis role="bold"><literal>instantiate-rtas</literal></emphasis> or 1 for 
+              <emphasis role="bold"><literal>instantiate-rtas-64</literal></emphasis>) and the
+              LE bit set to 0.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_machine_state" 
+          xrefstyle="select: labelnumber nopage"/>-7.</emphasis></term>
+            <listitem>
+              <para>With the exception of the MSR<subscript>DR</subscript> and 
+              MSR<subscript>RI</subscript> bits, RTAS must not change the state of the
+              machine by modifying the MSR.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_machine_state" 
+          xrefstyle="select: labelnumber nopage"/>-8.</emphasis></term>
+            <listitem>
+              <para><emphasis>rtas-call</emphasis> is entered
+              in a non-recoverable mode, indicated by having the 
+              MSR<subscript>RI</subscript> bit set equal to 0, then RTAS must not enter a
+              recoverable mode by setting the MSR<subscript>RI</subscript> bit to 1.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_machine_state" 
+          xrefstyle="select: labelnumber nopage"/>-9.</emphasis></term>
+            <listitem>
+              <para>If called with MSR<subscript>RI</subscript> equal to 1, 
+              then RTAS must protect its own
+              critical regions from recursion by setting the MSR<subscript>RI</subscript> 
+              bit to 0 when in the critical regions.</para>
+            </listitem>
+       	</varlistentry>
+      </variablelist>
+
+      <para><emphasis role="bold">Software Implementation Notes:</emphasis></para>
+      
+      <orderedlist>		      
+        <listitem>
+          <para>If the MSR<subscript>ME</subscript> bit is left enabled, the OS&#8217;s exception
+          handler must be aware that RTAS might have been running and that various
+          processor registers might not be in the expected state for an interrupted
+          OS, which precludes recoverability but permit logging machine
+          checks.</para>
+        </listitem>
+
+        <listitem>
+          <para>There are some provisions for recursive calls to RTAS error
+          handling functions. Therefore, RTAS should set the MSR<subscript>RI</subscript> 
+          bit to 0 if SRR0/SRR1 or any other RTAS resource
+          is in a state where information could be lost and prohibit
+          recovery.</para>
+        </listitem>
+
+        <listitem>
+          <para>Requirement 
+          <xref linkend="dbdoclet.50569332_20114" /> implies that RTAS must be able
+          to be instantiated in 64-bit mode on platforms that can support 64-bit
+          execution.</para>
+        </listitem>
+      </orderedlist>		      
+      
+    </section>
+    
+    <section xml:id="sec_register_usage">
+      <title>Register Usage</title>
+
+      <variablelist>
+       	<varlistentry xml:id="dbdoclet.50569332_23742">
+          <term><emphasis role="bold">R1-<xref linkend="sec_register_usage" 
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+            <listitem>
+              <para>Except as
+              required by a specific function, registers SPRG2, R0, R3 through R12,
+              CTR, XER, LR, and fields CR2-CR4 of the CR, RTAS must preserve all OS
+              visible register state.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry xml:id="dbdoclet.50569332_76112">
+          <term><emphasis role="bold">R1-<xref linkend="sec_register_usage" 
+          xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+            <listitem>
+          <para>RTAS must not modify the DEC and registers SPRG0, SPRG1, and SPRG3.</para>
+            </listitem>
+       	</varlistentry>
+      </variablelist>
+
+      <para><emphasis role="bold">Software Implementation Notes:</emphasis></para>
+      
+      <orderedlist>		      
+        <listitem>
+          <para>RTAS is entered in real mode
+          (with address translation turned off). In this mode, all data accesses
+          are assumed to be cached in copy back mode with memory coherence
+          required. Since these settings may not be appropriate for all accesses,
+          RTAS is free to transparently use the processor specific facilities
+          required to access platform hardware resources. The OS machine check
+          handler can only depend on those registers that are required to be
+          unchanged (see Requirement 
+          <xref linkend="dbdoclet.50569332_23742" />).</para>
+        </listitem>
+
+        <listitem>
+          <para>RTAS must not change the preserved registers, or must first save
+          them and restore the original contents before returning to the OS.</para>
+        </listitem>
+
+        <listitem>
+          <para>The SRR0-SRR1, LR, CTR, XER registers, as well as any
+          reservations made via the load and reserve instructions, need not be
+          preserved.</para>
+        </listitem>
+      </orderedlist>		      
+      
+    </section>
+    
+    <section xml:id="dbdoclet.50569332_85757">
+      <title>RTAS Critical Regions</title>
+      
+      <para>The OS, when using RTAS, is responsible for protecting RTAS and
+      devices used by RTAS from any simultaneous accesses that could corrupt
+      memory or device registers. Such corruption could be caused by
+      simultaneous execution of RTAS code, or by a device driver accessing a
+      control register that is also modified by RTAS. In a single processor
+      system, since the MSR<subscript>EE</subscript> bit is 0 when entering RTAS, a call to RTAS while
+      it is in execution is prevented except for the machine check handler.
+      This handler may need to call various RTAS services such as 
+      <emphasis>check-exception</emphasis> or
+      <emphasis>system-reboot</emphasis> even if the error was detected while in
+      an RTAS service
+      <emphasis>.</emphasis></para>
+      <para>The OS and RTAS must co-exist on the same platform. RTAS must not
+      change device registers that are used by the OS, nor may the OS change
+      device registers on devices used by RTAS. With the advent of more and
+      more integration into common super parts, some of these registers may
+      physically reside on the same component. In this section, device implies
+      the collection of common registers that together perform a function. Each
+      device must be represented in the OF device tree.</para>
+
+      <variablelist>
+       	<varlistentry xml:id="dbdoclet.50569332_37615">
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_85757" 
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+            <listitem>
+              <para>Except as noted in Requirement 
+              <xref linkend="dbdoclet.50569332_53788" /> and 
+              <xref linkend="dbdoclet.50569332_46104" />, the OS must ensure that RTAS
+              is not called while RTAS is in execution and that RTAS is not
+              simultaneously called from different processors in a multi-processor
+              system.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_85757" 
+          xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+            <listitem>
+              <para>Any RTAS access to device or I/O registers
+              specified in this document must be made in such a way as to be
+              transparent to the OS.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry xml:id="dbdoclet.50569332_58412">
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_85757" 
+          xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+            <listitem>
+              <para>Any device that
+              is used to implement the RTAS abstracted services must have the property
+              <emphasis role="bold"><literal>&#8220;used-by-rtas&#8221;</literal></emphasis> in the OF device tree.
+              However, if the device is only used by the
+              <emphasis>power-off,</emphasis> and
+              <emphasis>system-reboot</emphasis> calls, the property should not be set.
+              The 
+              <emphasis>rtas-display-device</emphasis> must be marked with the property
+              <emphasis role="bold"><literal>&#8220;used-by-rtas&#8221;</literal></emphasis> if it is a specialized
+              device only to be accessed via the RTAS 
+              <emphasis>display-character</emphasis> call and not otherwise shared with
+              the OS</para>
+              
+              <para>
+              <emphasis role="bold">Software Implementation Note:</emphasis>
+              <xref linkend="dbdoclet.50569332_79165" /> clarifies when a device should
+              be marked with the
+              <emphasis role="bold"><literal>&#8220;used-by-rtas&#8221;</literal></emphasis> property, based on whether
+              it has any interaction with RTAS and/or the OS (with the exception of the
+              calls listed in Requirement 
+              <xref linkend="dbdoclet.50569332_37615" />).</para>
+
+              <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_79165">
+                <title>Use of 
+                <emphasis role="bold"><literal>&#8220;used-by-rtas&#8221;</literal></emphasis></title>
+                <tgroup cols="3">
+                  <colspec colname="c1" colwidth="33*" />
+                  <colspec colname="c2" colwidth="33*" />
+                  <colspec colname="c3" colwidth="33*" />
+                  <thead>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold">&#160;</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <emphasis role="bold">Normal Device (1)</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <emphasis role="bold">rtas-display-device</emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                  </thead>
+                  <tbody>
+                    <row>
+                      <entry>
+                        <para>Only used by OS</para>
+                      </entry>
+                      <entry>
+                        <para>not marked</para>
+                      </entry>
+                      <entry>
+                        <para>N/A (2)</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Only used by RTAS</para>
+                      </entry>
+                      <entry>
+                        <para>marked</para>
+                      </entry>
+                      <entry>
+                        <para>marked</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>OS and RTAS shared</para>
+                      </entry>
+                      <entry>
+                        <para>marked (3)</para>
+                      </entry>
+                      <entry>
+                        <para>not marked (4)</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Virtual</para>
+                      </entry>
+                      <entry>
+                        <para>N/A</para>
+                      </entry>
+                      <entry>
+                        <para>N/A</para>
+                      </entry>
+                    </row>
+                  </tbody>
+                </tgroup>
+              </table>
+              
+              <orderedlist>		      
+                <listitem>
+                  <para>A device which is not normally to be used by the OS must meet
+                  one of the following rules.</para>
+                  
+                  <orderedlist numeration="loweralpha">		      
+                    <listitem>
+                      <para>It must not be included in the OF device tree.</para>
+                    </listitem>
+            
+                    <listitem>
+                      <para>It must be defined as a &#8220;reserved&#8221; device
+                      node.</para>
+                    </listitem>
+            
+                    <listitem>
+                      <para>It must be marked with the 
+                      <emphasis role="bold"><literal>&#8220;used-by-rtas&#8221;</literal></emphasis> property in the OF device
+                      tree.</para>
+                    </listitem>
+                  </orderedlist>		      
+                </listitem>
+        
+                <listitem>
+                  <para>It is assumed that an 
+                  <emphasis>rtas-display-device</emphasis> is used by RTAS.</para>
+                </listitem>
+        
+                <listitem>
+                  <para>It is assumed that there are no devices other than the 
+                  <emphasis>rtas-display-device</emphasis> which are used by both RTAS and
+                  an &#8220;unaware&#8221; OS. To allow an aware OS to share a device with
+                  RTAS, the device should be marked.</para>
+                </listitem>
+        
+                <listitem>
+                  <para>It is assumed that the 
+                  <emphasis>rtas-display-device</emphasis> is used by both RTAS and the OS
+                  (as coordinated by the OS via display-character) unless it is marked. See
+                  also Requirement 
+                  <xref linkend="dbdoclet.50569332_54841" />.</para>
+                </listitem>
+              </orderedlist>		      
+        
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_85757" 
+          xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+            <listitem>
+              <para>Platforms must be designed such that
+              accesses to devices that are marked 
+              <emphasis role="bold"><literal>&#8220;used-by-rtas&#8221;</literal></emphasis> 
+              have no side effects on other registers in the system.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_85757" 
+          xrefstyle="select: labelnumber nopage"/>-5.</emphasis> </term>
+            <listitem>
+              <para>Any OS access to devices specified as 
+              <emphasis role="bold"><literal>&#8220;used-by-rtas&#8221;</literal></emphasis> 
+              must be made in such a way as to be transparent to RTAS.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_85757" 
+          xrefstyle="select: labelnumber nopage"/>-6.</emphasis> </term>
+            <listitem>
+              <para>RTAS must not generate any exceptions (for
+              example, no alignment exceptions, page table walk exceptions,
+              etc.).</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry xml:id="dbdoclet.50569332_53788">
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_85757" 
+          xrefstyle="select: labelnumber nopage"/>-7.</emphasis> </term>
+            <listitem>
+              <para>The OS machine check and soft reset handlers must be 
+              able to call the RTAS services:</para>
+              
+              <itemizedlist>		      
+                <listitem>
+                  <para><emphasis>nvram-fetch</emphasis> </para>
+                </listitem>
+                
+                <listitem>
+                  <para><emphasis>nvram-store</emphasis> </para>
+                </listitem>
+                
+                <listitem>
+                  <para><emphasis>check-exception</emphasis> </para>
+                </listitem>
+                
+                <listitem>
+                  <para><emphasis>display-character</emphasis></para>
+                </listitem>
+                
+                <listitem>
+                  <para><emphasis>system-reboot</emphasis></para>
+                </listitem>
+                
+                <listitem>
+                  <para><emphasis>set-power-level(0,0)</emphasis></para>
+                </listitem>
+                
+                <listitem>
+                  <para><emphasis>power-off</emphasis></para>
+                </listitem>
+                
+                <listitem>
+                  <para><emphasis role="bold">ibm,set-eeh-option</emphasis></para>
+                </listitem>
+                
+                <listitem>
+                  <para><emphasis role="bold">ibm,set-slot-reset</emphasis></para>
+                </listitem>
+                
+                <listitem>
+                  <para><emphasis role="bold">ibm,read-slot-reset-state2</emphasis></para>
+                </listitem>
+              </itemizedlist>		      
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry xml:id="dbdoclet.50569332_46104">
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_85757" 
+          xrefstyle="select: labelnumber nopage"/>-8.</emphasis></term>
+            <listitem>
+              <para>The <emphasis>stop-self</emphasis>
+              service need only be serialized with calls to the 
+              <emphasis>stop-self</emphasis>, 
+              <emphasis>start-cpu</emphasis>, and 
+              <emphasis>set-power-level</emphasis> services. The OS must be able to call
+              RTAS services on other processors while a processor is stopped or being
+              stopped.</para>
+            </listitem>
+       	</varlistentry>
+      </variablelist>
+              
+      <para><emphasis role="bold">Software Implementation Notes:</emphasis></para>
+      
+      <orderedlist>		      
+        <listitem>
+          <para>While RTAS must not generate any exceptions, it is still
+          possible that a machine check interrupt may occur during the execution of
+          an RTAS function. In this case, the machine check handler may be entered
+          prior to the normal termination of the RTAS function.</para>
+        </listitem>
+
+        <listitem>
+          <para>It is permissible for the OS exception handler to make an RTAS
+          call as long as Requirements 
+          <xref linkend="dbdoclet.50569332_23742" /> and 
+          <xref linkend="dbdoclet.50569332_37615" /> are met. In particular, it is
+          expected that the RTAS 
+          <emphasis>check-exception</emphasis> is called from the OS exception
+          handler.</para>
+        </listitem>
+      </orderedlist>		      
+      
+    </section>
+    
+    <section xml:id="sec_resource_allocation_and_use">
+      <title>Resource Allocation and Use</title>
+      <para>During execution, RTAS requires memory for both code and data. This
+      memory may be in RAM, in a private memory area only known by the system
+      firmware, or in memory allocated by the OS for RTAS use. RTAS should use
+      this memory for its stack and any state savings. This memory is
+      subsequently called the &#8220;RTAS private data area.&#8221;</para>
+
+      <variablelist>
+       	<varlistentry xml:id="dbdoclet.50569332_37664">
+          <term><emphasis role="bold">R1-<xref linkend="sec_resource_allocation_and_use" 
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+            <listitem>
+              <para>The OS must allocate
+              <emphasis role="bold"><literal>&#8220;rtas-size&#8221;</literal></emphasis>
+              bytes of contiguous real memory as RTAS 
+              private
+              data area. This memory must be aligned on a 4096 byte boundary and may
+              not cross a 256 MB boundary.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry xml:id="dbdoclet.50569332_13131">
+          <term><emphasis role="bold">R1-<xref linkend="sec_resource_allocation_and_use" 
+          xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+            <listitem>
+              <para>The RTAS private data area must not be accessed by the OS.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_resource_allocation_and_use" 
+          xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+            <listitem>
+              <para>Except for the RTAS private data area, the
+              argument buffer, System Memory pointed to by any reference parameter in
+              the argument buffer, and any other System Memory areas explicitly
+              permitted in this chapter, RTAS must not modify any System Memory. RTAS
+              may, however, modify System Memory during error recovery provided that
+              such modifications are transparent to the OS.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry xml:id="dbdoclet.50569332_88538">
+          <term><emphasis role="bold">R1-<xref linkend="sec_resource_allocation_and_use" 
+          xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+            <listitem>
+              <para>RTAS calls may
+              not sleep in any fashion nor busy wait for more than a very short period
+              of time, except for 
+              <emphasis>power-off, ibm,power-off-ups, set-power-level</emphasis> (0,0), 
+              <emphasis>system-reboot, ibm,update-flash-64-and-reboot, and
+              ibm,os-term</emphasis>.</para>
+              <para xml:id="dbdoclet.50569332_12814">
+              <emphasis role="bold">Software
+              Implementation Note:</emphasis> An RTAS call should take the same amount of time to
+              perform a service that it would take the OS to perform the same function.
+              A specific goal is that RTAS primitives should take less than a few tens
+              of microseconds.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_resource_allocation_and_use" 
+          xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
+            <listitem>
+              <para>For RTAS calls which do not allow the 
+              <emphasis>Status</emphasis> of -2 (Busy), there may be &#8220;rare&#8221;
+              instances where an anomaly may occur and the call may take longer than a
+              &#8220;very short period of time.&#8221; In these cases, the call must
+              complete within 250 microseconds. Otherwise, a hardware error response
+              must be given.</para>
+            </listitem>
+       	</varlistentry>
+      </variablelist>
+
+    </section>
+    
+    <section xml:id="dbdoclet.50569332_16363">
+      <title>Instantiating RTAS</title>
+      <para>RTAS is instantiated by an explicit client interface service call
+      into OF. The OF device tree contains a property 
+      (<emphasis role="bold"><literal>&#8220;rtas-size&#8221;</literal></emphasis>, under
+      the
+      <emphasis role="bold"><literal>/rtas</literal></emphasis> node) which defines how much real memory RTAS
+      requires from the OS. The OS allocates 
+      <emphasis role="bold"><literal>&#8220;rtas-size&#8221;</literal></emphasis> 
+      bytes of real memory, and
+      then invokes the 
+      <emphasis role="bold"><literal>instantiate-rtas</literal></emphasis> or 
+      <emphasis role="bold"><literal>instantiate-rtas-64</literal></emphasis> method of the
+      <emphasis role="bold"><literal>/rtas</literal></emphasis> node, passing the real address of the private
+      data area (or zero, if 
+      <emphasis role="bold"><literal>&#8220;rtas-size&#8221;</literal></emphasis> is zero) as the 
+      <emphasis>rtas-base-address</emphasis> input argument. Firmware binds RTAS
+      to that address, binds the addresses of devices that RTAS uses, performs
+      any RTAS initialization, and returns the address of the 
+      <emphasis>rtas-call</emphasis>
+      function
+      that is appropriate.</para>
+
+      <variablelist>
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_16363" 
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+            <listitem>
+              <para>The <emphasis role="bold"><literal>instantiate-rtas</literal></emphasis> or 
+              <emphasis role="bold"><literal>instantiate-rtas-64</literal></emphasis>
+              OF method
+              must have the arguments specified in 
+              <xref linkend="dbdoclet.50569332_14005" />.</para>
+
+              <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_14005">
+                <title><emphasis role="bold"><literal>instantiate-rtas</literal></emphasis>
+                <emphasis role="bold"><literal>instantiate-rtas-64</literal></emphasis>
+                Argument Call Buffer</title>
+                <tgroup cols="3">
+                  <colspec colname="c1" colwidth="33*" />
+                  <colspec colname="c2" colwidth="33*" />
+                  <colspec colname="c3" colwidth="33*" />
+                  <thead>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold">Parameter Type</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <emphasis role="bold">Name</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <emphasis role="bold">Values</emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                  </thead>
+                  <tbody>
+                    <row>
+                      <entry>
+                        <para>In</para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <emphasis>rtas-base-address</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Real Address of RTAS area or zero, if 
+                        <emphasis role="bold"><literal>&#8220;rtas-size&#8221;</literal></emphasis> is zero</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Out</para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <emphasis>rtas-call</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Real address used to invoke RTAS functions</para>
+                      </entry>
+                    </row>
+                  </tbody>
+                </tgroup>
+              </table>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_16363" 
+          xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+            <listitem>
+              <para>The RTAS code bound and initialized by the 
+              <emphasis role="bold"><literal>instantiate-rtas</literal></emphasis> method on a 64-bit capable platform,
+              must be able to handle platform resources that are accessed using 64-bit
+              addresses.</para>
+            </listitem>
+       	</varlistentry>
+      </variablelist>
+
+    </section>
+    
+    <section xml:id="dbdoclet.50569332_39240">
+      <title>RTAS Device Tree Properties</title>
+      <para>The OF device tree contains a
+      <emphasis role="bold"><literal>/rtas</literal></emphasis> device node that describes the implemented RTAS
+      features and the output device supported by RTAS. Within this device node
+      are properties that describe the RTAS functions implemented by the
+      firmware. For every implemented RTAS function, the 
+      <emphasis role="bold"><literal>/rtas</literal></emphasis> node contains an OF property whose name is the
+      same as the RTAS function. The value of this property is the token
+      argument passed into the 
+      <emphasis>rtas-call</emphasis>
+      function
+      when making that specific RTAS call. Note that some
+      RTAS functions are optional and some are required. This is defined in 
+      <xref linkend="dbdoclet.50569332_20008" />.</para>
+
+      <variablelist>
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_39240" 
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+            <listitem>
+              <para>The OF device tree must contain a device
+              node named
+              <emphasis role="bold"><literal>/rtas</literal></emphasis> which describes the RTAS implementation.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_39240" 
+          xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+            <listitem>
+              <para>The <emphasis role="bold"><literal>/rtas</literal></emphasis> device node must have a property for each
+              implemented RTAS function in 
+              <xref linkend="dbdoclet.50569332_20008" />. The value of this property is
+              a token that is passed into the 
+              <emphasis>rtas-call</emphasis>
+              function to
+              indicate which RTAS function to invoke.</para>
+              <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_20008">
+                <title>RTAS Tokens for Functions</title>
+                <tgroup cols="3">
+                  <colspec colname="c1" colwidth="33*" />
+                  <colspec colname="c2" colwidth="33*" />
+                  <colspec colname="c3" colwidth="33*" />
+                  <thead>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold">RTAS property/function</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <emphasis role="bold">Required?</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <emphasis role="bold">Notes</emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                  </thead>
+                  <tbody>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;nvram-fetch&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_96529" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Required</para>
+                      </entry>
+                      <entry>
+                        <para>Execution time proportional to amount of data</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;nvram-store&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_57392" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Required</para>
+                      </entry>
+                      <entry>
+                        <para>Execution time proportional to amount of data</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;get-time-of-day&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_88127" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Required</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;set-time-of-day&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_35194" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Required</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;set-time-for-power-on&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_13743" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;event-scan&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_24845" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Required</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;check-exception&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_71287" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Required</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;rtas-last-error&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_71223" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Required</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,platform-dump&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_98203" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>If the Platform Dump option is implemented</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,read-pci-config&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_59536" />
+                        </para>
+                      </entry>
+                      <entry morerows="1">
+                        <para>Required</para>
+                      </entry>
+                      <entry morerows="1">
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,write-pci-config&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_54555" />
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;display-character&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_10053" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;set-indicator&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_32164" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Required</para>
+                      </entry>
+                      <entry>
+                        <para>Some specific indicators are required, and some are
+                        optional</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;get-sensor-state&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_10754" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,set-system-parameter&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_31665" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,get-system-parameter&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_62190" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;set-power-level&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_45884" />
+                        </para>
+                      </entry>
+                      <entry morerows="1">
+                        <para>Required for DR operations (see 
+                        <xref linkend="LoPAR.Virtualization" />)</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;get-power-level&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_67298" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;power-off&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_79728" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                      <entry>
+                        <para>Provided for platforms with software controlled power off
+                        capability</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,power-off-ups&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_50770" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>If there may be a platform controlled UPS.</para>
+                      </entry>
+                      <entry>
+                        <para>For power off control in a platform which may have power
+                        backed up with an Uninterruptible Power Supply (UPS).</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;system-reboot&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_50284" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Required</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,update-flash-64-and-reboot&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_77103" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,manage-flash-image&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_81833" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,validate-flash-image&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_40640" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,activate-firmware&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_28163" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;stop-self&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_68497" />
+                        </para>
+                      </entry>
+                      <entry morerows="2">
+                        <para>See Note</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;start-cpu&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_39014" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;query-cpu-stopped-state&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_81575" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,os-term&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_42118" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,exti2c&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_19739" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,get-xive&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_48295" />
+                        </para>
+                      </entry>
+                      <entry morerows="3">
+                        <para>Required for the PowerPC External Interrupt option</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,set-xive&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_13631" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,int-off&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_95487" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,int-on&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_61000" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,configure-connector&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="LoPAR.Virtualization" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Required for all DR options</para>
+                      </entry>
+                      <entry>
+                        <para>See 
+                        <xref linkend="LoPAR.Virtualization" />.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,set-eeh-option&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_27269" />
+                        </para>
+                      </entry>
+                      <entry morerows="1">
+                        <para>Required for EEH option</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,set-slot-reset&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_86249" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,read-slot-reset-state&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Being replaced by</para>
+                        <para>
+                          <emphasis>ibm,read-slot-reset-state2</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>See 
+                        <xref linkend="dbdoclet.50569332_87326" />.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,read-slot-reset-state2&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_87326" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Required for all platforms</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,get-config-addr-info2&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_68098" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Required on all platforms</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,slot-error-detail&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_43482" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Required for the EEH option</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,open-errinjct&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_22302" />
+                        </para>
+                      </entry>
+                      <entry morerows="2">
+                        <para>Required for ERRINJCT option</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,errinjct&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_22302" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,close-errinjct&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_22302" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,nmi-register&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_12478" />
+                        </para>
+                      </entry>
+                      <entry morerows="1">
+                        <para>Required for FWNMI option</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,nmi-interlock&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_12478" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,configure-bridge&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_65423" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Required for the EEH option</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,configure-pe&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_45262" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Required for the EEH option</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,get-indices&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_64091" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Sometimes (see 
+                        <xref linkend="LoPAR.Error" />)</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,get-vpd&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_72964" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Required for the Dynamic VPD option</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,manage-storage-preservation&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_28221" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Required for the Storage Preservation option</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,get-dynamic-sensor-state&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_61055" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>See Requirement 
+                        <xref linkend="dbdoclet.50569332_54151" />.</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,set-dynamic-indicator&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_30542" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>See Requirement 
+                        <xref linkend="dbdoclet.50569332_58519" />.</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,change-msi&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_16274" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Required for the MSI option. Required if any PCI Express
+                        HB in the platform.</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,suspend-me&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_45918" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Required for the Partition Suspension option</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,update-nodes&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_84414" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Required for the Update OF Tree option</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,update-properties&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_40069" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Required for the Update OF Tree option</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,configure-kernel-dump&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_67111" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Required for the Configure Platform Assisted Kernel Dump
+                        option</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,query-pe-dma-window&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_99826" />
+                        </para>
+                      </entry>
+                      <entry morerows="2">
+                        <para>Required for the Dynamic DMA Window (DDW) option</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,create-pe-dma-window&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_49009" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,remove-pe-dma-window&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_60545" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,reset-pe-dma-windows&#8221;</literal></emphasis>
+                        </para>
+                        <para>
+                          <xref linkend="dbdoclet.50569332_60545" />
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Required for the LoPAR version l of the Dynamic DMA
+                        Window (DDW) option</para>
+                      </entry>
+                      <entry>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                  </tbody>
+                </tgroup>
+              </table>
+              <para>
+              <emphasis role="bold">Note:</emphasis> These commands are required in SMP platforms if
+              dynamic reconfiguration is required of the processors. Similarly, a
+              degraded mode may need these, or similar commands in the case of
+              detection of excessive errors. In the case of a processor deconfigured by
+              dynamic reconfiguration or due to excessive errors, the returned 
+              <emphasis>CPU_status</emphasis> from the 
+              <emphasis>query-cpu-stopped-state</emphasis> RTAS call is 2 (The processor
+              thread is not in the RTAS stopped state) since the deconfigured processor
+              cannot be started.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_39240" 
+          xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+            <listitem>
+              <para>The OF properties listed in 
+              <xref linkend="dbdoclet.50569332_38140" /> must be in the
+              <emphasis role="bold"><literal>/rtas</literal></emphasis> device tree node prior to booting the
+              OS.</para>
+
+              <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_38140">
+                <title>OF Device Tree Properties</title>
+                <tgroup cols="2">
+                  <colspec colname="c1" colwidth="50*" />
+                  <colspec colname="c2" colwidth="50*" />
+                  <thead>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold">name</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <emphasis role="bold">value</emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                  </thead>
+                  <tbody>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;rtas-size&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>integer size of RTAS private data area or zero if
+                        allocation is not required</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;rtas-version&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>An integer encoding of the RTAS interface version. This
+                        document describes version 1.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;rtas-event-scan-rate&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>The rate, in calls per minute, at which rtas-event-scan
+                        should be called by the OS. See 
+                        <xref linkend="dbdoclet.50569332_24845" />.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;rtas-display-device&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>The 
+                        <emphasis>phandle</emphasis> of the device node used by the RTAS
+                        call, 
+                        <emphasis>display-character</emphasis>.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;rtas-error-log-max&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>The maximum size of an extended error log.</para>
+                      </entry>
+                    </row>
+                  </tbody>
+                </tgroup>
+              </table>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_39240" 
+          xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+            <listitem>
+              <para>All RTAS functions listed as
+              &#8220;Required&#8221; in 
+              <xref linkend="dbdoclet.50569332_20008" /> must be implemented in
+              RTAS.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_39240" 
+          xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the Symmetric Multiprocessor option:</emphasis> The
+              functions listed as &#8220;Required in SMP Platforms&#8221; in 
+              <xref linkend="dbdoclet.50569332_20008" /> must be implemented in
+              RTAS.</para>
+            </listitem>
+       	</varlistentry>
+      </variablelist>
+
+      <para><emphasis role="bold">Software Implementation Notes:</emphasis></para>
+      
+      <orderedlist>		      
+        <listitem>
+          <para>It is permitted for RTAS not to implement those optional
+          functions that are not appropriate or not needed on a particular
+          platform.</para>
+        </listitem>
+
+        <listitem>
+          <para>Vendors may introduce private RTAS calls of their own. If they
+          do, the property names should be of the form 
+          <emphasis role="bold"><literal>&#8220;vendor,property&#8221;</literal></emphasis> where
+          <emphasis>vendor</emphasis> is a company name string as defined by OF.
+          Future versions of this architecture will not choose RTAS property names
+          that include a comma.</para>
+        </listitem>
+      </orderedlist>		      
+    
+      <section>
+        <title>RTAS Device Tree Properties for Indicators and
+        Sensors</title>
+        <para>Indicators and sensors may be static or dynamic. Each indicator or
+        sensor type is identified by its token; a number which is associated with
+        the functionality of the indicator or sensor. A specific indicator token
+        is static in a particular platform if the number of indicators of that
+        type do not change with Dynamic Reconfiguration (DR) operations, and
+        dynamic otherwise. Certain sensors and indicators associated with DR
+        <footnote xml:id="pgfId-1143860">
+          <para>DR indicators include isolation-state (9001), DR indicator
+          (9002), and allocation-state (9003). DR sensors include dr-entity-sense
+          (9003). DR indicators and sensors are required to be there based on the
+          DR entity being supported. Their indices are specified by the DR index
+          for the DR entity. See 
+          <xref linkend="LoPAR.Virtualization" /> and 
+          <xref linkend="LoPAR.Virtualization" /> for more information.</para>
+        </footnote>are static since they represent the base hardware, others are
+        dynamic coming and going with extensions to the base hardware. Indices
+        for DR indicators and sensors are obtained from the DRC index for the DRC
+        connector. Information about static non-DR indicators and sensors (like
+        indices and location codes) are specified in the OF device tree at boot
+        time and do not change. Information about non-DR dynamic indicators and
+        sensors, needs to be gathered via the 
+        <emphasis>ibm,get-indices</emphasis> RTAS call (see 
+        <xref linkend="dbdoclet.50569332_64091" />), and sensors, instead of
+        being represented in the device tree.</para>
+        <para>Indicators and sensors within a platform generally have location
+        codes associated with them. Location code information for static
+        indicators and sensors, except DR indicators and sensors, are placed in
+        the 
+        <emphasis role="bold"><literal>&#8220;</literal></emphasis><emphasis><literal>&lt;vendor&gt;</literal></emphasis><emphasis role="bold"><literal>,indicator-</literal></emphasis><emphasis><literal>&lt;token&gt;</literal></emphasis><emphasis role="bold"><literal>&#8221;</literal></emphasis> and 
+        <emphasis role="bold"><literal>&#8220;</literal></emphasis><emphasis><literal>&lt;vendor&gt;</literal></emphasis><emphasis role="bold"><literal>,sensor-</literal></emphasis><emphasis><literal>&lt;token&gt;</literal></emphasis><emphasis role="bold"><literal>&#8221;</literal></emphasis>
+        properties, respectively, in the
+        <emphasis role="bold"><literal>/rtas</literal></emphasis> node, where &#8220;&lt;vendor&gt;&#8221; is
+        defined in the column marked &#8220;&lt;vendor&gt;&#8221; in 
+        <xref linkend="dbdoclet.50569332_32237" /> and 
+        <xref linkend="dbdoclet.50569332_23534" />, respectively. Location code
+        information for dynamic indicators and sensors, except DR indicators and
+        sensors, for the most part come in via the 
+        <emphasis>ibm,get-indices</emphasis> call.</para>
+        <para>Information (index, location code) about a particular indicator or
+        sensor token, except DR indicators and sensors, are in the 
+        <emphasis role="bold"><literal>/rtas</literal></emphasis> node properties or are available via the 
+        <emphasis>ibm,get-indices</emphasis> call, but not both. When indices are
+        provided via the 
+        <emphasis role="bold"><literal>&#8220;rtas-sensors&#8221;</literal></emphasis> or 
+        <emphasis role="bold"><literal>&#8220;rtas-indicators&#8221;</literal></emphasis> properties, it is
+        expected that there exists a sensor/indicator for each index between 0
+        and 
+        <emphasis>maxindex</emphasis>. When indices are provided via the 
+        <emphasis>ibm,get-indices</emphasis> call, the indices may not be
+        contiguous, and any of the indices between 0 and 
+        <emphasis>maxindex</emphasis> may be missing.</para>
+        <para>The formats for location codes are defined in 
+        <xref linkend="LoPAR.Platform" />. For indicators and sensors,
+        these location codes are for the location of the device being manipulated
+        or measured, not the location of the specific controller or sensor. The
+        location code for an abstracted indicator or sensor is a NULL
+        string.</para>
+      
+        <section xml:id="sec_indicators">
+          <title>Indicators</title>
+          <para>For static indicators, except DR indicators, OF provides for paired
+          integers (
+          <emphasis>token maxindex</emphasis>) for each indicator token under the
+          property 
+          <emphasis role="bold"><literal>&#8220;rtas-indicators&#8221;</literal></emphasis>
+          in the
+          <emphasis role="bold"><literal>/rtas</literal></emphasis> node. With this information, the OS can
+          determine which types of indicators, and the maximum number (
+          <emphasis>maxindex</emphasis>) of each type, that the platform
+          provides.</para>
+          <para>For static indicators, except DR indicators, the extension
+          property, 
+          <emphasis role="bold"><literal>&#8220;</literal></emphasis><emphasis><literal>&lt;vendor&gt;</literal></emphasis><emphasis role="bold"><literal>,indicator-</literal></emphasis><emphasis><literal>&lt;token&gt;</literal></emphasis><emphasis role="bold"><literal>&#8221;</literal></emphasis>
+          (see <xref linkend="LoPAR.DeviceTree" />), provides an array of strings
+          containing the FRU location codes associated with each indicator. See 
+          <xref linkend="LoPAR.Platform" />. Here, &#8220;
+          <emphasis>&lt;vendor&gt;</emphasis>&#8221; corresponds to the
+          &#8220;&lt;vendor&gt;&#8221; column of 
+          <emphasis>
+            <xref linkend="dbdoclet.50569332_32237" />
+          </emphasis> and &#8220;
+          <emphasis>&lt;token&gt;</emphasis>&#8221; corresponds to the token of the
+          
+          <emphasis role="bold"><literal>&#8220;rtas-indicators&#8221;</literal></emphasis>
+          type.
+          The index of a specific indicator token is used to index into the array
+          up to 
+          <emphasis>maxindex</emphasis>.</para>
+          <para>Indices and location codes for dynamic indicators are obtained via
+          the 
+          <emphasis>ibm,get-indices</emphasis> RTAS call and do not appear in the
+          static properties in the 
+          <emphasis role="bold"><literal>/rtas</literal></emphasis> node.</para>
+          <para>Indices for DR indicators 9001, 9002, and 9003 are obtained from
+          the DRC index for the DRC connector. See Requirement 
+          <xref linkend="LoPAR.Virtualization" />.</para>
+    
+          <variablelist>
+           	<varlistentry xml:id="dbdoclet.50569332_74895">
+              <term><emphasis role="bold">R1-<xref linkend="sec_indicators" 
+              xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+                <listitem>
+                  <para>For all static
+                  indicators, except DR indicators 9001, 9002, and 9003, OF must provide
+                  the extension property, 
+                  <emphasis role="bold"><literal>&#8220;</literal></emphasis><emphasis><literal>&lt;vendor&gt;</literal></emphasis><emphasis role="bold"><literal>,indicator-</literal></emphasis><emphasis><literal>&lt;token&gt;</literal></emphasis><emphasis role="bold"><literal>&#8221;</literal></emphasis>,
+                  in the
+                  <emphasis role="bold"><literal>/rtas</literal></emphasis> node, unless the indicator is part of an
+                  extension which has its own set of appropriate properties for the
+                  indicator, where &#8220;
+                  <emphasis>&lt;vendor&gt;</emphasis>&#8221; must be as defined in the
+                  column labeled &#8220;&lt;vendor&gt;&#8221; in 
+                  <xref linkend="dbdoclet.50569332_32237" /> for the specific indicator
+                  token value.</para>
+                </listitem>
+           	</varlistentry>
+           	
+           	<varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="sec_indicators" 
+              xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+                <listitem>
+                  <para>For all static indicators for which
+                  there is an associated 
+                  <emphasis role="bold"><literal>&#8220;</literal></emphasis><emphasis><literal>&lt;vendor&gt;</literal></emphasis><emphasis role="bold"><literal>,indicator-</literal></emphasis><emphasis><literal>&lt;token&gt;</literal></emphasis><emphasis role="bold"><literal>&#8221;</literal></emphasis>
+                  property and for which there is not a
+                  physical realization, the location code string must be NULL.</para>
+                </listitem>
+           	</varlistentry>
+           	
+           	<varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="sec_indicators" 
+              xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+                <listitem>
+                  <para>Indices and location codes for any
+                  indicator token, except DR indicators 9001, 9002, and 9003, for which the
+                  number of such indicators in the platform may change dynamically, must be
+                  obtained via the 
+                  <emphasis>ibm,get-indices</emphasis> RTAS call and the indicator token
+                  must not appear in the 
+                  <emphasis role="bold"><literal>&#8220;</literal></emphasis><emphasis><literal>&lt;vendor&gt;</literal></emphasis><emphasis role="bold"><literal>,indicator-</literal></emphasis><emphasis><literal>&lt;token&gt;</literal></emphasis><emphasis role="bold"><literal>&#8221;</literal></emphasis>
+                  or <emphasis role="bold"><literal>&#8220;rtas-indicators&#8221;</literal></emphasis> in the 
+                  <emphasis role="bold"><literal>/rtas</literal></emphasis> node.</para>
+                </listitem>
+           	</varlistentry>
+           	
+           	<varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="sec_indicators" 
+              xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+                <listitem>
+                  <para>The indicator token of 4 must not exist
+                  in a platform when a Error Log (token 9006) is implemented.</para>
+                </listitem>
+           	</varlistentry>
+          </variablelist>
+    
+        </section>
+        
+        <section xml:id="sec_sensors">
+          <title>Sensors</title>
+          <para>For static sensors, except DR sensors, OF currently provides for
+          paired integers (
+          <emphasis>token maxindex</emphasis>) for each sensor token under the
+          property
+          <emphasis role="bold"><literal>&#8220;rtas-sensors&#8221;</literal></emphasis>
+          in the
+          <emphasis role="bold"><literal>/rtas</literal></emphasis> node. With this information, the OS can
+          determine which types of sensors, and how many of each type, that the
+          platform provides.</para>
+          <para>For static sensors, except DR sensors, the extension property, 
+          <emphasis role="bold"><literal>&#8220;</literal></emphasis><emphasis><literal>&lt;vendor&gt;</literal></emphasis><emphasis role="bold"><literal>,sensor-</literal></emphasis><emphasis><literal>&lt;token&gt;</literal></emphasis><emphasis role="bold"><literal>&#8221;</literal></emphasis>
+          (see <xref linkend="LoPAR.DeviceTree" />), provides an array of strings
+          containing the FRU location codes associated with each sensor. See 
+          <xref linkend="LoPAR.Platform" />. Here, &#8220;
+          <emphasis>&lt;vendor&gt;</emphasis>&#8221; corresponds to the
+          &#8220;&lt;vendor&gt;&#8221; column of 
+          <emphasis>
+            <xref linkend="dbdoclet.50569332_23534" />
+          </emphasis> and &#8220;
+          <emphasis>&lt;token&gt;</emphasis>&#8221; corresponds to the token in the
+          
+          <emphasis role="bold"><literal>&#8220;rtas-sensors&#8221;</literal></emphasis> property. The index of a
+          specific sensor is used to index into the array up to 
+          <emphasis>maxindex</emphasis>.</para>
+          <para>Indices and location codes for dynamic sensors, except DR sensors,
+          are obtained via the 
+          <emphasis>ibm,get-indices</emphasis> RTAS call and do not appear in the
+          static properties in the 
+          <emphasis role="bold"><literal>/rtas</literal></emphasis> node.</para>
+          <para>Indices for DR sensors 9003 are obtained from the DRC index for the
+          DRC connector. See Requirement 
+          <xref linkend="LoPAR.Virtualization" />.</para>
+    
+          <variablelist>
+           	<varlistentry xml:id="dbdoclet.50569332_29762">
+              <term><emphasis role="bold">R1-<xref linkend="sec_sensors" 
+              xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+                <listitem>
+                  <para>For all static
+                  sensors, except DR sensor 9003, OF must provide the extension property, 
+                  <emphasis role="bold"><literal>&#8220;</literal></emphasis><emphasis><literal>&lt;vendor&gt;</literal></emphasis><emphasis role="bold"><literal>,sensor-</literal></emphasis><emphasis><literal>&lt;token&gt;</literal></emphasis><emphasis role="bold"><literal>&#8221;</literal></emphasis>, in the
+                  <emphasis role="bold"><literal>/rtas</literal></emphasis> node, unless the sensor is part of an extension
+                  which has its own set of appropriate properties for the sensor, where
+                  &#8220;
+                  <emphasis>&lt;vendor&gt;</emphasis>&#8221; must be as defined in the
+                  column labeled &#8220;&lt;vendor&gt;&#8221; in 
+                  <xref linkend="dbdoclet.50569332_23534" /> for the specific sensor token
+                  value.</para>
+                </listitem>
+           	</varlistentry>
+           	
+           	<varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="sec_sensors" 
+              xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+                <listitem>
+                  <para>For all static sensors for which there
+                  is an associated 
+                  <emphasis role="bold"><literal>&#8220;</literal></emphasis><emphasis><literal>&lt;vendor&gt;</literal></emphasis><emphasis role="bold"><literal>,sensor-</literal></emphasis><emphasis><literal>&lt;token&gt;</literal></emphasis><emphasis role="bold"><literal>&#8221;</literal></emphasis>
+                  property and for which there is not a
+                  physical realization, the location code string must be NULL.</para>
+                </listitem>
+           	</varlistentry>
+           	
+           	<varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="sec_sensors" 
+              xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+                <listitem>
+                  <para>Indices and location codes for any
+                  sensor token, except DR sensor 9003, for which the number of such sensors
+                  in the platform may change dynamically, must be obtained via the 
+                  <emphasis>ibm,get-indices</emphasis> RTAS call and the sensor token must
+                  not appear in the 
+                  <emphasis role="bold"><literal>&#8220;</literal></emphasis><emphasis><literal>&lt;vendor&gt;</literal></emphasis><emphasis role="bold"><literal>,sensor-</literal></emphasis><emphasis><literal>&lt;token&gt;</literal></emphasis><emphasis role="bold"><literal>&#8221;</literal></emphasis>
+                  or <emphasis role="bold"><literal>&#8220;rtas-sensors&#8221;</literal></emphasis> in the 
+                  <emphasis role="bold"><literal>/rtas</literal></emphasis> node.</para>
+                </listitem>
+           	</varlistentry>
+           	
+           	<varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="sec_sensors" 
+              xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+                <listitem>
+                  <para>The following sensor tokens must not be
+                  implemented if the number of them may be changed by a DR operation (that
+                  is, they can only be used when static): 3, 9001, and 9002.</para>
+                </listitem>
+           	</varlistentry>
+          </variablelist>
+    
+        </section>
+
+      </section>
+      
+    </section>
+    
+    <section xml:id="sec_calling_mech_convent">
+      <title>Calling Mechanism and Conventions</title>
+      <para>
+      RTAS is
+      called through a mechanism similar to the OF client interface service. An
+      argument buffer is constructed which describes the desired RTAS call.
+      This description includes an indication of the RTAS call that is being
+      invoked, the number and value of the input parameters, the number of
+      result values, and space for each of the result values.</para>
+
+      <variablelist>
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_calling_mech_convent" 
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+            <listitem>
+              <para>In order to make an RTAS call, the OS must
+              construct an argument call buffer aligned on an eight byte boundary in
+              physically contiguous real memory as described by 
+              <xref linkend="dbdoclet.50569332_22280" />.</para>
+
+              <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_22280">
+                <title>RTAS Argument Call Buffer</title>
+                <tgroup cols="2">
+                  <colspec colname="c1" colwidth="50*" />
+                  <colspec colname="c2" colwidth="50*" />
+                  <thead>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold">Cell Number</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <emphasis role="bold">Use</emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                  </thead>
+                  <tbody>
+                    <row>
+                      <entry>
+                        <para>1</para>
+                      </entry>
+                      <entry>
+                        <para>Token Specifying which RTAS Call</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>2</para>
+                      </entry>
+                      <entry>
+                        <para>Number of Input Parameters</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>3</para>
+                      </entry>
+                      <entry>
+                        <para>Number of Output Parameters</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>4</para>
+                      </entry>
+                      <entry>
+                        <para>First Input Parameter</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>...</para>
+                      </entry>
+                      <entry>
+                        <para></para>
+                        <para>Other Input Parameters</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>4 + Number of Inputs -1</para>
+                      </entry>
+                      <entry>
+                        <para>Last Input Parameter</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>4 + Number of Inputs</para>
+                      </entry>
+                      <entry>
+                        <para>First Output Parameter</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>...</para>
+                      </entry>
+                      <entry>
+                        <para></para>
+                        <para>Other Output Parameters</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>4 + Number of Inputs</para>
+                        <para>+ Number of Outputs -1</para>
+                      </entry>
+                      <entry>
+                        <para>Last Output Parameter</para>
+                      </entry>
+                    </row>
+                  </tbody>
+                </tgroup>
+              </table>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry xml:id="dbdoclet.50569332_29738">
+          <term><emphasis role="bold">R1-<xref linkend="sec_calling_mech_convent" 
+          xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+            <listitem>
+              <para>If the system is
+              a 32-bit system, or if RTAS was instantiated by
+              <emphasis role="bold"><literal>instantiate-rtas</literal></emphasis>, then all 
+              cells in
+              the RTAS argument buffer must be 32-bit sign extended values that are
+              aligned to 4 byte boundaries.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry xml:id="dbdoclet.50569332_38752">
+          <term><emphasis role="bold">R1-<xref linkend="sec_calling_mech_convent" 
+          xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+            <listitem>
+              <para>If the system is
+              a 64 bit system and if RTAS was instantiated by 
+              <emphasis role="bold"><literal>instantiate-rtas-64</literal></emphasis>, then all
+              cells in the RTAS argument buffer must be 64-bit sign extended values
+              that are aligned to 8 byte boundaries.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_calling_mech_convent" 
+          xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+            <listitem>
+              <para>RTAS functions must be invoked by branching
+              to the 
+              <emphasis>rtas-call</emphasis> address which is returned by the
+              
+              <emphasis role="bold"><literal>instantiate-rtas</literal></emphasis>
+              or
+              
+              <emphasis role="bold"><literal>instantiate-rtas-64</literal></emphasis>
+              OF method (see 
+              <xref linkend="dbdoclet.50569332_14005" />).</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_calling_mech_convent" 
+          xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
+            <listitem>
+              <para>Register R3 must contain the argument
+              buffer&#8217;s real address when
+              <emphasis>rtas-call</emphasis> is invoked.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_calling_mech_convent" 
+          xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
+            <listitem>
+              <para>Register R4 must contain the real address
+              of the RTAS private data area when 
+              <emphasis>rtas-call</emphasis> is invoked (see Requirement 
+              <xref linkend="dbdoclet.50569332_37664" />).</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_calling_mech_convent" 
+          xrefstyle="select: labelnumber nopage"/>-7.</emphasis></term>
+            <listitem>
+              <para>The Link Register must contain the return
+              address when 
+              <emphasis>rtas-call</emphasis> is invoked.</para>
+            </listitem>
+       	</varlistentry>
+      </variablelist>
+
+      <para><emphasis role="bold">Software Implementation Notes:</emphasis> </para>
+
+      <orderedlist>		      
+        <listitem>
+          <para>RTAS is not required to perform sanity checking of its input
+          parameters. Using invalid values for any parameter in an RTAS argument
+          buffer gives undefined results. However, when such checks are made, the
+          appropriate return code for invalid parameters is -3.</para>
+        </listitem>
+
+        <listitem>
+          <para>The token that specifies the RTAS call is obtained by looking up
+          the desired call from the
+          <emphasis role="bold"><literal>/rtas</literal></emphasis> node of the OF device tree.</para>
+        </listitem>
+
+        <listitem>
+          <para>The OS must be aware that the effective address range for RTAS
+          is 4 GB when instantiated in 32-bit mode and the OS should not pass RTAS
+          addresses or blocks of data which might fall outside of this
+          range.</para>
+        </listitem>
+      </orderedlist>		      
+      
+    </section>
+    
+    <section xml:id="dbdoclet.50569332_16759">
+      <title>Return Codes</title>
+
+      <variablelist>
+       	<varlistentry xml:id="dbdoclet.50569332_94431">
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_16759" 
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+            <listitem>
+              <para>The first output
+              value of all the RTAS functions must be a 
+              <emphasis>Status</emphasis> word which denotes the result of the call. The
+              
+              <emphasis>Status</emphasis> word takes on one of the values in 
+              <xref linkend="dbdoclet.50569332_10584" />. Non-negative values indicate
+              success.</para>
+
+              <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_10584">
+                <title>RTAS 
+                <emphasis>Status</emphasis> Word Values</title>
+                <tgroup cols="2">
+                  <colspec colname="c1" colwidth="50*" />
+                  <colspec colname="c2" colwidth="50*" />
+                  <thead>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold">Values</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <emphasis role="bold">
+                          <emphasis>Status</emphasis> Word Meanings</emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                  </thead>
+                  <tbody>
+                    <row>
+                      <entry>
+                        <para>0</para>
+                      </entry>
+                      <entry>
+                        <para>RTAS function call succeeded.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>-1</para>
+                      </entry>
+                      <entry>
+                        <para>RTAS function call encountered a hardware error.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>-2</para>
+                      </entry>
+                      <entry>
+                        <para>A necessary hardware device was busy, and the requested
+                        function could not be performed. The operation should be
+                        retried at a later time.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>-3</para>
+                      </entry>
+                      <entry>
+                        <para>Parameter Error.</para>
+                        <para>In some cases, specific parameter errors are enumerated.
+                        However, other parameter errors may be reported using this
+                        return code in addition to those enumerated.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>-7</para>
+                      </entry>
+                      <entry>
+                        <para>Unexpected state change.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>9000-9899</para>
+                      </entry>
+                      <entry>
+                        <para>Reserved for vendor specific success codes.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>990x</para>
+                      </entry>
+                      <entry>
+                        <para>Extended delay - where x is a number in the range of
+                        0-5</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>-9000</para>
+                      </entry>
+                      <entry>
+                        <para>Multi-level isolation error (see 
+                        <xref linkend="LoPAR.Virtualization" />).</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>-9004 - (-9999)</para>
+                      </entry>
+                      <entry>
+                        <para>Reserved for vendor specific error codes.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Additional Negative Numbers</para>
+                      </entry>
+                      <entry>
+                        <para>An error was encountered. The meaning of this error is
+                        specific to the RTAS function that was invoked.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Additional Positive Numbers</para>
+                      </entry>
+                      <entry>
+                        <para>The function succeeded. The meaning of the 
+                        <emphasis>Status</emphasis> word is specific to the RTAS
+                        function that was invoked.</para>
+                      </entry>
+                    </row>
+                  </tbody>
+                </tgroup>
+              </table>
+            </listitem>
+       	</varlistentry>
+      </variablelist>
+
+      <para>
+      <xref linkend="dbdoclet.50569332_10584" /> indicates a summation of all
+      possible 
+      <emphasis>Status</emphasis> word values. A given RTAS function cannot
+      yield all of the possible 
+      <emphasis>Status</emphasis> words. For the specific 
+      <emphasis>Status</emphasis> words which apply to a specific RTAS function,
+      see the semantics for that function.</para>
+      <para><emphasis role="bold">Software Implementation Notes:</emphasis></para>
+      
+      <orderedlist>		      
+        <listitem>
+          <para>A return code of -2 or 990x may either mean that the operation
+          was initiated but not completed, or may mean that the operation was not
+          initiated at all.</para>
+        </listitem>
+
+        <listitem>
+          <para>When the extended delay (990x) is returned, it is suggested that
+          software delay for 10 raised to the x milliseconds, where x is the last
+          digit of the 990x return code, before calling the function again.</para>
+        </listitem>
+      </orderedlist>		      
+      
+    </section>
+    
+  
+</chapter>

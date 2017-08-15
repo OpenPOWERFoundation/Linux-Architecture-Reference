@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<chapter xmlns="http://docbook.org/ns/docbook" 
+xmlns:xl="http://www.w3.org/1999/xlink" 
+xml:id="dbdoclet.50569326_38341"
+version="5.0" 
+xml:lang="en">
+  <title>Introduction</title>
+  
+  <para>This architecture specification provides a comprehensive computer 
+  system platform-to-software interface definition, combined with minimum system 
+  requirements, that enables the development of and software porting to a range 
+  of compatible industry-standard computer systems from workstations through 
+  servers. These systems are based on the requirements defined in 
+  <xref linkend="dbdoclet.50569387_99718"/><footnote xml:id="pgfId-1000323"><para>The 
+  term &#x201C;Processor Architecture&#x201D; (PA) is used throughout this 
+  document to mean compliance with the requirements specified in 
+  <xref linkend="dbdoclet.50569387_99718"/>.</para></footnote>. The definition supports 
+  the development of both uniprocessor and multiprocessor system 
+  implementations.</para>
+  <para>A key attribute and benefit of this architecture is the ability of 
+  platform developers to have degrees of freedom of implementation below the 
+  level of architected interfaces and therefore have the opportunity for adding 
+  unique value. This flexibility is achieved through architecture facilities 
+  including: (1) device drivers; (2) Open Firmware (OF); (3) 
+  Run-Time Abstraction Services (RTAS); 
+  and (4) hardware abstraction layers. The role of items 1 
+  and 4 are described in separate operating system (OS) documentation. The role 
+  that items 2 and 3 play in this architecture will be described in subsequent 
+  paragraphs and chapters.</para>
+  <para>This architecture combines leading-edge technologies to create a 
+  superior computing platform. By design, it supports a wide range of computing 
+  needs including personal productivity, engineering design, data management, 
+  information analysis, education, desktop publishing, multimedia, entertainment, 
+  and database, file, and application servers. This architecture effectively 
+  leverages industry-standard I/O through the PCI bus. Systems based on this 
+  architecture are expected to offer price/performance advantages and to address 
+  the expected growth in computing performance and functionality.</para>
+  <para><emphasis role="bold">Architecture Note:</emphasis> In modern platforms, designers may choose 
+  between various PCI topology standards. This architecture uses the term 
+  &#x201C;PCI&#x201D; as a general term to describe the most recent versions of 
+  all forms of PCI standards including any approved Engineering Change Requests 
+  (ECRs) against them. In cases where there are significant differences between 
+  individual PCI standards, the following terminology is used to differentiate 
+  between the PCI standards.</para>
+
+  <itemizedlist>		      
+    <listitem>
+      <para>The term &#x201C;conventional PCI&#x201D; refers to behavior or 
+      features that conform to the most recent version of the 
+      <xref linkend="dbdoclet.50569387_65468"/>, including any approved ECRs against it. 
+      </para>
+    </listitem>
+    
+    <listitem>
+      <para>The term &#x201C;PCI-X&#x201D; refers to behavior or features that 
+      conform to the most recent version of the 
+      <xref linkend="dbdoclet.50569387_26550"/>, including any approved ECRs against it.</para>
+    </listitem>
+    
+    <listitem>
+      <para>The term &#x201C;PCI Express&#x201D; refers to behavior or features 
+      that conform to the most recent version of the 
+      <xref linkend="dbdoclet.50569387_66784"/> including any approved ECRs against it. In 
+      addition, the terms &#x201C;bus,&#x201D; &#x201C;bridge&#x201D; and &#x201C;PCI 
+      Host Bridge (PHB)&#x201D; used in relation to &#x201C;PCI&#x201D; throughout 
+      this architecture may refer to a PCI Express &#x201C;link,&#x201D; 
+      &#x201C;switch,&#x201D; and &#x201C;root complex&#x201D; respectively.</para>
+    </listitem>
+  </itemizedlist>		      
+  
+  <section>
+    <title>Platform Topology</title>
+    <para>To the experienced computer designer and system manufacturer, much of 
+    the content of this architecture will be familiar. A typical desktop topology 
+    is shown in <xref linkend="dbdoclet.50569326_34945"/>. This topology consists 
+    of a single PA processor, volatile System Memory, and a single Host Bridge 
+    providing a PCI Bus. The PCI Bus provides for connection of I/O adapters 
+    (IOAs). See <xref linkend="dbdoclet.50569388_37308"/> for the definition of an 
+    IOA.</para>
+    <para>A more complex general topology is shown in 
+    <xref linkend="dbdoclet.50569326_34945"/>. All platforms consist of one or more PA 
+    processors, a volatile System Memory separate from other subsystems, and a 
+    number of IOAs, which may initiate transactions to System Memory. The 
+    processors are linked over the primary processor bus/switch to each other, to 
+    the System Memory, and to one or more Host Bridges. In general, IOAs do not 
+    connect to the primary processor bus/switch. The Host Bridges connect to 
+    secondary buses which have IOAs connected to them. In turn, one or more bus 
+    bridges may be employed to tertiary buses (and beyond) with additional IOAs 
+    connected to them. Typically, the bus speeds and throughput decrease and the 
+    number of supportable loads increases as one progresses from the primary 
+    processor bus to more remote buses. </para>
+    <para>There are variations on these topologies, which are likely to occur 
+    and are therefore worth describing below. This architecture describes 
+    interfaces, not implementation. The logical software model must remain the 
+    same, even if the physical topology is different.</para>
+
+    <itemizedlist>		      
+      <listitem>
+        <para>In a smaller platform, the Host Bridge and/or the memory and/or an 
+        IOA may be integrated into a single chip. In this case, the topology would not 
+        look like <xref linkend="dbdoclet.50569326_34945"/> from a chip point of view, 
+        but instead would be integrated onto the single chip.</para>
+      </listitem>
+      
+      <listitem>
+        <para>In a larger platform, secondary buses may be implemented, with two 
+        or more Host Bridges, as two or more parallel expansion buses for performance 
+        reasons. Similarly, tertiary buses may be two or more parallel expansion buses 
+        off each secondary bus. This is indicated by the ellipses near the Host Bridge 
+        and the Bus Bridge.</para>
+      </listitem>
+      
+      <listitem>
+        <para>In a high performance platform, with multiple processors and 
+        multiple memoriea switch may be employed to allow multiple parallel accesses 
+        by the processors to memory. The path through the switches would be decided by 
+        the addressing of ths, a switch may be employed to allow multiple parallel accesses 
+        by the processors to memory. The path through the switches would be decided by 
+        the addressing of the memory.</para>
+      </listitem>
+    </itemizedlist>		      
+    <para>Each of the following chapters provides information necessary to 
+    successfully implement compliant systems. It is recommended that the reader 
+    become thoroughly familiar with the contents of these chapters and their 
+    references prior to beginning system or software development. It is anticipated 
+    that standard chip sets will simplify the development of compliant 
+    implementations consistent with the topologies shown below and will be 
+    available from third-party industry sources.</para>
+    <figure xml:id="dbdoclet.50569326_34945">
+      <title>Typical Desktop Topology</title>
+      <mediaobject>
+        <imageobject role="html"><imagedata fileref="figures/PAPR-3.gif" format="GIF" scalefit="1"/></imageobject>
+        <imageobject role="fo"><imagedata contentdepth="100%" fileref="figures/PAPR-3.gif" format="GIF" scalefit="1" width="100%"/></imageobject>
+      </mediaobject>
+    </figure>
+    <figure xml:id="dbdoclet.50569326_34945.1">
+      <title>General Platform Topology</title>
+      <mediaobject>
+        <imageobject role="html"><imagedata fileref="figures/PAPR-4.gif" format="GIF" scalefit="1"/></imageobject>
+        <imageobject role="fo"><imagedata contentdepth="100%" fileref="figures/PAPR-4.gif" format="GIF" scalefit="1" width="100%"/></imageobject>
+      </mediaobject>
+    </figure>
+    <para><emphasis role="bold">Note:</emphasis> To enable the implementation of a large number of I/O adapters in a large 
+    system, the Host Bridge may be split into two pieces -- a Hub and a Bridge -- 
+    with the two connected by a cable, thus enabling the I/O adapters to be housed 
+    at a distance from the main processor enclosure.</para>
+  </section>
+</chapter>

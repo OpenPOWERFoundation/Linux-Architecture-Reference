@@ -1,0 +1,373 @@
+<?xml version="1.0"?>
+<chapter xmlns="http://docbook.org/ns/docbook" 
+xmlns:xl="http://www.w3.org/1999/xlink" 
+xml:id="dbdoclet.50569340_14972" 
+version="5.0" 
+xml:lang="en">
+  <title>The Symmetric Multiprocessor Option</title>
+
+  <para>This   architecture supports the implementation of symmetric 
+  multiprocessor (SMP) systems as an optional feature. This Chapter provides 
+  information concerning the design and programming of such systems. For SMP OF 
+  binding information, see <xref linkend="LoPAR.DeviceTree"/>.</para>
+  <para>SMP systems differ from uniprocessors in a number of ways. These 
+  differences are not all covered in this chapter. Other chapters that cover 
+  SMP-related topics include:</para>
+
+  <itemizedlist>		      
+    <listitem>
+      <para>Non-processor-related initialization and other requirements: 
+      <xref linkend="dbdoclet.50569327_31987"/></para>
+    </listitem>
+    
+    <listitem>
+      <para>Interrupts: <xref linkend="dbdoclet.50569331_37856"/></para>
+    </listitem>
+    
+    <listitem>
+      <para>Error handling: <xref linkend="LoPAR.Error"/></para>
+    </listitem>
+  </itemizedlist>		      
+
+  <para>Many other general characteristics of SMPs&#x2014;such as 
+  interprocessor communication, load/store ordering, and cache 
+  coherence&#x2014;are defined in <xref linkend="dbdoclet.50569387_99718"/>. 
+  Requirements and recommendations for system organization and time base synchronization are 
+  discussed here, along with SMP-specific aspects of the boot process.</para>
+  <para>SMP platforms require SMP-specific OS support. An OS supporting only 
+  uniprocessor platforms 
+  may not be usable on an SMP, even when an SMP platform has only a single 
+  processor installed; conversely, an SMP-supporting OS may not be usable on a 
+  uniprocessor. It is, however, a requirement that uniprocessor OSs be able to 
+  run on one-processor SMPs, and that SMP-enabled OSs also run on uniprocessors. 
+  See the next section.</para>
+  
+  <section xml:id="dbdoclet.50569340_29104">
+    <title>SMP System Organization</title>
+    <para>This chapter only addresses SMP multiprocessor platforms. This is a 
+    computer system in which multiple processors equally share functional and 
+    timing access to and control over all other system components, including memory 
+    and I/O, as defined in the requirements below. Other 
+    multiprocessor organizations (&#x201C;asymmetric 
+    multiprocessors,&#x201D; &#x201C; attached 
+    processors,&#x201D; etc.) are not included in this architecture. These might, 
+    for example, include systems in which only one processor can perform I/O 
+    operations; or in which processors have private memory that is not accessible 
+    by other processors. </para>
+    <para>Requirements <xref linkend="dbdoclet.50569340_73893"/> through 
+    <xref linkend="dbdoclet.50569340_79137"/>, further require that all processors 
+    be of (nearly) equal speed, type, cache characteristics, etc. Requirements for 
+    optional non-uniform multiprocessor platforms are found in 
+    <xref linkend="dbdoclet.50569346_35960"/>.</para>
+
+    <variablelist>
+     	<varlistentry xml:id="dbdoclet.50569340_80907">
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569340_29104" 
+        xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+          <listitem>
+            <para>OSs that do not explicitly support the SMP option must support 
+            SMP-enabled platforms, actively using only one processor. </para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569340_29104" 
+        xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Symmetric Multiprocessor 
+            option:</emphasis> SMP OSs must support uniprocessor platforms.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569340_29104" 
+        xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Symmetric Multiprocessor 
+            option:</emphasis> The extensions defined in 
+            <xref linkend="LoPAR.DeviceTree"/>, and the SMP support section of the RTAS 
+            specifications (see <xref linkend="LoPAR.RTAS"/>) must be implemented.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry xml:id="dbdoclet.50569340_73893">
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569340_29104" 
+        xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Symmetric Multiprocessor or Power Management 
+            option:</emphasis> All processors in the configuration must have equal 
+            functional access and &#x201C;quasi-equal&#x201D; 
+            timing access to all of system memory, 
+            including other processors&#x2019; caches, via cache coherence. 
+            &#x201C;Quasi-equal&#x201D; means that the time required for processors to 
+            access memory is sufficiently close to being equal that all software can ignore 
+            the difference without a noticeable negative impact on system performance; and 
+            no software is expected to profitably exploit the difference in timing. </para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry xml:id="dbdoclet.50569340_25908">
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569340_29104" 
+        xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Symmetric Multiprocessor option:</emphasis> 
+            All processors in the configuration must have equal functional and 
+            &#x201C;quasi-equal&#x201D; 
+            timing access to all I/O devices and IOAs. 
+            &#x201C;Quasi-equal&#x201D; is defined as in Requirement <xref linkend="dbdoclet.50569340_73893"/>, 
+            above, with I/O access replacing memory access for this case. </para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry xml:id="dbdoclet.50569340_63554">
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569340_29104" 
+        xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Symmetric Multiprocessor option:</emphasis> 
+            SMP OSs must at least support SMPs with the same PVR contents and speed. The 
+            PVR contents includes both the PVN and the revision number.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry xml:id="dbdoclet.50569340_79137">
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569340_29104" 
+        xrefstyle="select: labelnumber nopage"/>-7.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Symmetric Multiprocessor option:</emphasis> 
+            All caches at the same hierarchical level must have the same OF properties.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry xml:id="dbdoclet.50569340_12670">
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569340_29104" 
+        xrefstyle="select: labelnumber nopage"/>-8.</emphasis></term>
+          <listitem>
+            <para>Hardware for SMPs must provide a means for synchronizing all the 
+            time bases of all the processors in the platform, for use by platform firmware. 
+            See <xref linkend="LoPAR.RTAS"/>. This is for purposes of clock synchronization 
+            at initialization and at times when the processor loses time base state.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry xml:id="dbdoclet.50569340_88608">
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569340_29104" 
+        xrefstyle="select: labelnumber nopage"/>-9.</emphasis></term>
+          <listitem>
+            <para>The platform must initialize and maintain the synchronization of 
+            the time bases and timers of all platform processors such that; for any code 
+            sequence &#x201C;C&#x201D;, run between any two platform processors 
+            &#x201C;A&#x201D; and &#x201C;B&#x201D;, where the reading of the time base or 
+            timer in processor &#x201C;A&#x201D; can be architecturally guaranteed to have 
+            happened later in time than the reading of the time base or timer in processor 
+            &#x201C;B&#x201D;, the value of the time base read by processor 
+            &#x201C;A&#x201D; is greater than or equal to the value of the time base read 
+            by processor &#x201C;B&#x201D;.</para>
+          </listitem>
+     	</varlistentry>
+    </variablelist>
+
+    <para><emphasis role="bold">Software Implementation Notes:</emphasis></para>
+
+    <orderedlist>		      
+      <listitem>
+        <para>Requirement <xref linkend="dbdoclet.50569340_80907"/> has 
+        implications on the design of uniprocessor OSs, particularly regarding the 
+        handling of interrupts. See the sections that follow, particularly 
+        <xref linkend="dbdoclet.50569340_57956"/>.</para>
+      </listitem>
+
+      <listitem>
+        <para>While Requirement <xref linkend="dbdoclet.50569340_63554"/> does 
+        not require this, OSs are encouraged to support processors of the same type but 
+        different PVR contents as long as their programming models are 
+        compatible.</para>
+      </listitem>
+
+      <listitem>
+        <para>Because of performance penalties associated with inter-processor 
+        synchronization, the weakest synchronization primitive that produces correct 
+        operation should be used. For example, <emphasis>eieio</emphasis> can often be 
+        used as part of a sequence that unlocks a data structure, rather than the 
+        higher-overhead but more general <emphasis>sync</emphasis> instruction. </para>
+      </listitem>
+    </orderedlist>		      
+
+    <para><emphasis role="bold">Hardware Implementation Notes:</emphasis></para>
+    <orderedlist>		      
+      <listitem>
+        <para>Particularly when used as servers, SMP systems make heavy demands 
+        on the I/O and memory subsystems. Therefore, it is strongly recommended that 
+        the I/O and memory subsystem of an SMP platform should either be expandable as 
+        additional processors are added, or else designed to handle the load of the 
+        maximum system configuration.</para>
+      </listitem>
+
+      <listitem xml:id="dbdoclet.50569340_marker-513176">
+        <para>Defining an exact numeric threshold for 
+        &#x201C;quasi-equal&#x201D; is not feasible because it depends on the 
+        application, compiler, subsystem, and OS software that the system is to run. It 
+        is highly likely that a wider range of timing differences can be absorbed in 
+        I/O access time than in memory access time. An illustrative example that is 
+        deliberately far from an upper bound: A 2% timing difference is certainly 
+        quasi-equal by this definition. While significantly larger timing differences 
+        are undoubtedly also quasi-equal, more conclusive statements must be the 
+        province of the OS and other software.</para>
+      </listitem>
+    </orderedlist>		      
+  </section>
+  
+  <section xml:id="dbdoclet.50569340_19429">
+    <title>An SMP Boot Process</title>
+    <para>Booting 
+    an SMP entails considerations not present when booting a 
+    uniprocessor. This section indicates those considerations by describing a way 
+    in which an SMP system can be booted. It does not pretend to describe 
+    &#x201C;the&#x201D; way to boot an SMP, since there are a wide variety of ways 
+    to do this, depending on engineering choices that can differ from platform to 
+    platform. To illustrate the possibilities, several variations on the SMP 
+    booting theme will be described after the initial description.</para>
+    <para>This section concentrates solely on SMP-related issues, and ignores a 
+    number of other initialization issues such as hibernation and suspension. See 
+    <xref linkend="dbdoclet.50569327_34213"/> for a discussion of those other 
+    issues. </para>
+    
+    <section xml:id="dbdoclet.50569340_33673">
+      <title>SMP-Safe Boot</title>
+      <para>The basic booting process described here is called 
+      &#x201C;SMP-Safe&#x201D; because it tolerates the presence of multiple 
+      processors, but does not exploit them. This process proceeds as follows: </para>
+
+      <orderedlist>		      
+        <listitem>
+          <para>At power on, one or more finite state machines (FSMs) built into 
+          the system hardware initialize each processor independently. FSMs also perform 
+          basic initialization of other system elements, such as the memory and interrupt 
+          controllers. </para>
+        </listitem>
+
+        <listitem>
+          <para>After the FSM initialization of each processor concludes, it 
+          begins execution at a location in ROM that the FSM has specified. This is the 
+          start of execution of the system firmware that eventually provides the OF 
+          interfaces to the OS. </para>
+        </listitem>
+
+        <listitem xml:id="dbdoclet.50569340_44228">
+          <para>One of the first things that firmware does is establish one of the processors as the 
+          <emphasis>master</emphasis>: The 
+          <emphasis>master</emphasis> is a single processor which 
+          continues with the rest of the booting process; all the others are placed in a 
+          <emphasis>stopped</emphasis> state. A processor in this 
+          <emphasis>stopped</emphasis> state is out of the picture; it does nothing that affects 
+          the state of the system and will continue to be in that state until awakened by 
+          some outside force, such as an inter-processor interrupt (IPI).<footnote xml:id="pgfId-242214"><para>Another 
+            characteristic of the <emphasis>stopped</emphasis> state, 
+            defined in <xref linkend="LoPAR.RTAS"/>, is that the 
+            processor remembers nothing of its prior life when placed in a 
+            <emphasis>stopped</emphasis> state; this distinguishes it from the 
+            <emphasis>idle</emphasis> state. That isn&#x2019;t strictly necessary for this booting 
+            process; <emphasis>idle</emphasis> could have been used. However, since the 
+            non-<emphasis>master</emphasis> processor must be in the 
+            <emphasis>stopped</emphasis> state when the OS is started, 
+            <emphasis>stopped</emphasis> might as well be used.</para></footnote></para>
+          <para>One way to choose the <emphasis>master</emphasis> is to include a special register 
+          at a fixed address in the memory controller. That special register has the 
+          following properties: </para>
+
+          <itemizedlist>		      
+            <listitem>
+              <para>The FSM initializing the memory controller sets this 
+              register&#x2019;s contents to 0 (zero). </para>
+            </listitem>
+            
+            <listitem>
+              <para>The first time that register is read, it returns the value 0 and 
+              then sets its own contents to non-zero. This is performed as an atomic 
+              operation; if two or more processors attempt to read the register at the same 
+              time, exactly one of them will get the 0 and the rest will get a non-zero 
+              value. </para>
+            </listitem>
+            
+            <listitem>
+              <para>After the first attempt, all attempts to read that 
+              register&#x2019;s contents return a non-zero value. </para>
+            </listitem>
+          </itemizedlist>		      
+
+          <para>The <emphasis>master</emphasis> is then picked by having all the 
+          processors read from that special register. Exactly one of them will receive a 
+          0 and thereby become the <emphasis>master</emphasis>. </para>
+          <para>Note that the operation of choosing the 
+          <emphasis>master</emphasis> cannot be done using the PA memory locking instructions, 
+          since at this point in the boot process the memory is not initialized. The 
+          advantage to using a register in the memory controller is that system bus 
+          serialization can be used to automatically provide the required 
+          atomicity.</para>
+        </listitem>
+
+        <listitem>
+          <para>The <emphasis>master</emphasis> chosen in step 
+          <xref linkend="dbdoclet.50569340_44228"/> then proceeds to do the remainder of the 
+          system initialization. This includes, for example, the remainder of Power-On 
+          Self Test, initialization of OF, discovery of devices and construction of the 
+          OF device tree, loading the OS, starting it, and so on. Since one processor is 
+          performing all these functions, and the rest are in a state where they are not 
+          affecting anything, code that is at least very close to the uniprocessor code 
+          can be used for all of this (but see <xref linkend="dbdoclet.50569340_57956"/> 
+          below).</para>
+        </listitem>
+
+        <listitem>
+          <para>The OS begins execution on the single 
+          <emphasis>master</emphasis> processor. It uses the OF Client Interface 
+          Services to start each of the other processors, taking them out of the 
+          <emphasis>stopped</emphasis> state and setting them loose on the SMP OS code.</para>
+          <para>This completes the example SMP boot process. Variations are 
+          discussed beginning at <xref linkend="dbdoclet.50569340_69262"/>. Before 
+          discussing those variations, an element of the system initialization not 
+          discussed above will be covered.</para>
+        </listitem>
+      </orderedlist>		      
+
+    </section>
+    
+    <section xml:id="dbdoclet.50569340_57956">
+      <title>Finding the Processor Configuration</title>
+      <para>Unlike uniprocessor initialization, SMP initialization must also 
+      discover the number and identities of the processors installed in the system. 
+      &#x201C;Identity&#x201D; means the interrupt address of each processor as seen 
+      by the interrupt controller; without that information, a processor cannot reset 
+      interrupts directed at it. This identity is determined by board wiring: The 
+      processor attached to the &#x201C;processor 0&#x201D; wire from the interrupt 
+      controller has identity 0. For information about how this identity is used, see 
+      <xref linkend="LoPAR.DeviceTree"/>.</para>
+      <para>The method used by a platform to identify its processors is 
+      dependent upon the platform hardware design and may be based upon service 
+      processor information, identification registers, inter-processor interrupts, or 
+      other novel techniques.</para>
+    </section>
+
+    <section xml:id="dbdoclet.50569340_69262">
+      <title>SMP-Efficient Boot </title>
+      <para>The booting 
+      process as described so far tolerates the existence of multiple processors but 
+      does not attempt to exploit them. It is possible that the booting process can 
+      be sped up by actively using multiple processors simultaneously. In that case, 
+      the pick-a-<emphasis>master</emphasis> technique must still be 
+      used to perform sufficient initialization that other inter-processor 
+      coordination facilities&#x2014;in-memory locks and IPIs&#x2014;can be used. 
+      Once that is accomplished, normal parallel SMP programming techniques can be 
+      used within the initialization process itself.</para>
+    </section>
+
+    <section>
+      <title>Use of a Service Processor</title>
+      <para>A system might contain a service processor that is distinct from the processors 
+      that form the SMP. If that service processor has suitably intimate access to 
+      and control over each of the SMP processors, it can perform the operations of 
+      choosing a <emphasis>master</emphasis> and discovering the SMP processor 
+      configuration.</para>
+      <para>&#xA0;</para>
+    </section>
+  </section>
+</chapter>

@@ -1,0 +1,2610 @@
+<?xml version="1.0"?>
+<chapter xmlns="http://docbook.org/ns/docbook" 
+xmlns:xl="http://www.w3.org/1999/xlink"
+xml:id="dbdoclet.50569330_13240" 
+version="5.0" 
+xml:lang="en">
+  <title>I/O Bridges and Topologies</title>
+  
+  <para>There will be at least one bridge in a platform which interfaces to the 
+  system interconnect on the processor side, and interfaces to the Peripheral 
+  Component Interface (PCI) bus on the other. This bridge is called the 
+  PCI Host Bridge (PHB). 
+  The architectural requirements on the PHB, as well as other aspects of the I/O 
+  structures, PCI bridges, and PCI Express switches are defined in this chapter. 
+  </para>
+  
+  <section xml:id="dbdoclet.50569330_34831">
+    <title>I/O Topologies and Endpoint Partitioning</title>
+    <para>As systems get more sophisticated, partitioning of various components 
+    of the system will be used, in order to obtain greater Reliability, 
+    Availability, and Serviceability (RAS). For example, Dynamic Reconfiguration 
+    (DR) allows the removal, addition, and replacement of components from an 
+    OS&#x2019;s pool of resources, without having to stop the operation of that OS. 
+    In addition, Logical Partitioning (LPAR) allows the isolation of resources used 
+    by one OS from those used by another. This section will discuss aspects of the 
+    partitioning of the I/O subsystem. Further information on DR and LPAR can be 
+    found in <xref linkend="LoPAR.Virtualization"/>.</para>
+    <para>To be useful, the granularity of assignment of I/O resources to an OS 
+    needs to be fairly fine-grained. For example, it is not generally acceptable to 
+    require assignment of all I/O under the same PCI Host Bridge (PHB) to the same 
+    partition in an LPARed system, as that restricts configurability of the system, 
+    including the capability to dynamically move resources between 
+    partitions<footnote xml:id="pgfId-1009114"><para>Dynamic LPAR or DLPAR is 
+    defined by the Logical Resource Dynamic Reconfiguration (LRDR) option. See 
+    <xref linkend="LoPAR.Virtualization"/> for more information. Assignment of all 
+    IOAs under the same PHB to one partition may be acceptable if that I/O is 
+    shared via the Virtual I/O (VIO) capability defined in <xref 
+    linkend="LoPAR.Virtualization"/>.</para></footnote>. To be able to partition 
+    I/O adapters (IOAs), groups of IOAs or portions of IOAs for DR or to different 
+    OSs for LPAR will generally require some extra functionality in the platform 
+    (for example, I/O bridges and firmware) in order to be able to partition the 
+    resources of these groups, or endpoints, while at the same time preventing any 
+    of these endpoints from affecting another endpoint or getting access to another 
+    endpoint&#x2019;s resources. These endpoints (that is, I/O subtrees) that can 
+    be treated as a unit for the purposes of partitioning and error recovery will 
+    be called Partitionable Endpoints (PEs)<footnote xml:id="pgfId-1009121"><para>A 
+    &#x201C;Partitionable Endpoint&#x201D; in this architecture is not to be 
+    confused with what the PCI Express defines as an &#x201C;endpoint.&#x201D; PCI 
+    Express defines an endpoint as &#x201C;a device with a Type 0x00 Configuration 
+    Space header.&#x201D; That means PCI Express defines any entity with a unique 
+    Bus/Dev/Func # as an endpoint. In most implementations, a PE will not exactly 
+    correspond to this unit.</para></footnote> and this concept will be called 
+    Endpoint Partitioning. </para>
+    <para>A PE is defined by its Enhanced I/O Error Handling (EEH) domain and 
+    associated resources. The resources that need to be partitioned and not overlap 
+    with other PE domains include:</para>
+
+    <itemizedlist>		      
+      <listitem>
+        <para>The Memory Mapped I/O (MMIO) <emphasis>Load</emphasis> and 
+        <emphasis>Store</emphasis> address space which is available to the PE. This is 
+        accomplished by using the processor&#x2019;s Page Table mechanism (through 
+        control of the contents of the Page Table Entries) and not having any part of 
+        two separate PEs&#x2019; MMIO address space overlap into the same 4 KB system 
+        page. Additionally, for LPAR environments, the Page Table Entries are 
+        controlled by the hypervisor.</para>
+      </listitem>
+      
+      <listitem>
+        <para>The DMA I/O bus address space which is available to the PE. This is 
+        accomplished by a hardware mechanism (in a bridge in the platform) which 
+        enforces the correct DMA addresses, and for LPAR, this hardware enforcement is 
+        set up by the hypervisor. It is also important that a mechanism be provided for 
+        LPAR such that the I/O bus addresses can further be limited at the system level 
+        to not intersect; so that one PE cannot get access to a partition&#x2019;s 
+        memory to which it should not have access. The Translation Control Entry (TCE) 
+        mechanism, when controlled by the firmware (for example, a hypervisor), is such 
+        a mechanism. See <xref linkend="dbdoclet.50569328_76588"/> for more information 
+        on the TCE mechanism.</para>
+      </listitem>
+      
+      <listitem>
+        <para>The configuration address space of the PE, as it is made available 
+        to the device driver. This is accomplished through controlling access to a 
+        PE&#x2019;s configuration spaces through Run Time Abstraction Services (RTAS) 
+        calls, and for LPAR, these accesses are controlled by the hypervisor.</para>
+      </listitem>
+      
+      <listitem>
+        <para>The interrupts which are accessible to the PE. An interrupt cannot 
+        be shared between two PEs. For LPAR environments, the interrupt presentation 
+        and management is via the hypervisor.</para>
+      </listitem>
+      
+      <listitem>
+        <para>The error domains of the PE; that is, the error containment must be 
+        such that a PE error cannot affect another PE or, for LPAR, another partition 
+        or OS image to which the PE is not given access. This is accomplished though 
+        the use of the Enhanced I/O Error Handling (EEH) option of this architecture. 
+        For LPAR environments, the control of EEH is through the hypervisor via several 
+        RTAS calls.</para>
+      </listitem>
+      
+      <listitem>
+        <para>The reset domain: A reset domain contains all the components of a 
+        PE. The reset is provided programmatically and is intended to be implemented 
+        via an architected (non implementation dependent) method.<footnote 
+        xml:id="pgfId-1024690"><para>For example, through a Standard Hot Plug 
+        Controller in a bridge, or through the Secondary Bus Reset bit in the Bridge 
+        Control register of a PCI bridge or switch. </para></footnote> Resetting a 
+        component is sometimes necessary in order to be able to recover from some types 
+        of errors. A PE will equate to a reset domain, such that the entire PE can be 
+        reset by the <emphasis>ibm,set-slot-reset</emphasis> RTAS call. For LPAR, the 
+        control of the reset from the RTAS call is through the hypervisor.</para>
+      </listitem>
+    </itemizedlist>		      
+
+    <para>In addition to the above PE requirements, there may be other 
+    requirements on the power domains. Specifically, if a PE is going to 
+    participate in DR, including DLPAR,<footnote xml:id="pgfId-1023995"><para>To 
+    prevent data from being transferred from one partition to another via data 
+    remaining in an IOA&#x2019;s memory, most implementations of DLPAR will require 
+    the power cycling of the PE after removal from one partition and prior to 
+    assigning it to another partition.</para></footnote> then either the power 
+    domain of the PE is required to be in a power domain which is separate from 
+    other PEs (that is, power domain, reset domain, and PE domain all the same), or 
+    else the control of that power domain and PCI Hot Plug (when implemented) of 
+    the contained PEs will be via the platform or a trusted platform agent. When 
+    the control of power for PCI Hot Plug is via the OS, then for LPAR 
+    environments, the control is also supervised via the hypervisor.</para>
+    <para>It is possible to allow several cooperating device drivers to share a 
+    PE. Sharing of a PE between device drivers within one OS image is supported by 
+    the constructs in this architecture. Sharing between device drivers in 
+    different partitions is beyond the scope of the current architecture.</para>
+    <para>A PE domain is defined by its top-most (closest to the PHB) PCI 
+    configuration address (in the terms of the RTAS calls, the 
+    <emphasis>PHB_Unit_ID_Hi, PHB_Unit_ID_Low, and config_addr</emphasis> ), which will be 
+    called the <emphasis>PE configuration address</emphasis> in this architecture, 
+    and encompasses everything below that in the I/O tree. The top-most PCI bus of 
+    the PE will be called the <emphasis>PE primary bus</emphasis>. Determination 
+    of the PE configuration address is made as described in <xref 
+    linkend="dbdoclet.50569330_40070"/>.</para>
+    <para>A summary of PE support can be found in <xref 
+    linkend="dbdoclet.50569330_40070"/>. This architecture assumes that there is a 
+    single level of bridge within a PE if the PE is heterogeneous (some 
+    Conventional PCI Express), and these cases are shown by the shaded cells in the 
+    table.</para>
+
+    <table frame="all" pgwide="1" xml:id="dbdoclet.50569330_40070">
+      <title>Conventional PCI Express PE Support Summary </title>
+      <tgroup cols="3">
+        <colspec colname="c1" colwidth="20*" align="center"/>
+        <colspec colname="c2" colwidth="15*" align="center"/>
+        <colspec colname="c3" colwidth="65*"/>
+        <thead valign="middle">
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">Function</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">IOA Type</emphasis>
+              </para>
+            </entry>
+            <entry align="center">
+              <para>
+                <emphasis role="bold">PE Primary BusPCI Express&#xA0;</emphasis>
+              </para>
+            </entry>
+          </row>
+        </thead>
+        <tbody valign="middle">
+          <row>
+            <entry>
+              <para> PE determination<?linebreak?>
+              (is EEH supported for the IOA?)</para>
+            </entry>
+            <entry>
+              <para> All</para>
+            </entry>
+            <entry>
+              <para> Use the <emphasis>ibm,read-slot-reset-state2</emphasis> 
+              RTAS call.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> PE reset</para>
+            </entry>
+            <entry>
+              <para> All</para>
+            </entry>
+            <entry>
+              <para> PE reset is required for all PEs and is 
+              activated/deactivated via the <emphasis>ibm,set-slot-reset</emphasis> RTAS 
+              call. The PCI configuration address used in this call is the PE configuration 
+              address (the reset domain is the same as the PE domain).</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <emphasis>ibm,get-config-addr-info2</emphasis><?linebreak?>RTAS call</para>
+            </entry>
+            <entry>
+              <para> PCI</para>
+              <para>Express</para>
+            </entry>
+            <entry>
+              <para> Required to be implemented.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Top of PE domain determination<footnote xml:id="pgfId-1049414"><para>PE 
+                configuration address is used as input to the 
+                RTAS calls which are used for PE control, namely: 
+                <emphasis>ibm,set-slot-reset</emphasis>, 
+                <emphasis>ibm,set-eeh-option</emphasis>, 
+                <emphasis>ibm,slot-error-detail</emphasis>, 
+                <emphasis>ibm,configure-bridge</emphasis></para></footnote><?linebreak?>
+              (How to obtain the PE configuration address)</para>
+            </entry>
+            <entry>
+              <para> PCI</para>
+              <para>Express</para>
+            </entry>
+            <entry>
+              <para> Use the <emphasis>ibm,get-config-addr-info2</emphasis> 
+              RTAS call to obtain PE configuration address.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Shared PE determination<footnote xml:id="pgfId-1049482"><para>If device 
+                driver is written for the shared PE 
+                environment, then this may be a don&#x2019;t care.</para></footnote><?linebreak?>
+              (is there more than one IOA per PE?)</para>
+            </entry>
+            <entry>
+              <para> PCI</para>
+              <para>Express</para>
+            </entry>
+            <entry>
+              <para> Use the <emphasis>ibm,get-config-addr-info2</emphasis> 
+              RTAS call.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> PEs per PCI Hot Plug domain and PCI Hot Plug control 
+              point</para>
+            </entry>
+            <entry>
+              <para> PCI</para>
+              <para>Express</para>
+            </entry>
+            <entry>
+              <para> May have more than one PE per PCI Hot Plug DR entity, but 
+              a PE will be entirely encompassed by the PCI Hot Plug power domain. If more 
+              than one PE per DR entity, then PCI Hot Plug control is via the platform or 
+              some trusted platform agent. </para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+
+    <variablelist>
+     	<varlistentry xml:id="dbdoclet.50569330_57948">
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_34831" 
+        xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+          <listitem>
+            <para>All platforms must implement the 
+            <emphasis>ibm,get-config-addr-info2</emphasis> RTAS call.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_34831" 
+        xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+          <listitem>
+            <para>All platforms must implement the 
+            <emphasis>ibm,read-slot-reset-state2</emphasis> RTAS call.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_34831" 
+        xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the EEH option:</emphasis> 
+            The resources of one PE must not overlap the resources of another PE, 
+            including:</para>
+
+            <itemizedlist>		      
+              <listitem>
+                <para>Error domains</para>
+              </listitem>
+              
+              <listitem>
+                <para>MMIO address ranges</para>
+              </listitem>
+              
+              <listitem>
+                <para>I/O bus DMA address ranges (when PEs are below the same PHB)</para>
+              </listitem>
+              
+              <listitem>
+                <para>Configuration space</para>
+              </listitem>
+              
+              <listitem>
+                <para>Interrupts</para>
+              </listitem>
+            </itemizedlist>		      
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_34831" 
+        xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the EEH option:</emphasis> 
+            All the following must be true relative to a PE:</para>
+
+            <orderedlist numeration="loweralpha">		      
+              <listitem>
+                <para>An IOA function must be totally encompassed by a PE.</para>
+              </listitem>
+
+              <listitem>
+                <para>All PEs must be independently resetable by a reset domain.</para>
+              </listitem>
+            </orderedlist>		      
+            <para><emphasis role="bold">Architecture Note:</emphasis> The partitioning of PEs 
+            down to a single IOA function within a multi-function IOA requires a way to 
+            reset an individual IOA function within a multi-function IOA. For PCI, the only 
+            mechanism defined to do this is the optional PCI Express Function Level Reset 
+            (FLR). A platform supports FLR if it supports PCI Express and the partitioning 
+            of PEs down to a single IOA function within a multi-function IOA. When FLR is 
+            supported, if the <emphasis>ibm,set-slot-reset</emphasis> RTAS call uses FLR 
+            for the <emphasis>Function</emphasis> 1/<emphasis>Function</emphasis> 0 
+            (activate/deactivate reset) sequence for an IOA function, then the platform 
+            provides the <emphasis role="bold"><literal>&#x201C;ibm,pe-reset-is-flr&#x201D;</literal></emphasis> property 
+            in the function&#x2019;s node of the OF device tree, See 
+            <xref linkend="LoPAR.RTAS"/> for more information.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry xml:id="dbdoclet.50569330_15874">
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_34831" 
+        xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
+          <listitem>
+            <para>The platform must own (be 
+            responsible for) any error recovery for errors that occur outside of all PEs 
+            (for example in switches and bridges above defined PEs).</para>
+            <para><emphasis role="bold">Implementation Note:</emphasis> As part of the error 
+            recovery of Requirement <xref linkend="dbdoclet.50569330_15874"/>, the platform 
+            may, as part of the error handling of those errors, establish an equivalent EEH 
+            error state in the EEH domains of all PEs below the error point, in order to 
+            recover the hardware above those EEH domains from its error state. The platform 
+            also returns a <emphasis>PE Reset State</emphasis> of 5 (PE is unavailable) 
+            with a <emphasis>PE Unavailable Info</emphasis> non-zero (temporarily 
+            unavailable) while a recovery is in progress.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_34831" 
+        xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
+          <listitem>
+            <para>The platform must own (be responsible for) 
+            fault isolation for all errors that occur in the I/O fabric (that is, down to 
+            the IOA; including errors that occur on that part of the I/O fabric which is 
+            within a PE&#x2019;s domain).</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_34831" 
+        xrefstyle="select: labelnumber nopage"/>-7.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the EEH option with the PCI 
+            Hot Plug option:</emphasis> All of the following must be true: </para>
+
+            <itemizedlist>		      
+              <listitem>
+                <para>If PCI Hot Plug operations are to be controlled by the OS to which 
+                the PE is assigned, then the PE domain for the PCI Hot Plug entity and the PCI 
+                Hot Plug power domain must be the same.</para>
+              </listitem>
+              
+              <listitem>
+                <para>All PE domains must be totally encompassed by their respective PCI 
+                Hot Plug power domain, regardless of the entity that controls the PCI Hot Plug 
+                operation.</para>
+              </listitem>
+            </itemizedlist>		      
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry xml:id="dbdoclet.50569330_16826">
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_34831" 
+        xrefstyle="select: labelnumber nopage"/>-8.</emphasis></term>
+          <listitem>
+            <para>All platforms that implement the 
+            EEH option must enable that option by default for all PEs.</para>
+            <para><emphasis role="bold">Implementation Notes:</emphasis>
+                <orderedlist>		      
+                  <listitem>
+                    <para>See <xref linkend="LoPAR.Virtualization"/> for requirements 
+                    relative to EEH requirements with LPAR.</para>
+                  </listitem>
+
+                  <listitem>
+                    <para>Defaulting to EEH enabled, as required by Requirement 
+                    <xref linkend="dbdoclet.50569330_16826"/> does not imply that the platform has no 
+                    responsibility in assuring that all device drivers are EEH enabled or EEH safe 
+                    before allowing their the Bus Master, Memory Space or I/O Space bits in the PCI 
+                    configuration Command register of their IOA to be set to a 1. Furthermore, even 
+                    though a platform defaults its EEH option as enabled, as required by 
+                    Requirement <xref linkend="dbdoclet.50569330_16826"/> does not imply that the 
+                    platform cannot disable EEH for a PE. See Requirement 
+                    <xref linkend="dbdoclet.50569330_49770"/> for more information.</para>
+                  </listitem>
+                </orderedlist>		      
+            </para>
+          </listitem>
+     	</varlistentry>
+    </variablelist>
+
+
+    <para>The following two figures show some examples of the concept of 
+    Endpoint Partitioning. See also <xref linkend="dbdoclet.50569330_17337"/> for 
+    more information on the EEH option.</para>
+
+    <figure xml:id="dbdoclet.50569330_12514">
+      <title>PE and DR Partitioning Examples for Conventional PCI and PCI-X HBs</title>
+      <mediaobject>
+        <imageobject role="html">
+          <imagedata fileref="figures/PAPR-12.gif" format="GIF" scalefit="1"/>
+        </imageobject>
+        <imageobject role="fo">
+          <imagedata contentdepth="100%" fileref="figures/PAPR-12.gif" format="GIF" scalefit="1" width="100%"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    
+    <figure xml:id="dbdoclet.50569330_28186">
+      <title>PE and DR Partitioning Examples for PCI Express HBs</title>
+        <mediaobject>
+          <imageobject role="html">
+            <imagedata fileref="figures/PAPR-14.gif" format="GIF" scalefit="1"/>
+          </imageobject>
+          <imageobject role="fo">
+            <imagedata contentdepth="100%" fileref="figures/PAPR-14.gif" format="GIF" scalefit="1" width="100%"/>
+          </imageobject>
+        </mediaobject>
+    </figure>    
+  </section>
+  
+  <section xml:id="dbdoclet.50569330_37320">
+    <title>PCI Host Bridge (PHB) Architecture</title>
+    <para>The PHB architecture places certain requirements on PHBs. There 
+    should be no conflict between this document and the PCI specifications, but if 
+    there is, the PCI documentation takes precedence. The intent of this 
+    architecture is to provide a base architectural level which supports the PCI 
+    architecture and to provide optional constructs which allow for use of 32-bit 
+    PCI IOAs in platforms with greater than 4 GB of system addressability. </para>
+
+    <variablelist>
+     	<varlistentry xml:id="dbdoclet.50569330_38101">
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_37320" 
+        xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+          <listitem>
+            <para>All PHBs that implement 
+            conventional PCI must be compliant with the most recent version of the 
+            <xref linkend="dbdoclet.50569387_65468"/> at the time of their design, including any 
+            approved Engineering Change Requests (ECRs) against that document. </para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry xml:id="dbdoclet.50569330_22438">
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_37320" 
+        xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+          <listitem>
+            <para>All PHBs that 
+            implement PCI-X must be compliant with the most 
+            recent version of the <xref linkend="dbdoclet.50569387_26550"/> at the time of 
+            their design, including any approved Engineering Change Requests (ECRs) against 
+            that document. </para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry xml:id="dbdoclet.50569330_62123">
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_37320" 
+        xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+          <listitem>
+            <para>All PHBs that 
+            implement PCI Express must be compliant with the 
+            most recent version of the <xref linkend="dbdoclet.50569387_66784"/> at the 
+            time of their design, including any approved Engineering Change Requests (ECRs) 
+            against that document.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry xml:id="dbdoclet.50569330_97252">
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_37320" 
+        xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+          <listitem>
+            <para>All requirements 
+            defined in <xref linkend="dbdoclet.50569328_Address-Map"/> for HBs must 
+            be implemented by all PHBs in the platform.</para>
+          </listitem>
+     	</varlistentry>
+    </variablelist>
+
+    <section xml:id="dbdoclet.50569330_79175">
+      <title>PHB Implementation Options</title>
+      <para>There are a few implementation options when it comes to 
+      implementing a PHB. Some of these become requirements, depending on the 
+      characteristics of the system for which the PHB is being designed. The options 
+      affecting PHBs, include the following:</para>
+
+      <itemizedlist>		      
+        <listitem>
+          <para>The Enhanced I/O Error Handling (EEH) option enhances RAS 
+          characteristics of the I/O and allows for smaller granularities of I/O 
+          assignments to partitions in an LPAR environment.</para>
+        </listitem>
+        
+        <listitem>
+          <para>The Error Injection (ERRINJCT) option enhances the testing of the 
+          I/O error recovery code. This option is required of bridges which implement the 
+          EEH option.</para>
+        </listitem>
+      </itemizedlist>		      
+
+      <variablelist>
+       	<varlistentry xml:id="dbdoclet.50569330_72522">
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_79175" 
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+            <listitem>
+              <para>All PHBs 
+              for use in platforms which implement LPAR must support EEH, in support of virtualizations 
+              requirements in <xref linkend="LoPAR.Virtualization"/>.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_79175" 
+          xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+            <listitem>
+              <para>All PCI HBs designed for use in platforms 
+              which will support PCI Express must support the PCI extended configuration 
+              address space and the MSI option.</para>
+            </listitem>
+       	</varlistentry>
+      </variablelist>
+    </section>
+    
+    <section xml:id="dbdoclet.50569330_50133">
+      <title>PCI Data Buffering and Instruction Queuing</title>
+      <para>Some PHB 
+      implementations may include buffers or queues for DMA, 
+      Load, and Store operations. These buffers are required to be transparent to the 
+      software with only certain exceptions, as noted in this section. </para>
+      <para>Most 
+      processor accesses to System Memory go through the processor data cache. When 
+      sharing System Memory with IOAs, hardware must maintain consistency with the 
+      processor data cache and the System Memory, as defined by the requirements in 
+      <xref linkend="dbdoclet.50569329_37207"/>.</para>
+
+      <variablelist>
+       	<varlistentry xml:id="dbdoclet.50569330_87624">
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_50133" 
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+            <listitem>
+              <para>PHB implementations which 
+              include buffers or queues for DMA, <emphasis>Load</emphasis>, and 
+              <emphasis>Store</emphasis> operations must make sure that these are transparent to the 
+              software, with a few exceptions which are allowed by the PCI architecture, by 
+              <xref linkend="dbdoclet.50569387_99718"/>, and by <xref 
+              linkend="dbdoclet.50569329_37207"/>.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_50133" 
+          xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+            <listitem>
+              <para>PHBs must accept up to a 128 byte MMIO 
+              <emphasis>Loads</emphasis>, and must do so without compromising performance 
+              of other operations.</para>
+            </listitem>
+       	</varlistentry>
+      </variablelist>
+
+      <section xml:id="dbdoclet.50569330_29870">
+        <title>PCI <emphasis>Load</emphasis> and <emphasis>Store</emphasis> Ordering</title>
+        <para>For the platform <emphasis>Load</emphasis> and 
+        <emphasis>Store</emphasis> ordering requirements, see 
+        <xref linkend="dbdoclet.50569329_40286"/> and the 
+        appropriate PCI specifications (per Requirements 
+        <xref linkend="dbdoclet.50569330_38101"/>, 
+        <xref linkend="dbdoclet.50569330_22438"/>, and 
+        <xref linkend="dbdoclet.50569330_62123"/>). Those requirements will, for most 
+        implementations, require strong ordering (single threading) of all 
+        <emphasis>Load</emphasis> and <emphasis>Store</emphasis> operations through the PHB, 
+        regardless of the address space on the PCI bus to which they are targeted. 
+        Single threading through the PHB means that processing a 
+        <emphasis>Load</emphasis> requires that the PHB wait on the <emphasis>Load</emphasis> 
+        response data of a <emphasis>Load</emphasis> issued on the PCI bus prior to 
+        issuing the next <emphasis>Load</emphasis> or <emphasis>Store</emphasis> on 
+        the PCI bus.</para>
+      </section>
+      
+      <section xml:id="dbdoclet.50569330_35877">
+        <title>PCI DMA Ordering</title>
+        <para>For the platform DMA ordering requirements, see the requirements in 
+        this section, in <xref linkend="dbdoclet.50569329_40286"/>, and the appropriate 
+        PCI specifications (per Requirements 
+        <xref linkend="dbdoclet.50569330_38101"/>, 
+        <xref linkend="dbdoclet.50569330_22438"/>, and 
+        <xref linkend="dbdoclet.50569330_62123"/>).</para>
+        <para>In general, the ordering for DMA path operations from the I/O bus 
+        to the processor side of the PHB is independent from the 
+        <emphasis>Load</emphasis> and <emphasis>Store</emphasis> path, with the exception stated 
+        in Requirement <xref linkend="dbdoclet.50569330_63508"/>. Note that in the 
+        requirement, below, a <emphasis>read request</emphasis> is the initial request 
+        to the PHB and the <emphasis>read completion</emphasis> is the data phase of 
+        the transaction (that is, the data is returned).</para>
+
+        <variablelist>
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_35877" 
+            xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+              <listitem>
+                <para><emphasis>(Requirement Number Reserved 
+                For Compatibility)</emphasis></para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_35877" 
+            xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+              <listitem>
+                <para><emphasis>(Requirement Number Reserved 
+                For Compatibility)</emphasis></para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_35877" 
+            xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+              <listitem>
+                <para><emphasis>(Requirement Number Reserved 
+                For Compatibility)</emphasis></para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry xml:id="dbdoclet.50569330_39420">
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_35877" 
+            xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+              <listitem>
+                <para>The hardware must make sure that 
+                a DMA read request from an IOA that specifies any byte address that has been 
+                written by a previous DMA write operation (as defined by the untranslated PCI 
+                address) does not complete before the DMA write from the previous DMA write is 
+                in the coherency domain. </para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_35877" 
+            xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
+              <listitem>
+                <para><emphasis>(Requirement Number Reserved 
+                For Compatibility)</emphasis></para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry xml:id="dbdoclet.50569330_63508">
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_35877" 
+            xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
+              <listitem>
+                <para>The hardware must make sure that 
+                all DMA write data buffered from an IOA, which is destined for system memory, 
+                is in the platform&#x2019;s coherency domain prior to delivering data from a 
+                <emphasis>Load</emphasis> operation through the same PHB which has come after 
+                the DMA write operation(s).</para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry xml:id="dbdoclet.50569330_98643">
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_35877" 
+            xrefstyle="select: labelnumber nopage"/>-7.</emphasis></term>
+              <listitem>
+                <para>The hardware must make sure that 
+                all DMA write data buffered from an IOA, which is destined for system memory, 
+                is in the platform&#x2019;s coherency domain prior to delivering an MSI from 
+                that same IOA which has come after the DMA write operation(s).</para>
+              </listitem>
+         	</varlistentry>
+        </variablelist>
+
+        <para><emphasis role="bold">Architecture Notes:</emphasis></para>
+
+        <itemizedlist>		      
+          <listitem>
+            <para>Requirement <xref linkend="dbdoclet.50569330_39420"/> clarifies 
+            (and may tighten up) the PCI architecture requirement that the read be to the 
+            &#x201C;just-written&#x201D; data. </para>
+          </listitem>
+          
+          <listitem>
+            <para>The address comparison for determining whether the address of the 
+            data being read is the same as the address of that being written is in the same 
+            cache line is based on the PCI address and not a TCE-translated address. This 
+            says that the System Memory cache line address will be the same also, since the 
+            requirement is directed towards operations under the same PHB. However, use of 
+            a DMA Read Request and DMA Write Request that use different PCI addresses (even 
+            if they hit the same System Memory address) are not required to be kept in 
+            order (see Requirement <xref linkend="dbdoclet.50569330_72920"/>). So, for 
+            example, Requirement <xref linkend="dbdoclet.50569330_39420"/> says that split 
+            PHBs that share the same data buffers at the system end do not have to keep DMA 
+            Read Request following a DMA Write Request in order when they do not traverse 
+            the same PHB PCI bus (even if they get translated to the same system address) 
+            or when they originate on the same PCI bus but have different PCI bus addresses 
+            (even if they get translated to the same system address).</para>
+          </listitem>
+          
+          <listitem>
+            <para>Requirement <xref linkend="dbdoclet.50569330_63508"/> is the only 
+            case where the <emphasis>Load</emphasis> and <emphasis>Store</emphasis> paths 
+            are coupled to the DMA data path. This requirement guarantees that the software 
+            has a method for forcing DMA write data out of any buffers in the path during 
+            the servicing of a completion interrupt from the IOA. Note that the IOA can 
+            perform the flush prior to the completion interrupt, via Requirement <xref 
+            linkend="dbdoclet.50569330_39420"/>. That is, the IOA can issue a read request 
+            to the last word written and wait for the read completion data to return. When 
+            the read is complete, the data will have arrived at the destination. In 
+            addition, the use of MSIs, instead of LSIs, allows for a programming model for 
+            IOAs where the interrupt signalling itself pushes the last DMA write to System 
+            Memory, prior to the signalling of the interrupt to the system (see Requirement 
+            <xref linkend="dbdoclet.50569330_98643"/>).</para>
+          </listitem>
+          
+          <listitem>
+            <para>A DMA read operation is allowed to be processed prior to the 
+            completion of a previous DMA read operation, but is not required to be.</para>
+          </listitem>
+        </itemizedlist>		      
+
+      </section>
+      
+      <section xml:id="dbdoclet.50569330_47849">
+        <title>PCI DMA Operations and Coherence</title>
+        <para>The I/O is not aware of the setting of the coherence required bit 
+        when performing operations to System Memory, and so the PHB needs to assume 
+        that the coherency is required.</para>
+
+        <variablelist>
+         	<varlistentry xml:id="dbdoclet.50569330_23045">
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_47849" 
+            xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+              <listitem>
+                <para>I/O transactions to System Memory through a PHB must be made with coherency required.</para>
+              </listitem>
+         	</varlistentry>
+        </variablelist>
+      </section>
+
+    </section>
+
+    <section xml:id="dbdoclet.50569330_21641">
+      <title>Byte Ordering Conventions</title>
+      <para>LoPAR platforms operate with either Big-Endian (BE) or 
+      Little-Endian addressing. In Big-Endian systems, the address of a word in 
+      memory is the address of the most significant byte (the &#x201C;big&#x201D; 
+      end) of the word. Increasing memory addresses will approach the least 
+      significant byte of the word. In Little-Endian (LE) addressing, the address of 
+      a word in memory is the address of the least significant byte (the 
+      &#x201C;little&#x201D; end) of the word. See also 
+      <xref linkend="dbdoclet.50569327_38531"/>.</para>
+      <para>The PCI bus itself can be thought of as not inherently having an 
+      endianess associated with it (although its numbering convention indicates LE). 
+      It is the IOAs on the PCI bus that can be thought of as having endianess 
+      associated with them. Some PCI IOAs will contain a mode bit to allow them to 
+      appear as either a BE or LE IOA. Some IOAs will even have multiple mode bits; 
+      one for each data path (Load and Store versus DMA). In addition, some IOAs may 
+      have multiple concurrent apertures, or address ranges, where the IOA can be 
+      accessed as a LE IOA in one aperture and as a BE IOA in another.</para>
+
+      <variablelist>
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_21641" 
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+            <listitem>
+              <para>When the 
+              processor is operating in the Big-Endian mode, the platform design must produce the results 
+              indicated in <xref linkend="dbdoclet.50569330_49381"/> while issuing 
+              <emphasis>Load</emphasis> and <emphasis>Store</emphasis> operations to various entities 
+              with various endianess. </para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_21641" 
+          xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+            <listitem>
+              <para>When performing DMA operations through a 
+              PHB, the platform must not modify the data during the transfer process; the 
+              lowest addressed byte in System Memory being transferred to the lowest 
+              addressed byte on the PCI bus, the second byte in System Memory being 
+              transferred as the second byte on the PCI bus, and so on.</para>
+            </listitem>
+       	</varlistentry>
+      </variablelist>
+
+      <table frame="all" pgwide="1" xml:id="dbdoclet.50569330_49381">
+        <?dbhtml table-width="60%" ?><?dbfo table-width="60%" ?>
+        <title>Big-Endian Mode <emphasis>Load</emphasis> and 
+        <emphasis>Store</emphasis> Programming Considerations </title>
+        <tgroup cols="2">
+          <colspec colname="c1" colwidth="50*" align="center"/>
+          <colspec colname="c2" colwidth="50*" align="center"/>
+          <thead valign="middle">
+            <row>
+              <entry>
+                <para>
+                  <emphasis role="bold">Destination</emphasis>
+                </para>
+              </entry>
+              <entry>
+                <para>
+                  <emphasis role="bold">Transfer Operation</emphasis>
+                </para>
+              </entry>
+            </row>
+          </thead>
+          <tbody valign="middle">
+            <row>
+              <entry>
+                <para> BE scalar entity: <?linebreak?>
+                For example,<?linebreak?>
+                TCE or BE register in a PCI IOA</para>
+              </entry>
+              <entry>
+                <para> Load or Store</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para> LE scalar entity:<?linebreak?>
+                For example,<?linebreak?>
+                LE register in a PCI IOA or <?linebreak?>
+                PCI Configuration Registers</para>
+              </entry>
+              <entry>
+                <para> Load or Store Reverse</para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section>
+      <title>PCI Bus Protocols</title>
+      <para>This section details the items from the 
+      <emphasis><xref linkend="dbdoclet.50569387_65468"/></emphasis>, 
+      <emphasis><xref linkend="dbdoclet.50569387_26550"/></emphasis>, and 
+      <emphasis><xref linkend="dbdoclet.50569387_66784"/></emphasis> documents where there is 
+      variability allowed, and therefore further specifications, requirements, or 
+      explanations are needed. </para>
+      <para>Specifically, <xref linkend="dbdoclet.50569330_98052"/> details 
+      specific PCI Express options and the requirements for usage of such in LoPAR 
+      platforms. These requirements will drive the design of PHB implementations. See 
+      the <xref linkend="dbdoclet.50569387_66784"/> for more information.</para>
+
+      <table frame="all" pgwide="1" xml:id="dbdoclet.50569330_98052">
+        <title>PCI Express Optional Feature Usage in LoPAR Platforms </title>
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="20*" align="center"/>
+          <colspec colname="c2" colwidth="10*" align="center"/>
+          <colspec colname="c3" colwidth="10*" align="center"/>
+          <colspec colname="c4" colwidth="60*"/>
+          <thead valign="middle">
+            <row>
+              <entry morerows="1">
+                <para>
+                  <emphasis role="bold">PCI Express Option Name</emphasis>
+                </para>
+              </entry>
+              <entry nameend="c3" namest="c2">
+                <para>
+                  <emphasis role="bold">Usage</emphasis>
+                </para>
+              </entry>
+              <entry morerows="0" align="center">
+                <para>
+                  <emphasis role="bold">Description</emphasis>
+                </para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>Base</para>
+              </entry>
+               <entry>
+                <para>IBM Server</para>
+              </entry>
+           </row>
+            <row>
+              <entry nameend="c4" namest="c1" align="left">
+                <para>
+                  <emphasis role="bold">Usage Legend</emphasis> : 
+                  NS = Not Supported; O = Optional (see also Description); OR = Optional but 
+                  Recommended; R = Required; SD = See Description
+                </para>
+              </entry>
+            </row>
+          </thead>
+          <tbody valign="middle">
+            <row>
+              <entry>
+                <para> Peripheral I/O Space</para>
+              </entry>
+              <entry>
+                <para> SD</para>
+              </entry>
+              <entry>
+                <para> SD</para>
+              </entry>
+              <entry>
+                <para> Required if the platform is going to support any Legacy 
+                I/O devices, as defined by the <xref linkend="dbdoclet.50569387_66784"/>, 
+                otherwise support not required. The expectation is that Legacy I/O device 
+                support by PHBs will end soon, so platform designers should not rely on this 
+                being there when choosing I/O devices.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para> 64-bit DMA addresses</para>
+              </entry>
+              <entry>
+                <para> O</para>
+              </entry>
+              <entry>
+                <para> OR<?linebreak?>
+                SD</para>
+              </entry>
+              <entry>
+                <para> Implementation is optional, but is expected to be needed 
+                in some platforms, especially those with more complex PCI Express fabrics. 
+                Although the <emphasis role="bold"><literal>&#x201C;ibm,dma-window&#x201D;</literal></emphasis> property can 
+                implement 64-bit addresses, some OSs and Device Drivers may not be able to 
+                handle values in the <emphasis role="bold"><literal>&#x201C;ibm,dma-window&#x201D;</literal></emphasis> 
+                property that are greater than or equal to 4 GB. Therefore, it is recommended 
+                that 64-bit DMA addresses be implemented through the Dynamic DMA Window option 
+                (see <xref linkend="LoPAR.RTAS"/>).</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para> Advanced Error Reporting (AER)</para>
+              </entry>
+              <entry>
+                <para> O</para>
+              </entry>
+              <entry>
+                <para> R<?linebreak?>
+                SD</para>
+              </entry>
+              <entry>
+                <para> This has implications in the IOAs selected for use in 
+                the platform, as well as the PHB and firmware implementation. See the <xref 
+                linkend="dbdoclet.50569387_66784"/>.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para> PCIe Relaxed Ordering (RO) and</para>
+                <para>ID-Based Ordering (IDO)</para>
+              </entry>
+              <entry>
+                <para> NS</para>
+              </entry>
+              <entry>
+                <para> NS</para>
+              </entry>
+              <entry>
+                <para> Enabling either of these options could allow DMA 
+                transactions that should be dropped by an EEH Stopped State, to get to the 
+                system before the EEH Stopped State is set, and therefore these options are not 
+                to be enabled. Specifically, either of these could allow DMA transactions that 
+                follow a DMA transaction in error to bypass the PCI Express error message 
+                signalling an error on a previous packet.</para>
+                <para>&#xA0;</para>
+                <para><emphasis role="bold">Platform Implementation Note:</emphasis> It is 
+                permissible for the platform (for example, the PHB or the nest) to re-order DMA 
+                transactions that it knows can be re-ordered -- such as DMA transactions that 
+                come from different Requester IDs or come into different PHBs -- as long as the 
+                ordering with respect to error signalling is met.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>5.0 GT/s signalling (Gen 2)</para>
+              </entry>
+              <entry>
+                <para>O</para>
+              </entry>
+              <entry>
+                <para>OR</para>
+              </entry>
+              <entry>
+                <para>&#xA0;</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>8 GT signalling (Gen 3)</para>
+              </entry>
+              <entry>
+                <para>O</para>
+              </entry>
+              <entry>
+                <para>OR</para>
+              </entry>
+              <entry>
+                <para>&#xA0;</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para> TLP Processing Hints</para>
+              </entry>
+              <entry>
+                <para>O</para>
+              </entry>
+              <entry>
+                <para>O</para>
+              </entry>
+              <entry>
+                <para>If implemented, it must be transparent to OSs.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para> Atomic Operations (32 and 64 bit)</para>
+              </entry>
+              <entry>
+                <para> O</para>
+              </entry>
+              <entry>
+                <para> OR<?linebreak?>
+                SD</para>
+              </entry>
+              <entry>
+                <para> May be required if the IOAs being supported require it. 
+                May specifically be needed for certain classes of IOAs such as 
+                accelerators.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para> Atomic Operations (128 bit)</para>
+              </entry>
+              <entry>
+                <para> O</para>
+              </entry>
+              <entry>
+                <para>OR<?linebreak?>
+                SD</para>
+              </entry>
+              <entry>
+                <para> When 128 bit Atomic Operations are supported, 32 and 64 
+                bit Atomic Operations must be also supported.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para> Resizable BAR</para>
+              </entry>
+              <entry>
+                <para> O</para>
+              </entry>
+              <entry>
+                <para> O</para>
+              </entry>
+              <entry>
+                <para> &#xA0;</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para> Dynamic Power Allocation (DPA)</para>
+              </entry>
+              <entry>
+                <para> NS</para>
+              </entry>
+              <entry>
+                <para> NS</para>
+              </entry>
+              <entry>
+                <para> No support currently defined in LoPAR.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para> Latency Tolerance Reporting (LTR)</para>
+              </entry>
+              <entry>
+                <para> NS</para>
+              </entry>
+              <entry>
+                <para> NS</para>
+              </entry>
+              <entry>
+                <para> No support currently defined in LoPAR.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para> Optimized Buffer Flush/Fill (OBFF)</para>
+              </entry>
+              <entry>
+                <para> NS</para>
+              </entry>
+              <entry>
+                <para> NS</para>
+              </entry>
+              <entry>
+                <para> No support currently defined in LoPAR.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para> PCIe Multicast</para>
+              </entry>
+              <entry>
+                <para> NS</para>
+              </entry>
+              <entry>
+                <para> NS</para>
+              </entry>
+              <entry>
+                <para> No support currently defined in LoPAR.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para> Alternative Routing ID Interpretation (ARI)</para>
+              </entry>
+              <entry>
+                <para> O</para>
+              </entry>
+              <entry>
+                <para> SD</para>
+              </entry>
+              <entry>
+                <para> Required when the platform will support PCI Express IOV IOAs.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para> Access Control Services (ACS)</para>
+              </entry>
+              <entry>
+                <para> SD</para>
+              </entry>
+              <entry>
+                <para> SD</para>
+              </entry>
+              <entry>
+                <para> It is required that peer to peer operation between IOAs 
+                be blocked when LPAR is implemented and those IOAs are assigned to different 
+                LPAR partitions. For switches below a PHB, when the IOA functions below the 
+                switch may be assigned to different partitions, this blocking is provided by 
+                ACS in the switch. This is required even in Base platforms, if the above 
+                conditions apply.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para> Function Level Reset (FLR)</para>
+              </entry>
+              <entry>
+                <para> SD</para>
+              </entry>
+              <entry>
+                <para> SD</para>
+              </entry>
+              <entry>
+                <para> Required when a PE consists of something other than a 
+                full IOA. For example, if each function of a multi-function IOA each is in its 
+                own PE. An SR-IOV Virtual Function (VF) may be one such example.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para> End-to-End CRC (ECRC)</para>
+              </entry>
+              <entry>
+                <para> O</para>
+              </entry>
+              <entry>
+                <para> R</para>
+                <para>SD</para>
+              </entry>
+              <entry>
+                <para> This has implications in the IOAs selected for use in 
+                the platform, as well as the PHB and firmware implementation. See the 
+                <xref linkend="dbdoclet.50569387_66784"/>.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para> Internal Error Reporting</para>
+              </entry>
+              <entry>
+                <para>OR<?linebreak?>
+                SD</para>
+              </entry>
+              <entry>
+                <para>OR<?linebreak?>
+                SD</para>
+              </entry>
+              <entry>
+                <para> Implement where appropriate. Platforms need to consider 
+                this for platform switches, also. PHBs may report internal errors to firmware 
+                using a different mechanism outside of this architecture.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para> Address Translation Services (ATS)</para>
+              </entry>
+              <entry>
+                <para> NS</para>
+              </entry>
+              <entry>
+                <para> NS</para>
+              </entry>
+              <entry>
+                <para> LoPAR does not support ATS, because the invalidation 
+                and modification of the Address Translation and Protection Table (ATPT) -- 
+                called the TCEs in LoPAR -- is a synchronous operations, whereas the ATS 
+                invalidation requires a more asynchronous operation.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para> Page Request Interface (PRI)</para>
+              </entry>
+              <entry>
+                <para> NS</para>
+              </entry>
+              <entry>
+                <para> NS</para>
+              </entry>
+              <entry>
+                <para> Requires ATS, which is not supported by LoPAR.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para> Single Root I/O Virtualization (SR-IOV)</para>
+              </entry>
+              <entry>
+                <para> O</para>
+              </entry>
+              <entry>
+                <para> OR</para>
+              </entry>
+              <entry>
+                <para> It is likely that most server platforms will need to be 
+                enabled to use SR-IOV IOAs.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para> Multi-Root I/O Virtualization (MR-IOV)</para>
+              </entry>
+              <entry>
+                <para> SD</para>
+              </entry>
+              <entry>
+                <para> SD</para>
+              </entry>
+              <entry>
+                <para> Depending on how this is implemented, an MR-IOV device 
+                is likely to look like an SR-IOV device to an OS (with the platform hiding the 
+                Multi-root aspects). PHBs may be MR enabled or the MR support may be through 
+                switches external to the PHBs.</para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    
+    <section xml:id="dbdoclet.50569330_31084">
+      <title>Programming Model</title>
+      <para>Normal memory mapped Load and Store instructions are used to access 
+      a PHB&#x2019;s facilities or PCI IOAs on the I/O side of the PHB. 
+      <xref linkend="dbdoclet.50569328_Address-Map"/> defines the addressing model. 
+      Addresses of IOAs are passed by OF via the OF device tree.</para>
+
+      <variablelist>
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_31084" 
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+            <listitem>
+              <para>If a PHB defines any registers that are 
+              outside of the PCI Configuration space, then the address of those registers 
+              must be in the Peripheral Memory Space or Peripheral I/O Space for that PHB, or 
+              must be in the System Control Area.</para>
+            </listitem>
+       	</varlistentry>
+      </variablelist>
+
+      <para>PCI 
+      master DMA transfers refer to data transfers between a PCI master IOA and 
+      another PCI IOA, or System Memory, where the PCI master IOA supplies the 
+      addresses and controls all aspects of the data transfer. Transfers from a PCI 
+      master to the PCI I/O Space are essentially ignored by a PHB (except for 
+      address parity checking). Transfers from a PCI master to PCI Memory Space are 
+      either directed at PCI Memory Space (for peer to peer operations) or need to be 
+      directed to the host side of the PHB. DMA transfers directed to the host side 
+      of a PHB may be to System Memory or may be to another IOA via the Peripheral 
+      Memory Space of another HB. Transfers that are directed to the Peripheral I/O 
+      Space of another HB are considered to be an addressing error (see 
+      <xref linkend="LoPAR.Error"/>). For information about decoding these address spaces 
+      and the address transforms necessary, see 
+      <xref linkend="dbdoclet.50569328_Address-Map"/>.</para>
+    </section>
+    
+    <section xml:id="dbdoclet.50569330_63778">
+      <title>Peer-to-Peer Across Multiple PHBs</title>
+      <para>This architecture does not architect peer-to-peer traffic between 
+      two PCI IOAs when the operation traverses multiple PHBs.</para>
+
+      <variablelist>
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_63778" 
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+            <listitem>
+                <para>The platform must prevent Peer-to-Peer 
+                operations that would cross multiple PHBs.</para>
+            </listitem>
+       	</varlistentry>
+      </variablelist>
+    </section>
+
+    <section xml:id="dbdoclet.50569330_31380">
+      <title>Dynamic Reconfiguration of I/O</title>
+      <para>Disconnecting or connecting an I/O subsystem while the system is 
+      operational and then having the new configuration be operational, including any 
+      new added subsystems, is a subset of Dynamic Reconfiguration (DR).</para>
+      <para>Some platforms may also support plugging/unplugging of PCI IOAs 
+      while the system is operational. This is another subset of DR.</para>
+      <para>DR is an option and as such, is not required by this architecture. 
+      Attempts to change the hardware configuration on a platform that does not 
+      enable configuration change, whose OS does not support that configuration 
+      change, or without the appropriate user configuration change actions may 
+      produce unpredictable results (for example, the system may crash).</para>
+      <para>PHBs in platforms that support the PCI Hot Plug Dynamic 
+      Reconfiguration (DR) option may have some unique design considerations. For 
+      information about the DR options, see <xref linkend="LoPAR.Virtualization"/>.</para>
+    </section>
+    
+    <section>
+      <title>Split Bridge Implementations</title>
+      <para>In some platforms the PHB may be split into two pieces, separated 
+      by a cable or fiber optics. The piece that is connected to the system bus (or 
+      switch) and which generates the interconnect is called the Hub. There are 
+      several implications of such implementations and several requirements to go 
+      along with these. </para>
+
+      <section xml:id="sec_ioa_coherency">
+        <title>Coherency Considerations with IOA to IOA Communications 
+        via System Memory</title>
+        <para>Bridges which are split across multiple chips may introduce a large 
+        enough latency between the time DMA write data is accepted by the PHB and the 
+        time that previously cached copies of the same System Memory locations are 
+        invalidated, and this latency needs to be taken into consideration in designs, 
+        as it can introduce the problems described below. This is not a problem if the 
+        same PCI address is used under a single PHB by the same or multiple IOAs, but 
+        can be a problem under any of the following conditions:</para>
+
+        <itemizedlist>		      
+          <listitem>
+            <para>The same PCI address is used by different IOAs under different 
+            PHBs.</para>
+          </listitem>
+          
+          <listitem>
+            <para>Different PCI addresses are used which access the same System 
+            Memory coherency block, regardless of whether the IOA(s) are under the same PHB 
+            or not; for example:</para>
+            <itemizedlist>		      
+              <listitem>
+                <para>Two different TCEs accessing the same System Memory coherency 
+                block.</para>
+              </listitem>
+            </itemizedlist>		      
+          </listitem>
+        </itemizedlist>		      
+
+        <para>An example scenario where this could be a problem is as 
+        follows:</para>
+
+        <orderedlist>		      
+          <listitem>
+            <para>Device 1 does a DMA read from System Memory address x using PCI 
+            address y </para>
+          </listitem>
+
+          <listitem>
+            <para>Device 2 (under same PHB as Device 1 -- the devices could even 
+            be different function in the same IOA) does a DMA write to System Memory 
+            address x using PCI address z.</para>
+          </listitem>
+
+          <listitem>
+            <para>Device 2 attempts to read back System Memory address x before 
+            the time that its previous DMA write is globally coherent (that is, before the 
+            DMA write gets to the Hub and an invalidate operation on the cache line 
+            containing that data gets back down to the PHB), and gets the data read by 
+            Device 1 rather than what it just wrote.</para>
+          </listitem>
+        </orderedlist>		      
+
+        <para>Another example scenario is as follows:</para>
+
+        <orderedlist>		      
+          <listitem>
+            <para>Device 1 under PHB 1 does a DMA read from System Memory location 
+            x.</para>
+          </listitem>
+
+          <listitem>
+            <para>Device 2 under PHB 2 does a DMA write to System Memory location 
+            x and signals an interrupt to the system.</para>
+          </listitem>
+
+          <listitem>
+            <para>The interrupt bypasses the written data which is on its way to 
+            the coherency domain.</para>
+          </listitem>
+
+          <listitem>
+            <para>The device driver for Device 2 services the interrupt and 
+            signals Device 1 via a Store to Device 1 that the data is there at location 
+            x.</para>
+          </listitem>
+
+          <listitem>
+            <para>Device 1 sees the Store before the invalidate operation on the 
+            cache line containing the data propagates down to invalidate the previous 
+            cached copy of x, and does a DMA read of location x using the same address as 
+            in step (1), getting the old copy of x instead of the new copy.</para>
+          </listitem>
+        </orderedlist>		      
+
+        <para>This last example is a little far-fetched since the propagation 
+        times should not be longer than the interrupt service latency time, but it is 
+        possible. In this example, the device driver should do a Load to Device 2 
+        during the servicing of the interrupt and wait for the Load results before 
+        trying to signal Device 1, just the way that this device driver would to a Load 
+        if it was a program which was going to use the data written instead of another 
+        IOA. Note that this scenario can also be avoided if the IOA uses a PCI Message 
+        Signalled Interrupt (MSI) rather than the PCI interrupt signals pins, in order 
+        to signal the interrupt (in which case the <emphasis>Load</emphasis> operation 
+        is avoided).</para>
+
+        <variablelist>
+         	<varlistentry xml:id="dbdoclet.50569330_72920">
+            <term><emphasis role="bold">R1-<xref linkend="sec_ioa_coherency" 
+            xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+              <listitem>
+                <para>A DMA read to a PCI address 
+                which is different than a PCI address used by a previous DMA write or which is 
+                performed under a different PHB must not presume that a previous DMA write is 
+                complete, even if the DMA write is to the same System Memory address, unless 
+                one of the following is true:</para>
+
+                <itemizedlist>		      
+                  <listitem>
+                    <para>The IOA doing the DMA write has followed that write by a DMA read 
+                    to the address of the last byte of DMA write data to be flushed (the DMA read 
+                    request must encompass the address of the last byte written, but does not need 
+                    to be limited to just that byte) and has waited for the results to come back 
+                    before an IOA is signaled (via peer-to-peer operations or via software) to 
+                    perform a DMA read to the same System Memory address.</para>
+                  </listitem>
+                  
+                  <listitem>
+                    <para>The device driver for the IOA doing the DMA write has followed 
+                    that write by a <emphasis>Load</emphasis> to that IOA and has waited for the 
+                    results to come back before a DMA read to the same System Memory address with a 
+                    different PCI address is attempted.</para>
+                  </listitem>
+                  
+                  <listitem>
+                    <para>The IOA doing the DMA write has followed the write with a PCI 
+                    Message Signalled Interrupt (MSI) as a way to interrupt the device driver, and 
+                    the MSI message has been received by the interrupt controller.</para>
+                  </listitem>
+                </itemizedlist>		      
+              </listitem>
+         	</varlistentry>
+        </variablelist>
+      </section>
+    </section>
+  </section>
+  
+  <section xml:id="dbdoclet.50569330_31559">
+    <title>I/O Bus to I/O Bus Bridges</title>
+    <para>The PCI bus architecture was designed to allow for bridging to other 
+    slower speed I/O buses or to another PCI bus. The requirements when bridging 
+    from one I/O bus to another I/O bus in the platform are defined below.</para>
+
+    <variablelist>
+     	<varlistentry xml:id="dbdoclet.50569330_95825">
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_31559" 
+        xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+          <listitem>
+            <para>All bridges must comply with the 
+            bus specification(s) of the buses to which they are attached.</para>
+          </listitem>
+     	</varlistentry>
+    </variablelist>
+    
+    <section xml:id="dbdoclet.50569330_64753">
+      <title>What Must Talk to What</title>
+      <para>Platforms are not required to support peer to peer operations 
+      between IOAs. IOAs on the same shared bus segment will generally be able to do 
+      peer to peer operations between themselves. Peer to peer operations in an LPAR 
+      environment, when the operations are between IOAs that are not in the same 
+      partition, is specifically prohibited (see Requirement 
+      <xref linkend="LoPAR.Virtualization"/>).</para>
+    </section>
+    <section xml:id="sec_pci_pci_bridges">
+      <title>PCI to PCI Bridges </title>
+      <para>This architecture allows the use of PCI to PCI bridges and 
+      PCI Express switches in the platform. TCEs are used with the IOAs attached to 
+      the other side of the PCI to PCI bridge or PCI Express switch when those IOAs 
+      are accessing something on the processor side of the PHB. After configuration, 
+      PCI to PCI bridges and PCI Express switches are basically transparent to the 
+      software as far as addressing is concerned (the exception is error handling). 
+      For more information, see the appropriate PCI Express switch 
+      specification.</para>
+
+      <variablelist>
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_pci_pci_bridges" 
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+            <listitem>
+              <para>Conventional PCI to PCI bridges used on 
+              the base platform and plug-in cards must be compliant with the most recent 
+              version of the <xref linkend="dbdoclet.50569387_60429"/> at the time of the 
+              platform design, including any approved Engineering Change Requests (ECRs) 
+              against that document. PCI-X to PCI-X bridges used on the base platform and 
+              plug-in cards must be compliant with the most recent version of the 
+              <xref linkend="dbdoclet.50569387_26550"/> at the time of the platform design, 
+              including any approved Engineering Change Requests (ECRs) against that 
+              document.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_pci_pci_bridges" 
+          xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+            <listitem>
+              <para>PCI Express to PCI/PCI-X and PCI/PCI-X to 
+              PCI Express bridges used on the base platform and plug-in cards must be 
+              compliant with the most recent version of the 
+              <xref linkend="dbdoclet.50569387_28381"/> at the time of the platform design, 
+              including any approved Engineering Change Requests (ECRs) against that 
+              document. </para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_pci_pci_bridges" 
+          xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+            <listitem>
+              <para>PCI Express switches used on the base 
+              platform and plug-in cards must be compliant with the most recent version of 
+              the <xref linkend="dbdoclet.50569387_66784"/> at the time of the platform 
+              design, including any approved Engineering Change Requests (ECRs) against that 
+              document.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry xml:id="dbdoclet.50569330_52353">
+          <term><emphasis role="bold">R1-<xref linkend="sec_pci_pci_bridges" 
+          xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+            <listitem>
+              <para>Bridges 
+              and switches used in platforms which will support PCI 
+              Express IOAs beneath them must support pass-through of PCI configuration cycles 
+              which access the PCI extended configuration space.</para>
+              <para><emphasis role="bold">Software and Platform Implementation Notes:</emphasis></para>
+
+              <orderedlist>		      
+                <listitem>
+                  <para>Bridges used on plug-in cards that do not follow Requirement 
+                  <xref linkend="dbdoclet.50569330_52353"/> will presumably allow for the 
+                  operation of their IOAs on the plug-in card, even though not supporting the PCI 
+                  extended configuration address space, because the card was designed with the 
+                  bridges and IOAs in mind.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Determination of support of the PCI configuration address space 
+                  is via the <emphasis role="bold"><literal>&#x201C;ibm,pci-config-space-type&#x201D;</literal></emphasis> 
+                  property in the IOA's node.</para>
+                </listitem>
+              </orderedlist>		      
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_pci_pci_bridges" 
+          xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
+            <listitem>
+              <para>Bridges and switches used in platforms 
+              which will support PCI Express IOAs beneath them must support 64-bit 
+              addressing.</para>
+            </listitem>
+       	</varlistentry>
+      </variablelist>
+    </section>
+  </section>
+  
+  <section>
+    <title>Bridge Extensions</title>
+    <section xml:id="dbdoclet.50569330_17337">
+      <title>Enhanced I/O Error Handling (EEH) Option</title>
+      <para>The EEH option uses the following terminology.</para>
+      <para>PE A Partitionable Endpoint. This refers to the granule that is 
+      treated as one for purposes of EEH recovery and for assignment to an OS image 
+      (for example, in an LPAR environment). Note that the PE granularity supported 
+      by the hardware may be finer than is supported by the firmware. See also 
+      <xref linkend="dbdoclet.50569330_34831"/>. A PE may be any one of the 
+      following:</para>
+      <para> A single-function or multi-function IOA</para>
+      <para> A set of IOAs and some piece of I/O fabric above the IOAs that 
+      consists of one or more bridges or switches.</para>
+      <para>EEH Stopped state The state of a PE being in both the MMIO Stopped 
+      state and DMA Stopped state.</para>
+      <para>MMIO Stopped state The state of the PE which will discard any MMIO 
+      <emphasis>Store</emphasis> s to that PE, and will return all-1's data for 
+      <emphasis>Load</emphasis> s to that PE. If the PE is in the MMIO Stopped state 
+      and EEH is disabled, then a <emphasis>Load</emphasis> will also return a 
+      machine check to the processor that issued the <emphasis>Load</emphasis>, for 
+      the <emphasis>Load</emphasis> that had the initial error and while the PE 
+      remains in the MMIO Stopped state.</para>
+      <para>DMA Stopped state The state of the PE which will block any further 
+      DMA requests from that PE (DMA completions that occur after the DMA Stopped 
+      state is entered that correspond to DMA requests that occurred before the DMA 
+      Stopped state is entered, may be completed).</para>
+      <para>Failure A detected error between the PE and the system (for 
+      example, processor or memory); errors internal to the PE are not considered 
+      failures unless the PE signals the error via a normal I/O fabric error 
+      signalling protocol. (for example, SERR or ERR_FATAL).</para>
+      <para>The Enhanced I/O Error Handling (EEH) option is defined primarily 
+      to enhance the system recoverability from failures that occur during 
+      <emphasis>Load</emphasis> and <emphasis>Store</emphasis> operations. In addition, 
+      certain failures that are normally non-recoverable during DMA are prevented 
+      from causing a catastrophic failure to the system (for example, a conventional 
+      PCI address parity error).</para>
+      <para>The basic concept behind the EEH option is to turn all failures 
+      that cannot be reported to the IOA, into something that looks like a 
+      conventional PCI Master Abort (MA) error<footnote xml:id="pgfId-1012753"><para>A conventional PCI MA error is where the 
+      conventional PCI IOA does not respond as a target with a device select 
+      indication (that is, the IOA does not respond by activating the DEVSEL signal 
+      back to the master). For PCI Express, the corresponding error is Unsupported 
+      Request (UR).</para></footnote> on a Load or Store operation to the PE during 
+      and after the failure; responding with all-1&#x2019;s data and no error 
+      indication on a <emphasis>Load</emphasis> instruction and ignoring 
+      <emphasis>Store</emphasis> instructions. The MA error should be handled by a device 
+      driver, so this approach should just be an extension to what should be the 
+      error handling without this option implemented.</para>
+      <para>The following is the general idea behind the EEH option:</para>
+
+      <itemizedlist>		      
+        <listitem>
+          <para>On a failure that occurs in an operation between the PHB and 
+          PE:</para>
+
+          <itemizedlist>		      
+            <listitem>
+              <para>Put the PE into the MMIO Stopped and DMA Stopped states (also 
+              known as the EEH Stopped state). This is defined as a state where the PE is 
+              prevented from doing any further operations that could corrupt the system; 
+              which for the most part means blocking DMA from the PE and preventing load and 
+              store completions to the PE.</para>
+            </listitem>
+            
+            <listitem>
+              <para>While the PE is in the MMIO Stopped state, if a 
+              <emphasis>Load</emphasis> or <emphasis>Store</emphasis> is targeted to that PE, then 
+              return all-1&#x2019;s data with no error indication on a 
+              <emphasis>Load</emphasis> and discard all <emphasis>Stores</emphasis> to that PE. That 
+              is, essentially treat the <emphasis>Load</emphasis> or 
+              <emphasis>Store</emphasis> the same way as if a MA error was received on that 
+              operation.</para>
+            </listitem>
+            
+            <listitem>
+              <para>The device driver and OS recovers a PE by removing it from the 
+              MMIO Stopped state (keeping it in the DMA Stopped state) and doing any 
+              necessary loads to the PE to capture PE state, and then either doing the 
+              necessary stores to the PE to set the appropriate state before removing the PE 
+              from the DMA Stopped state and continuing operations, or doing a reset of the 
+              PE and then re-initializing and restarting the PE.<footnote xml:id="pgfId-1007732"><para>Most 
+                device drivers will implement a reset and 
+                restart in order to assure a clean restart of 
+                operations.</para></footnote></para>
+            </listitem>
+          </itemizedlist>		      
+        </listitem>
+        
+        <listitem>
+          <para>In order to make sure that there are no interactions necessary 
+          between device drivers during recovery operations, each PE will have the 
+          capability of being removed from its MMIO Stopped and DMA Stopped states 
+          independent from any other PE which is in the MMIO Stopped or DMA Stopped 
+          state. </para>
+        </listitem>
+        
+        <listitem>
+          <para>In order to take into account device drivers which do not 
+          correctly implement MA recovery, make sure that the EEH option can be enabled 
+          and disabled independently for each PE.<footnote xml:id="pgfId-1007735"><para>LPAR 
+            implementations limit the capability of 
+            running with EEH disabled (see virtualization rsequirements in 
+            <xref linkend="LoPAR.Virtualization"/>).</para></footnote></para>
+        </listitem>
+        
+        <listitem>
+          <para>EEH, as defined, only extends to operations between the processor 
+          and a PE and between a PE and System Memory. It does not extend to direct IOA 
+          to IOA peer to peer operations.</para>
+        </listitem>
+      </itemizedlist>		      
+
+      <para>Hardware changes for this option are detailed in the next section. 
+      RTAS changes required are detailed in <xref linkend="LoPAR.RTAS"/>.</para>
+    
+      <section xml:id="sec_eeh_req">
+        <title>EEH Option Requirements</title>
+        <para>Although the EEH option architecture may be extended to other I/O 
+        topologies in the future, for now this recovery architecture will be limited to 
+        PCI. </para>
+        <para>In order to be able to test device driver additional code for the 
+        EEH-enabled case, the EEH option also requires the Error Injection option be 
+        implemented concurrently.</para>
+        <para>The additional requirements on the hardware for this option are as 
+        follows. For the RTAS requirements for this option, see 
+        <xref linkend="LoPAR.RTAS"/>.</para>
+
+        <variablelist>
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_eeh_req" 
+            xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For the EEH option:</emphasis> 
+                A platform must implement the Error Injection option concurrently 
+                with the EEH option, with an error injection granularity to the PE level.</para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_eeh_req" 
+            xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For the EEH option:</emphasis> 
+                If a platform is going to implement the EEH option, then the I/O 
+                topology implementing EEH must only consist of PCI components.</para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_eeh_req" 
+            xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For the EEH option:</emphasis> 
+                The hardware must provide a way to independently enable and disable 
+                the EEH option for each PE with normal processor <emphasis>Load</emphasis>
+                and <emphasis>Store</emphasis> 
+                instructions, and must provide the capability of doing this while not 
+                disturbing operations to other PEs in the platform.</para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry xml:id="dbdoclet.50569330_11898">
+            <term><emphasis role="bold">R1-<xref linkend="sec_eeh_req" 
+            xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For the EEH option:</emphasis> The hardware 
+                fault isolation register bits must be set the same way on errors when the EEH 
+                option is enabled as they were when the EEH option is not implemented or when 
+                it is implemented but disabled.</para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry xml:id="dbdoclet.50569330_34857">
+            <term><emphasis role="bold">R1-<xref linkend="sec_eeh_req" 
+            xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For the EEH option:</emphasis> Any 
+                detected failure to/from a PE must set both the MMIO Stopped and DMA Stopped 
+                states for the PE, unless the error that caused the failure can be reported to 
+                the IOA in a way that the IOA will report the error to its device driver in a 
+                way that will avoid any data corruption.</para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry xml:id="dbdoclet.50569330_24932">
+            <term><emphasis role="bold">R1-<xref linkend="sec_eeh_req" 
+            xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For the EEH 
+                option:</emphasis> If an 
+                I/O fabric consists of a hierarchy of components, then when a failure is 
+                detected in the fabric, all PEs that are downstream of the failure must enter 
+                the MMIO Stopped and DMA Stopped states if they may be affected by the 
+                failure.</para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_eeh_req" 
+            xrefstyle="select: labelnumber nopage"/>-7.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For the EEH 
+                option:</emphasis> While a PE has its EEH option enabled, if a failure occurs, 
+                the platform must not propagate it to the system as any type of error (for 
+                example, as an SERR for a PE which is a conventional PCI-to-PCI bridge).</para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_eeh_req" 
+            xrefstyle="select: labelnumber nopage"/>-8.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For the EEH option:</emphasis> 
+                From the time that the MMIO Stopped state is entered for a PE, the 
+                PE must be prevented from responding to Load and Store operations including the 
+                operation that caused the PE to enter the MMIO Stopped state; a Load operation 
+                must return all-1&#x2019;s with no error indication and a Store operation must 
+                be discarded (that is, <emphasis>Load</emphasis> and <emphasis>Store</emphasis> 
+                operations being treated like they received a conventional PCI 
+                Master Abort error), until one of the following is true:</para>
+
+                <orderedlist numeration="loweralpha">		      
+                  <listitem>
+                    <para>The <emphasis>ibm,set-eeh-option</emphasis> RTAS call is called 
+                    with <emphasis>function</emphasis> 2 (Release PE for MMIO 
+                    <emphasis>Load</emphasis> /<emphasis>Store</emphasis> operations).</para>
+                  </listitem>
+
+                  <listitem>
+                    <para>The <emphasis>ibm, set-slot-reset</emphasis> RTAS call is 
+                    called with <emphasis>function</emphasis> 0 (Deactivate the reset signal to 
+                    the PE).</para>
+                  </listitem>
+
+                  <listitem>
+                    <para>The power is cycled (off then on) to the PE.</para>
+                  </listitem>
+
+                  <listitem>
+                    <para>The partition or system is rebooted.</para>
+                  </listitem>
+                </orderedlist>		      
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_eeh_req" 
+            xrefstyle="select: labelnumber nopage"/>-9.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For the EEH option:</emphasis> 
+                From the time that the DMA Stopped state is entered for a PE, the 
+                PE must be prevented from initiating a new DMA request or completing a DMA 
+                request that caused the PE to enter the DMA Stopped state (DMA requests that 
+                were started before the DMA Stopped State is entered may be completed), and 
+                including MSI DMA operations, until one of the following is true:</para>
+
+                <orderedlist numeration="loweralpha">		      
+                  <listitem>
+                    <para>The <emphasis>ibm,set-eeh-option</emphasis> RTAS call is called 
+                    with <emphasis>function</emphasis> 3 (Release PE for DMA operations).</para>
+                  </listitem>
+
+                  <listitem>
+                    <para>The <emphasis>ibm, set-slot-reset</emphasis> RTAS call is 
+                    called with <emphasis>function</emphasis> 0 (Deactivate the reset signal to 
+                    the PE).</para>
+                  </listitem>
+
+                  <listitem>
+                    <para>The power is cycled (off then on) to the PE.</para>
+                  </listitem>
+
+                  <listitem>
+                    <para>The partition or system is rebooted.</para>
+                  </listitem>
+                </orderedlist>		      
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_eeh_req" 
+            xrefstyle="select: labelnumber nopage"/>-10.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For the EEH option:</emphasis> 
+                The hardware must provide the capability to the firmware to 
+                determine, on a per-PE basis, that a failure has occurred which has caused the 
+                PE to be put into the MMIO Stopped and DMA Stopped states and to read the 
+                actual state information (MMIO Stopped state and DMA Stopped state).</para>
+              </listitem>
+         	</varlistentry>
+
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_eeh_req" 
+            xrefstyle="select: labelnumber nopage"/>-11.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For the EEH option:</emphasis> 
+                The hardware must provide the capability of separately enabling and 
+                resetting the DMA Stopped and MMIO Stopped states for a PE without disturbing 
+                other PEs on the platform. The hardware must provide this capability without 
+                requiring a PE reset and must do so through normal processor 
+                <emphasis>Store</emphasis> instructions<emphasis>.</emphasis></para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry xml:id="dbdoclet.50569330_41454">
+            <term><emphasis role="bold">R1-<xref linkend="sec_eeh_req" 
+            xrefstyle="select: labelnumber nopage"/>-12.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For the EEH option:</emphasis> The hardware 
+                must provide the capability to the firmware to deactivate the reset to each PE, 
+                independent of other PEs, and the hardware must provide the proper controls on 
+                the reset transitions in order to prevent failures from being introduced into 
+                the platform by the changing of the reset.</para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry xml:id="dbdoclet.50569330_38489">
+            <term><emphasis role="bold">R1-<xref linkend="sec_eeh_req" 
+            xrefstyle="select: labelnumber nopage"/>-13.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For the EEH option:</emphasis> The hardware 
+                must provide the capability to the firmware to activate the reset to each PE, 
+                independent of other PEs, and the hardware must provide the proper controls on 
+                the reset transitions in order to prevent failures from being introduced into 
+                the platform by the changing of the reset.</para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_eeh_req" 
+            xrefstyle="select: labelnumber nopage"/>-14.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For the EEH option:</emphasis> 
+                The hardware must provide the capability to the firmware to read 
+                the state of the reset signal to each PE.</para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry xml:id="dbdoclet.50569330_27198">
+            <term><emphasis role="bold">R1-<xref linkend="sec_eeh_req" 
+            xrefstyle="select: labelnumber nopage"/>-15.</emphasis></term>
+              <listitem>
+                <para> <emphasis role="bold">For the EEH option:</emphasis> When a PE is 
+                put into the MMIO Stopped and DMA Stopped states, it must be done in such a way 
+                to not introduce failures that may corrupt other parts of the platform.</para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_eeh_req" 
+            xrefstyle="select: labelnumber nopage"/>-16.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For the EEH option:</emphasis> 
+                The hardware must allow firmware access to internal bridge and I/O 
+                fabric control registers when any or all of the PEs are in the MMIO Stopped 
+                state.</para>
+                <para><emphasis role="bold">Platform Implementation Note:</emphasis> It is expected 
+                that bridge and fabric control registers will have their own PE state separate 
+                from the PEs for IOAs.</para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_eeh_req" 
+            xrefstyle="select: labelnumber nopage"/>-17.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For the EEH 
+                option:</emphasis> A PE that supports the EEH option must not share an 
+                interrupt with another PE in the platform.</para>
+                <para><emphasis role="bold">Hardware Implementation Notes:</emphasis></para>
+
+                <orderedlist>		      
+                  <listitem>
+                <para>Requirement <xref linkend="dbdoclet.50569330_11898"/> means that 
+                    the hardware must always update the standard PCI error/status registers in the 
+                    bus&#x2019; configuration space as defined by the bus architecture, even when 
+                    the EEH option is enabled.</para>
+                  </listitem>
+
+                  <listitem>
+                    <para>The type of error information trapped by the hardware when a PE 
+                    is placed into the MMIO Stopped and DMA Stopped states is implementation 
+                    dependent. It is expected that the system software will do an check-exception 
+                    or ibm,slot-error-detail RTAS call to gather the error information when a 
+                    failure is detected.</para>
+                  </listitem>
+
+                  <listitem xml:id="dbdoclet.50569330_82159">
+                    <para>A DMA operation (Read or Write) that was initiated before a <emphasis>Load</emphasis>,
+                    <emphasis>Store</emphasis>, or DMA error, does not 
+                    necessarily need to be blocked, as it was not a result of the 
+                    <emphasis>Load</emphasis>, <emphasis>Store</emphasis>, or DMA that failed. The normal 
+                    PCI Express ordering rules require that an ERR_FATAL or ERR_NONFATAL from a 
+                    failed <emphasis>Store</emphasis> or DMA error, or a 
+                    <emphasis>Load</emphasis> Completion with error status, will reach the PHB prior to any 
+                    DMA that might have been kicked-off in error as a result of a failed 
+                    <emphasis>Load</emphasis> or <emphasis>Store</emphasis> or a <emphasis>Load</emphasis> 
+                    or <emphasis>Store</emphasis> that follows a failed <emphasis>Load</emphasis> 
+                    or <emphasis>Store</emphasis>. This means that as long as the PHB processes 
+                    an ERR_FATAL, ERR_NONFATAL, or <emphasis>Load</emphasis> Completion which 
+                    indicates a failure, prior to processing any more DMA operations or 
+                    <emphasis>Load</emphasis> Completions, and puts the PE into the MMIO and Stopped DMA 
+                    Stopped states, implementations should be able to block DMA operations that 
+                    were kicked-off after a failing DMA operation and allow DMA operations that 
+                    were kicked off before a failing DMA operation without violating the normal PCI 
+                    Express ordering rules.</para>
+                  </listitem>
+
+                  <listitem>
+                    <para>In reference to Requirements 
+                    <xref linkend="dbdoclet.50569330_34857"/>, and 
+                    <xref linkend="dbdoclet.50569330_24932"/>, PCI Express implementations may choose to 
+                    enter the MMIO Stopped and DMA Stopped states even if an error can be reported 
+                    back to the IOA.</para>
+                  </listitem>
+                </orderedlist>		      
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry xml:id="dbdoclet.50569330_49770">
+            <term><emphasis role="bold">R1-<xref linkend="sec_eeh_req" 
+            xrefstyle="select: labelnumber nopage"/>-18.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For the EEH option:</emphasis> If 
+                the device driver(s) for any IOA(s) in a PE in the platform are EEH unaware 
+                (that is may produce data integrity exposures due to a MMIO Stopped or DMA 
+                Stopped state), then the firmware must prevent the IOA(s) in such a PE from 
+                being enabled for operations (that is, do not allow the Bus Master, Memory 
+                Space or I/O Space bits in the PCI configuration Command register from being 
+                set to a 1) while EEH is enabled for that PE, and instead of preventing the PE 
+                from being enabled, may instead turn off EEH when such an enable is attempted 
+                without first an attempt by the device driver to enable EEH (by the 
+                <emphasis>ibm,set-eeh-option</emphasis> ), providing such EEH disablement does not 
+                violate any other requirement for EEH enablement (for example, virtualization 
+                requirement in <xref linkend="LoPAR.Virtualization"/>).</para>
+                <para><emphasis role="bold">Software Implementation Note:</emphasis> To be EEH 
+                aware, a device driver does not need to be able to recover from an MMIO Stopped 
+                or DMA Stopped state, only recognize the all-1's condition and not use data 
+                from operations that may have occurred since the last all-1's checkpoint. In 
+                addition, the device driver under such failure circumstances needs to turn off 
+                interrupts (using the <emphasis>ibm,set-int-off</emphasis> RTAS call or by 
+                resetting the PE and keeping it reset with <emphasis>ibm,set-slot-reset</emphasis> or 
+                <emphasis>ibm,slot-error-detail</emphasis>) in order to make 
+                sure that any (unserviceable) interrupts from the PE do not affect the system. 
+                Note that this is the same device driver support needed to protect against an 
+                IOA dying or against a no-DEVSEL type error (which may or may not be the result 
+                of an IOA that has died).</para>
+              </listitem>
+         	</varlistentry>
+        </variablelist>
+      </section>
+      
+      <section xml:id="dbdoclet.50569330_95393">
+        <title>Slot Level EEH Event Interrupt Option</title>
+        <para>Some platform implementations may allow asynchronous notification 
+        of EEH events via an external interrupt. This is called the Slot Level EEH 
+        Event Interrupt option. When implemented, the platform will implement the 
+        <emphasis role="bold"><literal>&#x201C;ibm,io-events-capable&#x201D;</literal></emphasis> property in the 
+        nodes where the EEH control resides, and the <emphasis>ibm,set-eeh-option</emphasis> 
+        RTAS call will implement function 4 to enable the 
+        EEH interrupt for each of these nodes and function 5 to disable the EEH 
+        interrupt for each of these nodes (individual control by node). Calling the 
+        <emphasis>ibm,set-eeh-option</emphasis> RTAS call with function 4 or function 
+        5 when the node specified does not implement this capability will return a -3, 
+        indicating invalid parameters.</para>
+        <para>The interrupt source specified in the 
+        <emphasis role="bold"><literal>ibm,io-events</literal></emphasis> child must be enabled (in addition to any individual 
+        node enables) via the <emphasis>ibm,int-on</emphasis> RTAS call and the 
+        priority for that interrupt, as set in the XIVE by the 
+        <emphasis>ibm,set-xive</emphasis> RTAS call, must be something other than 0xFF, in order 
+        for the external interrupt to be presented to the system.</para>
+        <para>The <emphasis role="bold"><literal>&#x201C;ibm,io-events-capable&#x201D;</literal></emphasis> 
+        property, when it exists, contains 0 to N interrupt specifiers (per the 
+        definition of interrupt specifiers for the node's interrupt parent). When no 
+        interrupt specifiers are specified by the <emphasis role="bold"><literal>&#x201C;ibm,io-events-capable&#x201D;</literal></emphasis> 
+        property, then the interrupt, if enabled, is signaled via the interrupt specifier given in the 
+        <emphasis role="bold"><literal>ibm,io-events</literal></emphasis> child node of the <emphasis role="bold"><literal>/events</literal></emphasis> 
+        node.</para>
+
+        <variablelist>
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_95393" 
+            xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For the Slot Level EEH Event 
+                Interrupt option:</emphasis> All of the following must be true:</para>
+
+                <orderedlist numeration="loweralpha">		      
+                  <listitem>
+                    <para>The platform must implement the <emphasis role="bold"><literal>&#x201C;ibm,io-events-capable&#x201D;</literal></emphasis> 
+                    property in all device tree nodes which represent bridge where EEH is implemented and for which the EEH 
+                    io-event interrupt is to be signaled.</para>
+                  </listitem>
+
+                  <listitem>
+                    <para>The platform must implement functions 4 and 5 of the 
+                    <emphasis>ibm,set-eeh-option</emphasis> RTAS call for all PEs under nodes that contain 
+                    the <emphasis role="bold"><literal>&#x201C;ibm,io-events-capable&#x201D;</literal></emphasis> property.</para>
+                  </listitem>
+                </orderedlist>		      
+              </listitem>
+         	</varlistentry>
+        </variablelist>
+      </section>
+    </section>
+    
+    <section xml:id="dbdoclet.50569330_17337.1">
+      <title>Error Injection (ERRINJCT) Option</title>
+      <para>The Error Injection (ERRINJCT) option is defined primarily to test 
+      enhanced error recovery software. As implemented in the I/O bridge, this option 
+      is used to test the software which implements the recovery which is enabled by 
+      the EEH option in that bridge. Specifically, the <emphasis>ioa-bus-error</emphasis> and 
+      <emphasis>ioa-bus-error-64</emphasis> functions 
+      of the <emphasis>ibm,errinjct</emphasis> RTAS call are used to inject errors 
+      onto each PE primary bus, which in turn will cause certain actions on the bus 
+      and certain actions by the PE, the EEH logic, and by the error recovery 
+      software.</para>
+    
+      <section xml:id="sec_errinject_hw_req">
+        <title>ERRINJCT Option Hardware Requirements</title>
+        <para>Although the <emphasis>ioa-bus-error</emphasis> and 
+        <emphasis>ioa-bus-error-64</emphasis> functions of the 
+        <emphasis>ibm,errinjct</emphasis> RTAS call may be extended to other I/O buses and PEs in 
+        the future, for now this architecture will be limited to PCI buses. </para>
+        <para>The type of errors, and the injection qualifiers, place the 
+        following additional requirements on the hardware for this option. </para>
+
+        <variablelist>
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_errinject_hw_req" 
+            xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+              <listitem>
+                <para><emphasis>For the</emphasis>
+                <emphasis>ioa-bus-error</emphasis> <emphasis>and</emphasis>
+                <emphasis>ioa-bus-error-64</emphasis> <emphasis>functions of the Error Injection option:</emphasis> 
+                If a platform is going to implement either of these functions of this option, then 
+                the I/O topology must be PCI.</para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_errinject_hw_req" 
+            xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+              <listitem>
+                <para><emphasis>For the</emphasis>
+                <emphasis>ioa-bus-error</emphasis> <emphasis>and</emphasis>
+                <emphasis>ioa-bus-error-64</emphasis> <emphasis>functions of the Error Injection option:</emphasis> 
+                The hardware must provide a way to inject the required errors for 
+                each PE primary bus, and the errors must be injectable independently, without 
+                affecting the operations on the other buses in the platform.</para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_errinject_hw_req" 
+            xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+              <listitem>
+                <para><emphasis>For the</emphasis>
+                <emphasis>ioa-bus-error</emphasis> <emphasis>and</emphasis>
+                <emphasis>ioa-bus-error-64</emphasis> <emphasis>functions of the Error Injection option:</emphasis> 
+                The hardware must provide a way to set up for the injection of the 
+                required errors without disturbing operations to other buses outside the 
+                PE.</para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_errinject_hw_req" 
+            xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+              <listitem>
+                <para><emphasis>For the</emphasis> 
+                <emphasis>ioa-bus-error</emphasis> <emphasis>and</emphasis>
+                <emphasis>ioa-bus-error-64</emphasis> <emphasis>functions of the Error Injection option:</emphasis> 
+                The hardware must provide a way to the firmware to set up the 
+                following information for the error injection operation by normal processor 
+                <emphasis>Load</emphasis> and<emphasis>Store</emphasis> instructions:</para>
+
+                <itemizedlist>		      
+                  <listitem>
+                    <para>Address at which to inject the error</para>
+                  </listitem>
+                  
+                  <listitem>
+                    <para>Address mask to mask off any combination of the least significant 
+                    24 (64 for the <emphasis>ioa-bus-error-64</emphasis> function) bits of the 
+                    address</para>
+                  </listitem>
+                  
+                  <listitem>
+                    <para>PE primary bus number which is to receive the error</para>
+                  </listitem>
+                  
+                  <listitem>
+                    <para>Type of error to be injected</para>
+                  </listitem>
+                </itemizedlist>		      
+
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry xml:id="dbdoclet.50569330_20501">
+            <term><emphasis role="bold">R1-<xref linkend="sec_errinject_hw_req" 
+            xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
+              <listitem>
+                <para><emphasis>For the</emphasis>
+                <emphasis>ioa-bus-error</emphasis> <emphasis>and</emphasis>
+                <emphasis>ioa-bus-error-64</emphasis> <emphasis>functions of the Error Injection option:</emphasis> 
+                The platform must have the capability of selecting the errors 
+                specified in <xref linkend="dbdoclet.50569330_70489"/> when the bus directly 
+                below the bridge injecting the error is a Conventional PCI or PCI-X Bus, and 
+                the errors specified in <xref linkend="dbdoclet.50569330_32705"/> when the bus 
+                directly below the bridge injecting the error is a PCI Express link, and when 
+                that error is appropriate for the platform configuration, and the platform must 
+                limit the injection of errors which are inappropriate for the given platform 
+                configuration.</para>
+                <para><emphasis role="bold">Platform Implementation Note:</emphasis> As an example 
+                of inappropriate errors to inject in Requirement 
+                <xref linkend="dbdoclet.50569330_20501"/>, consider the configuration where there is 
+                an I/O bridge or switch below the bridge with the injector and that bridge 
+                generates multiple PEs and when those PEs are assigned to different LPAR 
+                partitions. In that case, injection of some real errors may cause the switches 
+                or bridges to react and generate an error that affects multiple partitions, 
+                which would be inappropriate. Therefore, to comply with Requirement 
+                <xref linkend="dbdoclet.50569330_20501"/>, the platform may either emulate some 
+                errors in some configurations instead of injecting real errors on the link or 
+                bus, or else the platform may not support injection at all to those PEs. 
+                Another example where a particular error may be inappropriate is when there is 
+                a heterogeneous network between the PHB and the PE (for example, a PCI Express 
+                bridge that converts from a PCI Express PHB and a PCI-X PE).</para>
+
+                <table frame="all" pgwide="1" xml:id="dbdoclet.50569330_70489">
+                  <title>Supported Errors for Conventional PCI, PCI-X Mode 1 
+                  or PCI-X Mode 2 Error Injectors</title>
+                  <tgroup cols="4">
+                    <colspec colname="c1" colwidth="10*" align="center"/>
+                    <colspec colname="c2" colwidth="8*" align="center"/>
+                    <colspec colname="c3" colwidth="20*" align="center"/>
+                    <colspec colname="c4" colwidth="62*"/>
+                    <thead valign="middle">
+                      <row>
+                        <entry morerows="0">
+                          <para>
+                            <emphasis role="bold">Operation</emphasis>
+                          </para>
+                        </entry>
+                        <entry morerows="0">
+                          <para>
+                            <emphasis role="bold">PCI Address Space(s)</emphasis>
+                          </para>
+                        </entry>
+                        <entry morerows="0">
+                          <para>
+                            <emphasis role="bold">Error (s)</emphasis>
+                          </para>
+                        </entry>
+                        <entry morerows="0" align="center">
+                          <para>
+                            <emphasis role="bold">Other Requirements</emphasis>
+                          </para>
+                        </entry>
+                      </row>
+                    </thead>
+                    <tbody valign="middle">
+                      <row>
+                        <entry morerows="1">
+                          <para> Load</para>
+                        </entry>
+                        <entry morerows="1">
+                          <para> Memory, I/O, Config</para>
+                        </entry>
+                        <entry>
+                          <para> Data Parity Error</para>
+                        </entry>
+                        <entry morerows="3">
+                          <para> All PCI-X adapters operating in Mode 2 and some 
+                          operating in Mode 1 utilize a double bit detecting, single bit correcting Error 
+                          Correction Code (ECC). In these cases, ensure that at least two bits are 
+                          modified to detect this error.</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para> Address Parity Error</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry morerows="1">
+                          <para> Store</para>
+                        </entry>
+                        <entry morerows="1">
+                          <para> Memory, I/O, Config</para>
+                        </entry>
+                        <entry>
+                          <para> Data Parity Error</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para> Address Parity Error</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry morerows="3">
+                          <para> DMA read</para>
+                        </entry>
+                        <entry morerows="3">
+                          <para> Memory</para>
+                        </entry>
+                        <entry>
+                          <para> Data Parity Error</para>
+                        </entry>
+                        <entry morerows="1">
+                          <para> All PCI-X adapters operating in Mode 2 and some 
+                          operating in Mode 1 utilize a double bit detecting, single bit correcting Error 
+                          Correction Code (ECC). In these cases, ensure that at least two bits are 
+                          modified to detect this error.</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para> Address Parity Error</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para> Master Abort</para>
+                        </entry>
+                        <entry>
+                          <para> &#xA0;</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para> Target Abort</para>
+                        </entry>
+                        <entry>
+                          <para> &#xA0;</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry morerows="3">
+                          <para> DMA write</para>
+                        </entry>
+                        <entry morerows="3">
+                          <para> Memory</para>
+                        </entry>
+                        <entry>
+                          <para> Data Parity Error</para>
+                        </entry>
+                        <entry morerows="1">
+                          <para> All PCI-X adapters operating in Mode 2 and some 
+                          operating in Mode 1 utilize a double bit detecting, single bit correcting Error 
+                          Correction Code (ECC). In these cases, ensure that at least two bits are 
+                          modified to detect this error.</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para> Address Parity Error</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para> Master Abort</para>
+                        </entry>
+                        <entry>
+                          <para> &#xA0;</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para> Target Abort</para>
+                        </entry>
+                        <entry>
+                          <para> &#xA0;</para>
+                        </entry>
+                      </row>
+                    </tbody>
+                  </tgroup>
+                </table>
+
+                <table frame="all" pgwide="1" xml:id="dbdoclet.50569330_32705">
+                  <title>Supported Errors for PCI Express Error Injectors</title>
+                  <tgroup cols="4">
+                    <colspec colname="c1" colwidth="10*" align="center"/>
+                    <colspec colname="c2" colwidth="8*" align="center"/>
+                    <colspec colname="c3" colwidth="20*" align="center"/>
+                    <colspec colname="c4" colwidth="62*"/>
+                    <thead valign="middle">
+                      <row>
+                        <entry morerows="0">
+                          <para>
+                            <emphasis role="bold">Operation</emphasis>
+                          </para>
+                        </entry>
+                        <entry morerows="0">
+                          <para>
+                            <emphasis role="bold">PCI Address Space(s)</emphasis>
+                          </para>
+                        </entry>
+                        <entry morerows="0">
+                          <para>
+                            <emphasis role="bold">Error (s)</emphasis>
+                          </para>
+                        </entry>
+                        <entry morerows="0" align="center">
+                          <para>
+                            <emphasis role="bold">Other Requirements</emphasis>
+                          </para>
+                        </entry>
+                      </row>
+                    </thead>
+                    <tbody valign="middle">
+                      <row>
+                        <entry>
+                          <para> Load</para>
+                        </entry>
+                        <entry>
+                          <para> Memory, I/O, Config</para>
+                        </entry>
+                        <entry>
+                          <para> TLP ECRC Error</para>
+                        </entry>
+                        <entry morerows="1">
+                          <para> The TLP ECRC covers the address and data bits of a TLP. 
+                          Therefore, one cannot determine if the integrity error resides in the address 
+                          or data portion of a TLP.</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para> Store</para>
+                        </entry>
+                        <entry>
+                          <para> Memory, I/O, Config</para>
+                        </entry>
+                        <entry>
+                          <para> TLP ECRC Error</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry morerows="1">
+                          <para> DMA read</para>
+                        </entry>
+                        <entry morerows="1">
+                          <para> Memory</para>
+                        </entry>
+                        <entry>
+                          <para> TLP ECRC Error</para>
+                        </entry>
+                        <entry>
+                          <para> The TLP ECRC covers the address and data bits of a TLP. 
+                          Therefore, one cannot determine if the integrity error resides in the address 
+                          or data portion of a TLP.</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para> Completer Abort or Unsupported Request</para>
+                        </entry>
+                        <entry>
+                          <para> Inject the error that is injected on a TCE Page Fault.</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para> DMA write</para>
+                        </entry>
+                        <entry>
+                          <para> Memory</para>
+                        </entry>
+                        <entry>
+                          <para> TLP ECRC Error</para>
+                        </entry>
+                        <entry>
+                          <para> The TLP ECRC covers the address and data bits of a TLP. 
+                          Therefore, one cannot determine if the integrity error resides in the address 
+                          or data portion of a TLP.</para>
+                        </entry>
+                      </row>
+                    </tbody>
+                  </tgroup>
+                </table>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_errinject_hw_req" 
+            xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
+              <listitem>
+                <para><emphasis>For the</emphasis>
+                <emphasis>ioa-bus-error</emphasis> <emphasis>and</emphasis>
+                <emphasis>ioa-bus-error-64</emphasis> <emphasis>functions of the Error Injection option:</emphasis> 
+                The hardware must provide a way to inject the errors in 
+                <xref linkend="dbdoclet.50569330_32705"/> in a non-persistent manner (that is, at 
+                most one injection for each invocation of the <emphasis>ibm,errinjct</emphasis> RTAS call).</para>
+              </listitem>
+         	</varlistentry>
+        </variablelist>
+
+      </section>
+
+      <section xml:id="sec_errinjct_of_req">
+        <title>ERRINJCT Option OF Requirements</title>
+        <para>The Error Injection option will be disabled for all IOAs prior to 
+        the OS getting control.</para>
+
+        <variablelist>
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_errinjct_of_req" 
+            xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+              <listitem>
+                <para><emphasis>For the</emphasis>
+                <emphasis>ioa-bus-error</emphasis> <emphasis>and</emphasis>
+                <emphasis>ioa-bus-error-64</emphasis> <emphasis>functions of the Error Injection option:</emphasis> 
+                The OF must disable the ERRINJCT option for all PEs and all empty 
+                slots on all bridges which implement this option prior to passing control to 
+                the OS.</para>
+              </listitem>
+         	</varlistentry>
+        </variablelist>
+
+        <para><emphasis role="bold">Hardware and Firmware Implementation Note:</emphasis> 
+        The platform only needs the capability to setup the injection of one error at a 
+        time, and therefore injection facilities can be shared. The 
+        <emphasis>ibm,open-errinjct</emphasis> and <emphasis>ibm,close-errinjct</emphasis> are 
+        used to make sure that only one user is using the injection facilities at a 
+        time.</para>
+      </section>
+    </section>
+    
+    <section xml:id="dbdoclet.50569330_56798">
+      <title>Bridged-I/O EEH Support Option</title>
+      <para>If a platform requires multi-function I/O cards which are 
+      constructed by placing multiple IOAs beneath a PCI to PCI bridge, then extra 
+      support is needed to support such cards in an EEH-enabled environment. If this 
+      option is implemented, then the <emphasis>ibm,configure-bridge</emphasis> RTAS 
+      call will be implemented and therefore the 
+      <emphasis role="bold"><literal>&#x201C;ibm,configure-bridge&#x201D;</literal></emphasis> property will exist in the 
+      <emphasis role="bold"><literal>rtas</literal></emphasis> device node.</para>
+
+      <variablelist>
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_56798" 
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the Bridged-I/O EEH 
+              Support option:</emphasis> The platform must support the 
+              <emphasis>ibm,configure-bridge</emphasis> RTAS call.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569330_56798" 
+          xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the Bridged-I/O EEH 
+              Support option:</emphasis> The OS must provide the correct EEH coordination 
+              between device drivers that control multiple IOAs that are in the same 
+              PE.</para>
+            </listitem>
+       	</varlistentry>
+      </variablelist>
+    </section>
+  </section>
+</chapter>

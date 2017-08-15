@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2016 OpenPOWER Foundation
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<book xmlns="http://docbook.org/ns/docbook"
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  version="5.0"
+  status="draft"
+  xml:id="bk_main">
+
+    <!-- TODO: When ready to publish document, remove the 'status="draft"' statement from the book object above. -->
+
+    <title>Virtualization</title>
+    <subtitle>Linux on Power Architecture Reference</subtitle>
+
+    <info>
+    <author>
+      <personname>
+          <surname>System Software Work Group</surname>
+      </personname>
+      <email>syssw-chair@openpowerfoundation.org</email>
+      <affiliation>
+          <orgname>OpenPOWER Foundation</orgname>
+      </affiliation>
+    </author>
+    <copyright>
+      <year>2016</year>
+      <holder>OpenPOWER Foundation</holder>
+    </copyright>
+    <!-- TODO: Set the correct document releaseinfo -->
+    <releaseinfo>Revision 2.0_pre1</releaseinfo>
+    <productname>OpenPOWER</productname>
+    <pubdate/>
+
+    <legalnotice role="apache2">
+
+      <annotation>
+          <remark>Copyright details are filled in by the template.</remark>
+      </annotation>
+    </legalnotice>
+    
+    <!-- TODO: Update the following text with the correct document description (first paragraph),
+               Work Group name, and Work Product track (both in second paragraph). -->
+    <abstract>
+      <para>The purpose of this document is to provide firmware and software
+      architectural details for the base Platform hardware associated with an OpenPOWER Systems.
+      The base content for this document were contributed to the OpenPOWER Foundation in the
+      <citetitle>IBM Linux on Power Architecture Platform Reference (LoPAPR) Draft</citetitle>
+      document. It had numerous contributors inside IBM.</para>
+      <para>This document is a Standard Track, Work Group Specification work product owned by the
+      System Software Workgroup and handled in compliance with the requirements outlined in the
+      <citetitle>OpenPOWER Foundation Work Group (WG) Process</citetitle> document.  It was
+      created using the <citetitle>Master Template Guide</citetitle> version 0.9.5. Comments,
+      questions, etc. can be submitted to the public mailing list  for this document at 
+      <link xlink:href="http://tbd.openpowerfoundation.org">TBD</link>.</para>
+    </abstract>
+
+    <revhistory>
+      <!-- TODO: Update as new revisions created -->
+      <revision>
+          <date>2017-05-18</date>
+          <revdescription>
+            <itemizedlist spacing="compact">
+              <listitem>
+                <para>Revision 2.0_pre1 - initial conversion from IBM document.  Extracted from
+                Linux on Power Architecture Platform Reference (LoPAPR) version 1.1 dated March 24,
+                2016 -- Chapter 14 (Logical Partitioning Option), Chapter 13 (Dynamic Reconfiguration
+                Option), Chapter 17 (Virtualized Input/Output), Appendix A (SPLPAR Characteristics 
+                Definitions), Appendix D (A Protocol for a Virtual TTY Interface), Appendix E
+                (A Protocol for VSCSI Communications), Appendix F (A Protocol for VMC Communications),
+                Appendix J (Platform Dependent hcalls), and Appendix K (A Protocol for VNIC Communications)</para>
+              </listitem>
+            </itemizedlist>
+          </revdescription>
+      </revision>
+     </revhistory>
+    </info>
+
+  <!-- The ch_preface.xml file is required by all documents -->
+  <xi:include href="../../Docs-Master/common/ch_preface.xml"/>
+  <xi:include href="../common/ch_LoPAR_preface.xml"/>
+
+  <!-- Chapter heading files  -->
+  <xi:include href="ch_lpar_option.xml"/>
+  <xi:include href="ch_platform_hcalls.xml"/>
+  <xi:include href="ch_splpar.xml"/>
+  <xi:include href="ch_dynamic_reconfig.xml"/>
+  <xi:include href="ch_virtual_io.xml"/>
+  <xi:include href="ch_virtual_tty.xml"/>
+  <xi:include href="ch_virtual_scsi.xml"/>
+  <xi:include href="ch_virtual_nic.xml"/>
+  <xi:include href="ch_vmc_comm.xml"/>
+
+  <!-- Document specific appendices -->
+  <xi:include href="app_bibliography.xml"/>
+  <xi:include href="app_glossary.xml"/>
+
+  <!-- The app_foundation.xml appendix file is required by all documents. -->
+  <xi:include href="../../Docs-Master/common/app_foundation.xml"/>
+
+  <xi:include href="../common/app_EOD.xml"/>
+
+</book>

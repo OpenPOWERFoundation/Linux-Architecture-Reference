@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2016 OpenPOWER Foundation
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<chapter xmlns="http://docbook.org/ns/docbook" 
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xmlns:xlink="http://www.w3.org/1999/xlink" 
+         version="5.0"
+         xml:id="dbdoclet.50569337_66258">
+         
+  <title>Introduction</title>
+  
+  <para>The Run-Time Abstraction Service (RTAS) functions are provided by
+  LoPAR platforms to insulate the OS from having to know about and
+  manipulate a number of key platform hardware functions which ordinarily
+  require platform-dependent code. The OS calls RTAS functions rather than
+  manipulating hardware registers directly, reducing the need for platform
+  tailoring by the OS. This method of abstracting access to these platform
+  functions also permits hardware designers considerable flexibility in
+  hardware implementation. Since RTAS is provided by the platform developer,
+  this approach places the responsibility for supporting the platform
+  hardware design with the platform developer, not the OS developer. This
+  permits a degree of independence between the schedules of hardware and
+  software and reduces the release and test requirements for the OS, since it
+  can be tested to conform to the RTAS interface and not to every specific
+  hardware implementation. See
+  <xref linkend="dbdoclet.50569332_20008"/>
+  for a list of all RTAS calls, and
+  which ones are required based on which LoPAR options that are implemented
+  in the platform.</para>
+  
+  <para>In order for platforms to achieve this separation of OS code from
+  hardware implementation dependencies, RTAS defines an interface between the
+  platform and the OS that provides control of some of the common devices
+  found on all platforms. RTAS is a system programming interface that is
+  realized, on a specific platform, by an RTAS implementation. The RTAS
+  implementation provides the platform specific processing of the common
+  components. RTAS limits itself to the run-time control of non-I/O,
+  typically system board-resident, hardware features. Traditionally, features
+  such as these have been implemented differently on different platforms. The
+  different implementations have required much effort and platform-dependent
+  code in the OS. RTAS permits the OS to operate over a much wider range of
+  platforms without specialized code for each platform.</para>
+  
+  <para>In general, the OS should not access RTAS resources directly. It
+  should call RTAS to control the resource.</para>
+  
+  <para>OS drivers are necessary to provide device specific processing for
+  IOAs.</para>
+  
+  <para>The role of RTAS versus OF is very important to understand. OF and
+  RTAS are both platform-specific software, and both are tailored by the
+  platform developer to manipulate the specific platform hardware. However,
+  RTAS is intended to be present during the execution of the OS, and to be
+  called by the OS to access platform hardware features on behalf of the OS,
+  whereas OF need not be present when the OS is running. This frees
+  OF&#8217;s memory to be used by applications. RTAS is small enough to
+  painlessly coexist with the OS and applications.</para>
+  
+  <para>This document uses the term RTAS to refer both to the architected RTAS
+  interface and to an RTAS implementation.</para>  
+  
+</chapter>

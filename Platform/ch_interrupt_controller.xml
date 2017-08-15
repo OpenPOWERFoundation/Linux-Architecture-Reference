@@ -1,0 +1,726 @@
+<?xml version="1.0"?>
+<chapter xmlns="http://docbook.org/ns/docbook" 
+xmlns:xl="http://www.w3.org/1999/xlink"
+xml:id="dbdoclet.50569331_37856"
+version="5.0" 
+xml:lang="en">
+  <title>Interrupt Controller</title>
+  
+  <para>This chapter specifies the requirements for the LoPAR interrupt 
+  controller. Platforms may chose to virtualize the interrupt controller or to 
+  provide the PowerPC External Interrupt option. </para>
+  
+  <section>
+    <title>Interrupt Controller Virtualization</title>
+    <para>Virtualization of the interrupt controller is done through the 
+    Interrupt Support hcalls. See <xref linkend="LoPAR.Virtualization"/>.</para>
+  </section>
+
+  <section xml:id="dbdoclet.50569331_29157">
+    <title>PowerPC External Interrupt Option</title>
+    <para>The PowerPC External Interrupt option is based upon a subset of the 
+    PowerPC External Interrupt Architecture. The PowerPC External Interrupt 
+    Architecture contains a register-level architectural definition of an interrupt 
+    control structure. This architecture defines means for assigning properties 
+    such as priority, destination, etc., to I/O and interprocessor interrupts, as 
+    well as an interface for presenting them to processors. It supports both 
+    specific and distributed methods for interrupt delivery. See also 
+    <!-- FIXME: xref linkend="error_section"/--><citetitle>A PowerPC External 
+    Interrupt</citetitle>.htm#38341.--&gt;</para>
+    <para>In NUMA platform configurations, the interrupt controllers may be 
+    configured in disjoint domains. The firmware makes the server numbers visible 
+    to any single OS image appear to come from a single space without duplication. 
+    This may be done by appropriately initializing the interrupt presentation 
+    controllers or the firmware may translate the server numbers presented to it in 
+    RTAS calls before entering them into the interrupt controller registers. The OS 
+    is made aware that certain interrupts are only served by certain servers by the 
+    inclusion of the <emphasis role="bold"><literal>&#x201C;ibm,interrupt-domain&#x201D;</literal></emphasis> 
+    property in the interrupt controller nodes.</para>
+    
+    <section xml:id="sec_ext_int_opt_req">
+      <title>PowerPC External Interrupt Option Requirements</title>
+      <para>The following are the requirements for the PowerPC External 
+      Interrupt option. Additional requirements and information relative to the MSI 
+      option, when implemented with this option, are listed in <xref 
+      linkend="dbdoclet.50569331_33067"/>.</para>
+
+      <variablelist>
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_ext_int_opt_req" 
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the PowerPC External 
+              Interrupt option:</emphasis> Platforms must implement interrupt architectures 
+              that are in register-level architectural compliance with 
+              <!-- FIXME: <xref linkend="error_section"/ --><citetitle>A PowerPC External 
+              Interrupt</citetitle>. </para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_ext_int_opt_req" 
+          xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the PowerPC External 
+              Interrupt option:</emphasis> The platform&#x2019;s OF device tree must include 
+              one or more PowerPC External Interrupt Presentation node(s), as children of the 
+              root node.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_ext_int_opt_req" 
+          xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the PowerPC External 
+              Interrupt option:</emphasis> The platform&#x2019;s OF device tree must include 
+              an <emphasis role="bold"><literal>&#x201C;ibm,ppc-interrupt-server#s&#x201D;</literal></emphasis> and an 
+              <emphasis role="bold"><literal>&#x201C;ibm,ppc-interrupt-gserver#s&#x201D;</literal></emphasis> property as defined for 
+              each processor in the processor&#x2019;s <emphasis role="bold"><literal>/cpus/cpu</literal></emphasis> 
+              node.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_ext_int_opt_req" 
+          xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the PowerPC External 
+              Interrupt option:</emphasis> The various 
+              <emphasis role="bold"><literal>&#x201C;ibm,ppc-interrupt-server#s&#x201D;</literal></emphasis> property values seen by a 
+              single OS image must be all unique.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_ext_int_opt_req" 
+          xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the PowerPC External 
+              Interrupt option:</emphasis> If an OS image sees multiple global interrupt 
+              server queues, the <emphasis role="bold"><literal>&#x201C;ibm,ppc-interrupt-gserver#s&#x201D;</literal></emphasis> 
+              properties associated with the various queues must have unique values. </para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_ext_int_opt_req" 
+          xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the PowerPC External 
+              Interrupt option:</emphasis> The platform&#x2019;s OF device tree must include 
+              a PowerPC External Interrupt Source Controller node, as defined for each Bus 
+              Unit Controller (BUC) that can generate PowerPC External Interrupt Architecture 
+              interrupts, as a child of the platform&#x2019;s root node.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_ext_int_opt_req" 
+          xrefstyle="select: labelnumber nopage"/>-7.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the PowerPC External 
+              Interrupt option:</emphasis> The platform&#x2019;s OF device tree must conform 
+              to the <emphasis><xref linkend="dbdoclet.50569387_40740"/></emphasis> and 
+              include the appropriate mapping and interrupt properties to allow the mapping 
+              of all non-zero XISR values (<emphasis>interrupt#</emphasis>) to the 
+              corresponding node generating the interrupt. </para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_ext_int_opt_req" 
+          xrefstyle="select: labelnumber nopage"/>-8.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the PowerPC External 
+              Interrupt option:</emphasis> The PowerPC External Interrupt Presentation 
+              Controller node must not contain the 
+              <emphasis role="bold"><literal>&#x201C;used-by-rtas&#x201D;</literal></emphasis> property. </para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_ext_int_opt_req" 
+          xrefstyle="select: labelnumber nopage"/>-9.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the PowerPC External 
+              Interrupt option:</emphasis> The PowerPC External Interrupt Source Controller 
+              node must contain the <emphasis role="bold"><literal>&#x201C;used-by-rtas&#x201D;</literal></emphasis> 
+              property.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_ext_int_opt_req" 
+          xrefstyle="select: labelnumber nopage"/>-10.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the PowerPC External 
+              Interrupt option:</emphasis> If the interrupt hardware is configured such that, 
+              viewed from any given OS image, any interrupt source controller cannot direct 
+              interrupts to any interrupt presentation controller, then the platform must 
+              include the <emphasis role="bold"><literal>&#x201C;ibm,interrupt-domain&#x201D;</literal></emphasis> property 
+              in all interrupt source and presentation controller nodes for that OS so that 
+              the OS can determine the servers that may be valid targets for any given 
+              interrupt.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_ext_int_opt_req" 
+          xrefstyle="select: labelnumber nopage"/>-11.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the PowerPC External 
+              Interrupt option:</emphasis> All interrupt controller registers must be 
+              accessed via Caching-Inhibited, Memory Coherence not required and Guarded 
+              Storage mapping.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_ext_int_opt_req" 
+          xrefstyle="select: labelnumber nopage"/>-12.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the PowerPC External 
+              Interrupt option:</emphasis> The platform must manage the Available Processor 
+              Mask Register so that global interrupts (server number field of the eXternal 
+              Interrupt Vector Entry (XIVE) set to a value from 
+              <emphasis role="bold"><literal>&#x201C;ibm,ppc-interrupt-gserver#s&#x201D;</literal></emphasis>) are only sent to one 
+              of the active processors.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_ext_int_opt_req" 
+          xrefstyle="select: labelnumber nopage"/>-13.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the PowerPC External 
+              Interrupt option:</emphasis> The platform must initialize the interrupt 
+              priority in each XIVE to the least favored level (0xFF), enable any associated 
+              IER bit for interrupt sources owned by the OS, and set the Current Processor 
+              Priority Register to the Most favored level (0x00) prior to the transfer of 
+              control to the OS so that no interrupts are signaled to a processor until the 
+              OS has taken explicit action.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_ext_int_opt_req" 
+          xrefstyle="select: labelnumber nopage"/>-14.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the PowerPC External 
+              Interrupt option:</emphasis> Any implemented PowerPC External Interrupt 
+              Architecture registers that are not reported in specific interrupt source or 
+              destination controller nodes (such as the APM register) must be included in the 
+              <emphasis role="bold"><literal>&#x201C;reg&#x201D;</literal></emphasis> property of the 
+              <emphasis>/reserved</emphasis> node.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry xml:id="dbdoclet.50569331_84135">
+          <term><emphasis role="bold">R1-<xref linkend="sec_ext_int_opt_req" 
+          xrefstyle="select: labelnumber nopage"/>-15.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the PowerPC External 
+              Interrupt option:</emphasis> The interrupt source controller must prevent signalling new 
+              interrupts when the XIVE interrupt priority field is set to the least favored 
+              level.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_ext_int_opt_req" 
+          xrefstyle="select: labelnumber nopage"/>-16.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the PowerPC External 
+              Interrupt option:</emphasis> Interrupt controllers that do not implement the 
+              behavior of Requirement <xref linkend="dbdoclet.50569331_84135"/>, must provide 
+              an Interrupt Enable Register (IER) which can be manipulated by RTAS, </para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_ext_int_opt_req" 
+          xrefstyle="select: labelnumber nopage"/>-17.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the PowerPC External 
+              Interrupt option:</emphasis> The platform must assign the Bus Unit Identifiers 
+              (BUIDs) such that they form a compact address space. That is, while the first 
+              BUID value is arbitrary, subsequent BUIDs should be contiguous.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_ext_int_opt_req" 
+          xrefstyle="select: labelnumber nopage"/>-18.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the PowerPC External 
+              Interrupt option:</emphasis> Platforms implementing interrupt server number 
+              fields greater than 8 bits must include the 
+              <emphasis role="bold"><literal>&#x201C;ibm,interrupt-server#-size&#x201D;</literal></emphasis> property in the interrupt 
+              source controller node.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_ext_int_opt_req" 
+          xrefstyle="select: labelnumber nopage"/>-19.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the PowerPC External 
+              Interrupt option:</emphasis> Platforms implementing interrupt buid number 
+              fields greater than 9 bits must include the 
+              <emphasis role="bold"><literal>&#x201C;ibm,interrupt-buid-size&#x201D;</literal></emphasis> property in the interrupt 
+              presentation controller node.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_ext_int_opt_req" 
+          xrefstyle="select: labelnumber nopage"/>-20.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the PowerPC External 
+              Interrupt option:</emphasis> Platforms must include the 
+              <emphasis role="bold"><literal>&#x201C;ibm,interrupt-server-ranges&#x201D;</literal></emphasis> property in the 
+              interrupt presentation controller node.</para>
+            </listitem>
+       	</varlistentry>
+      </variablelist>
+
+    </section>
+
+    <section>
+      <title>PowerPC External Interrupt Option Properties</title>
+      <para>See <xref linkend="LoPAR.DeviceTree"/> for property definitions.</para>
+    </section>
+
+    <section xml:id="dbdoclet.50569331_33067">
+      <title>MSI Option</title>
+      <para>The Message Signaled Interrupt (MSI) or Enhanced MSI (MSI-X) 
+      capability of PCI IOAs in many cases allows for greater flexibility in 
+      assignment of external interrupts to IOA functions than the predecessor Level 
+      Sensitive Interrupt (LSI) capability, and in some cases treats MSIs as a 
+      resource pool that can be reassigned based on availability of MSIs and the need 
+      of an IOA function for more interrupts than initially assigned. Platforms that 
+      implement the MSI option implement the <emphasis>ibm,change-msi</emphasis> and 
+      <emphasis>ibm,query-interrupt-source-number</emphasis> RTAS calls. These RTAS 
+      calls manage interrupts in a platform that implements the MSI option. In 
+      particular, these calls assign additional MSI resources to an IOA function (as 
+      defined by its PCI configuration address: <emphasis>PHB_Unit_ID_Hi, 
+      PHB_Unit_ID_Low, and config_addr</emphasis>), when supported by the platform. 
+      See <xref linkend="LoPAR.RTAS"/> for more information on theses RTAS calls for 
+      MSI management.</para>
+      <para>This architecture will refer generically to the MSI and MSI-X 
+      capabilities as simply &#x201C;MSI,&#x201D; except where differentiation is 
+      required. In this architecture, MSIs and LSIs are what the IOA function 
+      signals, and what the software sees for that signal is ultimately the LSI or 
+      MSI <emphasis>source number</emphasis>. The interrupt source numbers returned 
+      by the <emphasis>ibm,query-interrupt-source-number</emphasis> RTAS call are 
+      the numbers used to control the interrupt as in the <emphasis>ibm,get-xive</emphasis>,
+      <emphasis>ibm,set-xive</emphasis>, <emphasis>ibm,int-on</emphasis>, 
+      and <emphasis>ibm,int-off</emphasis> RTAS calls.</para>
+      <para>PCI-X and PCI Express IOA functions that signal interrupts are 
+      required by the PCI specifications to implement either the MSI or MSI-X 
+      interrupt capabilities, or both. For PCI Express, it is expected that IOAs will 
+      only support MSI or MSI-X (that is, no support for LSIs). When both MSI and 
+      MSI-X are implemented by an IOA function, the MSI method will be configured by 
+      the platform, but may be overridden by the OS or device driver, via the 
+      <emphasis>ibm,change-msi</emphasis> RTAS call, to be MSI-X or, if assigned by 
+      the firmware, to LSI (by removal of the MSIs assigned). 
+      <xref linkend="dbdoclet.50569331_99447"/> summarizes the LSI and MSI support.</para>
+
+      <table frame="all" pgwide="1" xml:id="dbdoclet.50569331_99447">
+        <title>LSI and MSI Support Requirements and Initial Assignment </title>
+        <tgroup cols="7">
+          <colspec colname="c1" colwidth="14*" align="center"/>
+          <colspec colname="c2" colwidth="14*" align="center"/>
+          <colspec colname="c3" colwidth="14*" align="center"/>
+          <colspec colname="c4" colwidth="14*" align="center"/>
+          <colspec colname="c5" colwidth="14*" align="center"/>
+          <colspec colname="c6" colwidth="14*" align="center"/>
+          <colspec colname="c7" colwidth="14*" align="center"/>
+          <thead valign="middle">
+            <row>
+              <entry morerows="1">
+                <para>
+                  <emphasis role="bold">IOA Type</emphasis>
+                </para>
+              </entry>
+              <entry morerows="1">
+                <para>
+                  <emphasis role="bold">LSI required by PCI specifications?</emphasis>
+                </para>
+              </entry>
+              <entry morerows="1">
+                <para>
+                  <emphasis role="bold">MSI or MSI-Xrequired by PCI specifications?</emphasis>
+                </para>
+              </entry>
+              <entry morerows="1">
+                <para>
+                  <emphasis role="bold">Bridge between IOA and PHB</emphasis>
+                </para>
+              </entry>
+              <entry nameend="c6" namest="c5">
+                <para>
+                  <emphasis role="bold">Possible platform support</emphasis>
+                </para>
+              </entry>
+              <entry morerows="1">
+                <para>
+                  <emphasis role="bold">Initial interrupt assignment<footnote 
+                  xml:id="pgfId-1012212"><para>Assignment means to allocate the platform 
+                  resources and to enable the interrupt in the IOA function&#x2019;s 
+                  configuration space.</para></footnote></emphasis>
+                </para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>If PHB does not support MSI option<?linebreak?>
+                (Not including PCI Express HBs)</para>
+              </entry>
+              <entry>
+                <para>If PHB supports MSI option<?linebreak?>
+                (Including all PCI Express HBs)</para>
+              </entry>
+            </row>
+          </thead>
+          <tbody valign="middle">
+            <row>
+              <entry>
+                <para>PCI</para>
+              </entry>
+              <entry>
+                <para>When interrupts are required</para>
+              </entry>
+              <entry>
+                <para>No<?linebreak?>
+                (allowed; optional)</para>
+              </entry>
+              <entry>
+                <para>-</para>
+              </entry>
+              <entry>
+                <para>LSI</para>
+              </entry>
+              <entry>
+                <para>LSI or MSI</para>
+              </entry>
+              <entry>
+                <para>LSI<footnote xml:id="pgfId-1001089"><para>If MSIs are to 
+                be supported, the device driver must enable via the 
+                <emphasis>ibm,change-msi</emphasis> RTAS call.</para></footnote></para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>PCI-X</para>
+              </entry>
+              <entry>
+                <para>Encouraged when interrupts are required, for backward 
+                platform compatibility</para>
+              </entry>
+              <entry>
+                <para>Yes</para>
+              </entry>
+              <entry>
+                <para>-</para>
+              </entry>
+              <entry>
+                <para>LSI</para>
+              </entry>
+              <entry>
+                <para>LSI or MSI</para>
+              </entry>
+              <entry>
+                <para>LSI<footnote xml:id="pgfId-1001101"><para>If MSIs are to 
+                be supported, the device driver must enable via the 
+                <emphasis>ibm,change-msi</emphasis> RTAS call.</para></footnote></para>
+              </entry>
+            </row>
+            <row>
+              <entry morerows="1">
+                <para>PCI Express</para>
+              </entry>
+              <entry morerows="1">
+                <para>Discouraged<?linebreak?>
+                (expect IOAs to not implement in most cases)</para>
+              </entry>
+              <entry morerows="1">
+                <para>Yes</para>
+              </entry>
+              <entry>
+                <para>None or PCI Express switch only</para>
+              </entry>
+              <entry>
+                <para>n/a</para>
+              </entry>
+              <entry>
+                <para>MSI</para>
+              </entry>
+              <entry>
+                <para>MSI<footnote xml:id="pgfId-1012199"><para>MSI as an 
+                initial assignment means that one or more MSIs are reported as being available 
+                for the IOA function. In addition, LSIs may also be reported but not enabled, 
+                in which case if the device driver removes the assigned MSIs, the assigned LSI 
+                are enabled by the platform firmware in the IOA function&#x2019;s configuration 
+                space.</para></footnote></para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>Reverse bridge<?linebreak?>
+                (primary, PCI Express secondary)</para>
+              </entry>
+              <entry>
+                <para>LSI or not supported<footnote xml:id="pgfId-1001611">
+                  <para>If PCI Express IOA function does not support LSI, 
+                  then this combination is not supported.</para></footnote></para>
+              </entry>
+              <entry>
+                <para>LSI<footnote xml:id="pgfId-1001616">
+                  <para>If PCI Express 
+                  IOA function does not support LSI, then this combination is not 
+                  supported.</para></footnote> or MSI</para>
+              </entry>
+              <entry>
+                <para>LSI<footnote xml:id="pgfId-1001598">
+                  <para>If the PCI 
+                  Express IOA function does not support LSI, then the platform will set the 
+                  initial interrupt assignment to MSI, and if the device driver does not support 
+                  MSI, then the IOA function will not be configurable (that is, conversion from 
+                  MSI to LSI through the bridge is not supported by this architecture). If LSI is 
+                  the initial assignment, then if MSIs are to be supported, device driver must 
+                  enable via the <emphasis>ibm,change-msi</emphasis> RTAS 
+                  call.</para></footnote></para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+
+      <para>The <emphasis>ibm,change-msi</emphasis> RTAS call is used to query 
+      the initial number of MSIs assigned to a PCI configuration address and to 
+      request a change in the number of MSIs assigned. The MSIs interrupt source 
+      numbers assigned to an IOA function are returned via the 
+      <emphasis>ibm,query-interrupt-source-number</emphasis> 
+      RTAS call. In addition, when the 
+      <emphasis>ibm,query-interrupt-source-number</emphasis> RTAS call is 
+      implemented, it may be used to query the LSI source numbers, also. The 
+      <emphasis>ibm,query-interrupt-source-number</emphasis> RTAS call is called 
+      iteratively, once for each interrupt assigned to the IOA function. When an IOA 
+      function receives an initial assignment of an LSI, the interrupt number for 
+      that LSI may also be obtained through the same OF device tree properties that 
+      are used to report interrupt information when the 
+      <emphasis>ibm,query-interrupt-source-number</emphasis> RTAS call is not 
+      implemented.</para>
+
+      <variablelist>
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569331_33067" 
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+            <listitem>
+              <para>The platform must implement the MSI 
+              option if the platform contains at least one PCI Express HB.</para>
+              <para><emphasis role="bold">Architecture and Software Note:</emphasis> The MSI 
+              option may also be implemented in the absence of any PCI Express HBs. In that 
+              case, the implementation of the MSI option is via the presence of the 
+              implementation of the associated <emphasis>ibm,change-msi</emphasis> and 
+              <emphasis>ibm,query-interrupt-source-number</emphasis> RTAS calls.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569331_33067" 
+          xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the MSI option:</emphasis> 
+              The platform must implement the PowerPC External Interrupt option.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569331_33067" 
+          xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the MSI option:</emphasis> 
+              The platform must implement the <emphasis>ibm,change-msi</emphasis> 
+              and <emphasis>ibm,query-interrupt-source-number</emphasis> RTAS calls.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569331_33067" 
+          xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the MSI option:</emphasis> 
+              The platform must initially assign LSI or MSIs to IOA functions as 
+              defined in <xref linkend="dbdoclet.50569331_99447"/> and must enable the 
+              assigned interrupts in the IOA function&#x2019;s configuration space (the 
+              interrupts remains disabled at the PHB, and must be enabled by the device 
+              driver though the <emphasis>ibm,set-xive</emphasis> and 
+              <emphasis>ibm,int-on</emphasis> RTAS calls.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry xml:id="dbdoclet.50569331_84312">
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569331_33067" 
+          xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the MSI option:</emphasis>
+              The platform 
+              must provide a minimum of one MSI per IOA function (that is per each unique PCI 
+              configuration address, including the Function #) to be supported beneath the 
+              interrupt source controller, and any given MSI and MSI source number must not 
+              be shared between functions or within one function (even within the same 
+              PE).</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry xml:id="dbdoclet.50569331_63544">
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569331_33067" 
+          xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the MSI option:</emphasis>
+              The platform 
+              must provide at least one MSI port (the address written by the MSI) per 
+              Partitionable Endpoint (PE).</para>
+              <para><emphasis role="bold">Platform Implementation Note:</emphasis> Requirement 
+              <xref linkend="dbdoclet.50569331_84312"/> in conjunction with Requirement <xref 
+              linkend="dbdoclet.50569331_63544"/> may have certain ramifications on the 
+              design. Depending on the implementation, a unique MSI port per IOA function may 
+              be required, and not just a unique port per PE.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569331_33067" 
+          xrefstyle="select: labelnumber nopage"/>-7.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the MSI option with the 
+              LPAR option:</emphasis> The platform must prevent a PE from creating an 
+              interrupt to a partition other than those to which the PE is authorized by the 
+              platform to interrupt.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569331_33067" 
+          xrefstyle="select: labelnumber nopage"/>-8.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the MSI option:</emphasis> 
+              The platform must set the PCI configuration space MSI registers properly in an 
+              IOA at all the following times:</para>
+
+              <orderedlist numeration="loweralpha">		      
+                <listitem>
+                  <para>Initial boot time</para>
+                </listitem>
+
+                <listitem>
+                  <para>During the <emphasis>ibm,configure-connector</emphasis> RTAS 
+                  call</para>
+                </listitem>
+
+                <listitem>
+                  <para>During the <emphasis>ibm,change-msi</emphasis> or 
+                  <emphasis>ibm,query-interrupt-source-number</emphasis> RTAS call</para>
+                </listitem>
+              </orderedlist>		      
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569331_33067" 
+          xrefstyle="select: labelnumber nopage"/>-9.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the MSI option:</emphasis> 
+              The platform must initialize any bridges necessary to appropriately route 
+              interrupts at all the following times:</para>
+
+              <orderedlist numeration="loweralpha">		      
+                <listitem>
+                  <para>At initial boot time</para>
+                </listitem>
+
+                <listitem>
+                  <para>During the <emphasis>ibm,configure-connector</emphasis> RTAS 
+                  call</para>
+                </listitem>
+
+                <listitem>
+                  <para>During the <emphasis>ibm,configure-bridge</emphasis> RTAS 
+                  call</para>
+                </listitem>
+
+                <listitem>
+                  <para>During the <emphasis>ibm,change-msi</emphasis> or 
+                  <emphasis>ibm,query-interrupt-source-number</emphasis> RTAS call</para>
+                </listitem>
+              </orderedlist>		      
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569331_33067" 
+          xrefstyle="select: labelnumber nopage"/>-10.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the MSI option:</emphasis> 
+              The platform must provide the <emphasis role="bold"><literal>&#x201C;ibm,req#msi&#x201D;</literal></emphasis> 
+              property for any IOA function which is 
+              requesting MSIs; at initial boot time and during the 
+              <emphasis>ibm,configure-connector</emphasis> RTAS call.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry xml:id="dbdoclet.50569331_62532">
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569331_33067" 
+          xrefstyle="select: labelnumber nopage"/>-11.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the MSI option:</emphasis>
+              The platform 
+              must remember and recover on error recovery any previously allocated and setup 
+              interrupt information in the platform-owned hardware.</para>
+              <para><emphasis role="bold">Software and Platform Implementation Note:</emphasis> In 
+              Requirement <xref linkend="dbdoclet.50569331_62532"/>, it is possible that some 
+              interrupts may be lost as part of the error recovery, and software should be 
+              implemented to take into consideration that possibility.</para>
+            </listitem>
+       	</varlistentry>
+      </variablelist>
+
+    </section>
+  </section>
+
+  <section xml:id="sec_plat_rsvd_int_opt">
+    <title>Platform Reserved Interrupt Priority Level Option</title>
+    <para>The Platform Reserved Interrupt Priority Level option allows 
+    platforms to reserve interrupt priority levels for internal uses. When the 
+    platform exercises this option, it notifies the client program via the OF 
+    device tree <emphasis role="bold"><literal>&#x201C;ibm,plat-res-int-priorities&#x201D;</literal></emphasis> 
+    property of the <emphasis role="bold"><literal>root</literal></emphasis> node of the device tree.</para>
+
+    <variablelist>
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_plat_rsvd_int_opt" 
+        xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Platform Reserved 
+            Interrupt Priority Level option: The platform must include 
+            the</emphasis><emphasis role="bold"><literal>&#x201C;ibm,plat-res-int-priorities&#x201D;</literal></emphasis> 
+            property in the <emphasis role="bold"><literal>root</literal></emphasis> node of the device tree.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_plat_rsvd_int_opt" 
+        xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Platform Reserved 
+            Interrupt Priority Level option:</emphasis> The platform must not reserve 
+            priority levels 0x00 through 0x07 and 0xFF for internal use. </para>
+          </listitem>
+     	</varlistentry>
+    </variablelist>
+
+  </section>
+</chapter>

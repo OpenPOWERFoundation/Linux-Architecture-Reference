@@ -1,0 +1,1272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2016 OpenPOWER Foundation
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<chapter xmlns="http://docbook.org/ns/docbook"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xmlns:xl="http://www.w3.org/1999/xlink" 
+         version="5.0" xml:lang="en" 
+         xml:id="ch_error_codes">
+
+  <title>Error Codes</title>
+  
+  <section xml:id="dbdoclet.50569337_63826">
+    <title>Displaying Codes on the Standard Operator Panels</title>
+    
+    <variablelist>
+    
+    	<varlistentry>
+    		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_63826" 
+  			xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+    			<listitem>
+			      <para><emphasis role="bold">Platform Implementation:</emphasis> Platforms must display
+			      firmware progress codes (4 hex digits) on the operator panel display. On
+			      2x16 LCD displays, the progress codes are displayed left-justified on the
+			      first line.</para>
+    			</listitem>
+    	</varlistentry>
+    
+    	<varlistentry>
+    		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_63826" 
+  			xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+    			<listitem>
+			      <para><emphasis role="bold">Platform Implementation:</emphasis> Platforms must display
+			      firmware error codes (8 hex digits) on the system console (graphic or
+			      tty), and left-justified on the first line of a 2x16 LCD operator panel
+			      display (if available).</para>
+    			</listitem>
+    	</varlistentry>
+    
+    	<varlistentry>
+    		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_63826" 
+  			xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+    			<listitem>
+			      <para><emphasis role="bold">Platform Implementation:</emphasis> When a platform displays
+			      firmware error codes, associated location codes must be displayed on the
+			      following line on the system console (graphic or tty), and left-justified
+			      on the second line of a 2x16 LCD operator panel display (if
+			      available).</para>
+    			</listitem>
+    	</varlistentry>
+    
+    </variablelist>
+  
+    <para>The following describes in more detail the standard platform usage
+    of operator panel LEDs or LCDs for the display of firmware progress and
+    error codes.</para>
+    
+    <itemizedlist>
+      <listitem>
+    
+        <para><emphasis role="bold">Progress codes: </emphasis>Progress codes 
+        from the system firmware and
+        service processor firmware are 4 hex digits in the range from 0x8000
+        through 0xFFFF. Codes are displayed in the 4 character positions of a 1x4
+        LED, or left justified in the first line of a 2x16 LCD. Subsequent
+        progress codes are displayed on top of (overlaying) the previous one. If
+        the system &#8220;hangs&#8221;, the last displayed progress code is left
+        on the display.</para>
+    
+      </listitem>
+      <listitem>
+
+        <para><emphasis role="bold">Error codes: </emphasis>Error codes are 8 
+        hex digits, as defined in 
+        <xref linkend="dbdoclet.50569337_36534"/>. These codes are displayed by
+        either boot ROM Power On Self Test (POST) or the service processor. If a
+        critical error is detected which prevents a successful boot or results in
+        system halt condition, the error code will be displayed left justified on
+        the first line of a 2x16 LCD. The error code is left on the LCD until the
+        system is reset or powered down. Error codes are not displayed on the
+        operator panel of platforms with only a 4-digit LED. On all platforms,
+        however, POST error codes are displayed on any system console (graphic or
+        tty). For non-critical errors where the system can boot and operate
+        normally or in a degraded mode, the associated error codes are not
+        displayed, but are reported to the OS via the POST error log and the RTAS
+        <emphasis>event-scan</emphasis> service.</para>
+    
+      </listitem>
+      <listitem>
+
+        <para><emphasis role="bold">Location Codes: </emphasis>Location codes 
+        describe the physical location of
+        the most probable failing part associated with an error code. When an
+        error code is displayed on the first line of a 2x16 LCD, the location
+        code, if known, is displayed left justified on the second line. The
+        location code will remain on the LCD along with the error code until the
+        system is reset or powered down. Location codes for POST errors are also
+        displayed on any system console (graphic or tty), on the next line below
+        the error code.</para>
+    
+      </listitem>
+    </itemizedlist>
+
+  </section>
+  
+  <section xml:id="dbdoclet.50569337_36534">
+    <title>Firmware Error Codes</title>
+    
+    <para>The error code is an 8-character (4-byte) hexadecimal code produced
+    by firmware to identify the potential failing function or FRU in a
+    system. It consists of 5 source code characters and 3 reason code
+    characters. Individual characters within the error code have specific
+    field definitions, as defined in the following tables.</para>
+    
+    <variablelist>
+    
+    	<varlistentry>
+    		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_36534" 
+  			xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+    			<listitem>
+			      <para><emphasis role="bold">Platform Implementation:</emphasis> To indicate the occurrence
+			      of a critical platform error, platforms must display (either on an
+			      operator panel or console) an 8-digit hex error code as defined in 
+			      <xref linkend="dbdoclet.50569337_58681"/> and 
+			      <xref linkend="dbdoclet.50569337_51582"/>.</para>
+    			</listitem>
+    	</varlistentry>
+    
+    </variablelist>
+  
+
+    <table frame="all" pgwide="1" xml:id="dbdoclet.50569337_58681">
+      <title>Table 155. Service Reference Code (SRC) Field Layout</title>
+      <tgroup cols="8">
+        <colspec colname="c1" colwidth="12*" />
+        <colspec colname="c2" colwidth="12*" />
+        <colspec colname="c3" colwidth="12*" />
+        <colspec colname="c4" colwidth="12*" />
+        <colspec colname="c5" colwidth="12*" />
+        <colspec colname="c6" colwidth="12*" />
+        <colspec colname="c7" colwidth="12*" />
+        <colspec colname="c8" colwidth="12*" />
+        <thead>
+          <row>
+            <entry nameend="c5" namest="c1">
+              <para>
+                <emphasis role="bold">Source Code</emphasis>
+              </para>
+            </entry>
+            <entry nameend="c8" namest="c6">
+              <para>
+                <emphasis role="bold">Reason Code</emphasis>
+              </para>
+            </entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry nameend="c2" namest="c1">
+              <para>
+                <emphasis role="bold">Byte 0</emphasis>
+              </para>
+            </entry>
+            <entry nameend="c4" namest="c3">
+              <para>
+                <emphasis role="bold">Byte 1</emphasis>
+              </para>
+            </entry>
+            <entry nameend="c6" namest="c5">
+              <para>
+                <emphasis role="bold">Byte 2</emphasis>
+              </para>
+            </entry>
+            <entry nameend="c8" namest="c7">
+              <para>
+                <emphasis role="bold">Byte 3</emphasis>
+              </para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>S1</para>
+            </entry>
+            <entry>
+              <para>S2</para>
+            </entry>
+            <entry>
+              <para>S3</para>
+            </entry>
+            <entry>
+              <para>S4</para>
+            </entry>
+            <entry>
+              <para>S5</para>
+            </entry>
+            <entry>
+              <para>R1</para>
+            </entry>
+            <entry>
+              <para>R2</para>
+            </entry>
+            <entry>
+              <para>R3</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+
+    <table frame="all" pgwide="1" xml:id="dbdoclet.50569337_51582">
+      <title>Table 156. Service Reference Code (SRC) Field
+      Descriptions</title>
+      <tgroup cols="2">
+        <colspec colname="c1" colwidth="50*" />
+        <colspec colname="c2" colwidth="50*" />
+        <thead>
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">Field</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">Description</emphasis>
+              </para>
+            </entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>
+              <para>S1</para>
+            </entry>
+            <entry>
+              <para>Maintenance Package Source that produced the SRN</para>
+              <para>0: Reserved</para>
+              <para>1: Reserved</para>
+              <para>2: POST, Firmware</para>
+              <para>3: BIST</para>
+              <para>4: Service processor, base system controller, etc.</para>
+              <para>5: Reserved (potentially for use by AIX
+              Diagnostics)</para>
+              <para>8: Product-Specific Service Guide, MAPs</para>
+              <para>9: Reserved (potentially for use by the Problem Solving
+              Guide)</para>
+              <para>A-F: Reserved for future extension</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>S2</para>
+            </entry>
+            <entry>
+              <para>Where applicable, use the lower nibble of the 
+              <emphasis>
+                <xref linkend="dbdoclet.50569387_65468"/>
+              </emphasis> base class code for the IOA definition (see 
+              <xref linkend="dbdoclet.50569337_10405"/>). Only 00 to 0C are
+              currently defined in Revision 2.1, therefore the high nibble is
+              always zero. (There is a potential exposure that the high
+              nibble will be defined in the future, but currently there are
+              13 base classes defined which include every device class, with
+              3 remaining characters for future extension by the PCI SIG.
+              Therefore the exposure is in the far future.) For non-PCI
+              devices, use base class 0 to extend the definition (see 
+              <xref linkend="dbdoclet.50569337_69141"/>).</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>S3-S4</para>
+            </entry>
+            <entry>
+              <para>Where applicable, use the 
+              <emphasis>
+                <xref linkend="dbdoclet.50569387_65468"/>
+              </emphasis> subclass code for IOA definition (see 
+              <xref linkend="dbdoclet.50569337_10405"/>). Also, extend the
+              definition to include non-PCI devices where it is not fully
+              utilized by PCI specification (see 
+              <xref linkend="dbdoclet.50569337_69141"/>).</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>S5</para>
+            </entry>
+            <entry>
+              <para>Unique version of the device/FRU type for a particular
+              product</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>R1</para>
+            </entry>
+            <entry>
+              <para>Device/FRU unique failure reason codes.</para>
+              <para>For POST: assigned by Firmware Developer.</para>
+              <para>For AIX Diagnostics (S1 = 5, not currently
+              supported):</para>
+              <para>1-7: Use in combination with R2,R3 for diagnostic test
+              failure when maximum isolation was obtained.</para>
+              <para>8-9: Use in combination with R2,R3 for diagnostic test
+              failure when maximum isolation was NOT obtained.</para>
+              <para>A: Log analysis of POST error log</para>
+              <para>B: Log analysis of machine check or checkstop error
+              log</para>
+              <para>C: Log analysis of AIX device driver error log</para>
+              <para>D: diagnostic detected missing resource</para>
+              <para>E-F: Reserved</para>
+              <para>For others: assigned by respective developers.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>R2-R3</para>
+            </entry>
+            <entry>
+              <para>Device/FRU unique failure reason codes.</para>
+              <para>For POST: assigned by Firmware Developer</para>
+              <para>For others: assigned by respective developers.</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+
+    <table frame="all" pgwide="1" xml:id="dbdoclet.50569337_10405">
+      <title>Table 157. Current PCI Class Code Definition</title>
+      <tgroup cols="3">
+        <colspec colname="c1" colwidth="33*" />
+        <colspec colname="c2" colwidth="33*" />
+        <colspec colname="c3" colwidth="33*" />
+        <thead>
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">PCI Base Class (lower
+                nibble)S2</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">PCI Sub-ClassS3-S4</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">Description</emphasis>
+              </para>
+            </entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry morerows="2">
+              <para>0</para>
+            </entry>
+            <entry nameend="c3" namest="c2">
+              <para>Devices that were built before the class code field was
+              defined</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>00</para>
+            </entry>
+            <entry>
+              <para>All currently implemented IOAs except VGA-compatible
+              IOAs.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>01</para>
+            </entry>
+            <entry>
+              <para>VGA-compatible IOAs.</para>
+            </entry>
+          </row>
+          <row>
+            <entry morerows="6">
+              <para>1</para>
+            </entry>
+            <entry nameend="c3" namest="c2">
+              <para>Mass storage controller.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>00</para>
+            </entry>
+            <entry>
+              <para>SCSI bus controller.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>01</para>
+            </entry>
+            <entry>
+              <para>IDE controller.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>02</para>
+            </entry>
+            <entry>
+              <para>Floppy disk controller.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>03</para>
+            </entry>
+            <entry>
+              <para>Intelligent Peripheral Interface (IPI) bus
+              controller.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>04</para>
+            </entry>
+            <entry>
+              <para>Redundant Array of Independent Disks (RAID)
+              controller.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>80</para>
+            </entry>
+            <entry>
+              <para>Other mass storage controller.</para>
+            </entry>
+          </row>
+          <row>
+            <entry morerows="5">
+              <para>2</para>
+            </entry>
+            <entry nameend="c3" namest="c2">
+              <para>Network controller.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>00</para>
+            </entry>
+            <entry>
+              <para>Ethernet controller.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>01</para>
+            </entry>
+            <entry>
+              <para>Token Ring controller.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>02</para>
+            </entry>
+            <entry>
+              <para>FDDI controller.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>03</para>
+            </entry>
+            <entry>
+              <para>ATM controller.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>80</para>
+            </entry>
+            <entry>
+              <para>Other Network controller.</para>
+            </entry>
+          </row>
+          <row>
+            <entry morerows="3">
+              <para>3</para>
+            </entry>
+            <entry nameend="c3" namest="c2">
+              <para>Display controller.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>00</para>
+            </entry>
+            <entry>
+              <para>VGA-Compatible controller.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>01</para>
+            </entry>
+            <entry>
+              <para>Extended Graphics Array (XGA) controller.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>80</para>
+            </entry>
+            <entry>
+              <para>Other display controller.</para>
+            </entry>
+          </row>
+          <row>
+            <entry morerows="3">
+              <para>4</para>
+            </entry>
+            <entry nameend="c3" namest="c2">
+              <para>Multimedia device</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>00</para>
+            </entry>
+            <entry>
+              <para>Video device</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>01</para>
+            </entry>
+            <entry>
+              <para>Audio device</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>80</para>
+            </entry>
+            <entry>
+              <para>Other multimedia device</para>
+            </entry>
+          </row>
+          <row>
+            <entry morerows="3">
+              <para>5</para>
+            </entry>
+            <entry nameend="c3" namest="c2">
+              <para>Memory controller.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>00</para>
+            </entry>
+            <entry>
+              <para>RAM</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>01</para>
+            </entry>
+            <entry>
+              <para>Flash</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>80</para>
+            </entry>
+            <entry>
+              <para>Other memory controller.</para>
+            </entry>
+          </row>
+          <row>
+            <entry morerows="9">
+              <para>6</para>
+            </entry>
+            <entry nameend="c3" namest="c2">
+              <para>Bridge IOAs.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>00</para>
+            </entry>
+            <entry>
+              <para>Host bridge</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>01</para>
+            </entry>
+            <entry>
+              <para>Reserved</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>02</para>
+            </entry>
+            <entry>
+              <para>Reserved</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>03</para>
+            </entry>
+            <entry>
+              <para>Reserved</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>04</para>
+            </entry>
+            <entry>
+              <para>PCI-to-PCI bridge</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>05</para>
+            </entry>
+            <entry>
+              <para>Reserved</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>06</para>
+            </entry>
+            <entry>
+              <para>Reserved</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>07</para>
+            </entry>
+            <entry>
+              <para>Reserved</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>80</para>
+            </entry>
+            <entry>
+              <para>Other bridge device.</para>
+            </entry>
+          </row>
+          <row>
+            <entry morerows="3">
+              <para>7</para>
+            </entry>
+            <entry nameend="c3" namest="c2">
+              <para>Simple communication controllers.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>00</para>
+            </entry>
+            <entry>
+              <para>Serial controllers.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>01</para>
+            </entry>
+            <entry>
+              <para>Parallel port.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>80</para>
+            </entry>
+            <entry>
+              <para>Other communication controllers.</para>
+            </entry>
+          </row>
+          <row>
+            <entry morerows="5">
+              <para>8</para>
+            </entry>
+            <entry nameend="c3" namest="c2">
+              <para>Generic system peripherals</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>00</para>
+            </entry>
+            <entry>
+              <para>PIC</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>01</para>
+            </entry>
+            <entry>
+              <para>DMA Controller.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>02</para>
+            </entry>
+            <entry>
+              <para>System timer</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>03</para>
+            </entry>
+            <entry>
+              <para>Real-Time Clock (RTC) controller</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>80</para>
+            </entry>
+            <entry>
+              <para>Other system peripherals</para>
+            </entry>
+          </row>
+          <row>
+            <entry morerows="4">
+              <para>9</para>
+            </entry>
+            <entry nameend="c3" namest="c2">
+              <para>Input devices</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>00</para>
+            </entry>
+            <entry>
+              <para>Keyboard controller</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>01</para>
+            </entry>
+            <entry>
+              <para>Digitizer (pen).</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>02</para>
+            </entry>
+            <entry>
+              <para>Mouse controller</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>80</para>
+            </entry>
+            <entry>
+              <para>Other input controllers.</para>
+            </entry>
+          </row>
+          <row>
+            <entry morerows="2">
+              <para>A</para>
+            </entry>
+            <entry nameend="c3" namest="c2">
+              <para>Docking stations</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>00</para>
+            </entry>
+            <entry>
+              <para>Generic docking station</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>80</para>
+            </entry>
+            <entry>
+              <para>Other type of docking station</para>
+            </entry>
+          </row>
+          <row>
+            <entry morerows="2">
+              <para>B</para>
+            </entry>
+            <entry nameend="c3" namest="c2">
+              <para>Processors</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>20</para>
+            </entry>
+            <entry>
+              <para>PA compliant (PowerPC and successors)</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>40</para>
+            </entry>
+            <entry>
+              <para>Co-processor</para>
+            </entry>
+          </row>
+          <row>
+            <entry morerows="2">
+              <para>C</para>
+            </entry>
+            <entry nameend="c3" namest="c2">
+              <para>Serial bus controllers</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>03</para>
+            </entry>
+            <entry>
+              <para>Universal Serial Bus (USB)</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>04</para>
+            </entry>
+            <entry>
+              <para>Fibre Channel</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+
+    <table frame="all" pgwide="1" xml:id="dbdoclet.50569337_69141">
+      <title>Table 158. S2-S3-S4 Definition for Devices/FRUs not Defined in
+      the PCI Specification</title>
+      <tgroup cols="3">
+        <colspec colname="c1" colwidth="33*" />
+        <colspec colname="c2" colwidth="33*" />
+        <colspec colname="c3" colwidth="33*" />
+        <thead>
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">Base ClassS2</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">Sub-ClassS3-S4</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">Description</emphasis>
+              </para>
+            </entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry morerows="13">
+              <para>0</para>
+            </entry>
+            <entry>
+              <para>10</para>
+            </entry>
+            <entry>
+              <para>AC Power</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>11</para>
+            </entry>
+            <entry>
+              <para>DC Power</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>20</para>
+            </entry>
+            <entry>
+              <para>Temperature Related Problem</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>21</para>
+            </entry>
+            <entry>
+              <para>Fans</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>30-3x</para>
+            </entry>
+            <entry>
+              <para>Cables</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>40-4x</para>
+            </entry>
+            <entry>
+              <para>Terminators</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>50</para>
+            </entry>
+            <entry>
+              <para>Operator panels</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>60-6x</para>
+            </entry>
+            <entry>
+              <para>Reserved</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>70-7x</para>
+            </entry>
+            <entry>
+              <para>Reserved</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>90-9x</para>
+            </entry>
+            <entry>
+              <para>Reserved</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>A0</para>
+            </entry>
+            <entry>
+              <para>Boot firmware Heartbeat</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>B0</para>
+            </entry>
+            <entry>
+              <para>O/S Heartbeat</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>D0</para>
+            </entry>
+            <entry>
+              <para>Unknown device</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>E0</para>
+            </entry>
+            <entry>
+              <para>Security</para>
+            </entry>
+          </row>
+          <row>
+            <entry morerows="13">
+              <para>1</para>
+            </entry>
+            <entry>
+              <para>A0</para>
+            </entry>
+            <entry>
+              <para>SCSI Drives (generic)</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>B0</para>
+            </entry>
+            <entry>
+              <para>IDE Drives</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>C0</para>
+            </entry>
+            <entry>
+              <para>RAID Drives</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>D0</para>
+            </entry>
+            <entry>
+              <para>SSA Drives</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>E0</para>
+            </entry>
+            <entry>
+              <para>Tapes SCSI</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>E1</para>
+            </entry>
+            <entry>
+              <para>Tapes IDE</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>ED</para>
+            </entry>
+            <entry>
+              <para>SCSI Changer</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>EE</para>
+            </entry>
+            <entry>
+              <para>Other SCSI Device</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>EF</para>
+            </entry>
+            <entry>
+              <para>Diskette drive</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>F0</para>
+            </entry>
+            <entry>
+              <para>CDROM SCSI</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>F1</para>
+            </entry>
+            <entry>
+              <para>CDROM IDE</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>F2</para>
+            </entry>
+            <entry>
+              <para>Read/Write Optical SCSI</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>F3</para>
+            </entry>
+            <entry>
+              <para>Read/Write Optical IDE</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>F4-FF</para>
+            </entry>
+            <entry>
+              <para>Reserved for other media devices</para>
+            </entry>
+          </row>
+          <row>
+            <entry morerows="6">
+              <para>5</para>
+            </entry>
+            <entry>
+              <para>A0</para>
+            </entry>
+            <entry>
+              <para>L2 Cache Controller including integrated SRAM</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>A1</para>
+            </entry>
+            <entry>
+              <para>L2 Cache SRAM</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>A8</para>
+            </entry>
+            <entry>
+              <para>NVRAM</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>A9</para>
+            </entry>
+            <entry>
+              <para>CMOS</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>AA</para>
+            </entry>
+            <entry>
+              <para>Quartz/EEPROM</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>B0-Bx</para>
+            </entry>
+            <entry>
+              <para>Memory cards</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Cyy</para>
+            </entry>
+            <entry>
+              <para>Memory DIMMs (yy = memory PD bits)</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>7</para>
+            </entry>
+            <entry>
+              <para>A0</para>
+            </entry>
+            <entry>
+              <para>I<superscript>2</superscript>C bus</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>8</para>
+            </entry>
+            <entry>
+              <para>A0</para>
+            </entry>
+            <entry>
+              <para>Power Management Functions</para>
+            </entry>
+          </row>
+          <row>
+            <entry morerows="4">
+              <para>9</para>
+            </entry>
+            <entry>
+              <para>A0-Ax</para>
+            </entry>
+            <entry>
+              <para>Keyboards</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>B0-Bx</para>
+            </entry>
+            <entry>
+              <para>Mouse(s)</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>C0-Cx</para>
+            </entry>
+            <entry>
+              <para>Dials</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>D0</para>
+            </entry>
+            <entry>
+              <para>Tablet</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>D1-Dx</para>
+            </entry>
+            <entry>
+              <para>Reserved for other input devices</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>B</para>
+            </entry>
+            <entry>
+              <para>A0</para>
+            </entry>
+            <entry>
+              <para>Service processor</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    
+  </section>
+  
+</chapter>

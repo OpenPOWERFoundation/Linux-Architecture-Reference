@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2016 OpenPOWER Foundation
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<chapter xmlns="http://docbook.org/ns/docbook" 
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xmlns:xlink="http://www.w3.org/1999/xlink" 
+         version="5.0"
+         xml:id="ch_devtree_terms">
+         
+  <title>Terms</title>
+  
+    <para>This standard uses technical terms as they are defined in the
+    IEEE Std 1275-1994 Standard and other
+    documents cited in &#8220;References&#8221;, plus the following
+    terms:</para>
+    
+    <variablelist>
+      <varlistentry>
+        <term><emphasis role="bold">ARP</emphasis></term>
+          <listitem>
+             <para>Address Resolution Protocol</para>
+         </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">BOOTP</emphasis></term>
+          <listitem>
+            <para>Bootstrap Protocol</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">CHRP</emphasis></term>
+          <listitem>
+            <para>Common Hardware Reference Platform</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">core, core specification, core document</emphasis></term>
+          <listitem>
+            <para>Refers to IEEE Std 1275-1994 Standard for Boot (Initialization,
+            Configuration) Firmware, Core Practices and Requirements</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">core errata</emphasis></term>
+          <listitem>
+            <para>Refers to Core Errata, IEEE P1275.7</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">CPU</emphasis></term>
+          <listitem>
+            <para>Central Processing Unit</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">effective address</emphasis></term>
+          <listitem>
+            <para>The 64- or 32-bit address computed by the processor
+            when executing a Storage Access or Branch instruction, or when fetching the
+            next sequential instruction. If address translation is disabled, the real
+            address is the same as the effective address. If address translation is
+            enabled, the real address is determined by, but not necessarily identical
+            to, the effective address.</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">ELF Executable and Linking Format</emphasis></term>
+          <listitem>
+            <para>A binary object file format defined by 
+            <xref linkend="dbdoclet.50569387_38836" /> that is used to represent client
+            programs in OF for PA.</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">FDISK</emphasis></term>
+          <listitem>
+            <para>Refers to the boot-record and partition table format used by
+            MS-DOS, as defined in 
+            <xref linkend="dbdoclet.50569387_22601" />.</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">gateway</emphasis></term>
+          <listitem>
+            <para>Network connecting device</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">host</emphasis></term>
+          <listitem>
+            <para>A computer. In particular a source or destination of messages
+            from the point of view of the communication network.</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">ICMP</emphasis></term>
+          <listitem>
+            <para>Internet Control Message Protocol</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">IETF</emphasis></term>
+          <listitem>
+            <para>Internet Engineering Task Force</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">IP</emphasis></term>
+          <listitem>
+            <para>Internet Protocol</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">IO</emphasis></term>
+          <listitem>
+            <para>Input/Output</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">LAN</emphasis></term>
+          <listitem>
+            <para>Local Area Network</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">linkage area</emphasis></term>
+          <listitem>
+            <para>An area within the stack that is reserved for saving
+            certain registers across procedure calls in PA run-time models. This area
+            is reserved by the caller and is allocated above the current stack pointer
+            (<literal>%r1</literal>).</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">NVRAM</emphasis></term>
+          <listitem>
+            <para>Non-volatile memory that is the repository for various
+            platform, OF and OS information that remains persistent across reboots,
+            power management activities and/or cycles.</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">Open Firmware (OF)</emphasis></term>
+          <listitem>
+            <para>The firmware architecture defined by 
+            <xref linkend="dbdoclet.50569387_45524" /> and 
+            <xref linkend="dbdoclet.50569387_14175" />, or, when used as an adjective,
+            a software component compliant with the core specification and
+            errata.</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">PCU</emphasis></term>
+          <listitem>
+            <para>Power Configuration Utility; Refers to a platform program to
+            assist a user to manage device power.</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">PE</emphasis></term>
+          <listitem>
+            <para>Portable Executable. A binary object file format defined by 
+            <xref linkend="dbdoclet.50569387_18190" />.</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">procedure descriptor</emphasis></term>
+          <listitem>
+            <para>A data structure used by some PA run-time models
+            to represent a C &#8220;pointer to procedure&#8221;. The first word of this
+            structure contains the actual address of the procedure.</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">processor bus</emphasis></term>
+          <listitem>
+            <para>The bus that connects the CPU chip to the system.</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">PROM</emphasis></term>
+          <listitem>
+            <para>Programmable Read Only Memory</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">real address</emphasis></term>
+          <listitem>
+            <para>An address that the processor presents on the processor
+            bus.</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">real-mode</emphasis></term>
+          <listitem>
+            <para>The mode in which OF and its client are running with
+            translation disabled; all addresses passed between the client and OF are
+            real (i.e., hardware) addresses.</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">RFC</emphasis></term>
+          <listitem>
+            <para>Internet Request For Comments; part of the technical process of
+            establishing a standard.</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">ROM</emphasis></term>
+          <listitem>
+            <para>Read Only Memory</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">segmented address translation</emphasis></term>
+          <listitem>
+            <para>The process whereby an Effective Address (EA) is translated into a
+            Virtual Address (VA) and the virtual address is translated into a Real
+            Address (RA). (see
+            <xref linkend="dbdoclet.50569374_41703" />and Book III of 
+            <xref linkend="dbdoclet.50569387_99718" />for more detail.)</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">suspend</emphasis></term>
+          <listitem>
+            <para>A form of Power Management characterized by a fast recovery
+            to full operation. Typically, system memory will not be powered off while
+            in the suspend state.</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">Table of Contents (TOC)</emphasis></term>
+          <listitem>
+            <para>A data structure used by some PA run-time models that is used for
+            access to global variables and for inter-module linkage. When a TOC is
+            used,
+            <emphasis>%r2</emphasis> contains its base address.</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">TFTP</emphasis></term>
+          <listitem>
+            <para>Trivial File Transfer Protocol</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">UDP</emphasis></term>
+          <listitem>
+            <para>User Datagram Protocol</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">Virtual Address</emphasis></term>
+          <listitem>
+            <para>In IEEE 1275 parlance, the address that a program uses to access 
+            a memory location or
+            memory-mapped device register. Depending on the presence or absence of
+            memory mapping hardware in the system, and whether or not that mapping
+            hardware is enabled, a virtual address may or may not be the same as the
+            physical (real) address that appears on an external bus. The IEEE 1275
+            definition of &#8220;virtual address&#8221; corresponds to The PA's
+            definition of &#8220;effective address.&#8221; Except as noted, this
+            document uses the IEEE 1275 definition of virtual address.</para>
+            
+            <para>In PA parlance, an internal address within the PA address 
+            translation mechanism, used
+            as in intermediate term in the translation of an effective address to the
+            corresponding real address.</para>
+          </listitem>
+		  </varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">virtual-mode</emphasis></term>
+          <listitem>
+            <para>The mode in which OF and its client share a single
+            virtual address space, and address translation is enabled; all addresses
+            passed between the client and OF are virtual (translated) addresses.</para>
+          </listitem>
+		  </varlistentry>
+    </variablelist>
+  
+</chapter>

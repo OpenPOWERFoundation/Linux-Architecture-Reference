@@ -1,0 +1,2624 @@
+<?xml version="1.0"?>
+<chapter xmlns="http://docbook.org/ns/docbook" 
+xmlns:xl="http://www.w3.org/1999/xlink" 
+xml:id="dbdoclet.50569327_31987"
+version="5.0" 
+xml:lang="en">
+  <title>System Requirements</title>
+
+  <para>This chapter gives an operational overview of LoPAR systems and 
+  introduces platform specific software and/or firmware components that are 
+  required for OS support. This chapter also addresses some system level 
+  requirements that are broad in nature and are fundamental to the architecture 
+  described in later chapters. Lastly, a table of requirements is presented as a 
+  guide for platform providers.</para>
+
+  <section xml:id="dbdoclet.50569327_34213">
+    <title>System Operation</title>
+    <section>
+      <title>Control Flow</title>
+      <para><xref linkend="dbdoclet.50569327_36627"/> is an example of typical 
+      phases of operation from power-on to full system operation to termination. This 
+      section gives an overview of the processes involved in moving through these 
+      phases of operation. This section will introduce concepts and terms that will 
+      be explained in more detail in the following chapters. Most requirements 
+      relating to these processes will also appear in later chapters.</para>
+      <para>The discussion in this chapter will be restricted to systems with a 
+      single processor. Refer to <xref linkend="dbdoclet.50569340_14972"/> for the 
+      unique requirements relating to multiprocessor systems.</para>
+
+      <figure xml:id="dbdoclet.50569327_36627">
+        <title>Phases of Operation (example)</title>
+        <mediaobject>
+          <imageobject role="html">
+            <imagedata fileref="figures/PAPR-6.gif" format="GIF" scalefit="1"/>
+          </imageobject>
+          <imageobject role="fo">
+            <imagedata contentdepth="100%" fileref="figures/PAPR-6.gif" format="GIF" scalefit="1" width="100%"/>
+          </imageobject>
+        </mediaobject>
+      </figure>      
+    </section>
+    
+    <section xml:id="dbdoclet.50569327_marker-518472">
+      <title>POST</title>
+      
+      <para>Power On Self Test (POST) is the process by which the 
+      firmware tests those areas of the hardware that are critical to its ability to 
+      carry out the boot process. It is not intended to be all-inclusive or to be 
+      sophisticated in how it relates to the user. Diagnostics with these 
+      characteristics will generally be provided as a service aid.</para>
+      <para><emphasis role="bold">Platform Implementation Note:</emphasis> The platform 
+      may choose to utilize a service processor to assist in the implementation of 
+      functions during various phases of operation. The service (or support) 
+      processor is not a requirement of this architecture, but is usually seen in the 
+      larger systems.</para>
+    </section>
+
+    <section>
+      <title>Boot Phase</title>
+      <para>The following sections describe the boot phase of operation. The 
+      fundamental parts of the boot phase are:</para>
+
+      <orderedlist>		      
+        <listitem>
+          <para>Identify and configure system components.</para>
+        </listitem>
+
+        <listitem>
+          <para>Generate a device tree.</para>
+        </listitem>
+
+        <listitem>
+          <para>Initialize/reset system components.</para>
+        </listitem>
+
+        <listitem>
+          <para>Locate an OS boot image.</para>
+        </listitem>
+
+        <listitem>
+          <para>Load the boot image into memory.</para>
+        </listitem>
+      </orderedlist>		      
+
+      <section xml:id="sec_id_config_sys">
+        <title>Identify and Configure System Components</title>
+        <para>Firmware is generally written with a hardware in mind, so some 
+        components and their configuration data can be hardcoded. Examples of these 
+        components are: type of processor, cache characteristics, and the use of 
+        imbedded components on the planar. This hardcoding is not a requirement, only a 
+        practical approach to a part of this task.</para>
+
+        <variablelist>
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_id_config_sys" 
+            xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+              <listitem>
+                <para>The firmware must, by various means, 
+                become aware of all components in the system associated with the boot process 
+                and configure or reset those components into a known state (components include, 
+                for example, buses, bridges, I/O Adapters (IOAs)<footnote xml:id="pgfId-1056022"><para>
+                  See <xref linkend="dbdoclet.50569388_37308"/> for 
+                  the definition of an IOA.</para></footnote>, 
+                and I/O devices).</para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_id_config_sys" 
+            xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+              <listitem>
+                <para>The firmware must obtain certain system 
+                information which is necessary to build the OF device tree from 
+                &#x201C;walking&#x201D; the I/O buses (for example, identification of IOAs and 
+                bridges).</para>
+              </listitem>
+         	</varlistentry>
+        </variablelist>
+      </section>
+
+      <section xml:id="sec_gen_dev_tree">
+        <title>Generate a Device Tree</title>
+
+        <variablelist>
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_gen_dev_tree" 
+            xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+              <listitem>
+                <para>The firmware must build a device tree 
+                and the OS must gain access to the device tree through Client Interface 
+                Services (CIS).</para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_gen_dev_tree" 
+            xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+              <listitem>
+                <para>Configuration information 
+                (configuration variables) which are stored in non-volatile memory must be 
+                stored under the partition names <emphasis role="bold"><literal>of-config</literal></emphasis> or 
+                <emphasis role="bold"><literal>common</literal></emphasis>, depending on the nature of the information (see 
+                <xref linkend="dbdoclet.50569333_15433"/>).</para>
+              </listitem>
+         	</varlistentry>
+        </variablelist>
+      </section>
+
+      <section xml:id="sec_init_reset_sys_comp">
+        <title>Initialize/Reset System Components</title>
+        <para>The OS requires devices to be in a known state at the time control 
+        is transferred from the firmware. Firmware may gain control with the hardware 
+        in various states depending on what has initiated the boot process.</para>
+
+        <itemizedlist>		      
+          <listitem>
+            <para>Normal boot: Initiated by a power-on sequence; all devices and 
+            registers begin in a hardware reset state.</para>
+          </listitem>
+          
+          <listitem>
+            <para>Reboot: Device state is unpredictable at the start of a 
+            reboot.</para>
+          </listitem>
+        </itemizedlist>		      
+
+        <para>The hardware reset state for a device is an inactive state. An 
+        inactive state is defined as a state that allows no system level activity; 
+        there can be no bus activity, interrupt requests, or DMA requests possible from 
+        the IOA that is in a reset state. Since the OS may configure devices in a 
+        manner that requires very specific control over these functions to avoid 
+        transitory resource conflicts, these functions should be disabled at the device 
+        and not at a central controlling agent (for example, the interrupt controller). 
+        Devices that do not share any resources may have these resources disabled at a 
+        system level (for example, keyboard interrupts may be disabled at the interrupt 
+        controller in standard configurations).</para>
+
+        <variablelist>
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_init_reset_sys_comp" 
+            xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+              <listitem>
+                <para>IOAs must adhere to the reset states 
+                given in <xref linkend="dbdoclet.50569327_14035"/> when control of the system 
+                is passed from firmware to an OS.</para>
+
+                <table frame="all" pgwide="1" xml:id="dbdoclet.50569327_14035">
+                  <?dbhtml table-width="75%" ?><?dbfo table-width="75%" ?>
+                  <title>IOA Reset States</title>
+                  <tgroup cols="3">
+                    <colspec colname="c1" colwidth="20*"/>
+                    <colspec colname="c2" colwidth="40*"/>
+                    <colspec colname="c3" colwidth="40*"/>
+                    <thead valign="middle">
+                      <row>
+                        <entry align="center">
+                          <para>
+                            <emphasis role="bold">Bus</emphasis>
+                          </para>
+                        </entry>
+                        <entry align="center">
+                          <para>
+                            <emphasis role="bold">IOAs Left Open by OF</emphasis>
+                          </para>
+                        </entry>
+                        <entry align="center">
+                          <para>
+                            <emphasis role="bold">Other IOAs</emphasis>
+                          </para>
+                        </entry>
+                      </row>
+                    </thead>
+                    <tbody valign="middle">
+                      <row>
+                        <entry>
+                          <para> PCI</para>
+                        </entry>
+                        <entry>
+                          <para>Interrupts not active <?linebreak?>
+                          No outstanding I/O operations<?linebreak?>
+                          IOA is configured</para>
+                        </entry>
+                        <entry>
+                          <para> The IOA is <emphasis>inactive:</emphasis></para>
+                          <itemizedlist spacing="compact">
+                            <listitem><para>I/O access response disabled</para></listitem>
+                            <listitem><para>Memory access response disabled</para></listitem>
+                            <listitem><para>PCI master access disabled</para></listitem>
+                            <listitem><para>Interrupts not active</para></listitem>
+                          </itemizedlist>
+                          <para>IOA is reset (see note)</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para> System</para>
+                        </entry>
+                        <entry>
+                          <para> Configured per OF device tree</para>
+                          <itemizedlist spacing="compact">
+                            <listitem><para>Interrupts inactive</para></listitem>
+                            <listitem><para>DMA inactive</para></listitem>
+                            <listitem><para>No outstanding I/O operations</para></listitem>
+                          </itemizedlist>
+                        </entry>
+                        <entry>
+                          <para> The IOA is in hardware reset state (see note) or <emphasis>inactive</emphasis>:</para>
+                          <itemizedlist spacing="compact">
+                            <listitem><para>Interrupts inactive</para></listitem>
+                            <listitem><para>DMA inactive</para></listitem>
+                          </itemizedlist>
+                        </entry>
+                      </row>
+                    </tbody>
+                  </tgroup>
+                </table>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_init_reset_sys_comp" 
+            xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+              <listitem>
+                <para>The platform must include the root node 
+                OF device tree property <emphasis role="bold"><literal>&#x201C;ibm,pci-full-cfg&#x201D;</literal></emphasis> with a 
+                value of 1 and configure the configuration registers of all PCI IOAs and 
+                bridges as specified by Requirement <xref linkend="dbdoclet.50569335_13568"/>.</para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry xml:id="dbdoclet.50569327_47242">
+            <term><emphasis role="bold">R1-<xref linkend="sec_init_reset_sys_comp" 
+            xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+              <listitem>
+                <para>Prior to passing control to the OS, the platform must initialize all processor registers to a value which, if 
+                accessed, will not yield a machine check.</para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_init_reset_sys_comp" 
+            xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+              <listitem>
+                <para>Prior to passing control to the OS, the 
+                platform must initialize all registers not visible to the OS to a state that is 
+                consistent with the system view represented by the OF device tree.</para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_init_reset_sys_comp" 
+            xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
+              <listitem>
+                <para>During boot or reboot operations and 
+                prior to passing control to the OS, the platform must initialize the interrupt 
+                controller.</para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_init_reset_sys_comp" 
+            xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
+              <listitem>
+                <para>Hardware must provide a mechanism, 
+                callable by software, to hard reset all processors and I/O subsystems in order 
+                to facilitate the implementation of the RTAS <emphasis>system-reboot</emphasis> function.</para>
+              </listitem>
+         	</varlistentry>
+        </variablelist>
+
+        <para><emphasis role="bold">Platform Implementation Note:</emphasis> The platform 
+        is required to reset the interrupt controller to avoid inconsistency among the 
+        states of IOAs, the interrupt controller, and software interrupt handler 
+        routines. The reset state is shown in <xref linkend="dbdoclet.50569327_14035"/>.</para>
+        <para><emphasis role="bold">Software and Firmware Implementation Note:</emphasis> 
+        The conventional PCI configuration registers are further described in the 
+        <xref linkend="dbdoclet.50569387_65468"/> and are copied into OF properties described 
+        in the <xref linkend="dbdoclet.50569387_22451"/>. PCI-X configuration registers 
+        are further described in the <xref linkend="dbdoclet.50569387_26550"/>. PCI 
+        Express configuration registers are further described in the 
+        <xref linkend="dbdoclet.50569387_66784"/>. PCI-X IOAs and bridges and PCI Express 
+        IOAs, bridges, and switches are treated the same as conventional PCI IOAs and 
+        bridges for purposes of generation of OF properties. </para>
+        <para><emphasis role="bold">Software and Firmware Implementation Note:</emphasis> In 
+        reference to Requirement <xref linkend="dbdoclet.50569327_47242"/>, generally 
+        the initial value of processor registers is contained in the processor binding. 
+        However, some processors have deviations on register usage. Also, since some 
+        register implementation is optional, all processors are not the same.</para>
+      </section>
+
+      <section xml:id="dbdoclet.50569327_28943">
+        <title>Locate an OS Boot Image </title>
+        <para>The OS boot image is located as described in 
+        <xref linkend="LoPAR.DeviceTree"/>. A device and filename can be specified directly 
+        from the command interpreter (the <emphasis>boot</emphasis> command) or OF 
+        will locate the image through an automatic boot process controlled by 
+        configuration variables. Once a boot image is located, the device path is set 
+        in the device tree as the <emphasis role="bold"><literal>&#x201C;bootpath&#x201D;</literal></emphasis> 
+        property of the <emphasis role="bold"><literal>chosen</literal></emphasis> node.</para>
+        <para>The devices searched by the automatic boot process are those 
+        contained in the <emphasis role="bold"><literal>boot-device</literal></emphasis> configuration variable. 
+        Implementations may choose to limit the number of boot device entries that are 
+        searched. The root node device tree property 
+        <emphasis role="bold"><literal>&#x201C;ibm,max-boot-devices&#x201D;</literal></emphasis> communicates the number of 
+        <emphasis role="bold"><literal>boot-device</literal></emphasis> entries that the platform processes.</para>
+        <para>If multi-boot (multiple bootable OSs residing on the same platform) is supported, 
+        a configuration variable instructs the firmware to display a multi-boot menu 
+        from which the OS and bootpath are selected. See <xref linkend="LoPAR.DeviceTree"/> 
+        for information relating to the multiboot process.</para>
+
+        <variablelist>
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_28943" 
+            xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+              <listitem>
+                <para>The platform must supply in the OF root 
+                node the <emphasis role="bold"><literal>&#x201C;ibm,max-boot-devices&#x201D;</literal></emphasis> property.</para>
+              </listitem>
+         	</varlistentry>
+        </variablelist>
+      </section>
+
+      <section>
+        <title>Load the Boot Image into Memory</title>
+        <para>After locating the image, it is loaded into memory at the location 
+        given by a configuration variable or as specified by the OS load image format.</para>
+      </section>
+      
+      <section xml:id="dbdoclet.50569327_26247">
+        <title>Boot Process</title>
+        <para>The boot process is described in <xref linkend="LoPAR.DeviceTree"/>. 
+        Steps in the process are reviewed here, but the 
+        authoritative and complete description of the process is included in 
+        <xref linkend="LoPAR.DeviceTree"/>. <xref linkend="dbdoclet.50569327_17087"/> is a 
+        depiction of the boot flow showing the action of the f1, f5, and f6 function 
+        keys. The figure should only be used as an aid in understanding the 
+        requirements for LoPAR systems.</para>
+        <para>&#xA0;</para>
+        <figure xml:id="dbdoclet.50569327_17087">
+          <title>Boot Process</title>
+          <mediaobject>
+            <imageobject role="html">
+              <imagedata fileref="figures/PAPR-7.gif" format="GIF" scalefit="1"/>
+            </imageobject>
+            <imageobject role="fo">
+              <imagedata contentdepth="100%" fileref="figures/PAPR-7.gif" format="GIF" scalefit="1" width="100%"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+
+        <section xml:id="dbdoclet.50569327_marker-522627">
+          <title>The Boot Prompt</title>
+
+        <variablelist >
+         	<varlistentry xml:id="dbdoclet.50569327_26836">
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_marker-522627" 
+            xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+              <listitem>
+                  <para>After the <emphasis role="bold"><literal>banner</literal></emphasis> step of the boot sequence, the platform display must present 
+                  a clearly visible graphical or text message (<emphasis>boot prompt</emphasis>), and 
+                  must provide a reaction window of at least 3 seconds that prompts the 
+                  user to activate various options including the f1, f5, and f6 control keys 
+                  detailed in this document.</para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_marker-522627" 
+            xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+              <listitem>
+                  <para>The functions provided by f1, f5 and 
+                  f6 described in this chapter must be equivalently provided by the tty numeral 
+                  keys 1, 5, and 6, respectively when a serial terminal is attached.</para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_marker-522627" 
+            xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+              <listitem>
+                  <para>The boot prompt must identify the 
+                  platform and communicate to the user that there are options that may be invoked 
+                  to alter the boot process.</para>
+              </listitem>
+         	</varlistentry>
+        </variablelist>
+        </section>
+
+        <section xml:id="sec_sms_menu">
+          <title>The Menus</title>
+          <para>Once the boot prompt is displayed, the System Management Services 
+          (SMS) menu can be invoked. SMS provides a user interface for utilities, 
+          configuration, and the Multiboot Menu (as introduced in 
+          <xref linkend="LoPAR.DeviceTree"/>) for boot/install and the OF command 
+          interpreter.</para>
+          <para>The Multiboot menu is formatted so that block devices that 
+          currently contain boot information are most easily selected by the user. 
+          Because of the serial nature of byte devices, they should not be opened unless 
+          specifically included in a boot list. The user may also wish to add devices to 
+          the boot-device and/or diag-device configuration variables (boot lists) that 
+          currently do not contain boot information. The Multiboot menu presents these 
+          devices in a secondary manner.</para>
+          <para>If the Multiboot Menu boot/install option is chosen, OF will 
+          execute the <literal>bootinfo.txt&lt;boot-script&gt;</literal> of the 
+          selected OS, and if the user elects to make this the default, the 
+          <emphasis role="bold"><literal>boot-command</literal></emphasis> variable will be set equal to the contents of 
+          <literal>bootinfo.txt&lt;boot-script&gt;</literal>.</para>
+
+          <variablelist>
+           	<varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="sec_sms_menu" 
+              xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+                <listitem>
+                  <para>The SMS menu must provide a means to 
+                  display the Multiboot Menu.</para>
+                </listitem>
+           	</varlistentry>
+           	
+           	<varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="sec_sms_menu" 
+              xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+                <listitem>
+                  <para>If, after the <emphasis>boot 
+                  prompt</emphasis> is displayed, 
+                  <emphasis role="bold"><literal>auto-boot?</literal></emphasis> <literal>= false</literal> 
+                  and <emphasis role="bold"><literal>menu?</literal></emphasis> <literal>= true</literal>, 
+                  the firmware must display the Multiboot Menu directly. </para>
+                </listitem>
+           	</varlistentry>
+           	
+           	<varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="sec_sms_menu" 
+              xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+                <listitem>
+                  <para>The Multiboot Menu must present all 
+                  potential boot device options, differentiating block devices that contain 
+                  locatable <emphasis>bootinfo objects</emphasis>.</para>
+                </listitem>
+           	</varlistentry>
+           	
+           	<varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="sec_sms_menu" 
+              xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+                <listitem>
+                  <para>Firmware must evaluate all 
+                  <emphasis>bootinfo objects</emphasis> at each invocation of the Multiboot Menu to ensure 
+                  that any modifications made by the OS will be included.</para>
+                </listitem>
+           	</varlistentry>
+           	
+           	<varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="sec_sms_menu" 
+              xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
+                <listitem>
+                  <para>The Multiboot Menu must provide a 
+                  means to enter the currently selected boot option into the desired location 
+                  within the <emphasis role="bold"><literal>boot-device/boot-file</literal></emphasis> or 
+                  <emphasis role="bold"><literal>diag-device/diag-file</literal></emphasis> configuration variables.</para>
+                </listitem>
+           	</varlistentry>
+           	
+           	<varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="sec_sms_menu" 
+              xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
+                <listitem>
+                  <para>The platform must provide a means to 
+                  delete individual boot options from the 
+                  <emphasis role="bold"><literal>boot-device/boot-file</literal></emphasis> and 
+                  <emphasis role="bold"><literal>diag-device/diag-file</literal></emphasis> configuration variables.</para>
+                </listitem>
+           	</varlistentry>
+           	
+           	<varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="sec_sms_menu" 
+              xrefstyle="select: labelnumber nopage"/>-7.</emphasis></term>
+                <listitem>
+                  <para>The Multiboot Menu must provide an 
+                  option for the user to select whether or not to return to the Multiboot Menu on 
+                  each boot.</para>
+                </listitem>
+           	</varlistentry>
+          </variablelist>
+
+          <para><emphasis role="bold">Firmware Implementation Note:</emphasis> Returning to the Multiboot Menu on 
+          reboot is controlled with the <emphasis role="bold"><literal>auto-boot?</literal></emphasis> and 
+          <emphasis role="bold"><literal>menu?</literal></emphasis> configuration variables.</para>
+        </section>
+
+        <section xml:id="sec_f1_key">
+          <title>The f1 Key</title>
+          <para>The boot process is further controlled by the 
+          <emphasis role="bold"><literal>auto-boot?</literal></emphasis> and 
+          <emphasis role="bold"><literal>menu?</literal></emphasis> 
+          OF configuration variables and the f1 key.</para>
+
+          <variablelist>
+           	<varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="sec_f1_key" 
+              xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+                <listitem>
+                  <para>If, after the <emphasis>boot 
+                  prompt</emphasis> is displayed, function key f1 is pushed or if 
+                  <emphasis role="bold"><literal>auto-boot?</literal></emphasis> <literal>= false</literal> and 
+                  <emphasis role="bold"><literal>menu?</literal></emphasis> <literal>= false</literal>, the firmware must display the 
+                  System Management Services (SMS) menu.</para>
+                </listitem>
+           	</varlistentry>
+           	
+           	<varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="sec_f1_key" 
+              xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+                <listitem>
+                  <para>The default value for the 
+                  <emphasis role="bold"><literal>auto-boot?</literal></emphasis> configuration variable must be 
+                  <literal>true</literal>.</para>
+                </listitem>
+           	</varlistentry>
+           	
+           	<varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="sec_f1_key" 
+              xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+                <listitem>
+                  <para>The default value for the
+                  <emphasis role="bold"><literal>menu?</literal></emphasis> configuration variable must be 
+                  <literal>false</literal>.</para>
+                </listitem>
+           	</varlistentry>
+          </variablelist>
+        </section>
+
+        <section xml:id="sec_f5_f6_key">
+          <title>The f5 and f6 Keys</title>
+          <para>If <emphasis role="bold"><literal>auto-boot?</literal></emphasis> <literal>= true</literal>, 
+          the commands specified by the <emphasis role="bold"><literal>boot-command</literal></emphasis> configuration 
+          variable are executed.</para>
+          <para>If the <emphasis role="bold"><literal>boot</literal></emphasis> command has no arguments, IEEE 
+          1275 states that the arguments are determined as follows:</para>
+
+          <itemizedlist>		      
+            <listitem>
+              <para>Normal Boot - If the 
+              <emphasis role="bold"><literal>diagnostic-mode?</literal></emphasis>FCode 
+              function returns <literal>false</literal>, the boot 
+              device is given by <emphasis role="bold"><literal>boot-device</literal></emphasis> and the default boot 
+              arguments are given by <emphasis role="bold"><literal>boot-file</literal></emphasis>.</para>
+            </listitem>
+            
+            <listitem>
+              <para>Diagnostics Boot - If the <emphasis role="bold"><literal>diagnostic-mode?</literal></emphasis> 
+              FCode function returns <literal>true</literal>, the boot device is given by 
+              <emphasis role="bold"><literal>diag-device</literal></emphasis> and the default boot arguments are given by 
+              <emphasis role="bold"><literal>diag-file</literal></emphasis>.</para>
+            </listitem>
+          </itemizedlist>		      
+
+          <para><emphasis role="bold">Platform Implementation Note:</emphasis>
+          <emphasis role="bold"><literal>boot-device</literal></emphasis>, 
+          <emphasis role="bold"><literal>boot-file</literal></emphasis>, 
+          <emphasis role="bold"><literal>diag-device</literal></emphasis> and 
+          <emphasis role="bold"><literal>diag-file</literal></emphasis> 
+          are potentially multi-entry strings. The 
+          <emphasis role="bold"><literal>boot-command</literal></emphasis> searches the 
+          devices specified in <emphasis role="bold"><literal>boot-device/diag-device</literal></emphasis> in the order 
+          defined by the string for the <emphasis role="bold"><literal>boot-file/diag-file</literal></emphasis> to load 
+          into system memory. Failure occurs only if no corresponding file is 
+          found/usable on any of the specified devices.</para>
+          <para>Platforms give the user the ability to control the boot process 
+          further with function keys f5 and f6 (within the window described in 
+          Requirement <xref linkend="dbdoclet.50569327_26836"/>).</para>
+
+          <variablelist>
+           	<varlistentry xml:id="dbdoclet.50569327_16622">
+              <term><emphasis role="bold">R1-<xref linkend="sec_f5_f6_key" 
+              xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+                <listitem>
+                  <para>If, after the <emphasis>boot prompt</emphasis> is displayed, function key f5 is pushed (and 
+                  <emphasis role="bold"><literal>auto-boot?</literal></emphasis> <literal>= true</literal>), then 
+                  <emphasis role="bold"><literal>diagnostic-mode?</literal></emphasis> must return <literal>true</literal> and the 
+                  <emphasis>default diagnostic device</emphasis> as defined in Requirements 
+                  <xref linkend="dbdoclet.50569327_17276"/> and 
+                  <xref linkend="dbdoclet.50569327_24271"/> must be used to locate bootable 
+                  media.</para>
+                </listitem>
+           	</varlistentry>
+           	
+           	<varlistentry xml:id="dbdoclet.50569327_25473">
+              <term><emphasis role="bold">R1-<xref linkend="sec_f5_f6_key" 
+              xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+                <listitem>
+                  <para>If, after the <emphasis>boot prompt</emphasis> is displayed, function key f6 is pushed (and 
+                  <emphasis role="bold"><literal>auto-boot?</literal></emphasis> <literal>= true</literal>), then 
+                  <emphasis role="bold"><literal>diagnostic-mode?</literal></emphasis> must return <literal>true</literal> and 
+                  <emphasis role="bold"><literal>diag-device</literal></emphasis> must be used to locate the boot image, else 
+                  if <emphasis role="bold"><literal>diag-device</literal></emphasis> is empty, then its default as defined in 
+                  Requirements <xref linkend="dbdoclet.50569327_17276"/> and 
+                  <xref linkend="dbdoclet.50569327_24271"/> must be used to locate bootable 
+                  media.</para>
+                </listitem>
+           	</varlistentry>
+           	
+           	<varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="sec_f5_f6_key" 
+              xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+                <listitem>
+                  <para><emphasis role="bold"><literal>boot-command</literal></emphasis> 
+                  must default to <emphasis role="bold"><literal>boot</literal></emphasis> <literal>&lt;with no 
+                  arguments&gt;</literal>.</para>
+                </listitem>
+           	</varlistentry>
+           	
+           	<varlistentry xml:id="dbdoclet.50569327_17276">
+              <term><emphasis role="bold">R1-<xref linkend="sec_f5_f6_key" 
+              xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+                <listitem>
+                  <para><emphasis role="bold"><literal>boot-device</literal></emphasis> and 
+                  <emphasis role="bold"><literal>diag-device</literal></emphasis> 
+                  must default to the first devices of each type that 
+                  would be encountered by a search of the device tree.</para>
+                </listitem>
+           	</varlistentry>
+           	
+           	<varlistentry xml:id="dbdoclet.50569327_24271">
+              <term><emphasis role="bold">R1-<xref linkend="sec_f5_f6_key" 
+              xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
+                <listitem>
+                  <para>The search order for the 
+                  <emphasis role="bold"><literal>boot-device</literal></emphasis> and 
+                  <emphasis role="bold"><literal>diag-device</literal></emphasis> 
+                  defaults must be floppy, cdrom, tape, disk, network.</para>
+                </listitem>
+           	</varlistentry>
+           	
+           	<varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="sec_f5_f6_key" 
+              xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
+                <listitem>
+                  <para><emphasis role="bold"><literal>boot-file</literal></emphasis> must 
+                  default to <literal>&lt;null&gt;</literal>.</para>
+                </listitem>
+           	</varlistentry>
+           	
+           	<varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="sec_f5_f6_key" 
+              xrefstyle="select: labelnumber nopage"/>-7.</emphasis></term>
+                <listitem>
+                  <para><emphasis role="bold"><literal>diag-file</literal></emphasis> must 
+                  default to <literal>diag</literal>.</para>
+                </listitem>
+           	</varlistentry>
+          </variablelist>
+
+          <para><emphasis role="bold">Note:</emphasis> Requirement 
+          <xref linkend="dbdoclet.50569327_16622"/> provides a method to invoke stand-alone 
+          diagnostics or to start reinstallation without going through the menus. 
+          Requirement <xref linkend="dbdoclet.50569327_25473"/> provides a method to boot 
+          with on-line diagnostics.</para>
+          <para><emphasis role="bold">Software Implementation Note:</emphasis> Pressing either f5 or f6 at the 
+          correct time will cause the contents of <emphasis role="bold"><literal>diag-file</literal></emphasis> to be 
+          set into the <emphasis role="bold"><literal>&#x201C;bootargs&#x201D;</literal></emphasis> property of the 
+          <emphasis role="bold"><literal>chosen</literal></emphasis> node of the device tree. The OS can recognize a 
+          diagnostics boot request when it finds the <emphasis role="bold"><literal>&#x201C;diag&#x201D;</literal></emphasis> 
+          substring in <emphasis role="bold"><literal>&#x201C;bootargs&#x201D;</literal></emphasis>.</para>
+        </section>
+
+        <section xml:id="sec_cd_boot">
+          <title>CDROM Boot</title>
+          <para>If the CDROM is the first bootable media found in the devices 
+          listed in the bootlist (<emphasis role="bold"><literal>boot-device</literal></emphasis> strings), the CDROM 
+          should boot without having to enter optional file specification information or 
+          using the f5 function key normally used for diagnostic boot. This is 
+          accomplished by having the appropriate <literal>bootinfo.txt</literal> file 
+          specification in the CDROM entry in the bootlist.</para>
+
+          <variablelist>
+           	<varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="sec_cd_boot" 
+              xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+                <listitem>
+                  <para>CDROM entries for the default OF 
+                  <emphasis role="bold"><literal>boot-device</literal></emphasis> and 
+                  <emphasis role="bold"><literal>diag-device</literal></emphasis> 
+                  configuration variables must include the standard block device 
+                  <literal>bootinfo.txt</literal> file specification as documented in 
+                  <xref linkend="LoPAR.DeviceTree"/> (<literal>\ppc\bootinfo.txt</literal>).</para>
+                </listitem>
+           	</varlistentry>
+          </variablelist>
+        </section>
+
+        <section xml:id="dbdoclet.50569327_20641">
+          <title>Tape Boot</title>
+          <para>Boot from tape is defined in <xref linkend="LoPAR.DeviceTree"/>.</para>
+        </section>
+
+        <section xml:id="sec_network_boot">
+          <title>Network Boot</title>
+          <para>The user selects from a list of network devices on the Multiboot 
+          Menu and then selects the boot option. The user may be prompted for network 
+          parameters (IP addresses, etc.) which are set as arguments in 
+          <emphasis role="bold"><literal>boot-device</literal></emphasis> by the firmware. If the BOOTP protocol is used, the 
+          BOOTREPLY packet contains the network parameters to be used for subsequent 
+          transmissions (see <xref linkend="dbdoclet.50569387_31707"/> for details of 
+          this process).</para>
+
+          <variablelist>
+           	<varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="sec_network_boot" 
+              xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+                <listitem>
+                  <para>If network boot is selected, firmware 
+                  must provide a means for the user to specify or override network parameters.</para>
+                </listitem>
+           	</varlistentry>
+          </variablelist>
+        </section>
+
+        <section xml:id="dbdoclet.50569327_23654">
+          <title>Service Processor Boot</title>
+          <para>In platforms with a service processor, the user may call for a boot 
+          using a local/remote connection to the service processor. The particular port 
+          used for this remote session is sent to the firmware in a status message after 
+          the service processor finishes POST. The port is identified in the 
+          <emphasis role="bold"><literal>&#x201C;stdin&#x201D;</literal></emphasis>
+          and <emphasis role="bold"><literal>&#x201C;stdout&#x201D;</literal></emphasis> 
+          properties in the <emphasis role="bold"><literal>chosen</literal></emphasis> node of the OF device tree.</para>
+        </section>
+
+        <section xml:id="dbdoclet.50569327_36194">
+          <title>Console Selection</title>
+          <para>During the boot process, firmware establishes the console to be 
+          used for displaying status and menus. The following pseudocode describes the 
+          console selection process:
+          <programlisting><![CDATA[IF there is a configuration change detected for "display", "keyboard" or "mouse"; type
+devices OR if a console selection timeout occurred on the last boot,
+  IF Firmware can locate a supported console device,
+    Firmware will prompt the user to select a console and wait approximately 60 seconds
+    for a valid response.
+    IF a valid response is received within the 60 second timeout,
+      Use the selected console.
+    ELSE choose the Primary Serial Port.
+  ELSE choose the Primary Serial Port.
+ELSE
+  IF input-device and output-device are valid,
+    Firmware will choose these devices for the console.
+  ELSE choose the Primary Serial Port.]]></programlisting></para>
+
+          <variablelist>
+           	<varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_36194" 
+              xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+                <listitem>
+                  <para>If a console has been selected during 
+                  the boot process, firmware must set the <emphasis role="bold"><literal>&#x201C;stdin&#x201D;</literal></emphasis> 
+                  and <emphasis role="bold"><literal>&#x201C;stdout&#x201D;</literal></emphasis> properties of the 
+                  <emphasis role="bold"><literal>chosen</literal></emphasis> node to the ihandles of this console&#x2019;s input and 
+                  output devices prior to passing control to the OS.</para>
+                </listitem>
+           	</varlistentry>
+          </variablelist>
+        </section>
+
+        <section xml:id="sec_boot_retry">
+          <title>Boot Retry</title>
+          <para> For boot failures related to firmware trying to access a boot 
+          device, it is appropriate for the platform to retry the boot operation, 
+          especially in the case of booting from a network device. However, in platforms 
+          which have a service processor, there are several other types of detected 
+          errors for which a reboot retry may be appropriate; for example, checkstops or 
+          loss of communication between firmware and the service processor. To ensure 
+          that the user policy is followed, the coordination and counting of retry 
+          attempts need to be interlocked between the service processor and boot 
+          firmware. The most straightforward way to implement this is to have the boot 
+          firmware inform the service processor of all failed boot attempts, and let the 
+          service processor initiate the system reset (as it also would for checkstops or 
+          hangs). This way the service processor can easily manage the retry count and 
+          initiate a service dial-out if the boot retry limit is exceeded.</para>
+
+          <variablelist>
+           	<varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="sec_boot_retry" 
+              xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+                <listitem>
+                  <para><emphasis>Platform 
+                  Implementation:</emphasis> In platforms with service processors, retry of 
+                  failed boot operations must be coordinated between boot firmware and the 
+                  service processor, to ensure correct counting and handling of reboot retries 
+                  according to the service processor configuration reboot policies.</para>
+                </listitem>
+           	</varlistentry>
+          </variablelist>
+        </section>
+
+        <section xml:id="sec_boot_failures">
+          <title>Boot Failures</title>
+          <para>Failure to boot occurs only when no corresponding file is found 
+          which is usable on any device specified in the 
+          <emphasis role="bold"><literal>boot-device</literal></emphasis>, 
+          <emphasis role="bold"><literal>boot-file</literal></emphasis>, 
+          <emphasis role="bold"><literal>diag-device</literal></emphasis>, or 
+          <emphasis role="bold"><literal>diag-file</literal></emphasis> string being used.</para>
+
+          <variablelist>
+           	<varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="sec_boot_failures" 
+              xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+                <listitem>
+                  <para>If an error occurs in a boot device 
+                  preventing boot from that device, and after all defined retries have occurred, 
+                  the failure must be reported as a POST error. </para>
+                </listitem>
+           	</varlistentry>
+           	
+           	<varlistentry xml:id="dbdoclet.50569327_89479">
+              <term><emphasis role="bold">R1-<xref linkend="sec_boot_failures" 
+              xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+                <listitem>
+                  <para>If a boot device is physically 
+                  missing or lacks a boot record (for example, if a CDROM is not present in a 
+                  CDROM drive), then a POST error must be generated for this case, must not 
+                  result in the calling out of a boot device as being defective, and must not 
+                  result in a hardware service repair action to the device. </para>
+                </listitem>
+           	</varlistentry>
+           	
+           	<varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="sec_boot_failures" 
+              xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+                <listitem>
+                  <para>In Requirement 
+                  <xref linkend="dbdoclet.50569327_89479"/>, if it is not possible for a device to 
+                  distinguish between an actual device error, as opposed to a missing device or 
+                  boot record, then a POST error must be generated that indicates the possible 
+                  causes of the failure to boot from the device, and this POST error must not 
+                  imply that a hardware service repair action is required for the boot 
+                  device.</para>
+                </listitem>
+           	</varlistentry>
+          </variablelist>
+
+          <para><emphasis role="bold">Implementation Note:</emphasis> All device errors of the 
+          same type may be consolidated into a single POST log entry with multiple 
+          location codes listed if needed. This architecture anticipates remote support 
+          center notification of hardware errors. It is the intention that only 
+          definitive boot device errors will be reported as requiring hardware repair. 
+          This is meant to prevent service calls for systems for non-hardware errors such 
+          as no tape in a tape drive.</para>
+        </section>
+
+        <section xml:id="dbdoclet.50569327_70628">
+          <title>Persistent Memory and Memory Preservation Boot 
+          (Storage Preservation Option)</title>
+          <para>Selected regions of storage, or Logical Memory Blocks (LMBs), may 
+          be optionally preserved across client program boot cycles. These LMBs are 
+          denoted by the presence of the <emphasis role="bold"><literal>&#x201C;ibm,preservable&#x201D;</literal></emphasis> 
+          property in their OF device tree <emphasis role="bold"><literal>/memory</literal></emphasis> node. 
+          The client program registers the LMB with 
+          the platform using the <emphasis>ibm,manage-storage-preservation</emphasis> 
+          RTAS call if it wants the contents of the storage preserved across client boot 
+          cycles (see also "Managing Storage Preservations" in 
+          <xref linkend="LoPAR.RTAS"/> specification). The architectural intent of this 
+          facility is to enable client programs to emulate persistent storage. This is 
+          done by a client program registering preservable LMBs. Then, after a subsequent 
+          boot cycle (perhaps due to error or impending power loss) the presence of the 
+          <emphasis role="bold"><literal>&#x201C;ibm,preserved-storage&#x201D;</literal></emphasis> property in the 
+          <emphasis role="bold"><literal>/rtas</literal></emphasis> node of the device tree indicates to the client 
+          program that it has preserved memory. When the client program detects that it 
+          has booted with preserved storage and that it might be necessary to preserve 
+          the storage for long term, the client program is responsible for copying the 
+          preserved data to long term persistent storage medium, and then clearing the 
+          registration of the preserved LMBs to prevent potential corruption of the 
+          persistent storage medium due to subsequent failures.</para>
+          <para>Upon reboot after such an operation, the 
+          <emphasis role="bold"><literal>&#x201C;ibm,request-partition-shutdown&#x201D;</literal></emphasis> property is provided 
+          in the <emphasis role="bold"><literal>/rtas</literal></emphasis> node with a value of 2, indicating that the 
+          client program should save appropriate data and shutdown the partition.</para>
+          <para><emphasis role="bold">Implementation Note:</emphasis> How areas get chosen to 
+          be marked as preservable is beyond the scope of this architecture.</para>
+        </section>
+      </section>
+
+    </section>
+
+    <section xml:id="sec_transfer_phase">
+      <title>Transfer Phase</title>
+      <para>The image is prepared for execution by checking it against certain 
+      configuration variables; this may result in a reboot.</para>
+      <para>Once the OS gains control, it may use the CIS interface to learn 
+      about the platform contents and configuration. The OS will generally build its 
+      own version of this configuration data and may discard the OF code and device 
+      tree in order to reclaim the space used by OF. A set of 
+      platform-specific functions are provided by Run-Time Abstraction Services 
+      (RTAS) which is instantiated by the OS invoking the 
+      <emphasis role="bold"><literal>instantiate-rtas</literal></emphasis> method of the RTAS OF device tree node.</para>
+
+      <variablelist>
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_transfer_phase" 
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+            <listitem>
+              <para>If any device tree property is presented 
+              that contains a phandle value to identify a certain node in the device tree, 
+              the device tree node so identified must contain the 
+              <emphasis role="bold"><literal>&#x201C;ibm,phandle&#x201D;</literal></emphasis> property, and the value of the 
+              <emphasis role="bold"><literal>&#x201C;ibm,phandle&#x201D;</literal></emphasis> property must match the 
+              phandle value in the property identifying that node.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_transfer_phase" 
+          xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+            <listitem>
+              <para>If the <emphasis role="bold"><literal>&#x201C;ibm,phandle&#x201D;</literal></emphasis> 
+              property is present in a device tree 
+              node, the OS must use this value, and not the phandle value returned by a 
+              client interface service, to associate this node with a device tree property 
+              that uses a phandle value to identify this node.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_transfer_phase" 
+          xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+            <listitem>
+              <para>An OS must not assume that the 
+              <emphasis role="bold"><literal>&#x201C;ibm,phandle&#x201D;</literal></emphasis> property, if present, corresponds to the 
+              phandle used by or returned by OF client interface services. A phandle value 
+              passed to a client interface service as an argument must have been obtained by 
+              use of a client interface service, and not from a device tree property 
+              value.</para>
+            </listitem>
+       	</varlistentry>
+      </variablelist>
+
+      <para><emphasis role="bold">Note:</emphasis> If the <emphasis role="bold"><literal>&#x201C;ibm,phandle&#x201D;</literal></emphasis> 
+      property exists, there are two &#x201C;phandle&#x201D; namespaces which must be kept separate. One is that 
+      actually used by the OF client interface, the other is properties in the device 
+      tree making reference to device tree nodes. These requirements are written to 
+      maintain backward compatibility with older FW versions predating these 
+      requirements; if the <emphasis role="bold"><literal>&#x201C;ibm,phandle&#x201D;</literal></emphasis> property 
+      is not present, the OS may assume that any device tree properties which refer 
+      to this node will have a phandle value matching that returned by client 
+      interface services. It will be necessary to have the OSs ready for this 
+      requirement before the firmware implementation.</para>
+    </section>
+
+    <section>
+      <title>Run-Time</title>
+      <para>During run-time, the OS has control of the system and will have 
+      RTAS instantiated to provide low-level hardware-specific functions.</para>
+    </section>
+
+    <section>
+      <title>Termination</title>
+      <para>Termination is the phase during which the OS yields control of the 
+      system and may return control to the firmware depending on the nature of the 
+      terminating condition.</para>
+
+      <section>
+        <title>Power Off</title>
+        <para>If the user activates the system power switch, power may be removed 
+        from the hardware immediately (switch directly controls the power supply) or 
+        software may be given an opportunity to bring the system down in an orderly 
+        manner (power management control of the power switch).</para>
+        <para>If power is removed from the hardware immediately, the OS will lose 
+        control of the system in an undetermined state. Any I/O underway will be 
+        involuntarily aborted and there is potential for data loss or system damage. A 
+        shut-down process prior to power removal is highly recommended. </para>
+        <para>In most power managed systems, power switch activation is fielded 
+        as a power management interrupt and the OS (through RTAS) is able to quiesce 
+        the system before removing power. The OS may turn off system power using the 
+        RTAS power-off function.</para>
+      </section>
+
+      <section>
+        <title>Reboot</title>
+        <para>The OS may cause the system to reset and reboot by calling the RTAS 
+        system-reboot function.</para>
+      </section>
+    </section>
+
+  </section>
+
+  <section xml:id="dbdoclet.50569327_22507">
+    <title>Firmware</title>
+
+    <variablelist>
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_22507" 
+        xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+          <listitem>
+            <para>Platforms must implement OF as defined in <xref linkend="LoPAR.DeviceTree"/>.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_22507" 
+        xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+          <listitem>
+            <para>The OF User Interface must include the 
+            following methods as specified in <xref linkend="dbdoclet.50569387_45524"/>, 
+            Section 7.6:<emphasis role="bold"><literal>.registers</literal></emphasis>, 
+            <emphasis role="bold"><literal>to</literal></emphasis>, 
+            <emphasis role="bold"><literal>load</literal></emphasis>, 
+            <emphasis role="bold"><literal>go</literal></emphasis>, 
+            <emphasis role="bold"><literal>state-valid</literal></emphasis> 
+            and <emphasis role="bold"><literal>init-program</literal></emphasis>.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_22507" 
+        xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+          <listitem>
+            <para>Platforms must implement the Run-Time Abstraction Services (RTAS) as described in 
+            <xref linkend="LoPAR.RTAS"/>.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_22507" 
+        xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+          <listitem>
+            <para>OSs must use OF and the RTAS functions to be 
+            compatible with all platforms. </para>
+          </listitem>
+     	</varlistentry>
+    </variablelist>
+  </section>
+
+  <section xml:id="sec_os_install">
+    <title>OS Installation</title>
+    <para>Installation of OSs will be accomplished through the Multiboot Menu 
+    as follows:</para>
+
+    <orderedlist>		      
+      <listitem>
+        <para>The system boots or reboots normally; the user enters the 
+        Multiboot Menu by one of the methods described herein.</para>
+      </listitem>
+
+      <listitem>
+        <para>The Multiboot Menu presents a list of all installation 
+        devices.</para>
+      </listitem>
+
+      <listitem>
+        <para>The user selects &#x201C;install&#x201D; and an installation 
+        device from the menu; firmware locates the bootinfo object or install image on 
+        the selected installation device.</para>
+      </listitem>
+
+      <listitem>
+        <para>Firmware will execute <emphasis role="bold"><literal>init-program</literal></emphasis> and, if a 
+        bootinfo object was found, firmware parses it, replaces the &lt;boot-script&gt; 
+        entities with appropriate values and executes the script.</para>
+      </listitem>
+
+      <listitem>
+        <para>The OS gets control and selects the target device.</para>
+      </listitem>
+
+      <listitem>
+        <para>After the install process is determined to be successful, the OS 
+        updates variables such as <emphasis role="bold"><literal>boot-device</literal></emphasis>, 
+        <emphasis role="bold"><literal>boot-file</literal></emphasis>, 
+        and <emphasis role="bold"><literal>boot-command</literal></emphasis>.</para>
+      </listitem>
+
+      <listitem>
+        <para>The OS adds the <emphasis role="bold"><literal>bootinfo-nnnn</literal></emphasis> configuration 
+        variable to the NVRAM <emphasis role="bold"><literal>common</literal></emphasis> system partition.</para>
+      </listitem>
+    </orderedlist>		      
+
+    <variablelist>
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_os_install" 
+        xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+          <listitem>
+            <para>The Multiboot Menu must provide an option for 
+            OS installation that lists all possible installation devices. </para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry xml:id="dbdoclet.50569327_16806">
+        <term><emphasis role="bold">R1-<xref linkend="sec_os_install" 
+        xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+          <listitem>
+            <para>After the install process is determined to be successful, the OS 
+            must set <emphasis role="bold"><literal>boot-device</literal></emphasis>, 
+            <emphasis role="bold"><literal>boot-file</literal></emphasis>,
+            and <emphasis role="bold"><literal>boot-command</literal></emphasis>.</para>
+          </listitem>
+     	</varlistentry>
+    </variablelist>
+
+    <section>
+      <title>Tape Install</title>
+      <para>The OF definition of installation from tape is defined in 
+      <xref linkend="LoPAR.DeviceTree"/>.</para>
+    </section>
+
+    <section xml:id="sec_network_install">
+      <title>Network Install</title>
+      <para>Network install follows the same process as network boot with the 
+      exception that after installation is complete, the OS will write 
+      <emphasis role="bold"><literal>boot-device</literal></emphasis> with the target device information.</para>
+
+      <variablelist>
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_network_install" 
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+            <listitem>
+              <para>If network install is selected, firmware 
+              must provide a means for the user to override default network parameters.</para>
+            </listitem>
+       	</varlistentry>
+      </variablelist>
+    </section>
+  </section>
+
+  <section xml:id="dbdoclet.50569327_18162">
+    <title>Diagnostics</title>
+    <para>IBM Power&#xAE; system platforms may use IBM AIX&#xAE; Kernel-based 
+    stand-alone diagnostics as their multi-OS common diagnostics package. Since AIX 
+    will run on other vendors&#x2019; platforms which might not have permission to 
+    use AIX diagnostics, the <emphasis role="bold"><literal>&#x201C;ibm,aix-diagnostics&#x201D;</literal></emphasis> 
+    property indicates that AIX diagnostics are permitted (see "Root 
+    Node Properties" in <xref linkend="LoPAR.DeviceTree"/>).</para>
+
+    <variablelist>
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_18162" 
+        xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+          <listitem>
+            <para>If AIX diagnostics are supported on a 
+            platform, then the firmware for that platform must include the property 
+            <emphasis role="bold"><literal>&#x201C;ibm,aix-diagnostics&#x201D;</literal></emphasis> in the 
+            <emphasis role="bold"><literal>root</literal></emphasis> node.</para>
+          </listitem>
+     	</varlistentry>
+    </variablelist>
+
+    <para><emphasis role="bold">Software Implementation Note:</emphasis> Each OS may implement an OS-specific 
+    run-time diagnostics package, but should, for purposes of consistency, adhere 
+    to the error log formats in <xref linkend="LoPAR.Error"/>.</para>
+  </section>
+
+  <section xml:id="sec_platform_class">
+    <title>Platform Class</title>
+    <para>The <emphasis role="bold"><literal>&#x201C;ibm,model-class&#x201D;</literal></emphasis> OF property 
+    is defined to classify platforms for planning, marketing, licensing, and 
+    service purposes (see "Root Node Properties" in 
+    <xref linkend="LoPAR.DeviceTree"/>).</para>
+
+    <variablelist>
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_platform_class" 
+        xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+          <listitem>
+            <para>The <emphasis role="bold"><literal>&#x201C;ibm,model-class&#x201D;</literal></emphasis> 
+            property must be included in the 
+            platform&#x2019;s <emphasis role="bold"><literal>root</literal></emphasis> node.</para>
+          </listitem>
+     	</varlistentry>
+    </variablelist>
+  </section>
+
+  <section xml:id="dbdoclet.50569327_19998">
+    <title>Security</title>
+    <para>Platforms will provide the user with options for a Power On Password 
+    (POP) and a Privileged Access Password (PAP) and will have some optional 
+    physical security features. </para>
+
+    <variablelist>
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_19998" 
+        xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">Platform 
+            Implementation:</emphasis> Platforms must provide a <emphasis>Power On 
+            Password</emphasis> (POP) capability which, when enforced, controls the 
+            user&#x2019;s ability to power-on and execute the configured boot 
+            sequence.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_19998" 
+        xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">Platform 
+            Implementation:</emphasis> Platforms must provide a <emphasis>Privileged 
+            Access Password</emphasis> (PAP) capability which, when enforced, controls the 
+            user&#x2019;s ability to alter the boot sequence using f5/f6, and to enter SMS 
+            and the Multiboot Menu.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_19998" 
+        xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">Platform 
+            Implementation:</emphasis> If the PAP is absent or &lt;NULL&gt;, but the POP is 
+            non-&lt;NULL&gt;, then the POP must act as the PAP.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_19998" 
+        xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">Platform 
+            Implementation:</emphasis> Platforms must accept the PAP as a valid response to 
+            a request to enter the POP.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_19998" 
+        xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">Platform Implementation:</emphasis> If 
+            there is a key switch implemented with a secure position, the 
+            system must not complete the boot process regardless of the state of POP and 
+            PAP when the switch is in this position.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_19998" 
+        xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">Platform 
+            Implementation:</emphasis> If a key switch is implemented and the switch is in 
+            the <emphasis>maintenance (service)</emphasis> position, the POP and PAP must 
+            <emphasis>not</emphasis> be enforced.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_19998" 
+        xrefstyle="select: labelnumber nopage"/>-7.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">Platform 
+            Implementation:</emphasis> Platforms, except for rack mounted systems, must 
+            provide a locking mechanism as an option which prevents the removal of the 
+            covers.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_19998" 
+        xrefstyle="select: labelnumber nopage"/>-8.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">Platform Implementation:</emphasis> Platforms, except for rack mounted systems, must 
+            provide a tie-down mechanism as an option which prevents the physical removal 
+            of the system from the premises.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_19998" 
+        xrefstyle="select: labelnumber nopage"/>-9.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">Platform Implementation:</emphasis> Passwords and keyswitch positions must be 
+            implemented in a manner that makes their values accessible to both OF and the 
+            service processor.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_19998" 
+        xrefstyle="select: labelnumber nopage"/>-10.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">Platform Implementation:</emphasis> The OF configuration variable 
+            <literal>security-password</literal> must be maintained to be equivalent to the 
+            Privileged Access Password (PAP).</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_19998" 
+        xrefstyle="select: labelnumber nopage"/>-11.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">Platform 
+            Implementation:</emphasis> If the PAP and <literal>security-password</literal> 
+            are absent or &lt;NULL&gt;, <literal>security-mode</literal> must be set to 
+            <emphasis role="bold"><literal>&#x201C;none&#x201D;</literal></emphasis>, otherwise <literal>security-mode</literal> 
+            must be set to <emphasis role="bold"><literal>&#x201C;command&#x201D;</literal></emphasis>.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry xml:id="dbdoclet.50569327_76267">
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_19998" 
+        xrefstyle="select: labelnumber nopage"/>-12.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">Platform Implementation:</emphasis> If <literal>security-mode</literal> 
+            is set to any value other than <emphasis role="bold"><literal>&#x201C;none&#x201D;</literal></emphasis> (such as 
+            <emphasis role="bold"><literal>&#x201C;command&#x201D;</literal></emphasis> or <emphasis role="bold"><literal>&#x201C;full&#x201D;</literal></emphasis>), 
+            it must be treated as <emphasis role="bold"><literal>security-mode=command</literal></emphasis>.</para>
+            <para><emphasis role="bold">Platform Implementation Notes:</emphasis></para>
+
+            <orderedlist>		      
+              <listitem>
+                <para>As defined here, the PAP and <emphasis role="bold"><literal>security-password</literal></emphasis> are 
+                stronger than as specified in IEEE 1275 for 
+                <emphasis role="bold"><literal>security-mode</literal></emphasis> <literal>= command</literal> in that 
+                they are required for <emphasis>any</emphasis> command line operations, including 
+                <emphasis role="bold"><literal>go</literal></emphasis> and 
+                <emphasis role="bold"><literal>boot</literal></emphasis>. The PAP and 
+                <emphasis role="bold"><literal>security-password</literal></emphasis> are not required to boot the system with default 
+                parameters, however, and in this sense the intent of 
+                <emphasis role="bold"><literal>security-mode</literal></emphasis> <literal>= command</literal> is achieved. There is currently no 
+                implementation of 
+                <emphasis role="bold"><literal>security-mode</literal></emphasis> <literal>= full</literal>.</para>
+              </listitem>
+
+              <listitem>
+                <para>If a service processor is provided, the requirements relating to 
+                passwords are applicable in the service processor environment. Service 
+                processor documentation refers to the POP as the General User Password and the 
+                PAP as the Privileged User Password.</para>
+              </listitem>
+            </orderedlist>		      
+          </listitem>
+     	</varlistentry>
+    </variablelist>
+  </section>
+
+  <section xml:id="dbdoclet.50569327_38531">
+    <title>Endian Support</title>
+    <para>LoPAR platforms operate with either Big-Endian (BE) or Little-Endian 
+    (LE) addressing. In Big-Endian systems, the address of a word in memory is the 
+    address of the most significant byte (the &#x201C;big&#x201D; end) of the word. 
+    Increasing memory addresses will approach the least significant byte of the 
+    word. In Little-Endian (LE) addressing, the address of a word in memory is the 
+    address of the least significant byte (the &#x201C;little&#x201D; end) of the 
+    word.</para>
+    <para>All data structures used for communicating between the OS and the 
+    platform (for example, RTAS and hypervisor calls) are Big-Endian format, unless 
+    otherwise designated.</para>
+
+    <variablelist>
+     	<varlistentry xml:id="dbdoclet.50569327_63128">
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_38531" 
+        xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+          <listitem>
+            <para>Platforms must by default operate with Big-Endian addressing.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry xml:id="dbdoclet.50569327_72394">
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_38531" 
+        xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+          <listitem>
+            <para>Platforms that operate with Little-Endian addressing must make 
+            System memory appear to be in Little-Endian format to all entities in the 
+            system that may observe that image, including I/O.</para>
+          </listitem>
+     	</varlistentry>
+    </variablelist>
+
+    <para><emphasis role="bold">Platform Implementation Notes:</emphasis></para>
+
+    <orderedlist>		      
+      <listitem>
+        <para>Some hardware (for example, bridges, memory controllers, and 
+        processors) may have modal bits to allow those components to be used in 
+        platforms which operate in Little-Endian mode. In this case, the hardware or 
+        firmware will need to set those bits appropriately.</para>
+      </listitem>
+
+      <listitem>
+        <para>Requirement <xref linkend="dbdoclet.50569327_72394"/> may have an 
+        impact on the processor chosen for the platform.</para>
+      </listitem>
+    </orderedlist>		      
+  </section>
+
+  <section xml:id="dbdoclet.50569327_81764">
+    <title>64-Bit Addressing Support</title>
+    <para>A 64-bit-addressing-capable platform is defined as one capable of 
+    supporting System Memory and Memory Mapped I/O (MMIO) configured above 4 GB 
+    (greater than 32 bits of real addressing). This means that all hardware 
+    elements in the topology down to the Host Bridges are capable of dealing with a 
+    real address range greater than 32 bits, and all Host Bridges are capable of 
+    providing a translation mechanism for translating 32-bit I/O bus DMA addresses. 
+    All platforms compliant with IBM 
+    <citetitle>Power Architecture Platform Requirements (PAPR)</citetitle> version 2.3 and beyond are required to be 
+    64-bit-addressing-capable.</para>
+    <para>A 64-bit-addressing-aware OS is an OS that can deal with a real 
+    address space larger than 4GB. It must handle the 64-bit processor page table 
+    format (required of all OSs), and must understand Host Bridge mechanisms and 
+    Host Bridge OF methods for supporting System Memory greater than 4 GB. All OSs 
+    compliant with IBM 
+    <citetitle>Power Architecture Platform Requirements (PAPR)</citetitle> version 2.3 and beyond are required to be 
+    64-bit-addressing-aware.</para>
+  </section>
+
+  <section xml:id="dbdoclet.50569327_13540">
+    <title>Minimum System Requirements</title>
+    <para>This section 
+    summarizes the minimum hardware and functionality required for LoPAR 
+    compliance.</para>
+    <para>The 
+    term portable is used in this document to describe that class of systems that 
+    is primarily battery powered and is easily carried by its user.</para>
+    <para>The term personal is used in this document to describe that class of systems that 
+    is bound to a specific work area due to its size or power source, and whose use 
+    is generally restricted to a single direct user or a small set of users.</para>
+    <para>The term server is used in this document to describe that class of systems that 
+    supports a multi-user environment, providing a particular service such as file 
+    storage, software repository, or remote processing capability.</para>
+    <para>Each of these classes may have unique requirements due to the way it 
+    is used or which OS it generally employs and, for this reason, the requirements 
+    in this document my have qualifiers based on the type of system being 
+    developed.</para>
+
+    <variablelist>
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_13540" 
+        xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">(Requirement moved to 
+            <xref linkend="dbdoclet.50569327_49366"/>)</emphasis></para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_13540" 
+        xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+          <listitem>
+            <para>A means of attaching a diskette drive must be 
+            provided (may be through a connector or over a network) and the drive must have 
+            the following characteristics:</para>
+
+            <orderedlist numeration="loweralpha">		      
+              <listitem>
+                <para>Media sense: Implementations must allow polling of the drive up to 
+                100x per second to determine the presence of media in the drive.</para>
+              </listitem>
+
+              <listitem>
+                <para>Must accept media of type: 3.5" 1.44 MB MFM</para>
+              </listitem>
+            </orderedlist>		      
+
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_13540" 
+        xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+          <listitem>
+            <para>A means of attaching a CD-ROM drive must be 
+            provided (may be through a connector or over a network) and the drive must have 
+            the following characteristics:</para>
+
+            <orderedlist numeration="loweralpha">		      
+              <listitem>
+                <para>ISO9600 compliant</para>
+              </listitem>
+
+              <listitem>
+                <para>Supports multi-session</para>
+              </listitem>
+            </orderedlist>		      
+
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_13540" 
+        xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+          <listitem>
+            <para>When a keyboard is provided, it must be 
+            capable of generating at least 101 scan codes.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_13540" 
+        xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
+          <listitem>
+            <para>When a mouse is provided, it must have at 
+            least two buttons.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry xml:id="dbdoclet.50569327_91037">
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_13540" 
+        xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
+          <listitem>
+            <para>The capability to generate a tone must be provided on portable 
+            and personal platforms, and on server platforms which are not housed in rack 
+            enclosures.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry xml:id="dbdoclet.50569327_71913">
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_13540" 
+        xrefstyle="select: labelnumber nopage"/>-7.</emphasis></term>
+          <listitem>
+            <para>A Real Time Clock (RTC) must be 
+            provide which must have the following characteristics:</para>
+
+            <orderedlist numeration="loweralpha">		      
+              <listitem>
+                <para>Is non-volatile</para>
+              </listitem>
+
+              <listitem>
+                <para>Runs continuously</para>
+              </listitem>
+
+              <listitem>
+                <para>Has a resolution of at least one second</para>
+              </listitem>
+            </orderedlist>		      
+          </listitem>
+     	</varlistentry>
+    </variablelist>
+
+  </section>
+
+  <section xml:id="dbdoclet.50569327_22252">
+    <title>Options and Extensions</title>
+    <para>Options are features that are covered by this architecture, but are 
+    not necessarily required to be present on a given platform. Platforms that 
+    implement options are required to conform to the definitions in this 
+    architecture, so that an aware OS environment can recognize and support them. 
+    Some options may be required on some platforms. Refer to 
+    <xref linkend="dbdoclet.50569327_98052"/> for the disposition of currently defined 
+    options, including requirements for implementation of some of these options on 
+    some platforms. Note that in this table, &#x201C;optional&#x201D; does not mean 
+    &#x201C;not required;&#x201D; see the description column of the table for more 
+    information.</para>
+    <para>An extension is a feature that is added to this architecture and is 
+    required on all platforms developed after a specified effective date. </para>
+    <para>Options and extensions will normally need to be dormant or invisible 
+    in the presence of a non-aware OS environment. In general, this means that they 
+    come up passively; that is, they are initialized to an inactive state and 
+    activated by an aware OS.</para>
+
+    <variablelist>
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_22252" 
+        xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+          <listitem>
+            <para>Extensions and options must come up 
+            passively unless otherwise specified in this architecture.</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_22252" 
+        xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+          <listitem>
+            <para>Extensions and options that affect the OS 
+            interface to the platform must be identified, when present, through some 
+            architected means, such as OF device tree properties.</para>
+            <para>It is the responsibility of the product development teams to keep the 
+            &#x201C;usage&#x201D; columns of <xref linkend="dbdoclet.50569327_98052"/> up 
+            to date,</para>
+          </listitem>
+     	</varlistentry>
+    </variablelist>
+
+    <table frame="all" pgwide="1" xml:id="dbdoclet.50569327_98052">
+      <title>LoPAR Optional Features </title>
+      <tgroup cols="4">
+        <colspec colname="c1" colwidth="30*" align="center"/>
+        <colspec colname="c2" colwidth="10*" align="center"/>
+        <colspec colname="c3" colwidth="10*" align="center"/>
+        <colspec colname="c4" colwidth="50*"/>
+        <thead valign="middle">
+          <row>
+            <entry morerows="1">
+              <para>
+                <emphasis role="bold">Option Name</emphasis>
+              </para>
+            </entry>
+            <entry nameend="c3" namest="c2">
+              <para>
+                <emphasis role="bold">Usage</emphasis>
+              </para>
+            </entry>
+            <entry morerows="1" align="center">
+              <para>
+                <emphasis role="bold">Description</emphasis>
+              </para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">Base</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">IBM Server</emphasis>
+              </para>
+            </entry>
+          </row>
+          <row>
+            <entry nameend="c4" namest="c1" align="left">
+              <para>
+                <emphasis role="bold">Usage Legend</emphasis> : NS = 
+                Not Supported; O = Optional (see also Description); OR = Optional but 
+                Recommended; R = Required; SD = See Description
+              </para>
+            </entry>
+          </row>
+        </thead>
+        <tbody valign="middle">
+          <row>
+            <entry>
+              <para> Symmetrical Multiprocessing (SMP)</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> R</para>
+            </entry>
+            <entry>
+              <para> Required on MP platforms.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Multiboot</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> Required to support multiple versions of an OS.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> PCI Hot Plug DR</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> OR</para>
+            </entry>
+            <entry>
+              <para> See <xref linkend="LoPAR.Virtualization"/> for more information. </para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Logical Resource Dynamic Reconfiguration (LRDR)</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> OR</para>
+            </entry>
+            <entry>
+              <para><xref linkend="LoPAR.Virtualization"/>.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Enhanced I/O Error Handling (EEH)</para>
+            </entry>
+            <entry>
+              <para> OR SD</para>
+            </entry>
+            <entry>
+              <para> R</para>
+            </entry>
+            <entry>
+              <para> See <xref linkend="dbdoclet.50569330_34831"/> and 
+              <xref linkend="dbdoclet.50569330_17337"/>. Requirements for platforms that implement 
+              LPAR, regardless of the number of partitions, are contained in 
+              <xref linkend="LoPAR.Virtualization"/>.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Error Injection (ERRINJCT)</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> R</para>
+            </entry>
+            <entry>
+              <para> Required of servers which implement the EEH option.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Logical Partitioning (LPAR)</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> R</para>
+            </entry>
+            <entry>
+              <para> See <xref linkend="LoPAR.Virtualization"/>.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Bridged-I/O EEH Support</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> R</para>
+            </entry>
+            <entry>
+              <para> EEH support for I/O structures which contain PCI to PCI 
+              bridges or PCI Express switches. See <xref linkend="dbdoclet.50569330_56798"/>. 
+              Required if EEH is supported.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> PowerPC External Interrupt</para>
+            </entry>
+            <entry>
+              <para> R</para>
+              <para>SD</para>
+            </entry>
+            <entry>
+              <para> R</para>
+              <para>SD</para>
+            </entry>
+            <entry>
+              <para> May be virtualized; See <xref linkend="dbdoclet.50569331_37856"/>.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> EXTI2C</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> See <xref linkend="LoPAR.RTAS"/> for more information on 
+              support of I<superscript>2</superscript>C buses.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Firmware Assisted NMI (FWNMI)</para>
+            </entry>
+            <entry>
+              <para> R</para>
+            </entry>
+            <entry>
+              <para> R</para>
+            </entry>
+            <entry>
+              <para><xref linkend="LoPAR.RTAS"/>. </para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> System Parameters</para>
+            </entry>
+            <entry>
+              <para> R</para>
+            </entry>
+            <entry>
+              <para> R</para>
+            </entry>
+            <entry>
+              <para><xref linkend="LoPAR.RTAS"/>.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Capacity on Demand (CoD)</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para><xref linkend="LoPAR.RTAS"/>.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Predictive Failure Sparing</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para><xref linkend="LoPAR.RTAS"/>.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Converged Location Codes</para>
+            </entry>
+            <entry>
+              <para> R</para>
+            </entry>
+            <entry>
+              <para> R</para>
+            </entry>
+            <entry>
+              <para> The Converged Location Codes option is required on all 
+              platforms being developed. <xref linkend="dbdoclet.50569341_35066"/> and 
+              Requirement <xref linkend="dbdoclet.50569341_25472"/>.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Shared Processor LPAR (SPLPAR)</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para><xref linkend="LoPAR.Virtualization"/>.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Reliable Command/Response Transport</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para><xref linkend="LoPAR.Virtualization"/>.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Logical Remote DMA (LRDMA)</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para><xref linkend="LoPAR.Virtualization"/>.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Interpartition Logical LAN (ILLAN)</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para><xref linkend="LoPAR.Virtualization"/>.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> ILLAN Backup Trunk Adapter</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para><xref linkend="LoPAR.Virtualization"/>.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> ILLAN Checksum Offload Support</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para><xref linkend="LoPAR.Virtualization"/>.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Checksum Offload Padded Packet Support</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> See <xref linkend="LoPAR.Virtualization"/>.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Virtual SCSI (VSCSI)</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para><xref linkend="LoPAR.Virtualization"/>.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Virtual FC (VFC)</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> See <xref linkend="LoPAR.Virtualization"/>.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Storage Preservation</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> NS</para>
+            </entry>
+            <entry>
+              <para><xref linkend="dbdoclet.50569327_70628"/> and "Managing 
+              Storage Preservations" in <xref linkend="LoPAR.RTAS"/> specification.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Client Vterm</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> R</para>
+            </entry>
+            <entry>
+              <para> Required of all platforms that support LPAR, otherwise not 
+              implemented. Provides a virtual &#x201C;Asynchronous&#x201D; IOA for connecting 
+              to a server Vterm IOA, the hypervisor, or HMC (for example, to a virtual 
+              console). See <xref linkend="LoPAR.Virtualization"/> for more 
+              information.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Server Vterm</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> Allows a partition to serve a partner partition's client 
+              Vterm IOA.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> NUMA</para>
+              <para>Associativity Information</para>
+            </entry>
+            <entry>
+              <para> OR</para>
+            </entry>
+            <entry>
+              <para> OR</para>
+            </entry>
+            <entry>
+              <para> See <xref linkend="dbdoclet.50569346_35960"/>.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Performance Tool Support</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> NS</para>
+            </entry>
+            <entry>
+              <para> Provides access to platform-level facilities for 
+              performance tools running in a partition on an LPAR system. See 
+              <xref linkend="LoPAR.Virtualization"/>.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> MSI (Message Signaled Interrupt)</para>
+            </entry>
+            <entry>
+              <para> SD</para>
+            </entry>
+            <entry>
+              <para> SD</para>
+            </entry>
+            <entry>
+              <para> Required for all platforms that support PCI Express. </para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> ILLAN Buffer Size Control</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> See <xref linkend="LoPAR.Virtualization"/>.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Virtual Management Channel (VMC)</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> See <xref linkend="LoPAR.Virtualization"/>.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Partition Suspension</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> Requires the Logical Partitioning, LRDR, and Update OF Tree options. </para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Partition Hibernation</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> Allows a partition to sleep for an extended period; during 
+              this time the partition state is stored on secondary storage for later 
+              restoration. Requires the Partition Suspension, ILLAN, and VASI options. </para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Partition Migration</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> Allows the movement of a logical partition from one 
+              platform to another; the source and destination platforms cooperate to minimize 
+              the time that the partition is non-responsive. Requires the Partition 
+              Suspension, ILLAN, and VASI options. </para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Thread Join</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> Allows the multi-threaded caller to efficiently establish 
+              a single threaded processing environment.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Update OF Tree</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> Allows the caller to determine which device tree nodes 
+              changed due to a massive platform reconfiguration as happens during a partition 
+              migration or hibernation.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Virtual</para>
+              <para>Asynchronous Services Interface (VASI)</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> Allows an authorized virtual server partition (VSP) to 
+              safely access the internal state of a specific partition. See 
+              <xref linkend="LoPAR.Virtualization"/> for more details. Requires the Reliable 
+              Command/Response Transport option.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Virtualized Real Mode Area (VRMA)</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> Allows the OS to dynamically relocate, expand, and shrink 
+              the Real Mode Area.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> TC</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> Allows the OS to indicate that there is no need to search 
+              secondary page table entry groups to determine a page table search has failed. 
+              See <xref linkend="LoPAR.Virtualization"/> for more details.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Configure Platform Assisted Kernel Dump</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> Allows the OS to register and unregister kernel dump 
+              information with the platform.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> I/O Super Page</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> OR</para>
+            </entry>
+            <entry>
+              <para> Allows the OS to specify I/O pages that are greater than 4 KB in length.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Subordinate CRQ (Sub-CRQ) Transport</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> Support for the Subordinate CRQs as needed by some Virtual 
+              IOAs. See <xref linkend="LoPAR.Virtualization"/>.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Cooperative Memory Over-commitment (CMO)</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> The CMO option allows for partition participation in the 
+              over-commitment of logical memory by the platform. See 
+              <xref linkend="LoPAR.Virtualization"/>.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Partition Energy Management (PEM)</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> Allows the OS to cooperate with platform energy 
+              management. See <xref linkend="LoPAR.Virtualization"/>.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Multi-TCE-Table (MTT) </para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> Support for the Multi-TCE-Table Option. See 
+              <xref linkend="LoPAR.Virtualization"/>.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Virtual Processor Home Node (VPNH)</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> Provides substantially consistent virtual processor 
+              associativity in a shared processor LPAR environment. See 
+              <xref linkend="LoPAR.Virtualization"/>.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> IBM Active Memory&#x2122; Compression </para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> Allows the partition to perform active memory compression.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Virtual Network Interface Controller (VNIC)</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> See <xref linkend="LoPAR.Virtualization"/>.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Expropriation Subvention Notification</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> Allows OS notification of a cooperative memory 
+              overcommitment page fault see <xref linkend="LoPAR.Virtualization"/>.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Boost Modes</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> Allows the platform to communicate and the availability of 
+              performance boost modes along with any ability to manage the same. See 
+              <xref linkend="LoPAR.RTAS"/></para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Platform Resource Reassignment</para>
+              <para>Notification (PRRN)</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para>
+                <xref linkend="dbdoclet.50569346_88496"/>
+              </para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Dynamic DMA Windows (DDW)</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> Allows the creation of DMA Windows above 4 GB. See 
+              <xref linkend="LoPAR.RTAS"/>.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Universally Unique Partition Identification Option (UUID)</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para>
+                <xref linkend="LoPAR.Virtualization"/>
+              </para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Platform Facilities Option (PFO)</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> See <xref linkend="LoPAR.Virtualization"/> for more information.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Extended Cooperative Memory Overcommittment (XCMO)</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> Introduces additional cooperative memory overcommitment 
+              functions see <xref linkend="LoPAR.Virtualization"/></para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </section>
+
+  <section xml:id="dbdoclet.50569327_34719">
+    <title>IBM LoPAR Platform Implementation Requirements</title>
+    <para>The tables in this section detail specific product requirements which 
+    are not defined as an &#x201C;option&#x201D; in this architecture. The intent 
+    is to define base requirements for these products, over and beyond what is 
+    specified in <xref linkend="dbdoclet.50569327_98052"/> and elsewhere in this 
+    architecture. </para>
+    <para>In addition, any options that are unique to specific implementations 
+    (that is, not general usage), and which do not appear in 
+    <xref linkend="dbdoclet.50569327_98052"/>, are listed in this section.</para>
+    <para>It is the responsibility of the product development teams to keep 
+    these tables up to date.</para>
+
+    <section xml:id="sec_ibm_server_req">
+      <title>IBM Server Requirements</title>
+      <para>This section talks to the requirements for IBM LoPAR Compliant 
+      server platforms. </para>
+
+      <variablelist>
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_ibm_server_req" 
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For all IBM LoPAR Compliant 
+              Platforms:</emphasis> The platform must implement the options marked as 
+              &#x201C;required&#x201D; in the IBM Server column of 
+              <xref linkend="dbdoclet.50569327_98052"/> and the additional functions as indicated 
+              in <xref linkend="dbdoclet.50569327_49366"/> (that is, the &#x201C;Base&#x201D; 
+              column of <xref linkend="dbdoclet.50569327_98052"/> is not sufficient).</para>
+            </listitem>
+       	</varlistentry>
+      </variablelist>
+
+      <table frame="all" pgwide="1" xml:id="dbdoclet.50569327_49366">
+        <title>IBM Server Required Functions and Features </title>
+        <tgroup cols="3">
+          <colspec colname="c1" colwidth="45*"/>
+          <colspec colname="c2" colwidth="15*" align="center"/>
+          <colspec colname="c3" colwidth="40*"/>
+          <thead valign="middle">
+            <row>
+              <entry align="center">
+                <para>
+                  <emphasis role="bold">Function/Feature</emphasis>
+                </para>
+              </entry>
+              <entry>
+                <para>
+                  <emphasis role="bold">Effective Date</emphasis>
+                </para>
+              </entry>
+              <entry align="center">
+                <para>
+                  <emphasis role="bold">Description</emphasis>
+                </para>
+              </entry>
+            </row>
+          </thead>
+          <tbody valign="middle">
+            <row>
+              <entry>
+                <para> All IOA device drivers EEH enabled or EEH safe</para>
+              </entry>
+              <entry>
+                <para> 6/2004</para>
+              </entry>
+              <entry>
+                <para> Required even for systems running with just one partition.</para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <para>It is the responsibility of the product development teams to keep 
+      <xref linkend="dbdoclet.50569327_49366"/> up to date. </para>
+    </section>
+  </section>
+
+  <section xml:id="sec_optional_behavior">
+    <title>Behavior for Optional and Reserved Bits and Bytes</title>
+    <para>Behavior of the OSs and platforms for bits and bytes in this 
+    architecture that are marked as reserved or optional are defined here.</para>
+
+    <variablelist>
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_optional_behavior" 
+        xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+          <listitem>
+            <para>Bits and bytes which are marked as 
+            &#x201C;optional&#x201D; by this architecture and which are not implemented by 
+            the platform must be ignored by the platform on a <emphasis>Store</emphasis> 
+            and must be returned as 0&#x2019;s on a <emphasis>Load</emphasis>, including 
+            the reserved or optional bits of a partially implemented field. </para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_optional_behavior" 
+        xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+          <listitem>
+            <para>Bits and bytes which are marked as 
+            &#x201C;reserved&#x201D; by this architecture must be ignored by the platform 
+            on a <emphasis>Store</emphasis> and must be returned as 0&#x2019;s on a 
+            <emphasis>Load</emphasis>, except that bits that are marked as 
+            &#x201C;reserved&#x201D; and which were previously defined by the architecture 
+            maybe be treated appropriately by legacy hardware (such bits in this 
+            architecture will state the value that software must use henceforth).</para>
+          </listitem>
+     	</varlistentry>
+     	
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_optional_behavior" 
+        xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+          <listitem>
+            <para>Bits and bytes marked as 
+            &#x201C;reserved&#x201D; must be set to 0 by the OS on a 
+            <emphasis>Store</emphasis>, except as otherwise defined by the architecture, and must be 
+            ignored on a <emphasis>Load</emphasis>.</para>
+          </listitem>
+     	</varlistentry>
+    </variablelist>
+  </section>
+
+</chapter>
