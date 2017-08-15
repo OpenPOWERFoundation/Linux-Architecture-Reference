@@ -1,0 +1,4072 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2016 OpenPOWER Foundation
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<chapter xmlns="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink" 
+         version="5.0" 
+         xml:lang="en">
+
+  <title>Firmware Assisted Dump Data Format</title>
+
+  <para>This Appendix documents the dump data format, in support of the
+  Configure Platform Assisted Kernel Dump option in
+  <xref linkend="LoPAR.Virtualization" />.</para>
+  
+  <section xml:id="dbdoclet.50569380__Ref135446652">
+    <title>Register Save Area</title>
+    <para>The register save area is an area in the partition&#8217;s memory
+    used to preserve the registers for the active CPUs during a firmware
+    assisted dump. The location and size of this area is specified by the
+    partition when firmware assisted dump. The minimum size will be sent to the
+    partition in the PFDS KDUMP node.</para>
+    <para>The register save is a semi-free format list of registers for each
+    CPU. Each list of registers for a CPU starts with &#8220;CPUSTRT&#8221; and
+    ends with &#8220;CPUEND&#8221;.</para>
+    <para>NumCpusOffset should be used to access the data to allow for
+    additional fields to be added without affecting compatibility.</para>
+    <para>
+      <emphasis role="bold">Notes:</emphasis>
+    </para>
+    
+    <orderedlist>		      
+      <listitem>
+        <para>Only CPUs that are online at the start of the Firmware Assisted
+        Dump will have their register data saved.</para>
+      </listitem>
+
+      <listitem>
+        <para>Each group of GPRs, FPRs, and VRs will be listed in ascending
+        array index (and ASCII identifier) sorted order with no other interleaving
+        registers. Further, registers whose value spans multiple doublewords
+        (currently only VR and VSR array elements) will be listed in high to low
+        sorted order with no other interleaving values. All other registers are not
+        required to be in any specific order (To make debug easier they will most
+        likely be placed in ascending ASCII identifier order)</para>
+      </listitem>
+    </orderedlist>		      
+    
+    <table frame="all" pgwide="1">
+      <title>Register Save Area Format</title>
+      <tgroup cols="5">
+        <colspec colname="c1" colwidth="20*" />
+        <colspec colname="c2" colwidth="20*" />
+        <colspec colname="c3" colwidth="20*" />
+        <colspec colname="c4" colwidth="20*" />
+        <colspec colname="c5" colwidth="20*" />
+        <thead>
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">Offset</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">Length (Bytes)</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">Name</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">Value</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">Description</emphasis>
+              </para>
+            </entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>
+              <para>0x00</para>
+            </entry>
+            <entry>
+              <para>0x8</para>
+            </entry>
+            <entry>
+              <para>Magic Number</para>
+            </entry>
+            <entry>
+              <para>0x5245475341564500 &#8220;REGSAVE&#8221;</para>
+            </entry>
+            <entry>
+              <para>Identifies this area</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x08</para>
+            </entry>
+            <entry>
+              <para>0x4</para>
+            </entry>
+            <entry>
+              <para>Version</para>
+            </entry>
+            <entry>
+              <para>0x0</para>
+            </entry>
+            <entry>
+              <para>Current version</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x0C</para>
+            </entry>
+            <entry>
+              <para>0x4</para>
+            </entry>
+            <entry>
+              <para>NumCpusOffset</para>
+            </entry>
+            <entry>
+              <para>0x1C</para>
+            </entry>
+            <entry>
+              <para>Offset to NumCpus field</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x10</para>
+            </entry>
+            <entry>
+              <para>0xC</para>
+            </entry>
+            <entry>
+              <para>Padding</para>
+            </entry>
+            <entry>
+              <para>0x0</para>
+            </entry>
+            <entry>
+              <para>Must be initialized to 0</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x1C</para>
+            </entry>
+            <entry>
+              <para>0x4</para>
+            </entry>
+            <entry>
+              <para>NumCpus</para>
+            </entry>
+            <entry>
+              <para>Actual number of CPUs</para>
+            </entry>
+            <entry>
+              <para>Number of CPUs (not the number of entries)</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x20</para>
+            </entry>
+            <entry>
+              <para>0x10</para>
+            </entry>
+            <entry>
+              <para>RegEntry</para>
+            </entry>
+            <entry>
+              <para>&#8220;CPUSTRT&#8221;</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x30</para>
+            </entry>
+            <entry>
+              <para>0x10</para>
+            </entry>
+            <entry>
+              <para>RegEntry</para>
+            </entry>
+            <entry>
+              <para>&lt;various register values&gt;</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>...</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x??</para>
+            </entry>
+            <entry>
+              <para>0x10</para>
+            </entry>
+            <entry>
+              <para>RegEntry</para>
+            </entry>
+            <entry>
+              <para>&#8220;CPUEND&#8221;</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x??</para>
+            </entry>
+            <entry>
+              <para>0x10</para>
+            </entry>
+            <entry>
+              <para>RegEntry</para>
+            </entry>
+            <entry>
+              <para>&#8220;CPUSTRT&#8221;</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>...</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <para>&#160;</para>
+    <table frame="all" pgwide="1">
+      <title>RegEntry Format</title>
+      <tgroup cols="5">
+        <colspec colname="c1" colwidth="20*" />
+        <colspec colname="c2" colwidth="20*" />
+        <colspec colname="c3" colwidth="20*" />
+        <colspec colname="c4" colwidth="20*" />
+        <colspec colname="c5" colwidth="20*" />
+        <thead>
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">Offset</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">Length (Bytes)</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">Name</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">Value</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">Description</emphasis>
+              </para>
+            </entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>
+              <para>0x0</para>
+            </entry>
+            <entry>
+              <para>0x8</para>
+            </entry>
+            <entry>
+              <para>RegIdentifier</para>
+            </entry>
+            <entry>
+              <para>See Below</para>
+            </entry>
+            <entry>
+              <para>ASCII, Padded with binary zeros</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x08</para>
+            </entry>
+            <entry>
+              <para>0x8</para>
+            </entry>
+            <entry>
+              <para>RegData</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+            <entry>
+              <para>Register Data</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <para>&#160;</para>
+    <table frame="all" pgwide="1">
+      <title>CPUSTRT and CPUEND have the following format</title>
+      <tgroup cols="3">
+        <colspec colname="c1" colwidth="33*" />
+        <colspec colname="c2" colwidth="33*" />
+        <colspec colname="c3" colwidth="33*" />
+        <tbody>
+          <row>
+            <entry>
+              <para>8 Byte Identifier</para>
+            </entry>
+            <entry>
+              <para>4 Byte Reserved</para>
+            </entry>
+            <entry>
+              <para>4 Byte Logical CPU ID</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <para>&#160;</para>
+    <table frame="all" pgwide="1">
+      <title>8-Byte RegEntries</title>
+      <tgroup cols="2">
+        <colspec colname="c1" colwidth="50*" />
+        <colspec colname="c2" colwidth="50*" />
+        <tbody>
+          <row>
+            <entry>
+              <para>8 Byte Identifier</para>
+            </entry>
+            <entry>
+              <para>8 Byte Register Value</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <para>&#160;</para>
+    <table frame="all" pgwide="1">
+      <title>4-Byte RegEntries</title>
+      <tgroup cols="3">
+        <colspec colname="c1" colwidth="33*" />
+        <colspec colname="c2" colwidth="33*" />
+        <colspec colname="c3" colwidth="33*" />
+        <tbody>
+          <row>
+            <entry>
+              <para>8 Byte Identifier</para>
+            </entry>
+            <entry>
+              <para>4 Byte Reserved</para>
+            </entry>
+            <entry>
+              <para>4 Byte Register Value</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <para>&#160;</para>
+    <table frame="all" pgwide="1">
+      <title>Identifiers Supported in Version 0x0 of the
+      Table</title>
+      <tgroup cols="3">
+        <colspec colname="c1" colwidth="33*" />
+        <colspec colname="c2" colwidth="33*" />
+        <colspec colname="c3" colwidth="33*" />
+        <thead>
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">Identifier (Hex)</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">Identifier (ASCII)</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">Description</emphasis>
+              </para>
+            </entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>
+              <para>0x4350555354525400</para>
+            </entry>
+            <entry>
+              <para>CPUSTRT</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x435055454E440000</para>
+            </entry>
+            <entry>
+              <para>CPUEND</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x41434F5000000000</para>
+            </entry>
+            <entry>
+              <para>ACOP</para>
+            </entry>
+            <entry>
+              <para>Available Coprocessor Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x414D520000000000</para>
+            </entry>
+            <entry>
+              <para>AMR</para>
+            </entry>
+            <entry>
+              <para>Authority Mask Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4346415200000000</para>
+            </entry>
+            <entry>
+              <para>CFAR</para>
+            </entry>
+            <entry>
+              <para>Come From Address Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4352000000000000</para>
+            </entry>
+            <entry>
+              <para>CR</para>
+            </entry>
+            <entry>
+              <para>Condition Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4354520000000000</para>
+            </entry>
+            <entry>
+              <para>CTR</para>
+            </entry>
+            <entry>
+              <para>Count Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4354524C00000000</para>
+            </entry>
+            <entry>
+              <para>CTRL</para>
+            </entry>
+            <entry>
+              <para>Control Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4441425200000000</para>
+            </entry>
+            <entry>
+              <para>DABR</para>
+            </entry>
+            <entry>
+              <para>Data Address Breakpoint Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4441425258000000</para>
+            </entry>
+            <entry>
+              <para>DABRX</para>
+            </entry>
+            <entry>
+              <para>DABR Extended</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4441520000000000</para>
+            </entry>
+            <entry>
+              <para>DAR</para>
+            </entry>
+            <entry>
+              <para>Data Address Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4445430000000000</para>
+            </entry>
+            <entry>
+              <para>DEC</para>
+            </entry>
+            <entry>
+              <para>Decrementer</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4453435200000000</para>
+            </entry>
+            <entry>
+              <para>DSCR</para>
+            </entry>
+            <entry>
+              <para>Depth Stream Control Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4453495352000000</para>
+            </entry>
+            <entry>
+              <para>DSISR</para>
+            </entry>
+            <entry>
+              <para>Data Storage Interrupt Status Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523030000000</para>
+            </entry>
+            <entry>
+              <para>FPR00</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 0</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523031000000</para>
+            </entry>
+            <entry>
+              <para>FPR01</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 1</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523032000000</para>
+            </entry>
+            <entry>
+              <para>FPR02</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 2</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523033000000</para>
+            </entry>
+            <entry>
+              <para>FPR03</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 3</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523034000000</para>
+            </entry>
+            <entry>
+              <para>FPR04</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 4</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523035000000</para>
+            </entry>
+            <entry>
+              <para>FPR05</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 5</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523036000000</para>
+            </entry>
+            <entry>
+              <para>FPR06</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 6</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523037000000</para>
+            </entry>
+            <entry>
+              <para>FPR07</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 7</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523038000000</para>
+            </entry>
+            <entry>
+              <para>FPR08</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 8</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523039000000</para>
+            </entry>
+            <entry>
+              <para>FPR09</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 9</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523130000000</para>
+            </entry>
+            <entry>
+              <para>FPR10</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 10</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523131000000</para>
+            </entry>
+            <entry>
+              <para>FPR11</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 11</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523132000000</para>
+            </entry>
+            <entry>
+              <para>FPR12</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 12</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523133000000</para>
+            </entry>
+            <entry>
+              <para>FPR13</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 13</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523134000000</para>
+            </entry>
+            <entry>
+              <para>FPR14</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 14</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523135000000</para>
+            </entry>
+            <entry>
+              <para>FPR15</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 15</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523136000000</para>
+            </entry>
+            <entry>
+              <para>FPR16</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 16</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523137000000</para>
+            </entry>
+            <entry>
+              <para>FPR17</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 17</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523138000000</para>
+            </entry>
+            <entry>
+              <para>FPR18</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 18</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523139000000</para>
+            </entry>
+            <entry>
+              <para>FPR19</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 19</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523230000000</para>
+            </entry>
+            <entry>
+              <para>FPR20</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 20</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523231000000</para>
+            </entry>
+            <entry>
+              <para>FPR21</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 21</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523232000000</para>
+            </entry>
+            <entry>
+              <para>FPR22</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 22</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523233000000</para>
+            </entry>
+            <entry>
+              <para>FPR23</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 23</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523234000000</para>
+            </entry>
+            <entry>
+              <para>FPR24</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 24</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523235000000</para>
+            </entry>
+            <entry>
+              <para>FPR25</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 25</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523236000000</para>
+            </entry>
+            <entry>
+              <para>FPR26</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 26</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523237000000</para>
+            </entry>
+            <entry>
+              <para>FPR27</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 27</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523238000000</para>
+            </entry>
+            <entry>
+              <para>FPR28</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 28</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523239000000</para>
+            </entry>
+            <entry>
+              <para>FPR29</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 29</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523330000000</para>
+            </entry>
+            <entry>
+              <para>FPR30</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 30</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650523331000000</para>
+            </entry>
+            <entry>
+              <para>FPR31</para>
+            </entry>
+            <entry>
+              <para>Floating Point Register 31</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4650534352000000</para>
+            </entry>
+            <entry>
+              <para>FPSCR</para>
+            </entry>
+            <entry>
+              <para>Floating Point Status and Control Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523030000000</para>
+            </entry>
+            <entry>
+              <para>GPR00</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 0</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523031000000</para>
+            </entry>
+            <entry>
+              <para>GPR01</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 1</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523032000000</para>
+            </entry>
+            <entry>
+              <para>GPR02</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 2</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523033000000</para>
+            </entry>
+            <entry>
+              <para>GPR03</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 3</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523034000000</para>
+            </entry>
+            <entry>
+              <para>GPR04</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 4</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523035000000</para>
+            </entry>
+            <entry>
+              <para>GPR05</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 5</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523036000000</para>
+            </entry>
+            <entry>
+              <para>GPR06</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 6</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523037000000</para>
+            </entry>
+            <entry>
+              <para>GPR07</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 7</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523038000000</para>
+            </entry>
+            <entry>
+              <para>GPR08</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 8</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523039000000</para>
+            </entry>
+            <entry>
+              <para>GPR09</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 9</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523130000000</para>
+            </entry>
+            <entry>
+              <para>GPR10</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 10</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523131000000</para>
+            </entry>
+            <entry>
+              <para>GPR11</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 11</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523132000000</para>
+            </entry>
+            <entry>
+              <para>GPR12</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 12</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523133000000</para>
+            </entry>
+            <entry>
+              <para>GPR13</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 13</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523134000000</para>
+            </entry>
+            <entry>
+              <para>GPR14</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 14</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523135000000</para>
+            </entry>
+            <entry>
+              <para>GPR15</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 15</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523136000000</para>
+            </entry>
+            <entry>
+              <para>GPR16</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 16</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523137000000</para>
+            </entry>
+            <entry>
+              <para>GPR17</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 17</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523138000000</para>
+            </entry>
+            <entry>
+              <para>GPR18</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 18</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523139000000</para>
+            </entry>
+            <entry>
+              <para>GPR19</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 19</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523230000000</para>
+            </entry>
+            <entry>
+              <para>GPR20</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 20</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523231000000</para>
+            </entry>
+            <entry>
+              <para>GPR21</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 21</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523232000000</para>
+            </entry>
+            <entry>
+              <para>GPR22</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 22</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523233000000</para>
+            </entry>
+            <entry>
+              <para>GPR23</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 23</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523234000000</para>
+            </entry>
+            <entry>
+              <para>GPR24</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 24</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523235000000</para>
+            </entry>
+            <entry>
+              <para>GPR25</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 25</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523236000000</para>
+            </entry>
+            <entry>
+              <para>GPR26</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 26</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523237000000</para>
+            </entry>
+            <entry>
+              <para>GPR27</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 27</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523238000000</para>
+            </entry>
+            <entry>
+              <para>GPR28</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 28</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523239000000</para>
+            </entry>
+            <entry>
+              <para>GPR29</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 29</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523330000000</para>
+            </entry>
+            <entry>
+              <para>GPR30</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 30</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4750523331000000</para>
+            </entry>
+            <entry>
+              <para>GPR31</para>
+            </entry>
+            <entry>
+              <para>General Purpose Register 31</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4C52000000000000</para>
+            </entry>
+            <entry>
+              <para>LR</para>
+            </entry>
+            <entry>
+              <para>Link Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4D4D435230000000</para>
+            </entry>
+            <entry>
+              <para>MMCR0</para>
+            </entry>
+            <entry>
+              <para>Monitor Mode Control Register 0</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4D4D435231000000</para>
+            </entry>
+            <entry>
+              <para>MMCR1</para>
+            </entry>
+            <entry>
+              <para>Monitor Mode Control Register 1</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4D4D435240000000</para>
+            </entry>
+            <entry>
+              <para>MMCRA</para>
+            </entry>
+            <entry>
+              <para>Monitor Mode Control Register A</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4D53520000000000</para>
+            </entry>
+            <entry>
+              <para>MSR</para>
+            </entry>
+            <entry>
+              <para>Machine State Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4e49410000000000</para>
+            </entry>
+            <entry>
+              <para>NIA</para>
+            </entry>
+            <entry>
+              <para>Next Instruction Address</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x5049440000000000</para>
+            </entry>
+            <entry>
+              <para>PID</para>
+            </entry>
+            <entry>
+              <para>Process ID Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x5049520000000000</para>
+            </entry>
+            <entry>
+              <para>PIR</para>
+            </entry>
+            <entry>
+              <para>Processor Identification Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x504D433100000000</para>
+            </entry>
+            <entry>
+              <para>PMC1</para>
+            </entry>
+            <entry>
+              <para>Performance Monitor Counter 1</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x504D433200000000</para>
+            </entry>
+            <entry>
+              <para>PMC2</para>
+            </entry>
+            <entry>
+              <para>Performance Monitor Counter 2</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x504D433300000000</para>
+            </entry>
+            <entry>
+              <para>PMC3</para>
+            </entry>
+            <entry>
+              <para>Performance Monitor Counter 3</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x504D433400000000</para>
+            </entry>
+            <entry>
+              <para>PMC4</para>
+            </entry>
+            <entry>
+              <para>Performance Monitor Counter 4</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x504D433500000000</para>
+            </entry>
+            <entry>
+              <para>PMC5</para>
+            </entry>
+            <entry>
+              <para>Performance Monitor Counter 5</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x504D433600000000</para>
+            </entry>
+            <entry>
+              <para>PIMC6</para>
+            </entry>
+            <entry>
+              <para>Performance Monitor Counter 6</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x5055525200000000</para>
+            </entry>
+            <entry>
+              <para>PURR</para>
+            </entry>
+            <entry>
+              <para>Processor Utilization Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x5056520000000000</para>
+            </entry>
+            <entry>
+              <para>PVR</para>
+            </entry>
+            <entry>
+              <para>Processor Version Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x5344415200000000</para>
+            </entry>
+            <entry>
+              <para>SDAR</para>
+            </entry>
+            <entry>
+              <para>Sampled Data Address Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x5349415200000000</para>
+            </entry>
+            <entry>
+              <para>SIAR</para>
+            </entry>
+            <entry>
+              <para>Sampled Instruction Address Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x5350524730000000</para>
+            </entry>
+            <entry>
+              <para>SPRG0</para>
+            </entry>
+            <entry>
+              <para>Special Purpose Register General 0</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x5350524731000000</para>
+            </entry>
+            <entry>
+              <para>SPRG1</para>
+            </entry>
+            <entry>
+              <para>Special Purpose Register General 1</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x5350524732000000</para>
+            </entry>
+            <entry>
+              <para>SPRG2</para>
+            </entry>
+            <entry>
+              <para>Special Purpose Register General 2</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x5350524733000000</para>
+            </entry>
+            <entry>
+              <para>SPRG3</para>
+            </entry>
+            <entry>
+              <para>Special Purpose Register General 3</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x5350555252000000</para>
+            </entry>
+            <entry>
+              <para>SPURR</para>
+            </entry>
+            <entry>
+              <para>Scaled Processor Utilization Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x5352523000000000</para>
+            </entry>
+            <entry>
+              <para>SRR0</para>
+            </entry>
+            <entry>
+              <para>Save Restore Register 0</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x5352523100000000</para>
+            </entry>
+            <entry>
+              <para>SRR1</para>
+            </entry>
+            <entry>
+              <para>Save Restore Register 1</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x5442000000000000</para>
+            </entry>
+            <entry>
+              <para>TB</para>
+            </entry>
+            <entry>
+              <para>Time Base Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x5453520000000000</para>
+            </entry>
+            <entry>
+              <para>TSR</para>
+            </entry>
+            <entry>
+              <para>Thread Status Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x55414D4F52000000</para>
+            </entry>
+            <entry>
+              <para>UAMOR</para>
+            </entry>
+            <entry>
+              <para>User Authority Mask Override Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565230305F484900</para>
+            </entry>
+            <entry>
+              <para>VR00_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 0 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565230305F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR00_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 0 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565230315F484900</para>
+            </entry>
+            <entry>
+              <para>VR01_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 1 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565230315F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR01_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 1 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565230325F484900</para>
+            </entry>
+            <entry>
+              <para>VR02_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 2 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565230325F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR02_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 2 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565230335F484900</para>
+            </entry>
+            <entry>
+              <para>VR03_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 3 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565230335F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR03_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 3 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565230345F484900</para>
+            </entry>
+            <entry>
+              <para>VR04_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 4 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565230345F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR04_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 4 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565230355F484900</para>
+            </entry>
+            <entry>
+              <para>VR05_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 5 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565230355F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR05_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 5 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565230365F484900</para>
+            </entry>
+            <entry>
+              <para>VR06_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 6 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565230365F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR06_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 6 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565230375F484900</para>
+            </entry>
+            <entry>
+              <para>VR07_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 7 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565230375F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR07_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 7 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565230385F484900</para>
+            </entry>
+            <entry>
+              <para>VR08_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 8 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565230385F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR08_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 8 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565230395F484900</para>
+            </entry>
+            <entry>
+              <para>VR09_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 9 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565230395F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR09_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 9 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565231305F484900</para>
+            </entry>
+            <entry>
+              <para>VR10_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 10 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565231305F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR10_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 10 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565231315F484900</para>
+            </entry>
+            <entry>
+              <para>VR11_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 11 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565231315F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR11_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 11 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565231325F484900</para>
+            </entry>
+            <entry>
+              <para>VR12_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 12 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565231325F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR12_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 12 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565231335F484900</para>
+            </entry>
+            <entry>
+              <para>VR13_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 13 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565231335F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR13_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 13 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565231345F484900</para>
+            </entry>
+            <entry>
+              <para>VR14_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 14 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565231345F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR14_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 14 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565231355F484900</para>
+            </entry>
+            <entry>
+              <para>VR15_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 15 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565231355F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR15_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 15 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565231365F484900</para>
+            </entry>
+            <entry>
+              <para>VR16_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 16 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565231365F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR16_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 16 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565231375F484900</para>
+            </entry>
+            <entry>
+              <para>VR17_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 17 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565231375F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR17_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 17 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565231385F484900</para>
+            </entry>
+            <entry>
+              <para>VR18_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 18 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565231385F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR18_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 18 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565231395F484900</para>
+            </entry>
+            <entry>
+              <para>VR19_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 19 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565231395F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR19_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 19 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565232305F484900</para>
+            </entry>
+            <entry>
+              <para>VR20_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 20 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565232305F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR20_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 20 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565232315F484900</para>
+            </entry>
+            <entry>
+              <para>VR21_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 21 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565232315F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR21_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 21 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565232325F484900</para>
+            </entry>
+            <entry>
+              <para>VR22_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 22 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565232325F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR22_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 22 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565232335F484900</para>
+            </entry>
+            <entry>
+              <para>VR23_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 23 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565232335F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR23_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 23 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565232345F484900</para>
+            </entry>
+            <entry>
+              <para>VR24_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 24 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565232345F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR24_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 24 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565232355F484900</para>
+            </entry>
+            <entry>
+              <para>VR25_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 25 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565232355F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR25_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 25 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565232365F484900</para>
+            </entry>
+            <entry>
+              <para>VR26_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 26 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565232365F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR26_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 26 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565232375F484900</para>
+            </entry>
+            <entry>
+              <para>VR27_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 27 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565232375F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR27_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 27 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565232385F484900</para>
+            </entry>
+            <entry>
+              <para>VR28_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 28 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565232385F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR28_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 28 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565232395F484900</para>
+            </entry>
+            <entry>
+              <para>VR29_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 29 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565232395F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR29_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 29 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565233305F484900</para>
+            </entry>
+            <entry>
+              <para>VR30_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 30 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565233305F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR30_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 30 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565233315F484900</para>
+            </entry>
+            <entry>
+              <para>VR31_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Register 31 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x565233315F4C4F00</para>
+            </entry>
+            <entry>
+              <para>VR31_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Register 31 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x5652534156450000</para>
+            </entry>
+            <entry>
+              <para>VRSAVE</para>
+            </entry>
+            <entry>
+              <para>VR Save Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x5653435200000000</para>
+            </entry>
+            <entry>
+              <para>VSCR</para>
+            </entry>
+            <entry>
+              <para>VMX Status and Condition Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535230305F4849</para>
+            </entry>
+            <entry>
+              <para>VSR00_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 0 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535230305F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR00_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 0 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535230315F4849</para>
+            </entry>
+            <entry>
+              <para>VSR01_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 1 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535230315F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR01_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 1 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535230325F4849</para>
+            </entry>
+            <entry>
+              <para>VSR02_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 2 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535230325F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR02_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 2 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535230335F4849</para>
+            </entry>
+            <entry>
+              <para>VSR03_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 3 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535230335F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR03_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 3 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535230345F4849</para>
+            </entry>
+            <entry>
+              <para>VSR04_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 4 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535230345F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR04_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 4 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535230355F4849</para>
+            </entry>
+            <entry>
+              <para>VSR05_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 5 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535230355F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR05_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 5 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535230365F4849</para>
+            </entry>
+            <entry>
+              <para>VSR06_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 6 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535230365F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR06_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 6 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535230375F4849</para>
+            </entry>
+            <entry>
+              <para>VSR07_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 7 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535230375F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR07_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 7 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535230385F4849</para>
+            </entry>
+            <entry>
+              <para>VSR08_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 8 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535230385F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR08_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 8 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535230395F4849</para>
+            </entry>
+            <entry>
+              <para>VSR09_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 9 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535230395F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR09_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 9 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535231305F4849</para>
+            </entry>
+            <entry>
+              <para>VSR10_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 10 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535231305F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR10_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 10 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535231315F4849</para>
+            </entry>
+            <entry>
+              <para>VSR11_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 11 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535231315F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR11_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 11 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535231325F4849</para>
+            </entry>
+            <entry>
+              <para>VSR12_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 12 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535231325F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR12_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 12 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535231335F4849</para>
+            </entry>
+            <entry>
+              <para>VSR13_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 13 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535231335F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR13_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 13 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535231345F4849</para>
+            </entry>
+            <entry>
+              <para>VSR14_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 14 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535231345F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR14_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 14 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535231355F4849</para>
+            </entry>
+            <entry>
+              <para>VSR15_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 15 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535231355F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR15_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 15 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535231365F4849</para>
+            </entry>
+            <entry>
+              <para>VSR16_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 16 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535231365F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR16_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 16 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535231375F4849</para>
+            </entry>
+            <entry>
+              <para>VSR17_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 17 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535231375F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR17_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 17 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535231385F4849</para>
+            </entry>
+            <entry>
+              <para>VSR18_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 18 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535231385F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR18_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 18 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535231395F4849</para>
+            </entry>
+            <entry>
+              <para>VSR19_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 19 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535231395F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR19_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 19 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535232305F4849</para>
+            </entry>
+            <entry>
+              <para>VSR20_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 20 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535232305F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR20_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 20 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535232315F4849</para>
+            </entry>
+            <entry>
+              <para>VSR21_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 21 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535232315F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR21_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 21 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535232325F4849</para>
+            </entry>
+            <entry>
+              <para>VSR22_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 22 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535232325F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR22_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 22 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535232335F4849</para>
+            </entry>
+            <entry>
+              <para>VSR23_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 23 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535232335F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR23_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 23 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535232345F4849</para>
+            </entry>
+            <entry>
+              <para>VSR24_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 24 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535232345F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR24_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 24 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535232355F4849</para>
+            </entry>
+            <entry>
+              <para>VSR25_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 25 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535232355F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR25_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 25 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535232365F4849</para>
+            </entry>
+            <entry>
+              <para>VSR26_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 26 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535232365F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR26_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 26 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535232375F4849</para>
+            </entry>
+            <entry>
+              <para>VSR27_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 27 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535232375F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR27_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 27 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535232385F4849</para>
+            </entry>
+            <entry>
+              <para>VSR28_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 28 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535232385F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR28_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 28 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535232395F4849</para>
+            </entry>
+            <entry>
+              <para>VSR29_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 29 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535232395F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR29_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 29 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535233305F4849</para>
+            </entry>
+            <entry>
+              <para>VSR30_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 30 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535233305F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR30_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 30 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535233315F4849</para>
+            </entry>
+            <entry>
+              <para>VSR31_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 31 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535233315F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR31_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 31 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535233325F4849</para>
+            </entry>
+            <entry>
+              <para>VSR32_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 32 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535233325F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR32_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 32 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535233335F4849</para>
+            </entry>
+            <entry>
+              <para>VSR33_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 33 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535233335F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR33_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 33 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535233345F4849</para>
+            </entry>
+            <entry>
+              <para>VSR34_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 34 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535233345F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR34_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 34 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535233355F4849</para>
+            </entry>
+            <entry>
+              <para>VSR35_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 35 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535233355F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR35_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 35 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535233365F4849</para>
+            </entry>
+            <entry>
+              <para>VSR36_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 36 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535233365F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR36_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 36 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535233375F4849</para>
+            </entry>
+            <entry>
+              <para>VSR37_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 37 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535233375F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR37_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 37 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535233385F4849</para>
+            </entry>
+            <entry>
+              <para>VSR38_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 38 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535233385F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR38_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 38 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535233395F4849</para>
+            </entry>
+            <entry>
+              <para>VSR39_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 39 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535233395F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR39_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 39 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535234305F4849</para>
+            </entry>
+            <entry>
+              <para>VSR40_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 40 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535234305F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR40_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 40 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535234315F4849</para>
+            </entry>
+            <entry>
+              <para>VSR41_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 41 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535234315F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR41_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 41 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535234325F4849</para>
+            </entry>
+            <entry>
+              <para>VSR42_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 42 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535234325F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR42_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 42 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535234335F4849</para>
+            </entry>
+            <entry>
+              <para>VSR43_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 43 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535234335F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR43_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 43 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535234345F4849</para>
+            </entry>
+            <entry>
+              <para>VSR44_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 44 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535234345F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR44_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 44 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535234355F4849</para>
+            </entry>
+            <entry>
+              <para>VSR45_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 45 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535234355F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR45_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 45 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535234365F4849</para>
+            </entry>
+            <entry>
+              <para>VSR46_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 46 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535234365F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR46_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 46 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535234375F4849</para>
+            </entry>
+            <entry>
+              <para>VSR47_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 47 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535234375F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR47_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 47 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535234385F4849</para>
+            </entry>
+            <entry>
+              <para>VSR48_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 48 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535234385F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR48_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 48 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535234395F4849</para>
+            </entry>
+            <entry>
+              <para>VSR49_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 49 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535234395F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR49_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 49 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535235305F4849</para>
+            </entry>
+            <entry>
+              <para>VSR50_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 50 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535235305F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR50_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 50 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535235315F4849</para>
+            </entry>
+            <entry>
+              <para>VSR51_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 51 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535235315F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR51_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 51 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535235325F4849</para>
+            </entry>
+            <entry>
+              <para>VSR52_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 52 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535235325F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR52_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 52 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535235335F4849</para>
+            </entry>
+            <entry>
+              <para>VSR53_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 53 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535235335F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR53_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 53 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535235345F4849</para>
+            </entry>
+            <entry>
+              <para>VSR54_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 54 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535235345F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR54_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 54 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535235355F4849</para>
+            </entry>
+            <entry>
+              <para>VSR55_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 55 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535235355F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR55_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 55 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535235365F4849</para>
+            </entry>
+            <entry>
+              <para>VSR56_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 56 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535235365F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR56_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 56 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535235375F4849</para>
+            </entry>
+            <entry>
+              <para>VSR57_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 57 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535235375F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR57_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 57 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535235385F4849</para>
+            </entry>
+            <entry>
+              <para>VSR58_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 58 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535235385F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR58_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 58 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535235395F4849</para>
+            </entry>
+            <entry>
+              <para>VSR59_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 59 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535235395F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR59_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 59 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535236305F4849</para>
+            </entry>
+            <entry>
+              <para>VSR60_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 60 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535236305F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR60_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 60 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535236315F4849</para>
+            </entry>
+            <entry>
+              <para>VSR61_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 61 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535236315F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR61_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 61 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535236325F4849</para>
+            </entry>
+            <entry>
+              <para>VSR62_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 62 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535236325F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR62_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 62 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535236335F4849</para>
+            </entry>
+            <entry>
+              <para>VSR63_HI</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 63 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x56535236335F4C4F</para>
+            </entry>
+            <entry>
+              <para>VSR63_LO</para>
+            </entry>
+            <entry>
+              <para>Vector Scalar Register 63 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x5845520000000000</para>
+            </entry>
+            <entry>
+              <para>XER</para>
+            </entry>
+            <entry>
+              <para>Fixed-Point Exception Register</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </section>
+  <section xml:id="dbdoclet.50569380__Ref135446515">
+    <title>Hardware Page Table Entry Save Area</title>
+    <para>The hardware page table entry save area is an area in the
+    partition&#8217;s memory used to preserve the hardware page table entries
+    corresponding to the VRMA entries that are used when Open Firmware is
+    started. The location and size of this area is specified by the partition
+    when firmware assisted dump. The minimum size is reported to the partition
+    in the new PFDS KDUMP node.</para>
+    <para>When accessing the table the offset to NumEntries should be used to
+    allow for different versions of the table. Newer versions of the table will
+    be compatible with all previous versions.</para>
+    <para>&#160;</para>
+    <table frame="all" pgwide="1">
+      <title>HPT Entry Save Area Format</title>
+      <tgroup cols="5">
+        <colspec colname="c1" colwidth="20*" />
+        <colspec colname="c2" colwidth="20*" />
+        <colspec colname="c3" colwidth="20*" />
+        <colspec colname="c4" colwidth="20*" />
+        <colspec colname="c5" colwidth="20*" />
+        <thead>
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">Offset</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">Length (Bytes)</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">Name</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">Value</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">Description</emphasis>
+              </para>
+            </entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>
+              <para>0x00</para>
+            </entry>
+            <entry>
+              <para>0x8</para>
+            </entry>
+            <entry>
+              <para>Magic Number</para>
+            </entry>
+            <entry>
+              <para>0x4850544553415645</para>
+              <para>&#8220;HPTESAVE&#8221;</para>
+            </entry>
+            <entry>
+              <para>Used to verify that this area contains what it
+              should</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x08</para>
+            </entry>
+            <entry>
+              <para>0x4</para>
+            </entry>
+            <entry>
+              <para>Version</para>
+            </entry>
+            <entry>
+              <para>0x0</para>
+            </entry>
+            <entry>
+              <para>Current version</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x0C</para>
+            </entry>
+            <entry>
+              <para>0x4</para>
+            </entry>
+            <entry>
+              <para>NumEntriesOffset</para>
+            </entry>
+            <entry>
+              <para>0x1C</para>
+            </entry>
+            <entry>
+              <para>Offset to number of entries</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x10</para>
+            </entry>
+            <entry>
+              <para>0x8</para>
+            </entry>
+            <entry>
+              <para>Padding</para>
+            </entry>
+            <entry>
+              <para>0x0</para>
+            </entry>
+            <entry>
+              <para>Must be initialized to 0</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x18</para>
+            </entry>
+            <entry>
+              <para>0x8</para>
+            </entry>
+            <entry>
+              <para>NumEntries</para>
+            </entry>
+            <entry>
+              <para>Actual Number Of Entries</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x20</para>
+            </entry>
+            <entry>
+              <para>0x18</para>
+            </entry>
+            <entry>
+              <para>HptEntry1</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x38</para>
+            </entry>
+            <entry>
+              <para>0x18</para>
+            </entry>
+            <entry>
+              <para>HptEntry2</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>...</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <para>&#160;</para>
+    <table frame="all" pgwide="1">
+      <title>HPT Entry Format</title>
+      <tgroup cols="5">
+        <colspec colname="c1" colwidth="20*" />
+        <colspec colname="c2" colwidth="20*" />
+        <colspec colname="c3" colwidth="20*" />
+        <colspec colname="c4" colwidth="20*" />
+        <colspec colname="c5" colwidth="20*" />
+        <thead>
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">Offset</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">Length (Bytes)</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">Name</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">Value</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">Description</emphasis>
+              </para>
+            </entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>
+              <para>0x0</para>
+            </entry>
+            <entry>
+              <para>0x8</para>
+            </entry>
+            <entry>
+              <para>HptEntryIndex</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+            <entry>
+              <para>Index into the HPT table for the entry</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x08</para>
+            </entry>
+            <entry>
+              <para>0x8</para>
+            </entry>
+            <entry>
+              <para>Dword0</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+            <entry>
+              <para>HPT Entry High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x10</para>
+            </entry>
+            <entry>
+              <para>0x8</para>
+            </entry>
+            <entry>
+              <para>Dword1</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+            <entry>
+              <para>HPT Entry Low</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <para>
+    <emphasis role="bold">Note:</emphasis>The entries are not in any particular order. It
+    is up to the user of the save area to sort the data.</para>
+    <para />
+  </section>
+  
+</chapter>

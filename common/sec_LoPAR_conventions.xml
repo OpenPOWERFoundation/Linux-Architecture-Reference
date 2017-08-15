@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2016 OpenPOWER Foundation
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+-->
+<section xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude"
+  xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" xml:id="section_PAPR_conventions">
+  <?dbhtml stop-chunking?>
+  
+          <title> Document-specific Conventions</title>
+            
+          <simplesect>
+            <title> Requirement Enumeration</title>
+            <para>Within the body of this document requirements are clearly defined by separate 
+            paragraphs beginning with a bold text sequence number. A list of all these are 
+            available as a separate document. These requirements may point to other standards 
+            documents, or figures or tables which conveniently show the requirement. The 
+            referenced material becomes part of the requirements in this document. Users of this 
+            document must comply with these requirements to build a standard platform. Other 
+            material in this document is supportive description of these requirements, architecture 
+            notes, or implementation notes. Architecture or implementation notes are flagged with 
+            a descriptive phrase&#8212;for example, &#8220;Hardware Implementation Note&#8221;&#8212; 
+            and followed by indented paragraphs. The descriptive material and notes provide no 
+            additional requirements and may be used for their information content.</para>
+          </simplesect>
+          
+          <simplesect>
+            <title> Big-Endian Numbering</title>
+            <para>Big-Endian numbering of bytes and bits is used in this document, unless 
+            indicated otherwise. Numbering of bits starts at 0 for the most significant bit and 
+            continues to the least significant bit, unless indicated otherwise. All data structures 
+            used for communicating between the OS and the platform (for example, RTAS and hypervisor 
+            calls) will be in Big-Endian format, unless otherwise designated.</para>
+          </simplesect>
+          
+          <simplesect>
+            <title> Hypertext Links</title>
+            <para>This document makes use of hypertext links. Cross references, Table of Contents 
+            entries, List of Tables entries, and List of Figures entries are all clickable hypertext 
+            links, to make navigation of the document easier.</para>
+          </simplesect>
+          
+          <simplesect>
+            <title> Specific Terms</title>
+            <para>In this document:</para>
+            <itemizedlist>
+	          <listitem>
+                <para>The term &#8220;Processor Architecture&#8221; (PA) is used to mean compliance with 
+                the requirements specified in <citetitle><xref linkend="dbdoclet.50569387_99718"/></citetitle>.</para>
+	          </listitem>
+	          <listitem>
+               <para>The term &#8220;processor&#8221; is used as a general term to mean &#8220;processor,
+                &#8221; or &#8220;processor core,&#8221; or &#8220;thread of a multi-threaded processor 
+                design.&#8221; In any case where it makes a difference, the specific terminology for that 
+                case is used.</para>
+	          </listitem>
+	          <listitem>
+                <para>The term &#8220;real&#8221; used in relationship with addresses is a generic term 
+                that means &#8220;processor real address&#8221; when the platform is running in SMP (non-LPAR) 
+                mode and partition &#8220;logical real address&#8221; when the platform is running in LPAR 
+                mode.</para>
+	          </listitem>
+	          <listitem>
+                <para>The term &#8220;PCI&#8221; is used as a general term to describe the most recent 
+                versions of all forms of PCI standards. In cases where there are significant differences 
+                between individual PCI standards, the following terminology is used to differentiate between 
+                the PCI standards: conventional PCI, PCI-X, and PCI Express.</para>
+	          </listitem>
+            </itemizedlist>
+          </simplesect>
+          
+          <simplesect>
+            <title> Typographical Conventions</title>
+            <para>Typographical conventions used in this document are described in 
+            <xref linkend="dbdoclet.50569325_36717"/>.</para>
+            <para><anchor xml:id="dbdoclet.50569325_12795" xreflabel=""/>&#160;</para>
+            <table frame="all" pgwide="1" xml:id="dbdoclet.50569325_36717">
+              <title> Typographical Conventions </title>
+              <tgroup cols="2">
+                <colspec colname="c1" colwidth="40*"/>
+                <colspec colname="c2" colwidth="60*"/>
+                <thead><row>
+                    <entry><para><emphasis role="bold">Text Element</emphasis></para></entry>
+                    <entry><para><emphasis role="bold">Description of Use</emphasis></para></entry>
+                  </row>
+                  </thead><tbody>
+                  <row>
+                    <entry><para> Rn-m-x.</para></entry>
+                    <entry><para> A requirement number. The number &#8220;n&#8221; indicates a requirement 
+                    sequence number and is changed only when it is necessary change the sequence numbers 
+                    of one or more requirements on an update. The number &#8220;m&#8221; is the section 
+                    that the requirement appears in, and the number &#8220;x&#8221; is the number of the 
+                    requirement within that section. The sequence numbers are automatically generated and 
+                    are restarted at the beginning of each new section. Sequence numbers for existing 
+                    requirements will not change unless it becomes necessary to insert a requirement between 
+                    other requirements or to add a section that renumbers other sections (at which point, 
+                    the number &#8220;n&#8221; will be incremented for the next publication of the document).</para></entry>
+                  </row>
+                  <row>
+                    <entry><para> <emphasis> Italics</emphasis></para></entry>
+                    <entry><para> Used for emphasis such as the first time a new term is used. </para>
+                    <para>Indicates a book title. </para><para>Indicates PA instruction mnemonics. </para>
+                    <para>Indicates RTAS function, field names, and parameter names</para></entry>
+                  </row>
+                  <row>
+                    <entry><para> <emphasis role="bold"><literal> Courier Bold</literal></emphasis></para></entry>
+                    <entry><para> Indicates OF properties, methods, configuration variables, node names 
+                    and encode functions (for example, <emphasis> encode-int</emphasis> and <emphasis> 
+                    encode-string</emphasis> ). In addition, OF properties are enclosed in quotes.</para>
+                    <para>Indicates NVRAM partition names</para></entry>
+                  </row>
+                  <row>
+                    <entry><para> <literal>&#8220;Courier&#8221;</literal> (not bold, enclosed in quotes)</para></entry>
+                    <entry><para> Indicates a character string value.</para></entry>
+                  </row>
+                  <row>
+                    <entry><para> 0xnnnn</para></entry>
+                    <entry><para> Prefix to denote hexadecimal numbers. </para></entry>
+                  </row>
+                  <row>
+                    <entry><para> 0bnnnn</para></entry>
+                    <entry><para> Prefix to denote binary numbers. </para></entry>
+                  </row>
+                  <row>
+                    <entry><para> nnnnn</para></entry>
+                    <entry><para> Numbers without a prefix are decimal numbers. </para></entry>
+                  </row>
+                  <row>
+                    <entry><para> 0xF... FFF100</para></entry>
+                    <entry><para> This hexadecimal notation represents a replication of the hexadecimal 
+                    character to the right of the ellipsis to fill out the field width. For example, the 
+                    address 0xF... FFF100 would be 0xFFFFF100 on a processor with a 32-bit address bus or 
+                    0xFFFFFFFFFFFFF100 on a processor with a 64-bit address bus.</para></entry>
+                  </row>
+                  <row>
+                    <entry><para> 0:9</para></entry>
+                    <entry><para> Ranges of bits are specified by two numbers separated by a colon. The 
+                    range includes the first number, all numbers in between, and the last number.</para></entry>
+                  </row>
+                  <row>
+                    <entry><para> 0xm-0xn</para></entry>
+                    <entry><para> A range of addresses or values within the document is always inclusive, 
+                    from m up to and including n.</para></entry>
+                  </row>
+                  <row>
+                    <entry><para> &lt;token&gt;</para></entry>
+                    <entry><para> This notation means the character or character string named within the 
+                    less than and greater than symbols is used in the place of the symbols and name. For 
+                    instance, the property name <emphasis role="bold"> &#8220;ibm,sensor-</emphasis> <emphasis>&lt;token&gt;</emphasis>
+                    <emphasis role="bold">&#8221;</emphasis> indicates the set of properties 
+                    <emphasis role="bold">&#8220;ibm,sensor-9000&#8221;</emphasis>,
+                    <emphasis role="bold">&#8220;ibm,sensor-9001&#8221;</emphasis> , . . .</para></entry>
+                  </row>
+                  <row>
+                    <entry><para> Reserved For Compatibility</para></entry>
+                    <entry><para> This notation is a placeholder used to reserve numbering (for example, 
+                    chapter, section and requirement numbers) so that subsequent numbering remains consistent 
+                    with document changes.</para></entry>
+                  </row>
+                  <row>
+                    <entry><para> NULL vs. null</para></entry>
+                    <entry><para> NULL designates an ASCII NULL string (0x00). The term &#8220;null&#8221; 
+                    indicates the empty set.</para></entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
+          </simplesect>
+          
+</section>
