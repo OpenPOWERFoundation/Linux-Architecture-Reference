@@ -531,8 +531,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
     dependent interfaces do not appear in this document.</para>
 
     <table frame="all" pgwide="1">
-      <title>Architected hcall()s 
-      <emphasis>(Continued)</emphasis></title>
+      <title>Architected hcall()s</title>
       <tgroup cols="2">
         <colspec colname="c1" colwidth="35*" />
         <colspec colname="c2" colwidth="65*" />
@@ -571,6 +570,16 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
             <entry>
               <para>Removes up to four (4) PTEs from the partition&#8217;s node
               Page Frame Table</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_block_remove" xrefstyle="select: title nopage" /> / <xref linkend="sec_block_remove" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Removes PTEs of a naturally aligned block of Virtual addresses from the partition’s Page Frame Table</para>
             </entry>
           </row>
           <row>
@@ -719,6 +728,26 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
           <row>
             <entry>
               <para>
+                <xref linkend="sec_adjust_resource" xrefstyle="select: title nopage" /> / <xref linkend="sec_adjust_resource" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Adjust implementation dependent tuning values</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_set_switches" xrefstyle="select: title nopage" /> / <xref linkend="sec_set_switches" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Set implementation dependent tuning switches</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
                 <xref linkend="dbdoclet.50569344_96762" xrefstyle="select: title nopage" /> / <xref linkend="dbdoclet.50569344_96762" xrefstyle="select: labelnumber nopage" />
               </para>
             </entry>
@@ -801,6 +830,16 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
             <entry>
               <para>Returns internal hypervisor work areas for code
               maintenance.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_clear_hpt" xrefstyle="select: title nopage" /> / <xref linkend="sec_clear_hpt" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Clears the hash page table for a partition in preparation for a restart</para>
             </entry>
           </row>
           <row>
@@ -1468,6 +1507,76 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
             <entry>
               <para>Search TCE table for entries within a specified
               range</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_memstat_ctrl" xrefstyle="select: title nopage" /> / <xref linkend="sec_memstat_ctrl" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Configure Memory Usage Instrumentation</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_reset_memstats" xrefstyle="select: title nopage" /> / <xref linkend="sec_reset_memstats" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Reset page age and affinity log, and/or PUT/HBA</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_return_pageinfo" xrefstyle="select: title nopage" /> / <xref linkend="sec_return_pageinfo" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Return the page usage information for a logical address range of pages</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_bulk_read_hba" xrefstyle="select: title nopage" /> / <xref linkend="sec_bulk_read_hba" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Return multiple HBA</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_clean_slb" xrefstyle="select: title nopage" /> / <xref linkend="sec_clean_slb" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Invalidate the specified process segment from all segment lookaside buffers in the system.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_invalidate_pid" xrefstyle="select: title nopage" /> / <xref linkend="sec_invalidate_pid" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Invalidate the specified process table entry.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_register_process_table" xrefstyle="select: title nopage" /> / <xref linkend="sec_register_process_table" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Manage the virtual address translation mode including registration of a process table.</para>
             </entry>
           </row>
         </tbody>
@@ -3645,6 +3754,249 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
             </row>
             <row>
               <entry>
+                <para>
+                  <xref linkend="sec_block_remove" xrefstyle="select: title nopage" /> / <xref linkend="sec_block_remove" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x328</para>
+              </entry>
+              <entry>
+                <para>Critical</para>
+              </entry>
+              <entry>
+                <para>if the platform supports the "block invalidate" option</para>
+              </entry>
+              <entry>
+                <para>hcall-block-remove</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_memstat_ctrl" xrefstyle="select: title nopage" /> / <xref linkend="sec_memstat_ctrl" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x32C</para>
+              </entry>
+              <entry>
+                <para>normal</para>
+              </entry>
+              <entry>
+                <para>If the Memory Usage Instrumentation Option is implemented</para>
+              </entry>
+              <entry>
+                <para>hcall-mui</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_reset_memstats" xrefstyle="select: title nopage" /> / <xref linkend="sec_reset_memstats" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x330</para>
+              </entry>
+              <entry>
+                <para>normal</para>
+              </entry>
+              <entry>
+                <para>If the Memory Usage Instrumentation Option is implemented</para>
+              </entry>
+              <entry>
+                <para>hcall-mui</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_return_pageinfo" xrefstyle="select: title nopage" /> / <xref linkend="sec_return_pageinfo" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x334</para>
+              </entry>
+              <entry>
+                <para>normal</para>
+              </entry>
+              <entry>
+                <para>If the Memory Usage Instrumentation Option is implemented</para>
+              </entry>
+              <entry>
+                <para>hcall-mui</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_bulk_read_hba" xrefstyle="select: title nopage" /> / <xref linkend="sec_bulk_read_hba" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x338</para>
+              </entry>
+              <entry>
+                <para>normal</para>
+              </entry>
+              <entry>
+                <para>If the Memory Usage Instrumentation Option is implemented</para>
+              </entry>
+              <entry>
+                <para>hcall-mui</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_adjust_resource" xrefstyle="select: title nopage" /> / <xref linkend="sec_adjust_resource" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x33C</para>
+              </entry>
+              <entry>
+                <para>Normal</para>
+              </entry>
+              <entry>
+                <para>If the plaform implements the LRDR option at LoPAR Verstion 2.8 or higher</para>
+              </entry>
+              <entry>
+                <para>hcall-implementation-<?linebreak?>dependent-tuning</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_set_switches" xrefstyle="select: title nopage" /> / <xref linkend="sec_set_switches" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x340</para>
+              </entry>
+              <entry>
+                <para>Normal</para>
+              </entry>
+              <entry>
+                <para>If the plaform implements the LRDR option at LoPAR Verstion 2.8 or higher</para>
+              </entry>
+              <entry>
+                <para>hcall-implementation-<?linebreak?>dependent-tuning</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>Reserved</para>
+              </entry>
+              <entry>
+                <para>0x344-0x354</para>
+              </entry>
+              <entry>
+                <para>&#160;</para>
+              </entry>
+              <entry>
+                <para>&#160;</para>
+              </entry>
+              <entry>
+                <para>&#160;</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_clear_hpt" xrefstyle="select: title nopage" /> / <xref linkend="sec_clear_hpt" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x358</para>
+              </entry>
+              <entry>
+                <para>Terminal</para>
+              </entry>
+              <entry>
+                <para>For LoPAR Verstion 2.8 and higher</para>
+              </entry>
+              <entry>
+                <para>hcall-clr-hpt</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>Reserved</para>
+              </entry>
+              <entry>
+                <para>0x35C-0x370</para>
+              </entry>
+              <entry>
+                <para>&#160;</para>
+              </entry>
+              <entry>
+                <para>&#160;</para>
+              </entry>
+              <entry>
+                <para>&#160;</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_clean_slb" xrefstyle="select: title nopage" /> / <xref linkend="sec_clean_slb" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x374</para>
+              </entry>
+              <entry>
+                <para>Normal</para>
+              </entry>
+              <entry>
+                <para>If the platform supports the In-Memory Table Translation Option</para>
+              </entry>
+              <entry>
+                <para>hcall-imtt</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_invalidate_pid" xrefstyle="select: title nopage" /> / <xref linkend="sec_invalidate_pid" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x378</para>
+              </entry>
+              <entry>
+                <para>Normal</para>
+              </entry>
+              <entry>
+                <para>If the platform supports the In-Memory Table Translation Option</para>
+              </entry>
+              <entry>
+                <para>hcall-imtt</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_register_process_table" xrefstyle="select: title nopage" /> / <xref linkend="sec_register_process_table" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x37C</para>
+              </entry>
+              <entry>
+                <para>Normal</para>
+              </entry>
+              <entry>
+                <para>If the platform supports the In-Memory Table Translation Option</para>
+              </entry>
+              <entry>
+                <para>hcall-imtt</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
                 <para>Reserved for platform-dependent hcall()s / 
                 <xref linkend="dbdoclet.50569383_58396" xrefstyle="select: label nopage"  /></para>
               </entry>
@@ -3684,7 +4036,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
                 <para>Reserved</para>
               </entry>
               <entry>
-                <para>0x328 - 0xEFFC and 0x10000 - 0xFFFFFFFF-<?linebreak?>FFFFFFFC: RTAS
+                <para>0x380 - 0xEFFC and 0x10000 - 0xFFFFFFFF-<?linebreak?>FFFFFFFC: RTAS
                 implementations may assigns values in these ranges to their own
                 internal interfaces, as long as they are prepared for the
                 growth of architected functions into this range.</para>
@@ -4122,11 +4474,15 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
               <entry>
                 <para>Reserved</para>
               </entry>
-              <entry morerows="4">
-                <para>43-47</para>
+              <entry morerows="3">
+                <para>43-46</para>
               </entry>
-              <entry morerows="4">
-                <para>Reserved</para>
+              <entry morerows="3">
+                <para>MUI Options<footnote>
+                  <para>Bits 43-46 (MUI Options) detail is provided in 
+                  <xref linkend="table_mui_opt_flags_pft" /> 
+                  in <xref linkend="sec_mui_opt" />.</para>
+                </footnote></para>
               </entry>
             </row>
             <row>
@@ -4154,6 +4510,12 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
               </entry>
             </row>
             <row>
+              <entry>
+                <para>47</para>
+              </entry>
+              <entry>
+                <para>Reserved</para>
+              </entry>
               <entry>
                 <para>63</para>
               </entry>
@@ -5013,7 +5375,15 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
             </row>
             <row>
               <entry>
-                <para>-77 : -255</para>
+                <para>-77</para>
+              </entry>
+              <entry>
+                <para>H_IN_USE (a specified resource is already in use)</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>-78 : -255</para>
               </entry>
               <entry>
                 <para>Reserved</para>
@@ -5043,8 +5413,13 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
         <para>All hypervisor Page Frame Table (PFT) access routines are called
         using 64 bit linkage conventions and apply to all page sizes that the
         platform supports as specified by the 
-        <emphasis role="bold"><literal>&#8220;ibm,processor-page-sizes&#8221;</literal></emphasis> property (See 
-        <xref linkend="LoPAR.DeviceTree" /> for more details). The hypervisor PFT
+        <emphasis role="bold"><literal>&#8220;ibm,processor-page-sizes&#8221;</literal></emphasis> property. (See 
+        <xref linkend="LoPAR.DeviceTree" /> for more details.) 
+        The Page actual size is encoded in the PFT entry
+        per the <xref linkend="dbdoclet.50569387_99718" /> architecture Book IIIs along with the 
+        segment base page size per the <xref linkend="dbdoclet.50569387_99718" />
+        Book IVa.
+        The hypervisor PFT
         access functions carefully update a given Page Table Entry (PTE) with at
         least 64 bit store operations since an invalid update sequence could
         result in machine checks. To guard against multiple conflicting
@@ -5656,9 +6031,15 @@ hcall ( const uint64 H_REMOVE,
           initialize the page from one or more compressed data blocks and
           optionally (checksum flag) check the end to end block data integrity
           prior to adding the entry to the page table. If the compression flag is
-          not set the checksum flag is ignored.</para>
+          not set the checksum flag is ignored.  If the Memory Usage Instrumentation 
+          (MUI) option is implemented,
+          flags allow for initializing MUI state for the page when the translation is
+          entered.</para>
 
-          <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
+          <simplesect>
+            <title>Syntax:</title>
+          
+            <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
                        /* H_RESCINDED */
                        /* H_TOO_BIG: The specified Input stream is too long */
                        /* H_Function: The compression request is not authorized */
@@ -5684,6 +6065,8 @@ hcall ( const uint64 H_ENTER,
                        /*   input data block, if negative the length of the input */
                        /*   data descriptor list in bytes */
       );]]></programlisting>
+          </simplesect>
+        
 
           <simplesect>
             <title>Parameters:</title>
@@ -5737,9 +6120,13 @@ hcall ( const uint64 H_ENTER,
                   </listitem>
                   
                   <listitem>
-                    <para>For the PFO option: the compression flag initializes the page
-                    content from a compression buffer and the checksum flag checks for end to
-                    end compression buffer data integrity.</para>
+                    <para>For the MUI option: The HBA bits specify settings of implementation dependent PTE bits and
+                    associated MUI array entries for the page who’s translation is being entered.</para>
+                  </listitem>
+                  
+                  <listitem>
+                    <para>For the MUI option: The Affinity-Clear and Page-Age-Clear bits clear associated MUI array
+                    entries for the page who’s translation is being entered.</para>
                   </listitem>
                 </itemizedlist>		      
               </listitem>
@@ -5986,6 +6373,27 @@ hcall ( const uint64 H_ENTER,
                 <para>The hypervisor selects a PTE within the page table entry group
                 using the following.</para>
               </listitem>
+
+              <listitem>
+                <para><literallayout>If the MUI option is enabled
+  {
+    Switch (HBA flags field)
+    {
+      Case ‘0b11: return H_UNSUPPORTED_FLAG;
+      Case ‘0b10:
+        enable implementation dependent HBA update bit in PTE;
+        set implementation dependent PTE PUT field to previous time;
+        Set Reference History Bit Array entry for physical page to configured initial
+        value;
+      Case ‘0b01:
+        enable implementation HBA update in PTE;
+        set implementation dependent PTE PUT field to previous time;
+      Default: disable implementation dependent HBA update bit in PTE;
+    }
+    If the Affinity-Clear flag is on clear the MUI ALA for the page;
+    If the Page-Age-Clear flag is on clear the MUI PAG for the page;
+  }</literallayout></para>
+              </listitem>
             </itemizedlist>		      
 
           </simplesect>
@@ -6070,7 +6478,11 @@ hcall ( const uint64 H_ENTER,
           <para>This hcall returns the contents of a specific PTE in registers R4
           and R5.</para>
 
-          <programlisting><![CDATA[int64 hcall ( const uint64 H_READ, uint64 flags, int64 PTEX );]]></programlisting>
+          <simplesect>
+            <title>Syntax:</title>
+            <programlisting><![CDATA[int64 hcall ( const uint64 H_READ, uint64 flags, int64 PTEX );]]></programlisting>
+          </simplesect>
+        
 
           <simplesect>
             <title>Parameters:</title>
@@ -6175,13 +6587,16 @@ hcall ( const uint64 H_ENTER,
           <para>This hcall clears the modified bit in the specific PTE. The second
           double word of the old PTE is returned in R4.</para>
 
-          <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
+          <simplesect>
+            <title>Syntax:</title>
+            <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
                        /* H_PARAMETER: The PTE index was out of bounds */
                        /* H_Not_Found: The requested valid PTE Entry was not found */
 hcall ( const uint64 H_CLEAR_MOD, /* Clears the PTE Modified bit */
         uint64 flags,  /* None Defined */
         int64 PTEX );  /* Index of the PTE to be used */]]></programlisting>
-
+          </simplesect>
+          
           <simplesect>
             <title>Parameters:</title>
 
@@ -6276,13 +6691,16 @@ hcall ( const uint64 H_CLEAR_MOD, /* Clears the PTE Modified bit */
           <para>This hcall clears the reference bit in the specific PTE. The second
           double word of the old PTE is returned in R4.</para>
 
-          <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
+          <simplesect>
+            <title>Syntax:</title>
+            <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
                        /* H_Parameter: The PTE index was out of bounds */
                        /* H_Not_Found: The requested valid PTE Entry was not found */
 hcall ( const uint64 H_CLEAR_REF, /* Clears the PTE Reference bit */
         uint64 flags,  /* None Defined */
         int64 PTEX );  /* index of the PTE to be used */]]></programlisting>
-
+          </simplesect>
+          
           <simplesect>
             <title>Parameters:</title>
 
@@ -6346,6 +6764,8 @@ hcall ( const uint64 H_CLEAR_REF, /* Clears the PTE Reference bit */
           <title>H_PROTECT</title>
           <para>This hcall sets the page protect bits in the specific PTE.</para>
 
+          <simplesect>
+          <title>Syntax:</title>
           <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
                        /* H_Parameter: The PTE index was out of bounds */
                        /* H_Not_Found: The requested valid PTE Entry was not found */
@@ -6353,7 +6773,8 @@ hcall ( const uint64 H_PROTECT, /* Changes the page protection specification */
         uint64 flags,  /* Special function indications */
         int64 PTEX,    /* index of the PTE to be used */
         uint64 AVPN ); /* Abbreviated virtual page number */]]></programlisting>
-
+          </simplesect>
+          
           <simplesect>
             <title>Parameters:</title>
  
@@ -6479,7 +6900,9 @@ hcall ( const uint64 H_PROTECT, /* Changes the page protection specification */
           the specific page table entries.</para>
           <para>Prototype:</para>
 
-          <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
+          <simplesect>
+            <title>Syntax:</title>
+            <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
                        /* H_HARDWARE: Hardware Error */
                        /* H_PARAMETER: One or more parameters were in error first */
                        /*   found was flagged */
@@ -6493,187 +6916,698 @@ hcall ( const int64 H_BULK_REMOVE, /* Function Code */
         uint64 TSH4,   /* Translation Specifier High 4*/
         uint64 TSL4 ); /* Translation Specifier Low 4*/]]></programlisting>
 
-          <para>Translation specifiers:</para>
-          <para>Each is 16 bytes long made up of two 8 byte double words; a
-          translation specifier high and a translation specifier low.</para>
+            <para>Translation specifiers:</para>
+            <para>Each is 16 bytes long made up of two 8 byte double words; a
+            translation specifier high and a translation specifier low.</para>
 
-          <itemizedlist>		      
-            <listitem>
-              <para>Translation Specifier High double word:</para>
+            <itemizedlist>		      
+              <listitem>
+                <para>Translation Specifier High double word:</para>
 
-              <itemizedlist>		      
-                <listitem>
-                  <para>First byte (0) is a control/status byte:</para>
+                <itemizedlist>		      
+                  <listitem>
+                    <para>First byte (0) is a control/status byte:</para>
 
-                  <itemizedlist>		      
-                    <listitem>
-                      <para>High order two bits (0 and 1) are type code:</para>
+                    <itemizedlist>		      
+                      <listitem>
+                        <para>High order two bits (0 and 1) are type code:</para>
 
-                      <itemizedlist>		      
-                        <listitem>
-                          <para>00 Unused -- if found stop processing and return
-                          H_PARAMETER</para>
-                        </listitem>
-                        
-                        <listitem>
-                          <para>01 Request -- Processes As per H_REMOVE as modified by low order
-                          two control bits.</para>
-                        </listitem>
-                        
-                        <listitem>
-                          <para>10 Response -- written by hypervisor as a return status from
-                          processing individual &#8220;request&#8221; translation specifier</para>
-                        </listitem>
-                        
-                        <listitem>
-                          <para>11 End of String -- if found stop processing and return
-                          H_Success.</para>
-                        </listitem>
-                      </itemizedlist>		      
-                    </listitem>
-                    
-                    <listitem>
-                      <para>Next two bits (2 and 3) are response code (in response to
-                      processing an individual &#8220;request&#8221; translation specifier
-                      (type code modified to 10)):</para>
+                        <itemizedlist>		      
+                          <listitem>
+                            <para>00 Unused -- if found stop processing and return
+                            H_PARAMETER</para>
+                          </listitem>
+                          
+                          <listitem>
+                            <para>01 Request -- Processes As per H_REMOVE as modified by low order
+                            two control bits.</para>
+                          </listitem>
+                          
+                          <listitem>
+                            <para>10 Response -- written by hypervisor as a return status from
+                            processing individual &#8220;request&#8221; translation specifier</para>
+                          </listitem>
+                          
+                          <listitem>
+                            <para>11 End of String -- if found stop processing and return
+                            H_Success.</para>
+                          </listitem>
+                        </itemizedlist>		      
+                      </listitem>
+                      
+                      <listitem>
+                        <para>Next two bits (2 and 3) are response code (in response to
+                        processing an individual &#8220;request&#8221; translation specifier
+                        (type code modified to 10)):</para>
 
-                      <itemizedlist>		      
-                        <listitem>
-                          <para>00 Success -- the specified translation was removed as per
-                          H_REMOVE with the PTE's RC bits in the next two status bits.</para>
-                        </listitem>
-                        
-                        <listitem>
-                          <para>01 Not found -- the specified translation was not found as per
-                          H_REMOVE.</para>
-                        </listitem>
-                        
-                        <listitem>
-                          <para>10 H_PARM -- one or more of the parameters of the specified
-                          translation were invalid per H_REMOVE -- processing of the bulk entries
-                          stops at this point and the hypervisor returns H_PARAMETER.</para>
-                        </listitem>
-                        
-                        <listitem>
-                          <para>11 H_HW -- The hardware experienced an uncorrected error
-                          processing this translation specifier -- processing of the bulk entries
-                          stops at this point and the hypervisor returns H_HARDWARE.</para>
-                        </listitem>
-                      </itemizedlist>		      
-                    </listitem>
-                    
-                    <listitem>
-                      <para>Next two bits (4 and 5) are the Reference/Change bits from the
-                      removed PTE (These bits are only valid if bits 0-3 are 1000):</para>
-                    </listitem>
-                    
-                    <listitem>
-                      <para>Low order two bits (6 and 7) are request modification
-                      flags:</para>
+                        <itemizedlist>		      
+                          <listitem>
+                            <para>00 Success -- the specified translation was removed as per
+                            H_REMOVE with the PTE's RC bits in the next two status bits.</para>
+                          </listitem>
+                          
+                          <listitem>
+                            <para>01 Not found -- the specified translation was not found as per
+                            H_REMOVE.</para>
+                          </listitem>
+                          
+                          <listitem>
+                            <para>10 H_PARM -- one or more of the parameters of the specified
+                            translation were invalid per H_REMOVE -- processing of the bulk entries
+                            stops at this point and the hypervisor returns H_PARAMETER.</para>
+                          </listitem>
+                          
+                          <listitem>
+                            <para>11 H_HW -- The hardware experienced an uncorrected error
+                            processing this translation specifier -- processing of the bulk entries
+                            stops at this point and the hypervisor returns H_HARDWARE.</para>
+                          </listitem>
+                        </itemizedlist>		      
+                      </listitem>
+                      
+                      <listitem>
+                        <para>Next two bits (4 and 5) are the Reference/Change bits from the
+                        removed PTE (These bits are only valid if bits 0-3 are 1000):</para>
+                      </listitem>
+                      
+                      <listitem>
+                        <para>Low order two bits (6 and 7) are request modification
+                        flags:</para>
 
-                      <itemizedlist>		      
-                        <listitem>
-                          <para>00 absolute -- remove the specified PTEX entry
-                          unconditionally</para>
-                        </listitem>
-                        
-                        <listitem>
-                          <para>01 andcond -- remove the specified PTEX entry as with the andcond
-                          flag of H_REMOVE</para>
-                        </listitem>
-                        
-                        <listitem>
-                          <para>10 AVPN -- remove the specified PTEX entry as with the AVPN flag
-                          of H_REMOVE</para>
-                        </listitem>
-                        
-                        <listitem>
-                          <para>11 not used -- if found stop processing and return
-                          H_PARAMETER.</para>
-                        </listitem>
-                      </itemizedlist>		      
-                    </listitem>
-                  </itemizedlist>		      
-                </listitem>
-                
-                <listitem>
-                  <para>Bytes 1 through 7 are the PTEX (PFT byte offset divided by
-                  16)</para>
-                </listitem>
-              </itemizedlist>		      
-            </listitem>
-            
-            <listitem>
-              <para>Translation Specifier Low double word:</para>
+                        <itemizedlist>		      
+                          <listitem>
+                            <para>00 absolute -- remove the specified PTEX entry
+                            unconditionally</para>
+                          </listitem>
+                          
+                          <listitem>
+                            <para>01 andcond -- remove the specified PTEX entry as with the andcond
+                            flag of H_REMOVE</para>
+                          </listitem>
+                          
+                          <listitem>
+                            <para>10 AVPN -- remove the specified PTEX entry as with the AVPN flag
+                            of H_REMOVE</para>
+                          </listitem>
+                          
+                          <listitem>
+                            <para>11 not used -- if found stop processing and return
+                            H_PARAMETER.</para>
+                          </listitem>
+                        </itemizedlist>		      
+                      </listitem>
+                    </itemizedlist>		      
+                  </listitem>
+                  
+                  <listitem>
+                    <para>Bytes 1 through 7 are the PTEX (PFT byte offset divided by
+                    16)</para>
+                  </listitem>
+                </itemizedlist>		      
+              </listitem>
+              
+              <listitem>
+                <para>Translation Specifier Low double word:</para>
 
-              <itemizedlist>		      
-                <listitem>
-                  <para>Bytes 0 through 7 are the AVPN as per H_REMOVE</para>
-                </listitem>
-              </itemizedlist>		      
-            </listitem>
-          </itemizedlist>		      
+                <itemizedlist>		      
+                  <listitem>
+                    <para>Bytes 0 through 7 are the AVPN as per H_REMOVE</para>
+                  </listitem>
+                </itemizedlist>		      
+              </listitem>
+            </itemizedlist>		      
+          </simplesect>
+          
+          <simplesect>
+            <title>Semantics:</title>
 
+            <itemizedlist>		      
+              <listitem>
+                <para>For each translation specifier, while the translation specifier
+                is not &#8220;end of string&#8221;:</para>
+
+                <itemizedlist>		      
+                  <listitem>
+                    <para>Check that the PTEX accesses within the PFT else set H_PARM
+                    response status in the specific translation specifier high register and
+                    return H_Parameter</para>
+                  </listitem>
+                  
+                  <listitem>
+                    <para>If the AVPN flag is set, and the AVPN parameter bits 0-56 do not
+                    match that of the specified PTE then set response status Not found in the
+                    specific translation specifier high register, Continue.</para>
+                  </listitem>
+                  
+                  <listitem>
+                    <para>If the andcond flag is set, the AVPN parameter is bit anded with
+                    the first double word of the specified PTE (after bits 57-63 of the PTE
+                    have been masked), if the result is non-zero, then set response status
+                    Not found in the specific translation specifier high register, Continue.
+                    (Note the low order 7 bits of the AVPN parameter should be zero otherwise
+                    the likely result is a response status of Not found).</para>
+                  </listitem>
+                  
+                  <listitem>
+                    <para>The hypervisor Synchronizes the PTE specified by the PTEX.</para>
+                  </listitem>
+                  
+                  <listitem>
+                    <para>Use the architected &#8220;Deleting a Page Table Entry&#8221;
+                    sequence.</para>
+                  </listitem>
+                  
+                  <listitem>
+                    <para>Use the proper tlbie instruction for the page size within a
+                    critical section protected by the proper lock (per large page bit in the
+                    specified PTE).</para>
+                  </listitem>
+                  
+                  <listitem>
+                    <para>The synchronized value of the old PTE RC bits ends up in bits 4
+                    and 5 of the individual translation specifier high register along with
+                    success response status.</para>
+                  </listitem>
+                </itemizedlist>		      
+              </listitem>
+              
+              <listitem>
+                <para>return H_Success</para>
+              </listitem>
+            </itemizedlist>		      
+
+          </simplesect>
         </section>
-        <simplesect>
-          <title>Semantics:</title>
 
-          <itemizedlist>		      
-            <listitem>
-              <para>For each translation specifier, while the translation specifier
-              is not &#8220;end of string&#8221;:</para>
+        <section xml:id="sec_block_remove">
+          <title>H_BLOCK_REMOVE</title>
+          
+          <para>This hcall removes up to eight sequential virtual 
+          page table entries. Some platforms that support this hcall() might remove
+          fewer than 8 entries for a given actual page size / base page 
+          size combination as communicated by the “Block Invalidate
+          Characteristics” system parameter (see 
+          <xref linkend="LoPAR.RTAS" />).
+          The virtual pages are all within 
+          the same naturally aligned 8 page virtual address block and
+          have the same page and segment size encodings. The AVA parameter, 
+          if used, covers the entire block of virtual page
+          addresses. If another processor is currently accessing 
+          the page table entry, the entry is not removed. The availability of
+          is hcall() might change after partition migration, the 
+          caller should be prepared for an H_Function return code. The
+          PTEX field of the translation specifier parameters 
+          identifies the specific page table entries.</para>
 
-              <itemizedlist>		      
-                <listitem>
-                  <para>Check that the PTEX accesses within the PFT else set H_PARM
-                  response status in the specific translation specifier high register and
-                  return H_Parameter</para>
-                </listitem>
-                
-                <listitem>
-                  <para>If the AVPN flag is set, and the AVPN parameter bits 0-56 do not
-                  match that of the specified PTE then set response status Not found in the
-                  specific translation specifier high register, Continue.</para>
-                </listitem>
-                
-                <listitem>
-                  <para>If the andcond flag is set, the AVPN parameter is bit anded with
-                  the first double word of the specified PTE (after bits 57-63 of the PTE
-                  have been masked), if the result is non-zero, then set response status
-                  Not found in the specific translation specifier high register, Continue.
-                  (Note the low order 7 bits of the AVPN parameter should be zero otherwise
-                  the likely result is a response status of Not found).</para>
-                </listitem>
-                
-                <listitem>
-                  <para>The hypervisor Synchronizes the PTE specified by the PTEX.</para>
-                </listitem>
-                
-                <listitem>
-                  <para>Use the architected &#8220;Deleting a Page Table Entry&#8221;
-                  sequence.</para>
-                </listitem>
-                
-                <listitem>
-                  <para>Use the proper tlbie instruction for the page size within a
-                  critical section protected by the proper lock (per large page bit in the
-                  specified PTE).</para>
-                </listitem>
-                
-                <listitem>
-                  <para>The synchronized value of the old PTE RC bits ends up in bits 4
-                  and 5 of the individual translation specifier high register along with
-                  success response status.</para>
-                </listitem>
-              </itemizedlist>		      
-            </listitem>
+          <simplesect>
+            <title>Syntax:</title>
+            <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
+                       /* H_PARTIAL: one or more page table entries were not */
+                       /*   removed see response codes
+                       /* H_HARDWARE: Hardware Error */
+hcall ( const int64 H_BLOCK_REMOVE, /* Function Code */
+        uint64 AVA,    /* Abbreviated Virtual Address */
+        uint64 TS0,    /* Translation Specifier Zero */
+        uint64 TS1,    /* Translation Specifier One */
+        uint64 TS2,    /* Translation Specifier Two */
+        uint64 TS3,    /* Translation Specifier Three */
+        uint64 TS4,    /* Translation Specifier Four */
+        uint64 TS5,    /* Translation Specifier Five */
+        uint64 TS6,    /* Translation Specifier Size */
+        uint64 TS7 );  /* Translation Specifier Seven */]]></programlisting>
+
+            <para>The AVA parameter is the 8 byte AVPN as per H_REMOVE.</para>
             
-            <listitem>
-              <para>return H_Success</para>
-            </listitem>
-          </itemizedlist>		      
+            <para>Each Translation Specifier is 8 bytes long:</para>
+            
+            <table>
+              <title>H_BLOCK_REMOVE Translation Specifier</title>
+              <tgroup cols="64">
+                <colspec colname="c1" colwidth="9pt" align="center" />
+                <colspec colname="c2" colwidth="9pt" align="center" />
+                <colspec colname="c3" colwidth="9pt" align="center" />
+                <colspec colname="c4" colwidth="9pt" align="center" />
+                <colspec colname="c5" colwidth="9pt" align="center" />
+                <colspec colname="c6" colwidth="9pt" align="center" />
+                <colspec colname="c7" colwidth="9pt" align="center" />
+                <colspec colname="c8" colwidth="9pt" align="center" />
+                <colspec colname="c9" colwidth="9pt" align="center" />
+                <colspec colname="c10" colwidth="9pt" align="center" />
+                <colspec colname="c11" colwidth="9pt" align="center" />
+                <colspec colname="c12" colwidth="9pt" align="center" />
+                <colspec colname="c13" colwidth="9pt" align="center" />
+                <colspec colname="c14" colwidth="9pt" align="center" />
+                <colspec colname="c15" colwidth="9pt" align="center" />
+                <colspec colname="c16" colwidth="9pt" align="center" />
+                <colspec colname="c17" colwidth="9pt" align="center" />
+                <colspec colname="c18" colwidth="9pt" align="center" />
+                <colspec colname="c19" colwidth="9pt" align="center" />
+                <colspec colname="c20" colwidth="9pt" align="center" />
+                <colspec colname="c21" colwidth="9pt" align="center" />
+                <colspec colname="c22" colwidth="9pt" align="center" />
+                <colspec colname="c23" colwidth="9pt" align="center" />
+                <colspec colname="c24" colwidth="9pt" align="center" />
+                <colspec colname="c25" colwidth="9pt" align="center" />
+                <colspec colname="c26" colwidth="9pt" align="center" />
+                <colspec colname="c27" colwidth="9pt" align="center" />
+                <colspec colname="c28" colwidth="9pt" align="center" />
+                <colspec colname="c29" colwidth="9pt" align="center" />
+                <colspec colname="c30" colwidth="9pt" align="center" />
+                <colspec colname="c31" colwidth="9pt" align="center" />
+                <colspec colname="c32" colwidth="9pt" align="center" />
+                <colspec colname="c33" colwidth="9pt" align="center" />
+                <colspec colname="c34" colwidth="9pt" align="center" />
+                <colspec colname="c35" colwidth="9pt" align="center" />
+                <colspec colname="c36" colwidth="9pt" align="center" />
+                <colspec colname="c37" colwidth="9pt" align="center" />
+                <colspec colname="c38" colwidth="9pt" align="center" />
+                <colspec colname="c39" colwidth="9pt" align="center" />
+                <colspec colname="c40" colwidth="9pt" align="center" />
+                <colspec colname="c41" colwidth="9pt" align="center" />
+                <colspec colname="c42" colwidth="9pt" align="center" />
+                <colspec colname="c43" colwidth="9pt" align="center" />
+                <colspec colname="c44" colwidth="9pt" align="center" />
+                <colspec colname="c45" colwidth="9pt" align="center" />
+                <colspec colname="c46" colwidth="9pt" align="center" />
+                <colspec colname="c47" colwidth="9pt" align="center" />
+                <colspec colname="c48" colwidth="9pt" align="center" />
+                <colspec colname="c49" colwidth="9pt" align="center" />
+                <colspec colname="c50" colwidth="9pt" align="center" />
+                <colspec colname="c51" colwidth="9pt" align="center" />
+                <colspec colname="c52" colwidth="9pt" align="center" />
+                <colspec colname="c53" colwidth="9pt" align="center" />
+                <colspec colname="c54" colwidth="9pt" align="center" />
+                <colspec colname="c55" colwidth="9pt" align="center" />
+                <colspec colname="c56" colwidth="9pt" align="center" />
+                <colspec colname="c57" colwidth="9pt" align="center" />
+                <colspec colname="c58" colwidth="9pt" align="center" />
+                <colspec colname="c59" colwidth="9pt" align="center" />
+                <colspec colname="c60" colwidth="9pt" align="center" />
+                <colspec colname="c61" colwidth="9pt" align="center" />
+                <colspec colname="c62" colwidth="9pt" align="center" />
+                <colspec colname="c63" colwidth="9pt" align="center" />
+                <colspec colname="c64" colwidth="9pt" align="center" />
+                <thead>
+                  <row>
+                    <entry namest="c1" nameend="c8">
+                      <para role="font-size:6pt">Byte 0</para>
+                    </entry>
+                    <entry namest="c9" nameend="c16">
+                      <para role="font-size:6pt">Byte 1</para>
+                    </entry>
+                    <entry namest="c17" nameend="c24">
+                      <para role="font-size:6pt">Byte 2</para>
+                    </entry>
+                    <entry namest="c25" nameend="c32">
+                      <para role="font-size:6pt">Byte 3</para>
+                    </entry>
+                    <entry namest="c33" nameend="c40">
+                      <para role="font-size:6pt">Byte 4</para>
+                    </entry>
+                    <entry namest="c41" nameend="c48">
+                      <para role="font-size:6pt">Byte 5</para>
+                    </entry>
+                    <entry namest="c49" nameend="c56">
+                      <para role="font-size:6pt">Byte 6</para>
+                    </entry>
+                    <entry namest="c57" nameend="c64">
+                      <para role="font-size:6pt">Byte 7</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry><para role="font-size:6pt">0</para></entry>
+                    <entry><para role="font-size:6pt">1</para></entry>
+                    <entry><para role="font-size:6pt">2</para></entry>
+                    <entry><para role="font-size:6pt">3</para></entry>
+                    <entry><para role="font-size:6pt">4</para></entry>
+                    <entry><para role="font-size:6pt">5</para></entry>
+                    <entry><para role="font-size:6pt">6</para></entry>
+                    <entry><para role="font-size:6pt">7</para></entry>
+                    <entry><para role="font-size:6pt">0</para></entry>
+                    <entry><para role="font-size:6pt">1</para></entry>
+                    <entry><para role="font-size:6pt">2</para></entry>
+                    <entry><para role="font-size:6pt">3</para></entry>
+                    <entry><para role="font-size:6pt">4</para></entry>
+                    <entry><para role="font-size:6pt">5</para></entry>
+                    <entry><para role="font-size:6pt">6</para></entry>
+                    <entry><para role="font-size:6pt">7</para></entry>
+                    <entry><para role="font-size:6pt">0</para></entry>
+                    <entry><para role="font-size:6pt">1</para></entry>
+                    <entry><para role="font-size:6pt">2</para></entry>
+                    <entry><para role="font-size:6pt">3</para></entry>
+                    <entry><para role="font-size:6pt">4</para></entry>
+                    <entry><para role="font-size:6pt">5</para></entry>
+                    <entry><para role="font-size:6pt">6</para></entry>
+                    <entry><para role="font-size:6pt">7</para></entry>
+                    <entry><para role="font-size:6pt">0</para></entry>
+                    <entry><para role="font-size:6pt">1</para></entry>
+                    <entry><para role="font-size:6pt">2</para></entry>
+                    <entry><para role="font-size:6pt">3</para></entry>
+                    <entry><para role="font-size:6pt">4</para></entry>
+                    <entry><para role="font-size:6pt">5</para></entry>
+                    <entry><para role="font-size:6pt">6</para></entry>
+                    <entry><para role="font-size:6pt">7</para></entry>
+                    <entry><para role="font-size:6pt">0</para></entry>
+                    <entry><para role="font-size:6pt">1</para></entry>
+                    <entry><para role="font-size:6pt">2</para></entry>
+                    <entry><para role="font-size:6pt">3</para></entry>
+                    <entry><para role="font-size:6pt">4</para></entry>
+                    <entry><para role="font-size:6pt">5</para></entry>
+                    <entry><para role="font-size:6pt">6</para></entry>
+                    <entry><para role="font-size:6pt">7</para></entry>
+                    <entry><para role="font-size:6pt">0</para></entry>
+                    <entry><para role="font-size:6pt">1</para></entry>
+                    <entry><para role="font-size:6pt">2</para></entry>
+                    <entry><para role="font-size:6pt">3</para></entry>
+                    <entry><para role="font-size:6pt">4</para></entry>
+                    <entry><para role="font-size:6pt">5</para></entry>
+                    <entry><para role="font-size:6pt">6</para></entry>
+                    <entry><para role="font-size:6pt">7</para></entry>
+                    <entry><para role="font-size:6pt">0</para></entry>
+                    <entry><para role="font-size:6pt">1</para></entry>
+                    <entry><para role="font-size:6pt">2</para></entry>
+                    <entry><para role="font-size:6pt">3</para></entry>
+                    <entry><para role="font-size:6pt">4</para></entry>
+                    <entry><para role="font-size:6pt">5</para></entry>
+                    <entry><para role="font-size:6pt">6</para></entry>
+                    <entry><para role="font-size:6pt">7</para></entry>
+                    <entry><para role="font-size:6pt">0</para></entry>
+                    <entry><para role="font-size:6pt">1</para></entry>
+                    <entry><para role="font-size:6pt">2</para></entry>
+                    <entry><para role="font-size:6pt">3</para></entry>
+                    <entry><para role="font-size:6pt">4</para></entry>
+                    <entry><para role="font-size:6pt">5</para></entry>
+                    <entry><para role="font-size:6pt">6</para></entry>
+                    <entry><para role="font-size:6pt">7</para></entry>
+                  </row>
+                </thead>
+                <tbody>
+                  <row>
+                    <entry namest="c1" nameend="c8">
+                      <para role="font-size:6pt">Control</para>
+                    </entry>
+                    <entry namest="c9" nameend="c9">
+                      <para role="font-size:6pt">0</para>
+                    </entry>
+                    <entry namest="c10" nameend="c16">
+                      <para role="font-size:6pt">Reserved</para>
+                    </entry>
+                    <entry namest="c17" nameend="c64">
+                      <para role="font-size:6pt">PTEX (PFT byte offset divided by 16)</para>
+                    </entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
 
-        </simplesect>
+            <table>
+              <title>H_BLOCK_REMOVE Control Byte Format</title>
+              <tgroup cols="8">
+                <colspec colname="c1" colwidth="5*" align="center" />
+                <colspec colname="c2" colwidth="3*" align="center" />
+                <colspec colname="c3" colwidth="3*" align="center" />
+                <colspec colname="c4" colwidth="3*" align="center" />
+                <colspec colname="c5" colwidth="3*" align="center" />
+                <colspec colname="c6" colwidth="3*" align="center" />
+                <colspec colname="c7" colwidth="3*" align="center" />
+                <colspec colname="c8" colwidth="77*" align="center" />
+                <thead>
+                  <row>
+                    <entry namest="c1" nameend="c7">
+                      <para>Control</para>
+                    </entry>
+                    <entry>
+                      <para>Description</para>
+                    </entry>
+                  </row>
+                </thead>
+                <tbody>
+                  <row>
+                    <entry><para>Type</para></entry>
+                    <entry><para>&#160;</para></entry>
+                    <entry><para>&#160;</para></entry>
+                    <entry><para>&#160;</para></entry>
+                    <entry><para>&#160;</para></entry>
+                    <entry><para>&#160;</para></entry>
+                    <entry><para>&#160;</para></entry>
+                    <entry><para>&#160;</para></entry>
+                  </row>
+                  <row>
+                    <entry><para>00</para></entry>
+                    <entry namest="c2" nameend="c8"><para>Unused</para></entry>
+                  </row>
+                  <row>
+                    <entry><para>01</para></entry>
+                    <entry namest="c2" nameend="c8"><para>Request</para></entry>
+                  </row>
+                  <row>
+                    <entry morerows="6"><para>&#160;</para></entry>
+                    <entry morerows="1" namest="c2" nameend="c6"><para>&#160;</para></entry>
+                    <entry><para>0</para></entry>
+                    <entry><para>absolute -- remove the specified PTEX entry unconditionally</para></entry>
+                  </row>
+                  <row>
+                    <entry><para>1</para></entry>
+                    <entry><para>AVPN -- remove the specified PTEX entry as with the AVPN flag of H_REMOVE</para></entry>
+                  </row>
+                  <row>
+                    <entry namest="c2" nameend="c3"><para>Page State</para></entry>
+                    <entry namest="c4" nameend="c8"><para>&#160;</para></entry>
+                  </row>
+                  <row>
+                    <entry><para>0</para></entry>
+                    <entry><para>0</para></entry>
+                    <entry namest="c4" nameend="c8"><para>Inhibit page usage state change</para></entry>
+                  </row>
+                  <row>
+                    <entry><para>0</para></entry>
+                    <entry><para>1</para></entry>
+                    <entry namest="c4" nameend="c8"><para>Reserved</para></entry>
+                  </row>
+                  <row>
+                    <entry><para>1</para></entry>
+                    <entry><para>0</para></entry>
+                    <entry namest="c4" nameend="c8"><para>For CMO option set page usage state to “Unused” if Success</para></entry>
+                  </row>
+                  <row>
+                    <entry><para>1</para></entry>
+                    <entry><para>1</para></entry>
+                    <entry namest="c4" nameend="c8"><para>For CMO option set page usage state to “Loaned” if Success</para></entry>
+                  </row>
+                  <row>
+                    <entry namest="c1" nameend="c8"><para>&#160;</para></entry>
+                  </row>
+                  <row>
+                    <entry><para>10</para></entry>
+                    <entry namest="c2" nameend="c8"><para>Response</para></entry>
+                  </row>
+                  <row>
+                    <entry morerows="9"><para>&#160;</para></entry>
+                    <entry><para>0</para></entry>
+                    <entry><para>0</para></entry>
+                    <entry><para>0</para></entry>
+                    <entry namest="c5" nameend="c8"><para>Success -- the specified translation was removed as per H_REMOVE 
+                    with the PTE's RC bits in the next two status bits.</para></entry>
+                  </row>
+                  <row>
+                    <entry><para>0</para></entry>
+                    <entry><para>0</para></entry>
+                    <entry><para>1</para></entry>
+                    <entry namest="c5" nameend="c8"><para>Not found -- the specified translation was either not found a
+                    s per H_REMOVE, Invalid (V bit = 0), or entry was “bolted” (PTE bit 59 = 1)</para></entry>
+                  </row>
+                  <row>
+                    <entry><para>0</para></entry>
+                    <entry><para>1</para></entry>
+                    <entry><para>0</para></entry>
+                    <entry namest="c5" nameend="c8"><para>H_PARM Parameter is invalid</para></entry>
+                  </row>
+                  <row>
+                    <entry><para>0</para></entry>
+                    <entry><para>1</para></entry>
+                    <entry><para>1</para></entry>
+                    <entry namest="c5" nameend="c8"><para>Inconsistent Page/Segment Size (does not match the L||LP and B 
+                    fields of the block anchor Page Table Entry)</para></entry>
+                  </row>
+                  <row>
+                    <entry><para>1</para></entry>
+                    <entry><para>0</para></entry>
+                    <entry><para>0</para></entry>
+                    <entry namest="c5" nameend="c8"><para>Busy (The page table entry is being modified by another processor)</para></entry>
+                  </row>
+                  <row>
+                    <entry><para>1</para></entry>
+                    <entry><para>0</para></entry>
+                    <entry><para>1</para></entry>
+                    <entry namest="c5" nameend="c8"><para>Cross Boundary (The page table entry crosses an 8 page virtual address boundary)</para></entry>
+                  </row>
+                  <row>
+                    <entry><para>1</para></entry>
+                    <entry><para>1</para></entry>
+                    <entry><para>0</para></entry>
+                    <entry namest="c5" nameend="c8"><para>Beyond Capacity (The page table entry exceeded the number supported on this platform)</para></entry>
+                  </row>
+                  <row>
+                    <entry><para>1</para></entry>
+                    <entry><para>1</para></entry>
+                    <entry><para>1</para></entry>
+                    <entry namest="c5" nameend="c8"><para>The hardware experienced an uncorrected error processing this translation specifier -- 
+                    processing of the bulk entries stops at this point and the hypervisor returns H_HARDWARE.</para></entry>
+                  </row>
+                  <row>
+                    <entry namest="c2" nameend="c4"><para>&#160;</para></entry>
+                    <entry><para>R</para></entry>
+                    <entry namest="c6" nameend="c8"><para>Reference bit from the removed PTE (bit is only valid if bits 0-4 are 10000)</para></entry>
+                  </row>
+                  <row>
+                    <entry namest="c2" nameend="c5"><para>&#160;</para></entry>
+                    <entry><para>R</para></entry>
+                    <entry namest="c7" nameend="c8"><para>Reference bit from the removed PTE (bit is only valid if bits 0-4 are 10000)</para></entry>
+                  </row>
+                  <row>
+                    <entry namest="c1" nameend="c8"><para>&#160;</para></entry>
+                  </row>
+                  <row>
+                    <entry><para>11</para></entry>
+                    <entry namest="c2" nameend="c8"><para>End of String -- if found stop processing and return the accumulated return code.</para></entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
+          </simplesect>
+          
+          <simplesect>
+            <title>Semantics:</title>
+
+            <itemizedlist>		      
+              <listitem>
+                <para>Initialize return code to H_Success (overwritten if appropriate)</para>
+              </listitem>
+              <listitem>
+                <para>Initialize “anchored” flag to false and PTECOUNT to zero.</para>
+              </listitem>
+              <listitem>
+                <para>For each translation specifier, while the translation specifier type is not “end of string”:</para>
+                
+                <itemizedlist>
+                  <listitem>
+                    <para>If the translation specifer type is not “Request” Return H_PARAMETER.</para>
+                  </listitem>
+                  <listitem>
+                    <para>Check that the PTEX accesses within the PFT else set H_PARM response status in the specific translation specifier
+                    high register set return code to H_PARTIAL and Continue.</para>
+                  </listitem>
+                  <listitem>
+                    <para>If the lock for the associated page table entry can not be immediately obtained, then set the TSn response code to
+                    “Busy”, set return code to H_PARTIAL and Continue.</para>
+                  </listitem>
+                  <listitem>
+                    <para>If the PTEX specified entry is either invalid (PTE V bit = 0) or “bolted” (PTE bit 59 = 1) then set response status
+                    “Not found” in the specific translation specifier high register, set return code to H_PARTIAL and Continue.</para>
+                  </listitem>
+                  <listitem>
+                    <para>Check that actual page size / base page size combination of the PTEX specified entry is supported for
+                    H_BLOCK_REMOVE as communicated by the “Block Invalidate Characteristics” system parameter else set
+                    H_PARM response status in the specific translation specifier high register set return code to H_PARTIAL and
+                    Continue.</para>
+                  </listitem>
+                  <listitem>
+                    <para>If the AVPN flag is set, and the AVPN parameter bits 0-56 do not match that of the specified PTE then set response
+                    status “Not found” in the specific translation specifier high register, set return code to H_PARTIAL and
+                    Continue.</para>
+                  </listitem>
+                  <listitem>
+                    <para>If NOT Anchored:</para>
+                    
+                    <itemizedlist>
+                      <listitem>
+                        <para>then:</para>
+                    
+                        <itemizedlist>
+                          <listitem>
+                            <para>Establish the block L||LP</para>
+                          </listitem>
+                          <listitem>
+                            <para>Establish the block segment size encoding</para>
+                          </listitem>
+                          <listitem>
+                            <para>For the CMO option: if the TS Control byte Page State bits are a reserved value then set H_PARM response
+                            status in the specific translation specifier high register, set return code to H_PARTIAL and Continue; else If
+                            the block segment encoding is an MPSS segment then set the page usage state for the large page per the
+                            CMO Page State bits of the TS Control byte; else set the page usage state per the CMO Page State bits of the
+                            TS specified page per the TS Control byte.</para>
+                          </listitem>
+                          <listitem>
+                            <para>Establish the block plus high order virtual address</para>
+                          </listitem>
+                          <listitem>
+                            <para>Establish the number of TLBs that the platform can invalidate in one operation from the associated page table
+                            entry</para>
+                          </listitem>
+                          <listitem>
+                            <para>Set the “anchored” flag to true;</para>
+                          </listitem>
+                        </itemizedlist>
+                      </listitem>
+                      <listitem>
+                        <para>else:</para>
+
+                        <itemizedlist>
+                          <listitem>
+                            <para>If the associated page table entry L||LP and segment size encoding does not match the established anchored
+                            values then set the TSn response code to “Inconsistent Page/Segment Size“, set return code to H_PARTIAL
+                            and Continue.</para>
+                          </listitem>
+                          <listitem>
+                            <para>If the associated page table entry high order virtual address of the 8 page block does not match the established
+                            anchored values then set the TSn response code to “Cross Boundary“, set return code to H_PARTIAL
+                            and Continue.</para>
+                          </listitem>
+                          <listitem>
+                            <para>If PTECOUNT is greater than the number of TLBs that the platform can invalidate in one operation, then set
+                            the TSn response code to “Beyond Capacity“, set return code to H_PARTIAL and Continue.</para>
+                          </listitem>
+                          <listitem>
+                            <para>For the CMO option: if the TS Control byte Page State bits are a reserved value then set H_PARM response
+                            status in the specific translation specifier high register, set return code to H_PARTIAL and Continue; else if
+                            the block segment size encoding is not MPSS then set the page usage state per the CMO Page State bits of
+                            the TS Control byte.</para>
+                          </listitem>
+                        </itemizedlist>
+                      </listitem>
+                    </itemizedlist>
+                  </listitem>
+                  <listitem>
+                    <para>Add the PTEX to the validated list of PTEX’s to be removed</para>
+                  </listitem>
+                  <listitem>
+                    <para>Increment PTECOUNT</para>
+                  </listitem>
+                </itemizedlist>
+              </listitem>
+              <listitem>
+                <para>The hypervisor resets the valid bit in the PTEs specified by the validated list of PTEX’s to be removed.</para>
+              </listitem>
+              <listitem>
+                <para>The hypervisor issues a single instance of the PTE Synchronization sequence outlined in the <xref linkend="dbdoclet.50569387_99718" />
+                architecture Book IIIS under “Deleting a Page Table Entry” using the proper tlbie instruction for the page size within a critical
+                section protected by the proper lock (per large page bit in the specified PTE) to cover all the PTEs specified by
+                the validated list of PTEX’s to be removed.</para>
+              </listitem>
+              <listitem>
+                <para>The synchronized value of the old PTE RC bits, for the PTEs specified by the validated list of PTEX’s to be removed,
+                ends up in bits 5 and 6 of the individual translation specifier high register along with success response status.</para>
+              </listitem>
+              <listitem>
+                <para>Release acquired page table entry locks.</para>
+              </listitem>
+              <listitem>
+                <para>Return the accumulated return code and TS values.</para>
+              </listitem>
+            </itemizedlist>
+          </simplesect>
+        </section>
+
       </section>
 
       <section>
@@ -7277,7 +8211,10 @@ hcall ( const uint64 H_PUT_TCE_INDIRECT, /* Function Token */
         <section xml:id="dbdoclet.50569344_77407">
           <title>H_SET_SPRG0</title>
 
-          <programlisting><![CDATA[int64 hcall ( const uint64 H_SET_SPRG0, uint64 value );]]></programlisting>
+          <simplesect>
+            <title>Syntax:</title>
+            <programlisting><![CDATA[int64 hcall ( const uint64 H_SET_SPRG0, uint64 value );]]></programlisting>
+          </simplesect>
 
           <simplesect>
             <title>Parameters:</title>
@@ -7299,8 +8236,11 @@ hcall ( const uint64 H_PUT_TCE_INDIRECT, /* Function Token */
           <xref linkend="dbdoclet.50569344_97588" /> for newer
           implementations.</para>
 
-          <programlisting><![CDATA[int64 hcall ( const uint64 H_SET_DABR, uint64 value );]]></programlisting>
-
+          <simplesect>
+            <title>Syntax:</title>
+            <programlisting><![CDATA[int64 hcall ( const uint64 H_SET_DABR, uint64 value );]]></programlisting>
+          </simplesect>
+          
           <simplesect>
             <title>Semantics:</title>
 
@@ -7350,10 +8290,14 @@ hcall ( const uint64 H_PUT_TCE_INDIRECT, /* Function Token */
         <section xml:id="dbdoclet.50569344_36623">
           <title>H_PAGE_INIT</title>
 
-          <programlisting><![CDATA[int64 hcall ( const uint64 H_PAGE_INIT, 
+          <simplesect>
+            <title>Syntax:</title>
+
+            <programlisting><![CDATA[int64 hcall ( const uint64 H_PAGE_INIT, 
               uint64 flags, 
               addr64 destination, 
               addr64 source );]]></programlisting>
+          </simplesect>
 
           <simplesect>
             <title>Parameters:</title>
@@ -7451,12 +8395,15 @@ hcall ( const uint64 H_PUT_TCE_INDIRECT, /* Function Token */
           that it allows setting breakpoints for LPAR addresses that the hypervisor
           had to preclude using the previous facility.</para>
 
-          <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
+          <simplesect>
+            <title>Syntax:</title>
+            <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
                        /* H_Hardware: hardware experienced an unrecoverable error */
                        /* H_Parameter: invalid parameter value */
 hcall ( const uint64 H_SET_XDABR, /* Function Token */
         uint64 value,  /* Value to be placed in DABR register */
         uint64 extended ); /* Value to be place in DABRX register */]]></programlisting>
+          </simplesect>
 
           <simplesect>
             <title>Semantics:</title>
@@ -7520,7 +8467,10 @@ hcall ( const uint64 H_SET_XDABR, /* Function Token */
           <emphasis role="bold"><literal>&#8220;cpu-version&#8221;</literal></emphasis> property. 
           <xref linkend="dbdoclet.50569344_68462" /> presents the valid parameter
           ranges for the architectural level reported in the 
-          <emphasis role="bold"><literal>&#8220;cpu-version&#8221;</literal></emphasis> property.</para>
+          <emphasis role="bold"><literal>&#8220;cpu-version&#8221;</literal></emphasis> property
+          and the LoPAR architecture level as reported in the 
+          <emphasis role="bold"><literal>&#8220;/chosen&#8221;</literal></emphasis> property.</para>
+          
           <para>Setting breakpoints: A breakpoint is set for a hardware tread.
           Should the hardware thread complete an instruction who's effective
           address matches that of the set breakpoint a trace interrupt is signaled.
@@ -7549,8 +8499,16 @@ hcall ( const uint64 H_SET_XDABR, /* Function Token */
           mode setting. The desired AIL mode is encoded in the two low order mflags
           bits (all other mflags bits are 0) while both value1 and value2
           parameters are zero.</para>
+          
+          <para>The POWER ISA requires that the setting the LPCR ILE bit be the same 
+          in all partition processors when not in hypervisor mode thus all partition 
+          processors need to be operating with MSR[EE] = 0 when changing LPCR ILE so 
+          that the OS can change the contents of the interrupt vectors prior to any 
+          interrupts being taken in the new mode.</para>
 
-          <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
+          <simplesect>
+            <title>Syntax:</title>
+            <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
                        /* H_UNSUPPORTED_Flag: invalid mflags bit * /
                        /* H_P2: invalid resource encoding * /
                        /* H_P3: invalid value1 * /
@@ -7562,70 +8520,87 @@ hcall ( const uint64 H_SET_MODE, /* Set the mode of the specified processing */
         uint64 resource, /* Processing resource identifier */
         uint64 value1, /* Value(s) to set the resource */
         uint64 value2 );]]></programlisting>
+          </simplesect>
 
           <simplesect>
             <title>Semantics:</title>
-            <para>switch (resource) {</para>
-            <para>case 0: /* not used /</para>
-            <para>return H_P2;</para>
-            <para>break;</para>
-            <para>case 1: /* Completed Instruction Address Breakpoint Register
-            */</para>
-            <para>if value2 &lt;&gt; 0 the return H_P4;</para>
-            <para>if mflags &lt;&gt; 0 then return H_UNSUPPORTED_FLAG;</para>
-            <para>If low order two bits of value1 are 0b11 then return H_P3; /* not
-            hypervisor instruction address */</para>
-            <para>move value 1 into CIABR; /* note the value2 parameter is not used
-            for this resource */</para>
-            <para>break;</para>
-            <para>case2: /* Watch point 0 registers */</para>
-            <para>if mflags &lt;&gt; 0 then return H_UNSUPPORTED_FLAG;</para>
-            <para>If value2 bit 61 == 0b1 then return H_P4; /* not hypervisor
-            addresses */</para>
-            <para>move value1 into DAWR0;</para>
-            <para>move value2 into DAWRX0;</para>
-            <para>break;</para>
-            <para>case3: / * Address Translation Mode on Interrupt * /</para>
-            <para>if value1 &lt; &gt; 0 then return H_P3;</para>
-            <para>if value2 &lt; &gt; 0 then return H_P4;</para>
-            <para>switch (mflags) {</para>
-            <para>case 0: / * IR = DR = 0 * /</para>
-            <para>Set LPCR AIL field of calling partition processors to 0b00;</para>
-            <para>break;</para>
-            <para>case 1: / * reserved * /</para>
-            <para>return H_UNSUPPORTED_FLAG ( - 318);</para>
-            <para>break;</para>
-            <para>case 2: / * IR = DR = 1 interrupt vectors at E.A. 0X18000 *
-            /</para>
-            <para>Set LPCR AIL field of calling partition processors to 0b10;</para>
-            <para>break;</para>
-            <para>case 3: / * IR = DR = 1 interrupt vectors at E.A. 0XC000 0000 0000
-            4000 * /</para>
-            <para>Set LPCR AIL field of calling partition processors to 0b11;</para>
-            <para>break;</para>
-            <para>default: return H_UNSUPPORTED_FLAG (value based on most
-            convenient</para>
-            <para>unsupported bit);</para>
-            <para>break;</para>
-            <para>default:</para>
-            <para>return H_P2;</para>
-            <para>break; }</para>
+            <para><literallayout>switch (resource) {
+    case 0: /* not used /
+        return H_P2;
+        break;
+    case 1: /* Completed Instruction Address Breakpoint Register */
+        if value2 &lt;&gt; 0 the return H_P4;
+        if mflags &lt;&gt; 0 then return H_UNSUPPORTED_FLAG;
+        If low order two bits of value1 are 0b11 then return H_P3; /* not hypervisor 
+            instruction address */
+        move value 1 into CIABR; /* note the value2 parameter is not used for this resource */
+        break;
+    case2: /* Watch point 0 registers */
+        if mflags &lt;&gt; 0 then return H_UNSUPPORTED_FLAG;
+        If value2 bit 61 == 0b1 then return H_P4; /* not hypervisor addresses */
+        move value1 into DAWR0;
+        move value2 into DAWRX0;
+        break;
+    case3: / * Address Translation Mode on Interrupt * /
+        if value1 &lt;&gt; 0 then return H_P3;
+        if value2 &lt;&gt; 0 then return H_P4;
+        switch (mflags) {
+        case 0: / * IR = DR = 0 * /
+            Set LPCR AIL field of calling partition processors to 0b00;
+            break;
+        case 1: / * reserved * /
+            return H_UNSUPPORTED_FLAG ( - 318);
+            break;
+        case 2: / * IR = DR = 1 interrupt vectors at E.A. 0X18000 * /
+            Set LPCR AIL field of calling partition processors to 0b10;
+            break;
+        case 3: / * IR = DR = 1 interrupt vectors at E.A. 0XC000 0000 0000 4000 * /
+            Set LPCR AIL field of calling partition processors to 0b11;
+            break;
+        default: 
+            return H_UNSUPPORTED_FLAG (value based on most convenient unsupported bit);
+            break;
+/* Starting with PAPR Version 2.8 add the following */
+    case 4: / * Set the LPCR ILE bit. * /
+        if (value1) return H_P3;
+        if (value2) return H_P4;
+        switch (mflags) {
+        case 0:
+            Marshal all partition processors into the hypervisor
+            If any partition processors were not running MSR[EE] = 0 then
+                Release all marshaled processors and return bad_mode
+            Else
+                On each partition processor set LPCR[ILE] = 0
+            return H_Success;
+        case 1:
+            Marshal all partition processors into the hypervisor
+            If any partition processors were not running MSR[EE] = 0 then
+                Release all marshaled processors and return bad_mode
+            Else
+                On each partition processor set LPCR[ILE] = 1
+            return H_Success;
+        default: 
+            return H_UNSUPPORTED_FLAG (value based on most convenient unsupported bit);
+            break;
+    default:
+    return H_P2;
+    break; }</literallayout></para>
 
             <table frame="all" pgwide="1" xml:id="dbdoclet.50569344_68462">
               <title>H_SET_MODE Parameters per ISA Level</title>
               <?dbhtml table-width="80%" ?><?dbfo table-width="80%" ?>
               <tgroup cols="6">
                 <colspec colname="c1" colwidth="10*" align="center" />
-                <colspec colname="c2" colwidth="10*" align="center" />
+                <colspec colname="c2" colwidth="15*" align="center" />
                 <colspec colname="c3" colwidth="15*" align="center" />
                 <colspec colname="c4" colwidth="15*" align="center" />
                 <colspec colname="c5" colwidth="15*" align="center" />
-                <colspec colname="c6" colwidth="35*" align="center" />
+                <colspec colname="c6" colwidth="30*" align="center" />
                 <thead valign="middle">
                   <row>
                     <entry>
                       <para>
-                        <emphasis role="bold">ISA level</emphasis>
+                        <emphasis role="bold">PAPR level</emphasis>
                       </para>
                     </entry>
                     <entry>
@@ -7657,8 +8632,8 @@ hcall ( const uint64 H_SET_MODE, /* Set the mode of the specified processing */
                 </thead>
                 <tbody valign="middle">
                   <row>
-                    <entry morerows="7">
-                      <para>2.07</para>
+                    <entry morerows="6">
+                      <para>2.7</para>
                     </entry>
                     <entry>
                       <para>1</para>
@@ -7768,6 +8743,9 @@ hcall ( const uint64 H_SET_MODE, /* Set the mode of the specified processing */
                   </row>
                   <row>
                     <entry>
+                       <para>2.8</para>
+                    </entry>
+                    <entry>
                       <para>All Others</para>
                     </entry>
                     <entry>
@@ -7795,12 +8773,200 @@ hcall ( const uint64 H_SET_MODE, /* Set the mode of the specified processing */
                     <para>For implementations supporting POWER
                     ISA level 2.07 and beyond: the platform must implement the H_SET_MODE
                     hcall() per the syntax and semantics of section 
-                    <xref linkend="dbdoclet.50569344_97588" />.</para>
+                    <xref linkend="dbdoclet.50569344_97588" /> per the LoPAR level supported.</para>
                   </listitem>
              	</varlistentry>
             </variablelist>
 
           </simplesect>
+        </section>
+
+        <section>
+          <title>Implementation Dependent Optimizations</title>
+          
+          <para>All platforms contain implementation specific switches and values that effect the performance of the platform. The default
+          settings for switches and values are tuned during platform development to achieve the desired performance characteristics
+          across a wide range of workloads. However, the performance of specific workloads might be further
+          optimized by adjusting some of these implementation specific switches and values when those workloads are being
+          run. Other of these switches and values might have negative effects on other platform workloads, so those switches and
+          values are protected from modification lest innocent partitions become victims of one of their neighbors. LoPAR version
+          2.8 and above provide the hcall()s defined below to set a subset of the implementaion specific switches and adjust a
+          subset of the tuning values within a range that has been proven to be safe. The caller is expected to understand the
+          switch banks and resources implemented by the specific platform and the functinality of each individual switch and resource.</para>
+          
+          <para>Special consideration is required of the caller of these functions during partition migration and micro-checkpoint/
+          failover operations since the underlying implementation might change. During these operarations, the implementation
+          dependent switches and values are set to their default values for the implementation that is receiving the
+          partition. After a migration or failover event the availability of the Implementation Dependent Optimization hcall()s
+          might change, along with the resources and/or switch banks that might be adjusted, and the supported values for those
+          adjustments.</para>
+          
+          <section xml:id="sec_adjust_resource">
+            <title>H_ADJUST_RESOURCE</title>
+            
+            <para>This hcall() is used to adjust the value of a given implementation dependent resource in contiguous unit steps between
+            the minimum and maximum supported values. These steps are not necessarily uniform either in physical values set into
+            the implementation dependent resource or the resultant effect they have on workload performance.</para>
+            
+            <simplesect>
+              <title>Syntax:</title>
+              <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
+                       /* H_Hardware: Hardware Error */
+                       /* H_Parameter: Illegal Resource Value */
+                       /* H_RESERVED: Reserved Resource value specified */
+                       /* H_UNSUPPORTED: Resource value not supported on this */
+                       /*   platform */
+                       /* H_Constrained: Resource value adjusted to the */
+                       /*   maximum supported value */
+hcall ( const uint64 H_ADJUST_RESOURCE, /* Function Code */
+        uint64 Resource, /* Resource to be adjusted */
+                         /*   Defined Values: */
+                         /*     0: Not used return H_PARAMETER */
+                         /*     1: Medium Low Relative Thread Priority */
+                         /*     2: Medium High Relative Thread Priority */
+                         /*     All other values reserved.  Return H_RESERVED. */
+        uint64 Value); /* Steps to adjust Resource may be positive or negative */
+                       /* Value = 0 does not change resource but does return values */]]></programlisting>
+            </simplesect>
+            
+            <simplesect>
+              <title>Semantics:</title>
+              <itemizedlist>
+                <listitem>
+                  <para>If the value of the Resource parameter is zero then return H_PARAMETER</para>
+                </listitem>
+                <listitem>
+                  <para>If the value of the Resource parameter is greater than the maximum defined 
+                  value then return H_RESERVED</para>
+                </listitem>
+                <listitem>
+                  <para>If the value of the Resource paramter is not supported on this implementation 
+                  then return H_UNSUPPORTED</para>
+                </listitem>
+                <listitem>
+                  <para>RC = H_Success</para>
+                </listitem>
+                <listitem>
+                  <para>Current = current value of the Resource</para>
+                </listitem>
+                <listitem>
+                  <para>If Current + Value &gt; max supported value of Resource then</para>
+                  <itemizedlist>
+                    <listitem>
+                      <para>{ RC = H_Constrained ;</para>
+                    </listitem>
+                    <listitem>
+                      <para>Current = max supported value of Resource }</para>
+                    </listitem>
+                  </itemizedlist>
+                </listitem>
+                <listitem>
+                  <para>If Current + Value &lt; min supported value of Resource then</para>
+                  <itemizedlist>
+                    <listitem>
+                      <para>{ RC = H_Constrained ;</para>
+                    </listitem>
+                    <listitem>
+                      <para>Current = min supported value of Resource }</para>
+                    </listitem>
+                  </itemizedlist>
+                </listitem>
+                <listitem>
+                  <para>Set Resource to Current</para>
+                </listitem>
+                <listitem>
+                  <para>On return:</para>
+                  <itemizedlist>
+                    <listitem>
+                      <para>R3: Contains Return Code (RC)</para>
+                    </listitem>
+                    <listitem>
+                      <para>R4: Contains the Resource value (Current) (Return codes H_Success &amp; H_Constrained)</para>
+                    </listitem>
+                    <listitem>
+                      <para>R5: Contains the number of steps to minimum supported resource value</para>
+                    </listitem>
+                    <listitem>
+                      <para>R6: Contains the number of steps to maximum Suppported resource value</para>
+                    </listitem>
+                  </itemizedlist>
+                </listitem>
+              </itemizedlist>
+            </simplesect>
+          </section>
+          
+          <section xml:id="sec_set_switches">
+            <title>H_SET_SWITCHES</title>
+            
+            <para>This hcall() provides for the setting of an implementation dependent subset of the switches in an implementation dependent
+            bank of switches.</para>
+            
+            <simplesect>
+              <title>Syntax:</title>
+              <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
+                       /* H_Hardware: Hardware Error */
+                       /* H_Parameter: Illegal Bank Value */
+                       /* H_RESERVED: Reserved Bank value specified */
+                       /* H_UNSUPPORTED: Bank value not supported on this */
+                       /*   implementation */
+                       /* H_Constrained: Mask parameter specified one */
+                       /*   or more switches whose settings are not */
+                       /*   supported -- other switches are set */
+hcall ( const uint64 H_SET_SWITCHES, /* Function Code */
+        uint64 Bank,   /* The Bank of switches to be set */
+                       /*   Defined Values: */
+                       /*     0: Not used return H_PARAMETER */
+                       /*     1: Workload Optimization Register - Core (WORC) */
+                       /*     All other values reserved.  Return H_RESERVED. */
+        uint64 Mask,   /* Specifies which switches are to be set */
+                       /*   ( = 0 does not change the bank but does return values) */
+        uint64 Setting); /* The setting of those switches specified by */
+                         /*   the Mask parameter */]]></programlisting>
+            </simplesect>
+
+            <simplesect>
+              <title>Semantics:</title>
+              <itemizedlist>
+                <listitem>
+                  <para>If the value of the Bank parameter is zero then return H_PARAMETER</para>
+                </listitem>
+                <listitem>
+                  <para>If the value of the Bank parameter is greater than the maximum defined 
+                  value then return H_RESERVED</para>
+                </listitem>
+                <listitem>
+                  <para>If the value of the Bank paramter is not supported on this implementation 
+                  then return H_UNSUPPORTED</para>
+                </listitem>
+                <listitem>
+                  <para>If (Mask &amp; not (Supported-bits-in[Bank]) ) then RC = H_Constrained 
+                  else RC = H_Success</para>
+                </listitem>
+                <listitem>
+                  <para>Turn on the bits in switches[Bank] that are ones in all three of 
+                  Supported-bits-in[Bank], Mask, and Setting</para>
+                </listitem>
+                <listitem>
+                  <para>Turn off the bits in switches[Bank] that are ones in both 
+                  Supported-bits-in[Bank] and Mask but are zeros in Setting</para>
+                </listitem>
+                <listitem>
+                  <para>On return:</para>
+                  <itemizedlist>
+                    <listitem>
+                      <para>R3: Contains Return Code (RC)</para>
+                    </listitem>
+                    <listitem>
+                      <para>R4: Contains the Mask value representing all switches who's setting is supported for the bank</para>
+                    </listitem>
+                    <listitem>
+                      <para>R5: Contains the Bank value (Return codes H_Success &amp; H_Constrained)</para>
+                    </listitem>
+                  </itemizedlist>
+                </listitem>
+              </itemizedlist>
+            </simplesect>
+          </section>
         </section>
       </section>
 
@@ -7814,8 +8980,11 @@ hcall ( const uint64 H_SET_MODE, /* Set the mode of the specified processing */
         <section xml:id="dbdoclet.50569344_96762">
           <title>H_LOGICAL_CI_LOAD</title>
 
-          <programlisting><![CDATA[int64 hcall ( const uint64 H_LOGICAL_CI_LOAD, uint64 size, uint64 addr );]]></programlisting>
-
+          <simplesect>
+            <title>Syntax:</title>
+            <programlisting><![CDATA[int64 hcall ( const uint64 H_LOGICAL_CI_LOAD, uint64 size, uint64 addr );]]></programlisting>
+          </simplesect>
+          
           <simplesect>
             <title>Parameters:</title>
 
@@ -7867,10 +9036,13 @@ hcall ( const uint64 H_SET_MODE, /* Set the mode of the specified processing */
         <section xml:id="dbdoclet.50569344_70927">
           <title>H_LOGICAL_CI_STORE</title>
 
-          <programlisting><![CDATA[int64 hcall ( const uint64 H_LOGICAL_CI_STORE, 
+          <simplesect>
+            <title>Syntax:</title>
+            <programlisting><![CDATA[int64 hcall ( const uint64 H_LOGICAL_CI_STORE, 
               uint64 size, 
               uint64 addr, 
               uint64 value );]]></programlisting>
+          </simplesect>
 
           <simplesect>
             <title>Parameters:</title>
@@ -7957,11 +9129,17 @@ hcall ( const uint64 H_SET_MODE, /* Set the mode of the specified processing */
         H_HYPERVISOR_DATA hcall() need only return data in the firmware working
         storage that is not contained in the PFT or TCE tables since the contents
         of these tables are available to the OS.</para>
+        
+        <para>Starting with LoPAR Version 2.8 PAPR platforms support the 
+        H_CLEAR_HPT hcall() independent of Client Architecture support negotiation.</para>
 
         <section xml:id="dbdoclet.50569344_34502">
           <title>H_HYPERVISOR_DATA</title>
 
-          <programlisting><![CDATA[int64 hcall ( const uint64 H_HYPERVISOR_DATA, uint64 control );]]></programlisting>
+          <simplesect>
+            <title>Syntax:</title>
+            <programlisting><![CDATA[int64 hcall ( const uint64 H_HYPERVISOR_DATA, uint64 control );]]></programlisting>
+          </simplesect>
 
           <simplesect>
             <title>Parameters:</title>
@@ -8001,6 +9179,68 @@ hcall ( const uint64 H_SET_MODE, /* Set the mode of the specified processing */
             H_Parameter.</para>
           </simplesect>
         </section>
+
+        <section xml:id="sec_clear_hpt">
+          <title>H_CLEAR_HPT</title>
+          
+          <para>This hcall() clears the hash page table (HPT) for a partition in preparation for a restart. The Virtual Real
+          Mode Area and Partition Adjunct mappings are exempted. The performance class of this hcall() is
+          “Terminal”, that is, it is allowed to take as long as it needs to perform the operation in a single call,
+          however, it is also allowed to return H_CONTINUE, at which time the caller needs to again make the call
+          until it receives H_Success else the partition HPT might be left in an inconsistent state. Never the less, the
+          reason for this hcall() is to optimize the performance of this function relative to a series of H_REMOVE
+          calls, therefore, hypervisors are encouraged to perform portions of the function in parallel using as many
+          partition processor threads as is practical.</para>
+
+          <para>The hypervisor clears the partition’s HT entries (sets them to invalid) except for those entries mapping the
+          VRMA, or a Partition Adjunct, performs a TLBIA on all partition processor threads, and returns H_Success
+          on the calling thread.</para>
+
+          <para>To avoid translation exceptions, attempting to access pages whose translations are being cleared, all OS
+          processor threads should be operating MSR[IR] = MSR[DR] = MSR[PR] = 0b0. Any attempt to use one of
+          the HPT access hcall(s) (See <xref linkend="sec_pft_access" />) during the
+          clearing process might result in the an H_Busy return code, and/or the processor might be pressed into
+          service clearing the HPT.</para>
+
+          <simplesect>
+            <title>Syntax:</title>
+            <programlisting><![CDATA[int64                  /* H_Success: Expected completion return code */
+                       /* H_CONTINUE: The function has not completed, call again */
+hcall ( const uint64 H_CLEAR_HPT);]]></programlisting>
+          </simplesect>
+
+          <simplesect>
+            <title>Semantics:</title>
+
+            <itemizedlist>		      
+              <listitem>
+                <para>Disable other HPT access hcall()s</para>
+              </listitem>
+              
+              <listitem>
+                <para>For each HPT entry</para>
+                
+                <itemizedlist>		      
+                  <listitem>
+                    <para>If the entry does not map the VRMA or Partition Adjunct clear the V bit</para>
+                  </listitem>
+                </itemizedlist>
+              </listitem>
+
+              <listitem>
+                <para>For each partition processor perform a TLBIA</para>
+              </listitem>
+              
+              <listitem>
+                <para>Enable other HPT access hcall()s</para>
+              </listitem>
+              
+              <listitem>
+                <para>Return H_Success</para>
+              </listitem>
+            </itemizedlist>		      
+          </simplesect>
+        </section>
       </section>
 
       <section xml:id="dbdoclet.50569344_26787">
@@ -8017,7 +9257,10 @@ hcall ( const uint64 H_SET_MODE, /* Set the mode of the specified processing */
           but not limited to lost interrupts, and excessive phantom
           interrupts.</para>
 
-          <programlisting><![CDATA[int64 hcall ( const uint64 H_EOI, uint64 xirr );]]></programlisting>
+          <simplesect>
+            <title>Syntax:</title>
+            <programlisting><![CDATA[int64 hcall ( const uint64 H_EOI, uint64 xirr );]]></programlisting>
+          </simplesect>
 
           <simplesect>
             <title>Parameters:</title>
@@ -8068,7 +9311,10 @@ hcall ( const uint64 H_SET_MODE, /* Set the mode of the specified processing */
         <section xml:id="dbdoclet.50569344_29571">
           <title>H_CPPR</title>
 
-          <programlisting><![CDATA[int64 hcall ( const uint64 H_CPPR, uint64 cppr );]]></programlisting>
+          <simplesect>
+            <title>Syntax:</title>
+            <programlisting><![CDATA[int64 hcall ( const uint64 H_CPPR, uint64 cppr );]]></programlisting>
+          </simplesect>
 
           <simplesect>
             <title>Parameters:</title>
@@ -8107,7 +9353,10 @@ hcall ( const uint64 H_SET_MODE, /* Set the mode of the specified processing */
         <section xml:id="dbdoclet.50569344_16166">
           <title>H_IPI</title>
 
-          <programlisting><![CDATA[int64 hcall ( const uint64 H_IPI, uint64 server#, uint64 mfrr );]]></programlisting>
+          <simplesect>
+            <title>Syntax:</title>
+            <programlisting><![CDATA[int64 hcall ( const uint64 H_IPI, uint64 server#, uint64 mfrr );]]></programlisting>
+          </simplesect>
 
           <simplesect>
             <title>Parameters:</title>
@@ -8165,7 +9414,10 @@ hcall ( const uint64 H_SET_MODE, /* Set the mode of the specified processing */
         <section xml:id="dbdoclet.50569344_23590">
           <title>H_IPOLL</title>
 
-          <programlisting><![CDATA[int64 hcall ( const uint64 H_IPOLL, uint64 server# );]]></programlisting>
+          <simplesect>
+            <title>Syntax:</title>
+            <programlisting><![CDATA[int64 hcall ( const uint64 H_IPOLL, uint64 server# );]]></programlisting>
+          </simplesect>
 
           <simplesect>
             <title>Parameters:</title>
@@ -8214,7 +9466,9 @@ hcall ( const uint64 H_SET_MODE, /* Set the mode of the specified processing */
           implementations implement only H_XIRR, returning H_Function for a call to
           H_XIRR-X. POWER8 implementations also implement H_XIRR-X.</para>
 
-          <programlisting><![CDATA[int64 hcall ( const uint64 H_XIRR ); 
+          <simplesect>
+            <title>Syntax:</title>
+            <programlisting><![CDATA[int64 hcall ( const uint64 H_XIRR ); 
 
 int64                  /* H_Success: Expected Return code */
                        /* H_Hardware: The hcall() experienced a hardware fault */
@@ -8222,6 +9476,7 @@ int64                  /* H_Success: Expected Return code */
 hcall ( const uint64 H_XIRR-X,/* Accept an interrupt returning the external  */
                        /*   interrupt request register */
         uint8 cppr );]]></programlisting>
+          </simplesect>
 
           <simplesect>
             <title>Parameters:</title>
@@ -8396,7 +9651,9 @@ hcall ( const uint64 H_XIRR-X,/* Accept an interrupt returning the external  */
         <section xml:id="dbdoclet.50569344_23386">
           <title>H_MIGRATE_DMA</title>
 
-          <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
+          <simplesect>
+            <title>Syntax:</title>
+            <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
                        /* H_Parameter: a parameter is invalid, */
                        /* H_LongBusyOrder1msec, */
                        /* H_LongBusyOrder10msec, */
@@ -8417,7 +9674,7 @@ hcall ( const uint64 H_MIGRATE_DMA, /*Migrates a page mapped by one or more DMA 
         uint64 newpage, /*Logical address of new DMA target page*/
         uint64 xlates, /*List of translations to current DMA target page*/
         uint64 length ); /*Length of translation list*/]]></programlisting>
-
+          </simplesect>
 
           <simplesect>
             <title>Parameters:</title>
@@ -8790,7 +10047,9 @@ hcall ( const uint64 H_MIGRATE_DMA, /*Migrates a page mapped by one or more DMA 
           <title>H_PERFMON</title>
           <para>To manage the Performance Monitor Function:</para>
 
-          <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
+          <simplesect>
+            <title>Syntax:</title>
+            <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
                        /* H_HARDWARE: Hardware error */
                        /* H_PARAMETER: Unsupported mode bit */
                        /* H_BUSY: Try again */
@@ -8798,6 +10057,7 @@ hcall ( const uint64 H_MIGRATE_DMA, /*Migrates a page mapped by one or more DMA 
 hcall ( const uint64 H_PERFMON, /* Function code */
         uint64 mode-set, /* Platform Modes to enable */
         uint64 mode-reset ); /* Platform Modes to reset */]]></programlisting>
+          </simplesect>
 
           <simplesect>
             <title>Parameters:</title>
@@ -10805,7 +12065,22 @@ hcall ( const uint64 H_GET_DMA_XLATES_LIMITED, /*Return I/O Bus and correspondin
                   <para>0xB1</para>
                 </entry>
                 <entry>
-                  <para>7</para>
+                  <para>1</para>
+                </entry>
+                <entry>
+                  <para>Maintain EBB registers:</para>
+                  <para>=0 architected state of the event based branch facility may be 
+                  discarded at any time,</para>
+                  <para>=1 architected state of the event based branch facility must be 
+                  maintained, all other values are reserved</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>0xB2</para>
+                </entry>
+                <entry>
+                  <para>6</para>
                 </entry>
                 <entry>
                   <para>Reserved For LoPAR Expansion</para>
@@ -11222,7 +12497,7 @@ hcall ( const uint64 H_GET_DMA_XLATES_LIMITED, /*Return I/O Bus and correspondin
                   <para>8</para>
                 </entry>
                 <entry>
-                  <para>.Reserved for Firmware Use</para>
+                  <para>Reserved for Firmware Use</para>
                 </entry>
               </row>
               <row>
@@ -11371,6 +12646,9 @@ hcall ( const uint64 H_GET_DMA_XLATES_LIMITED, /*Return I/O Bus and correspondin
                   <para>8: The virtual processor was dispatched at the faulting
                   instruction following a virtual partition memory page
                   fault.</para>
+                  <para>10: The virtual processor was dispatched at the privileged 
+                  doorbell interrupt vector location to handle a privileged 
+                  doorbell interrupt.</para>
                 </entry>
               </row>
               <row>
@@ -11954,7 +13232,9 @@ hcall ( const uint64 H_GET_DMA_XLATES_LIMITED, /*Return I/O Bus and correspondin
         compromised.</para>
         <para>The syntax of the H_REGISTER_VPA hcall() is given below.</para>
 
-        <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
+        <simplesect>
+          <title>Syntax:</title>
+          <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
                        /* H_Parameter, */
                        /* H_RESCINDED: A specified parameter refers to a rescinded */
                        /*   shared logical resource */
@@ -11983,6 +13263,7 @@ hcall ( const unit64 H_REGISTER_VPA, /* Register the specified per virtual */
                        /*         function set is supported) */
         uint64 proc-no, /* Virtual Processor Number */
         uint64 vpa );  /* Logical Address of the VPA being registered */]]></programlisting>
+        </simplesect>
 
         <simplesect>
           <title>Semantics:</title>
@@ -15845,8 +17126,13 @@ hcall ( const H_GET_MPP_X /* Returns in R4-R10 extended Memory Performance */
                   </listitem>
                   
                   <listitem>
-                    <para>R8: Reserved shall be set to zero - shall not be read by
-                    the caller</para>
+                    <para>R8: If the calling partition is authorized to see pool
+                    wide statistics (set by means that are beyond the scope of LoPAR) 
+                    then, the total number of the calling partition’s
+                    memory pool bytes currently in use backing the pool's partition 
+                    logical memory (this value represents the net usage
+                    after any and all savings from deduplication or any other future 
+                    means the hypervisor may employ) else set to 0.</para>
                   </listitem>
                   
                   <listitem>
@@ -17164,6 +18450,347 @@ hcall ( const uint64 H_VPM_PSTAT /* Returns the memory pool performance statisti
       code to indicate that there is no need to search secondary PTEGs to
       determine that a PTE search has failed.</para>
     </section>
+    
+    <section xml:id="sec_memory_table_translation_option">
+      <title>Memory Table Translation Option Exploitation</title>
+      
+      <para>Starting with platforms build upon POWER processors supporting ISA level 3.0, 
+      the platform supports the In-Memory Table Translation option. This option allows 
+      the memory management unit to perform effective to physical address translation 
+      based off of a single tree of in-memory translation tables, rooted by a single 
+      physical memory address pointer. The option also supports two level radix tree 
+      page tables as well as traditional POWER hash page tables. As initially configured, 
+      partitions that use hash page tables run with legacy Segment Lookaside Buffers 
+      (LPCR [UPRT] = FALSE). To fully exploit the In-Memory Table Translation option, 
+      the hash page table client program registers a process table from its own memory 
+      which sets (LPCR [UPRT] = TRUE). On the other hand, radix page table client programs 
+      need to register a process table before they turn on address translation.</para>
+      
+      <para>Each guest partition in the system, may register, within the tree of in-memory 
+      translation tables, its own table (process table) which controls translation of its 
+      process effective addresses to guest virtual / real. The process table is then used 
+      by nest memory management unit for nest accelerator and CAPI attached device accesses, a
+      nd optionally for processor memory management unit translations. Additionally the 
+      platform might support the client program to directly invalidate cached process 
+      table translation data (when the client program modifies the in-memory table). 
+      If the platform does not support the client program directly issuing process 
+      table cache invalidate instructions, then the client program must use the set 
+      of in-memory table cache invalidate hcall()s in sections 
+      <xref linkend="sec_clean_slb" /> and <xref linkend="sec_invalidate_pid" />.</para>
+
+      <para><emphasis role="bold">Note:</emphasis>
+      The CAS option vector processing associated with the In-Memory 
+      Table Translation option (vector 5 byte 23) carries a special semantic.</para>
+
+      <section xml:id="sec_clean_slb">
+        <title>H_CLEAN_SLB</title>
+        
+        <para>The Segment Lookaside Buffers (SLB) are a software managed 
+        coherency cache of the per process segment table. The client may 
+        directly issue instructions to clear the SLB on the issuing processor; 
+        however, clearing entries on other processors or the nest memory 
+        management unit requires hypervisor assistance. The H_CLEAN_SLB hcall() 
+        provides the client program with the means for clearing SLB
+        contents that might be stale. The platform provides through the flags parameter 
+        options as to the scope of the entries that are cleaned, these include:</para>
+        
+        <itemizedlist>
+          <listitem>
+            <para>Clean the nest MMU SLBs of all entries associated with a 
+            specified caller process (esid parameter is set to zero).</para>
+          </listitem>
+
+          <listitem>
+            <para>Clean all platform SLBs of a specific ESID for a specified caller 
+            process (flags parameter C and B fields specify SLB Class and Size respectively).</para>
+          </listitem>
+        </itemizedlist>
+
+        <simplesect>
+          <title>Syntax:</title>
+
+          <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
+                       /* H_LongBusyOrder1mSec – repeat the call with the same */
+                       /*   parameters until it returns H_Success */
+                       /* H_Parameter: Invalid flags parameter setting */
+                       /* H_P3: The rb parameter is invalid */
+                       /* H_Hardware: A hardware event prevented operation */
+hcall ( const uint64 H_CLEAN_SLB, /* Globally invalidate the specified SLB entries */
+        uint64 flags,  /* Option bit vector: */ 
+                       /*   Bit 47: C If flags[62:63] = 10 then C (Segment Class) */
+                       /*               else 0b0 */
+                       /*   Bit 55: B If flags[62:63] = 10 then Segment Size */ 
+                       /*               (0=256 M 1 = 1T) else 0b0 */
+                       /*   Bits 62-63: 00 Reserved (H_Parameter) */
+                       /*               01 PID from Nest */ 
+                       /*               10 Global ESID/PID */
+                       /*               11 Reserved (H_Parameter) */
+                       /*   All others Reserved (=0b0 else H_Parameter)*/
+        uint32 pid,    /* Process Identifier per the contents of the pid SPR */ 
+        uint64 esid);  /* If flags[62:63] = 10 then */
+                       /* ESID/C/B fields per the POWER ISA slbieg */
+                       /* instruction rb specification else zero. */]]></programlisting>
+        
+        </simplesect>
+        
+        <simplesect>
+          <title>Semantics:</title>
+          
+          <itemizedlist>
+            <listitem>
+              <para>If a reserved flags bit == TRUE return H_Parameter</para>
+            </listitem>
+
+            <listitem>
+              <para>If flags[62] == flags[63] return H_Parameter</para>
+            </listitem>
+
+            <listitem>
+              <para>If flags[63] and esid &lt;&gt; 0 return H_P3</para>
+            </listitem>
+
+            <listitem>
+              <para>Validate that the calling partition is not mounting a denial of 
+              service attack else return H_LongBusyOrder1mSec.</para>
+            </listitem>
+
+            <listitem>
+              <para>Perform the following sequence:</para>
+              <itemizedlist spacing="compact" mark="none">
+                <listitem>
+                  <para>ptesync</para>
+                </listitem>
+                <listitem>
+                  <para>If flags[62] then slbieg with RS = pid parameter || 
+                  caller’s LPID, RB= esid || C || 0b0 || B || 0b0 || 0x000000</para>
+                </listitem>
+                <listitem>
+                  <para>If flags[63] then slbiag with RS = pid parameter || caller’s LPID</para>
+                </listitem>
+                <listitem>
+                  <para>eieio</para>
+                </listitem>
+                <listitem>
+                  <para>slbsync</para>
+                </listitem>
+                <listitem>
+                  <para>ptesync</para>
+                </listitem>
+              </itemizedlist>
+            </listitem>
+
+            <listitem>
+              <para>Return H_SUCCESS.</para>
+            </listitem>
+          </itemizedlist>
+        </simplesect>
+      </section>
+      
+      <section xml:id="sec_invalidate_pid">
+        <title>H_INVALIDATE_PID</title>
+        
+        <para>The H_INVALIDATE_PID hcall() invalidates any system translate lookaside 
+        buffer entries from the caller’s specified (pid parameter) process table entry.</para>
+
+        <simplesect>
+          <title>Syntax:</title>
+        
+          <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
+                       /* H_LongBusyOrder1mSec – repeat the call with the same */
+                       /*   parameters until it returns H_Success */
+                       /* H_Parameter: Invalid flags parameter setting */
+                       /* H_Hardware: A hardware event prevented operation */
+hcall ( const uint64 H_INVALIDATE_PID, /* Invalidate the specified process table */
+                                       /*   entry */
+        uint64 flags,  /* Option bit vector [63] = TRUE for Radix else FALSE */ 
+                       /* Bit 62 = TRUE to invalidate entries for all caller pids*/
+        uint64 pid);   /* Process Identifier per the contents of the pid SPR */]]></programlisting>
+        </simplesect>
+        
+        <simplesect>
+          <title>Semantics:</title>
+          
+          <itemizedlist>
+            <listitem>
+              <para>If flags [0:61] &lt;&gt; 0 return H_Parameter</para>
+            </listitem>
+
+            <listitem>
+              <para>Validate that the calling partition is not mounting a denial of 
+              service attack else return H_LongBusyOrder1mSec.</para>
+            </listitem>
+
+            <listitem>
+              <para>RB = 0x400 /* Invalidation Selector (IS) = 01 (Invalidate matching PID.) */</para>
+            </listitem>
+
+            <listitem>
+              <para>If flags[62] then RB = RB + RB /* Invalidation Selector 
+              (IS) = 10 (Invalidate matching LPID.) */</para>
+            </listitem>
+
+            <listitem>
+              <para>Perform the following sequence:</para>
+              <itemizedlist spacing="compact" mark="none">
+                <listitem>
+                  <para>ptesync</para>
+                </listitem>
+                <listitem>
+                  <para>tlbie (RIC=2, PRS=1, R=flags[63]), RS=pid||caller’s_LPID, RB</para>
+                </listitem>
+                <listitem>
+                  <para>eieio</para>
+                </listitem>
+                <listitem>
+                  <para>tlbsync</para>
+                </listitem>
+                <listitem>
+                  <para>ptesync</para>
+                </listitem>
+              </itemizedlist>
+            </listitem>
+
+            <listitem>
+              <para>Return H_SUCCESS.</para>
+            </listitem>
+          </itemizedlist>
+        </simplesect>
+      </section>
+      
+      <section xml:id="sec_register_process_table">
+        <title>H_REGISTER_PROCESS_TABLE</title>
+        
+        <para>This hcall() is used by the client program to manage the its virtual 
+        address translation mode including registration of its process table. The 
+        calling program needs to be prepared for the change in address translation 
+        that is being requested, for instance, the calling program might choose to 
+        be running with relocation off and with all other processors either spinning 
+        with relocation off or in the stopped state.</para>
+        
+        <para>The caller might need to invoke the H_REGISTER_PROCESS_TABLE hcall() 
+        multiple times for it to return with a return code of H_Success. Upon 
+        receiving a return code of H_LongBusyOrder10mSec, the caller should attempt 
+        to invoke H_REGISTER_PROCESS_TABLE in 10mSec with the same parameter values 
+        used on the previous H_REGISTER_PROCESS_TABLE hcall(). Invoking 
+        H_REGISTER_PROCESS_TABLE with a different parameter values indicates 
+        that the caller wants to transition to the parameter values of the most 
+        recent H_REGISTER_PROCESS_TABLE call.</para>
+        
+        <para>The platform may implement a subset of the functions implied by the 
+        flags parameter definition below. This subset is reported in the value of 
+        byte 23 of the 
+        <emphasis role="bold"><literal>&#8220;ibm,architecture-vec-5&#8221;</literal></emphasis> 
+        property of the 
+        <emphasis role="bold"><literal>/chosen</literal></emphasis> node. A 
+        request for an unimplemented function results in an H_Parameter return code.</para>
+
+        <simplesect>
+          <title>Syntax:</title>
+
+          <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
+                       /* H_LongBusyOrder1mSec – repeat the call with the same */
+                       /*   parameters until it returns H_Success */
+                       /* H_Parameter: Invalid flags parameter setting */
+                       /* H_Hardware: A hardware event prevented operation */
+hcall ( const uint64 H_REGISTER_PROCESS_TABLE, /* Set translation mode */
+        uint64 flags,  /* Option bit vector */ 
+                       /* 0-58: Reserved */
+                       /* 59-60: Process Table Control */
+                       /*        0X Maintain current process table registration */
+                       /*        10 Deregister current process table */
+                       /*        11 Register a new process table */
+                       /* 61-62: Effective to Virtual Translation
+                       /*        00: HPT via SLB */
+                       /*        01: HPT via Process Table */
+                       /*        1X: Radix: */
+                       /* 63: Guest translation shoot down */
+                       /*        0 Via hcall() */
+                       /*        1 Via partition wide instructions */
+                       /* If flags 59:60 <> 0b11 then the following parameters shall */
+                       /*   be = 0 else */
+        uint64 base,   /* Base address of the process table */
+                       /* For flags 61 = 0 the VSID number of a one terabyte */ 
+                       /* segment (right justified in the register) */
+                       /* For flags 61 = 1 the 4K aligned guest real address */
+        uint64 page_size, /* For flags 61 = 0 Size of the pages within the table */
+                       /* encoded as per the L||LP device tree encoding */ 
+                       /* else = 0 */
+        uint64 table_size); /* Size of the process table in bytes */
+                       /* Encoded as the integer */
+                       /* (log2 (total table length in bytes)) – 12 */
+                       /* (table_size <= 24) */]]></programlisting>
+        
+        </simplesect>
+        
+        <simplesect>
+          <title>Semantics:</title>
+          
+          <itemizedlist>
+            <listitem>
+              <para>Validate that no reserved flags parameter bits are TRUE and that the 
+              defined bits setting is supported else RETURN H_Parameter.</para>
+            </listitem>
+
+            <listitem>
+              <para>If “flags” indicate change to process table (flags[59] is TRUE) then:</para>
+              
+              <itemizedlist>
+                <listitem>
+                  <para>If “flags” indicate deregistration (flags[58] is FALSE) then set 
+                  Partition_Table[calling-partition,word_2] to a platform dependent 
+                  benign value; else – Based upon the mode specified in “flags[61-62]”:</para>
+
+                  <itemizedlist>
+                    <listitem>
+                      <para>Validate “base” parameter else RETURN to H_P2</para>
+                    </listitem>
+
+                    <listitem>
+                      <para>Validate “page_size” parameter relative to platform 
+                      support else RETURN H_P3</para>
+                    </listitem>
+
+                    <listitem>
+                      <para>Validate (0 => “table_size” parameter &lt;=24) else RETURN H_P4</para>
+                    </listitem>
+
+                    <listitem>
+                      <para>Set Partition_Table[calling-partition,word_2] to the value 
+                      specified by the “flags[61-62]”, “base”, “page_size”, and “table_size” parameters.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para>Endif</para>
+                    </listitem>
+                  </itemizedlist>
+                </listitem>
+
+                <listitem>
+                  <para>Endif</para>
+                </listitem>
+              </itemizedlist>
+            </listitem>
+
+            <listitem>
+              <para>If “flags” indicate HPT/SLB mode (flags[61-62] is 0b00) then set 
+              LPCR[UPRT] to FALSE else set LPCR[UPRT] to TRUE</para>
+            </listitem>
+          </itemizedlist>
+        </simplesect>
+        
+        <simplesect>
+          <title>Input parameters:</title>
+          
+          <para>The “flags” parameter communicates the desired operation. The “base” 
+          parameter specifies the VSID number of a one terabyte segment (right 
+          justified in the register). The “page_size” parameter specifies the size 
+          of the pages within the table encoded as per the L||LP encoding used by the 
+          HPT hcalls that is presented in the page size info in the device tree. The 
+          “table_size” parameter specifies the total size of the process table encoded 
+          as the integer (log2 (total table length in bytes)) – 12 (table_size &lt;= 24).</para>
+        </simplesect>
+      </section>
+    </section>
   </section>
   
   <section xml:id="dbdoclet.50569344_18587">
@@ -17973,11 +19600,13 @@ hcall ( uconst64 H_BEST_ENERGY,
       <emphasis role="bold"><literal>/rtas</literal></emphasis> node contains the function set specification
       &#8220;hcall-random&#8221; and the following hcall() is supported.</para>
 
-      <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
+      <simplesect>
+        <title>Syntax:</title>
+        <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
                        /* H_Hardware The hcall() experienced a hardware fault */
                        /*   potentially preventing the function */
 hcall ( const H_RANDOM ); /* Returns a random number in R4 */]]></programlisting>
-
+      </simplesect>
     </section>
     
     <section>
@@ -18001,7 +19630,7 @@ hcall ( const H_RANDOM ); /* Returns a random number in R4 */]]></programlisting
       are being migrated by H_MIGRATE_DMA.</para>
     
       <section xml:id="dbdoclet.50569344_29950">
-        <title>H_COP_OP:</title>
+        <title>H_COP_OP</title>
         <para>The architectural intent of this hcall() is to initiate a
         co-processor operation. Co-processor operations may complete with either
         synchronous or asynchronous notification. In synchronous notification,
@@ -18013,7 +19642,9 @@ hcall ( const H_RANDOM ); /* Returns a random number in R4 */]]></programlisting
         partition migration option no asynchronous notification operation may be
         outstanding at the time the partition is suspended.</para>
 
-        <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
+        <simplesect>
+          <title>Syntax:</title>
+          <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
                        /* H_RH_PARM: Invalid resource id handle for the caller */
                        /* H_UNSUPPORTED_FLAG: Reserved flags field bit is non-zero */
                        /* H_ST_PARM: Invalid operation specification.*/
@@ -18071,6 +19702,7 @@ hcall ( const H_COP_OP,
                        /*   storage block containing the CSB & optional FC field */
                        /*   specific CPB */
       );]]></programlisting>
+        </simplesect>
 
         <simplesect>
           <title>Syntax:</title>
@@ -18357,7 +19989,8 @@ hcall ( const H_COP_OP,
                 <listitem>
                   <para>If the &#8220;outlen&#8221; parameter is non-negative verify that
                   the logical real address of (out + outlen) is a valid logical real
-                  address within the same 4K page as the &#8220;out&#8221; parameter else
+                  address within the same 4K page as the &#8220;out&#8221; parameter
+                  and for symmetric cryptography operations that outlen =&gt; inlen else
                   return H_P5.</para>
                 </listitem>
                 
@@ -18402,7 +20035,17 @@ hcall ( const H_COP_OP,
                           the first 8 bytes and the second 8 bytes is a valid logical real address
                           within the same 4K page as the first 8 bytes.</para>
                         </listitem>
+                        
+                        <listitem>
+                          <para>Accumulate the sum of the second 8 bytes of each scatter gather list entry.</para>
+                        </listitem>
                       </itemizedlist>		      
+                    </listitem>
+                    
+                    <listitem>
+                      <para>Verify that for symmetric cryptography operations the accumulated sum 
+                      of the second 8 bytes of each scatter gather list entry =>the input data length 
+                      else return H_P5.</para>
                     </listitem>
                   </itemizedlist>		      
                 </listitem>
@@ -18518,7 +20161,9 @@ hcall ( const H_COP_OP,
         <para>The architectural intent of this hcall() is to terminate a
         previously initiated co-processor operation.</para>
 
-        <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
+        <simplesect>
+          <title>Syntax:</title>
+          <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
                        /* H_RH_PARM: Invalid resource id handle for the caller */
                        /* H_Parameter: Reserved flags field bit is non-zero */
                        /* H_RESCINDED: a data/status area references a rescinded */
@@ -18534,6 +20179,7 @@ hcall ( const H_STOP_COP_OP,
                        /*   block containing the CSB & optional FC field specific */
                        /*   CPB */
       );]]></programlisting>
+        </simplesect>
 
         <simplesect>
           <title>Semantics:</title>
@@ -18572,6 +20218,1381 @@ hcall ( const H_STOP_COP_OP,
               for this operation and decrement the consumed partition memory
               entitlement for the number of entitlement granules pinned for this
               operation.</para>
+            </listitem>
+            <listitem>
+              <para>Return H_Success.</para>
+            </listitem>
+          </itemizedlist>
+        </simplesect>
+      </section>
+    </section>
+    
+    <section xml:id="sec_mui_opt">
+      <title>Memory Usage Instrumentation Option (MUI)</title>
+      
+      <para>The MUI Option enables the platform to generate statistics on 
+      page reference affinity, age, access rate, and
+      reference history pattern. Client programs can 
+      query and act upon this information in order to guide
+      decisions for improving memory utilization and placement in a system.</para>
+      
+      <para>The MUI Option consists of a number of distinct per page measures 
+      as described in <xref linkend="table_mui_measures" />.</para>
+      
+      <table xml:id="table_mui_measures">
+        <title>Memory Usage Instrumentation Measures</title>
+        <tgroup cols="3">
+          <colspec colname="c1" colwidth="15*" />
+          <colspec colname="c2" colwidth="15*" align="center" />
+          <colspec colname="c3" colwidth="70*" />
+          <thead valign="middle">
+            <row>
+              <entry align="center">
+                <para>Name</para>
+              </entry>
+
+              <entry>
+                <para>Abbreviation</para>
+              </entry>
+
+              <entry align="center">
+                <para>Description</para>
+              </entry>
+            </row>
+          </thead>
+          <tbody valign="middle">
+            <row>
+              <entry>
+                <para>Reference History Bit Array</para>
+              </entry>
+
+              <entry>
+                <para>HBA</para>
+              </entry>
+
+              <entry>
+                <para>Measures dormancy patterns – a list of bits each representing a time
+                interval, if the bit is a one the page was reference during the
+                corresponding interval.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>Page Table Entry Update Time</para>
+              </entry>
+
+              <entry>
+                <para>PUT</para>
+              </entry>
+
+              <entry>
+                <para>The timestamp of the last HBA interval during which the
+                corresponding page experienced a TLB miss during a reference.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>Access Count Array</para>
+              </entry>
+
+              <entry>
+                <para>ACA</para>
+              </entry>
+
+              <entry>
+                <para>The count of the corresponding page access used to compute page
+                access rate.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>Page Age Counter</para>
+              </entry>
+
+              <entry>
+                <para>PAC</para>
+              </entry>
+
+              <entry>
+                <para>A saturating count representing the length of time since the page
+                statistics were reset.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>Page Age Granule</para>
+              </entry>
+
+              <entry>
+                <para>PAG</para>
+              </entry>
+
+              <entry>
+                <para>The update cycle period of the Page Age Counter in seconds.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>Affinity Log Array</para>
+              </entry>
+
+              <entry>
+                <para>ALA</para>
+              </entry>
+
+              <entry>
+                <para>A sampled list of affinity domains that have accessed the page.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>Affinity Log Sample Period</para>
+              </entry>
+
+              <entry>
+                <para>ALSP</para>
+              </entry>
+
+              <entry>
+                <para>The period that each Affinity Log Array entry represents in seconds.</para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      
+      <para>Client programs monitor and manage the MUI state through the extensions to the H_ENTER 
+      (see <xref linkend="dbdoclet.50569344_61580" />), H_RETURN_PAGEINFO, H_MEMSTAT_CTRL,
+      H_RESET_MEMSTATS, and H_BULK_READ_HBA hcall()s. The data returned by the
+      H_RETURN_PAGEINFO and H_BULK_READ_HBA hcall()s generally reflect actual values. However,
+      should a logical page be faulted back into a partition when Active Memory Sharing (AMS) is in use, its
+      MUI state is cleared/set to a fixed value. MUI state is also subject to loss during events that move physical
+      memory such as: dynamic reconfiguration, partition mobility, and fail-over.</para>
+      
+      <para><xref linkend="dbdoclet.50569344_11209" /> bit for managing the MUI behavior of pages are detailed below in <xref linkend="table_mui_opt_flags_pft"/>.</para>
+      
+      <table xml:id="table_mui_opt_flags_pft">
+        <title>MUI Option Flags in Page Frame Table Access flags Detailed Description</title>
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="10*" />
+          <colspec colname="c2" colwidth="20*" />
+          <colspec colname="c3" colwidth="10*" align="center" />
+          <colspec colname="c3" colwidth="60*" />
+          <thead valign="middle">
+            <row>
+              <entry align="center">
+                <para>Bit(s)</para>
+              </entry>
+              <entry align="center">
+                <para>Name</para>
+              </entry>
+              <entry>
+                <para>Encoding</para>
+              </entry>
+              <entry align="center">
+                <para>Description</para>
+              </entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry morerows="3">
+                <para>43:44</para>
+              </entry>
+              <entry morerows="3">
+                <para>Reference History Bit Array (HBA)</para>
+              </entry>
+              <entry>
+                <para>0b00</para>
+              </entry>
+              <entry>
+                <para>Disable HBA updates</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0b01</para>
+              </entry>
+              <entry>
+                <para>Enable HBA updates, set PUT to previous time, but do
+                not change current HBA content (as in adding an alias to
+                a logical real page)</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0b10</para>
+              </entry>
+              <entry>
+                <para>Enable HBA updates, set PUT to previous time, and set
+                the HBA to the configured Initial Setting.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0b11</para>
+              </entry>
+              <entry>
+                <para>Reserved – return H_UNSUPPORTED_FLAG</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>45</para>
+              </entry>
+              <entry>
+                <para>Affinity-Clear</para>
+              </entry>
+              <entry>
+                <para>&#160;</para>
+              </entry>
+              <entry>
+                <para>Resets Affinity Log Array when entering a PTE.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>46</para>
+              </entry>
+              <entry>
+                <para>Page-Age-Clear</para>
+              </entry>
+              <entry>
+                <para>&#160;</para>
+              </entry>
+              <entry>
+                <para>Resets Page Age Counter when entering a PTE.</para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      
+      <para>The parameters to Memory Usage Instrumentation hcall()s that specify a given logical page or page range
+      take the form of an index into the partition’s logical real memory space as if it were a set of 4K pages, the
+      logical page index being the logical real address of the starting byte of the 4K page, right shifted 12 bits.</para>
+      
+      <para>It is expected that the MUI function will evolve over time, as will the syntax of the MUI hcalls(). The
+      following requirements ensure forward compatibility over this expected evolution.</para>
+      
+      <variablelist>
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_mui_opt" 
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the MUI option:</emphasis>
+              the platform must for all MUI hcall()s fill all reserved return parameter
+              registers with all zeros.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_mui_opt" 
+          xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the MUI option:</emphasis>
+              to avoid future incompatibility, the caller of MUI hcall()s must ignore
+              the contents of all reserved return parameter registers.</para>
+            </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_mui_opt" 
+          xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the MUI option:</emphasis>
+              to avoid future incompatibility, the caller of MUI hcall()s must fill all
+              reserved input parameter fields with zeros.</para>
+            </listitem>
+       	</varlistentry>
+      </variablelist>
+
+      <section xml:id="sec_memstat_ctrl">
+        <title>H_MEMSTAT_CTRL</title>
+
+        <para>This hcall() configures Memory Usage Instrumentation, and returns the current configuration. Note
+        supplying a value of all zeros returns the current configuration settings of the Memory Usage
+        Instrumentation facility.</para>
+        
+        <simplesect>
+          <title>Syntax:</title>
+          <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
+                       /* H_Not_Found if attempt to enable a feature not supported */
+                       /* H_UNSUPPORTED_FLAG if the reserved flags are set */
+hcall ( const uint64 H_MEMSTAT_CTRL, uint64 flags);]]></programlisting>
+        </simplesect>
+
+        <simplesect>
+          <title>Parameters:</title>
+          
+          <itemizedlist>
+            <listitem>
+              <para>Input:</para>
+              
+              <itemizedlist>
+                <listitem>
+                  <para>R4: flags</para>
+                </listitem>
+              </itemizedlist>
+            </listitem>
+            
+            <listitem>
+              <para>Output:</para>
+
+              <itemizedlist>
+                <listitem>
+                  <para>R3: Return code</para>
+                </listitem>
+
+                <listitem>
+                  <para>R4: Config</para>
+                </listitem>
+
+                <listitem>
+                  <para>R5::R10: Reserved</para>
+                </listitem>
+              </itemizedlist>
+            </listitem>
+          </itemizedlist>
+          
+          <table>
+            <title>Memory Usage Instrumentation Configuration encoding flags/config</title>
+            <tgroup cols="33">
+              <colspec colname="c1" colwidth="3*" align="center"/>
+              <colspec colname="c2" colwidth="3*" align="center"/>
+              <colspec colname="c3" colwidth="3*" align="center"/>
+              <colspec colname="c4" colwidth="3*" align="center"/>
+              <colspec colname="c5" colwidth="3*" align="center"/>
+              <colspec colname="c6" colwidth="3*" align="center"/>
+              <colspec colname="c7" colwidth="3*" align="center"/>
+              <colspec colname="c8" colwidth="3*" align="center"/>
+              <colspec colname="c9" colwidth="3*" align="center"/>
+              <colspec colname="c10" colwidth="3*" align="center"/>
+              <colspec colname="c11" colwidth="3*" align="center"/>
+              <colspec colname="c12" colwidth="3*" align="center"/>
+              <colspec colname="c13" colwidth="3*" align="center"/>
+              <colspec colname="c14" colwidth="3*" align="center"/>
+              <colspec colname="c15" colwidth="3*" align="center"/>
+              <colspec colname="c16" colwidth="3*" align="center"/>
+              <colspec colname="c17" colwidth="3*" align="center"/>
+              <colspec colname="c18" colwidth="3*" align="center"/>
+              <colspec colname="c19" colwidth="3*" align="center"/>
+              <colspec colname="c20" colwidth="3*" align="center"/>
+              <colspec colname="c21" colwidth="3*" align="center"/>
+              <colspec colname="c22" colwidth="3*" align="center"/>
+              <colspec colname="c23" colwidth="3*" align="center"/>
+              <colspec colname="c24" colwidth="3*" align="center"/>
+              <colspec colname="c25" colwidth="3*" align="center"/>
+              <colspec colname="c26" colwidth="3*" align="center"/>
+              <colspec colname="c27" colwidth="3*" align="center"/>
+              <colspec colname="c28" colwidth="3*" align="center"/>
+              <colspec colname="c29" colwidth="3*" align="center"/>
+              <colspec colname="c30" colwidth="3*" align="center"/>
+              <colspec colname="c31" colwidth="3*" align="center"/>
+              <colspec colname="c32" colwidth="3*" align="center"/>
+              <colspec colname="c33" colwidth="3*" align="center"/>
+              <thead>
+                <row>
+                  <entry><para>&#160;</para></entry>
+                  <entry><para>0</para></entry>
+                  <entry><para>1</para></entry>
+                  <entry><para>2</para></entry>
+                  <entry><para>3</para></entry>
+                  <entry><para>4</para></entry>
+                  <entry><para>5</para></entry>
+                  <entry><para>6</para></entry>
+                  <entry><para>7</para></entry>
+                  <entry><para>8</para></entry>
+                  <entry><para>9</para></entry>
+                  <entry><para>10</para></entry>
+                  <entry><para>11</para></entry>
+                  <entry><para>12</para></entry>
+                  <entry><para>13</para></entry>
+                  <entry><para>14</para></entry>
+                  <entry><para>15</para></entry>
+                  <entry><para>16</para></entry>
+                  <entry><para>17</para></entry>
+                  <entry><para>18</para></entry>
+                  <entry><para>19</para></entry>
+                  <entry><para>20</para></entry>
+                  <entry><para>21</para></entry>
+                  <entry><para>22</para></entry>
+                  <entry><para>23</para></entry>
+                  <entry><para>24</para></entry>
+                  <entry><para>25</para></entry>
+                  <entry><para>26</para></entry>
+                  <entry><para>27</para></entry>
+                  <entry><para>28</para></entry>
+                  <entry><para>29</para></entry>
+                  <entry><para>30</para></entry>
+                  <entry><para>31</para></entry>
+                </row>
+              </thead>
+              <tbody>
+                <row>
+                  <entry><para>0</para></entry>
+                  <entry><para>R</para></entry>
+                  <entry><para>R</para></entry>
+                  <entry><para>R</para></entry>
+                  <entry><para>R</para></entry>
+                  <entry><para>R</para></entry>
+                  <entry><para>R</para></entry>
+                  <entry><para>R</para></entry>
+                  <entry><para>R</para></entry>
+                  <entry><para>R</para></entry>
+                  <entry><para>R</para></entry>
+                  <entry><para>R</para></entry>
+                  <entry><para>R</para></entry>
+                  <entry><para>R</para></entry>
+                  <entry><para>R</para></entry>
+                  <entry><para>R</para></entry>
+                  <entry><para>R</para></entry>
+                  <entry namest="c18" nameend="c25"><para>Flags = RRRRRRRR config = PAG</para></entry>
+                  <entry namest="c26" nameend="c33"><para>Flags = RRRRRRRR config = ALSP</para></entry>
+                </row>
+                <row>
+                  <entry><para>1</para></entry>
+                  <entry><para>R</para></entry>
+                  <entry><para>R</para></entry>
+                  <entry><para>R</para></entry>
+                  <entry><para>R</para></entry>
+                  <entry><para>R</para></entry>
+                  <entry><para>R</para></entry>
+                  <entry><para>R</para></entry>
+                  <entry><para>R</para></entry>
+                  <entry><para>R</para></entry>
+                  <entry><para>R</para></entry>
+                  <entry><para>R</para></entry>
+                  <entry><para>R</para></entry>
+                  <entry namest="c14" nameend="c15"><para>ALA</para></entry>
+                  <entry namest="c16" nameend="c17"><para>ACA</para></entry>
+                  <entry namest="c18" nameend="c19"><para>HBA</para></entry>
+                  <entry><para>R</para></entry>
+                  <entry><para>R</para></entry>
+                  <entry namest="c22" nameend="c27"><para>Initial Setting</para></entry>
+                  <entry namest="c28" nameend="c33"><para>HUC</para></entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
+
+          <table>
+            <title>Encoded values for Reference History Bit Array (HBA) (flags/config)</title>
+            <tgroup cols="3">
+              <colspec colname="c1" colwidth="10*" align="center"/>
+              <colspec colname="c2" colwidth="10*" align="center"/>
+              <colspec colname="c3" colwidth="80*"/>
+              <thead>
+                <row>
+                  <entry>
+                    <para>Bit 0</para>
+                  </entry>
+                  <entry>
+                    <para>Bit 1</para>
+                  </entry>
+                  <entry align="center">
+                    <para>Comment</para>
+                  </entry>
+                </row>
+              </thead>
+              <tbody>
+                <row>
+                  <entry>
+                    <para>0</para>
+                  </entry>
+                  <entry>
+                    <para>0</para>
+                  </entry>
+                  <entry>
+                    <para>No operation<?linebreak?>Do not change the HBA configuration or update cycle time, simply return
+                    current settings.</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>0</para>
+                  </entry>
+                  <entry>
+                    <para>1</para>
+                  </entry>
+                  <entry>
+                    <para>Disable HBA updates</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>1</para>
+                  </entry>
+                  <entry>
+                    <para>0</para>
+                  </entry>
+                  <entry>
+                    <para>Enable an HBA update on the first TLB miss per HBA update cycle, and set the HBA per
+                    the configured Initial Setting. (Note: If the platform does not support this setting,
+                    H_MEMSTAT_CTRL returns H_RT_PARM, and the value of the HBA field in the
+                    returned memory instrumentation configuration “out” parameter is 0b00.)</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>1</para>
+                  </entry>
+                  <entry>
+                    <para>1</para>
+                  </entry>
+                  <entry>
+                    <para>Enable an HBA update on the first access* per HBA update cycle and force a TLB miss
+                    per HBA update cycle, and set the HBA per the configured Initial Setting. (Note: If the
+                    platform does not support this setting, H_MEMSTAT_CTRL returns H_RT_PARM, and
+                    the value of the HBA field in the returned memory instrumentation configuration “out”
+                    parameter is 0b00.)</para>
+                  </entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
+          
+          <para><emphasis role="bold">Implmentation Note:</emphasis>
+          This may be approximated by performing a TLBIA once per HBA update cycle;
+          thus forcing a TLB miss on the first subsequent page access.</para>
+          
+          <para>The Initial Setting field (flags/config): is a 6 bit field that defines the number of high order HBA bits that
+          are preloaded to a 1 when the HBA is initialized (for instance when the page is assigned a new virtual
+          address through H_ENTER). This field allows the software to bias the page statistics so that the page will
+          not be chosen as a victim before it can establish its own usage statistics.</para>
+          
+          <para>HBA Update Cycle Field (HUC) (flags/config): is a 6 bit field that defines the update cycle period in
+          microseconds multiplied by the power of two specified in the 6 bit field. The range of supported HUC
+          values is given in the <emphasis role="bold"><literal>&#8220;ibm,mui-ranges&#8221;</literal></emphasis> 
+          property. Note: If the platform does not support this setting, or
+          the supplied value, H_MEMSTAT_CTRL returns H_RT_PARM, and the value of the HUC field in the
+          returned memory instrumentation configuration “config” parameter is the reserved value 0b111111.</para>
+
+          <table>
+            <title>Encoded values for Access Count Array (ACA) (flags/config)</title>
+            <tgroup cols="3">
+              <colspec colname="c1" colwidth="10*" align="center"/>
+              <colspec colname="c2" colwidth="10*" align="center"/>
+              <colspec colname="c3" colwidth="80*"/>
+              <thead>
+                <row>
+                  <entry>
+                    <para>Bit 0</para>
+                  </entry>
+                  <entry>
+                    <para>Bit 1</para>
+                  </entry>
+                  <entry align="center">
+                    <para>Comment</para>
+                  </entry>
+                </row>
+              </thead>
+              <tbody>
+                <row>
+                  <entry>
+                    <para>0</para>
+                  </entry>
+                  <entry>
+                    <para>0</para>
+                  </entry>
+                  <entry>
+                    <para>No operation<?linebreak?>Do not change, simply return current setting of ACA configuration.</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>0</para>
+                  </entry>
+                  <entry>
+                    <para>1</para>
+                  </entry>
+                  <entry>
+                    <para>Disable ACA updates<?linebreak?>Note: This setting will prevent the partition from seeing ACA
+                    data, however, the platform may still accumulate such data for other purposes.</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>1</para>
+                  </entry>
+                  <entry>
+                    <para>0</para>
+                  </entry>
+                  <entry>
+                    <para>Enable ACA updates<?linebreak?>Note: If the platform does not support this setting, H_MEMSTAT_CTRL returns
+                    H_RT_PARM and the value of the ACA field in the returned memory instrumentation
+                    configuration “config” parameter is 0b00.</para>
+                    <para>On enable the platform is not required to initialize the counters except to preclude a covert
+                    channel as in the case of page reassignment between partitions.)</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>1</para>
+                  </entry>
+                  <entry>
+                    <para>1</para>
+                  </entry>
+                  <entry>
+                    <para>Reserved:<?linebreak?>Note: If the caller supplies this value, H_MEMSTAT_CTRL returns
+                    H_RT_PARM and the value of the ACA field in the returned memory instrumentation
+                    configuration “config” parameter is 0b11.</para>
+                  </entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
+
+          <table>
+            <title>Encoded values for Affinity Log Array (ALA) (flags/config)</title>
+            <tgroup cols="3">
+              <colspec colname="c1" colwidth="10*" align="center"/>
+              <colspec colname="c2" colwidth="10*" align="center"/>
+              <colspec colname="c3" colwidth="80*"/>
+              <thead>
+                <row>
+                  <entry>
+                    <para>Bit 0</para>
+                  </entry>
+                  <entry>
+                    <para>Bit 1</para>
+                  </entry>
+                  <entry align="center">
+                    <para>Comment</para>
+                  </entry>
+                </row>
+              </thead>
+              <tbody>
+                <row>
+                  <entry>
+                    <para>0</para>
+                  </entry>
+                  <entry>
+                    <para>0</para>
+                  </entry>
+                  <entry>
+                    <para>No operation<?linebreak?>Do not change, simply return current setting of ALA configuration</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>0</para>
+                  </entry>
+                  <entry>
+                    <para>1</para>
+                  </entry>
+                  <entry>
+                    <para>Disable ALA updates<?linebreak?>Note: This setting will prevent the partition from seeing ALA data,
+                    however, the platform may still accumulate such data for other purposes.</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>1</para>
+                  </entry>
+                  <entry>
+                    <para>0</para>
+                  </entry>
+                  <entry>
+                    <para>Enable ALA updates<?linebreak?>Note: If the platform does not support this setting,
+                    H_MEMSTAT_CTRL returns H_RT_PARM and the value of the ALA field in the
+                    returned memory instrumentation configuration “config” parameter is 0b00.</para>
+                    <para>On enable the platform is not required to initialize the counters except to preclude a covert
+                    channel as in the case of page reassignment between partitions.)</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>1</para>
+                  </entry>
+                  <entry>
+                    <para>1</para>
+                  </entry>
+                  <entry>
+                    <para>Reserved:<?linebreak?>Note: If the caller supplies this value, H_MEMSTAT_CTRL returns
+                    H_RT_PARM and the value of the ALA field in the returned memory instrumentation
+                    configuration “config” parameter is 0b11.</para>
+                  </entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
+          
+          <para>The Page Age Granule (PAG) and Affinity Log Sample Period (ALSP) fields (config only): are 8 bit fields
+          that define these periods in seconds. Note: On input these are reserved fields, any value other than all
+          zeros causes H_MEMSTAT_CTRL to return H_UNSUPPORTED_FLAG.</para>
+        </simplesect>
+
+        <simplesect>
+          <title>Semantics:</title>
+          
+          <itemizedlist>
+            <listitem>
+              <para>Returns H_UNSUPPORTED_FLAG if a “flags” parameter reserved bit is non-zero (contents of
+              R4 are undefined).</para>
+            </listitem>
+
+            <listitem>
+              <para>Returns H_RT_PARM if a defined field of the “flags” parameter is either not supported or invalid
+              along with the current memory usage instrumentation configuration settings in register R4.</para>
+            </listitem>
+
+            <listitem>
+              <para>Otherwise sets requested memory usage instrumentation configuration, returns H_Success along
+              with the current memory usage instrumentation configuration settings in register R4.</para>
+            </listitem>
+          </itemizedlist>
+        </simplesect>
+      </section>
+
+      <section xml:id="sec_reset_memstats">
+        <title>H_RESET_MEMSTATS</title>
+       
+        <para>Resets page age, affinity log, and/or PUT/HBA for up to 6 logical real pages as specified by the logical
+        page index parameters.</para>
+        
+        <simplesect>
+          <title>Syntax:</title>
+          <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
+                       /* H_Function if feature not enabled */
+                       /* H_UNSUPPORTED_FLAG if the reserved flags are set */
+                       /* H_Parameter if ptx_lpn values do not access within the PFT */
+hcall ( const uint64 H_RESET_MEMSTATS, uint64 flags, int64 lpx1, int64 lpx2, 
+        int64 lpx3, int64 lpx4, int64 lpx5, int64 lpx6);]]></programlisting>
+        </simplesect>
+
+        <simplesect>
+          <title>Parameters:</title>
+          
+          <itemizedlist>
+            <listitem>
+              <para>Input:</para>
+              <itemizedlist>
+                <listitem>
+                  <para>flags:</para>
+                  <itemizedlist>
+                    <listitem>
+                      <para>bits 0::60: Reserved</para>
+                    </listitem>
+                    <listitem>
+                      <para>bit 61: HBA (History Bit Array): Set Bit Array to configured Initial Setting.</para>
+                    </listitem>
+                    <listitem>
+                      <para>bit 62: PAC (Page Age Counter)</para>
+                    </listitem>
+                    <listitem>
+                      <para>bit 63: ALA (Affinity Log Array)</para>
+                    </listitem>
+                  </itemizedlist>
+                </listitem>
+
+                <listitem>
+                  <para>lpx1::lpx6: Logical page index(s) to be used</para>
+                </listitem>
+              </itemizedlist>
+            </listitem>
+            
+            <listitem>
+              <para>Output:</para>
+              <itemizedlist>
+                <listitem>
+                  <para>R3: Return code</para>
+                </listitem>
+                <listitem>
+                  <para>R4::R10: Reserved</para>
+                </listitem>
+              </itemizedlist>
+            </listitem>
+          </itemizedlist>
+        </simplesect>
+
+        <simplesect>
+          <title>Semantics:</title>
+          
+          <itemizedlist>
+            <listitem>
+              <para>If (Flags AND HBA) and Reference History Bit Array not enabled, returns H_Not_Available.</para>
+            </listitem>
+            <listitem>
+              <para>If (Flags AND ALA) and the Affinity Log Array not enabled, returns H_Not_Available.</para>
+            </listitem>
+            <listitem>
+              <para>If (Flags AND PAA) and reference rate array not enabled, returns H_Not_Available.</para>
+            </listitem>
+            <listitem>
+              <para>If (Flags AND ACA) and reference rate array not enabled, returns H_Not_Available.</para>
+            </listitem>
+            <listitem>
+              <para><literallayout>for each of lpx1..6
+  Exits for each if lpx is FFFF_FFFF_FFFF_FFFF.
+
+  If the lpx is not owned by the calling partition, return H_P(2..7)
+    If AMS mode and page is paged out move on as stats are reset on a page in
+  If (Flags AND ALA)
+    Reset the affinity log array for the lpx
+  If (Flags AND Page-Age)
+    Clear the page age counter for the lpx
+  If (Flags AND HBA)
+    Sets the configured Number of Ref Bits in the Reference History Bit Array for the lpx </literallayout></para>
+            </listitem>
+            <listitem>
+              <para>Return H_Success.</para>
+            </listitem>
+          </itemizedlist>
+        </simplesect>
+      </section>
+
+      <section xml:id="sec_return_pageinfo">
+        <title>H_RETURN_PAGEINFO</title>
+
+        <para>The H_RETURN_PAGEINFO hcall() returns the page usage information for a range of logical pages or a
+        list of specific logical pages. The results are returned in a 4K aligned buffer, the data for each logical page
+        occupying one 32 byte record, all other contents of the buffer are volatile and undefined.</para>
+
+        <para>The range of logical pages is restricted to a single LMB boundary (the list of specific logical pages does not
+        have his restriction). If this restriction is violated, the H_RETURN_PAGEINFO hcall() returns H_P4.</para>
+
+        <para>The RETURN of a page range might take longer than is allowable for a single call, or it might select more
+        pages than can be contained in the return buffer. Should either of these cases happen the
+        H_RETURN_PAGEINFO hcall() returns H_CONTINUE, along with the current results, and the value of
+        the lpx0 parameter for continuing the RETURN on a subsequent call from the termination point of the prior
+        call.</para>
+
+        <para>The caller may specify a filter to further qualify the pages for which data is returned. For the CMO option
+        if the logical page has been paged out by the platform, the page is filtered out of the returned data.</para>
+        
+        <simplesect>
+          <title>Syntax:</title>
+          <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
+                       /* H_Parameter: An undefined flags option specified. */
+                       /* H_P2: The buffer parameter is invalid (4K aligned in */
+                       /*   caller’s range) */
+                       /* H_P3: The lpx0 parameter is invalid */
+                       /* H_P4: The lpx1 parameter is invalid */
+                       /* H_P5: The lpx2 parameter is invalid */
+                       /* H_P6: The lpx3 parameter is invalid */
+                       /* H_P7: The lpx4 parameter is invalid */
+                       /* H_CONTINUE_RETURN: incomplete intermediate results */
+                       /*   returned */
+hcall ( const uint64 H_RETURN_PAGEINFO, 
+        uint64 flags,  /* RETURN match criteria */
+        uint64 buffer, /* RETURN results */
+        uint64 lpx0,   /* Beginning of RETURN */
+        uint64 lpx1,   /* Continuation/End of RETURN list */
+        uint64 lpx2,
+        uint64 lpx3,
+        uint64 lpx4);  /* End of RETURN list */]]></programlisting>
+        </simplesect>
+
+        <simplesect>
+          <title>Parameters:</title>
+          
+          <itemizedlist>
+            <listitem>
+              <para>Input:</para>
+              <itemizedlist>
+                <listitem>
+                  <para>flags:</para>                 
+                  <table>
+                    <title>H_MEMSTAT_CTRL Flag Layout</title>
+                    <tgroup cols="33">
+                      <colspec colname="c1" colwidth="3*" align="center"/>
+                      <colspec colname="c2" colwidth="3*" align="center"/>
+                      <colspec colname="c3" colwidth="3*" align="center"/>
+                      <colspec colname="c4" colwidth="3*" align="center"/>
+                      <colspec colname="c5" colwidth="3*" align="center"/>
+                      <colspec colname="c6" colwidth="3*" align="center"/>
+                      <colspec colname="c7" colwidth="3*" align="center"/>
+                      <colspec colname="c8" colwidth="3*" align="center"/>
+                      <colspec colname="c9" colwidth="3*" align="center"/>
+                      <colspec colname="c10" colwidth="3*" align="center"/>
+                      <colspec colname="c11" colwidth="3*" align="center"/>
+                      <colspec colname="c12" colwidth="3*" align="center"/>
+                      <colspec colname="c13" colwidth="3*" align="center"/>
+                      <colspec colname="c14" colwidth="3*" align="center"/>
+                      <colspec colname="c15" colwidth="3*" align="center"/>
+                      <colspec colname="c16" colwidth="3*" align="center"/>
+                      <colspec colname="c17" colwidth="3*" align="center"/>
+                      <colspec colname="c18" colwidth="3*" align="center"/>
+                      <colspec colname="c19" colwidth="3*" align="center"/>
+                      <colspec colname="c20" colwidth="3*" align="center"/>
+                      <colspec colname="c21" colwidth="3*" align="center"/>
+                      <colspec colname="c22" colwidth="3*" align="center"/>
+                      <colspec colname="c23" colwidth="3*" align="center"/>
+                      <colspec colname="c24" colwidth="3*" align="center"/>
+                      <colspec colname="c25" colwidth="3*" align="center"/>
+                      <colspec colname="c26" colwidth="3*" align="center"/>
+                      <colspec colname="c27" colwidth="3*" align="center"/>
+                      <colspec colname="c28" colwidth="3*" align="center"/>
+                      <colspec colname="c29" colwidth="3*" align="center"/>
+                      <colspec colname="c30" colwidth="3*" align="center"/>
+                      <colspec colname="c31" colwidth="3*" align="center"/>
+                      <colspec colname="c32" colwidth="3*" align="center"/>
+                      <colspec colname="c33" colwidth="3*" align="center"/>
+                      <thead>
+                        <row>
+                          <entry morerows="1"><para>&#160;</para></entry>
+                          <entry namest="c2" nameend="c9"><para>0</para></entry>
+                          <entry namest="c10" nameend="c17"><para>1</para></entry>
+                          <entry namest="c18" nameend="c25"><para>2</para></entry>
+                          <entry namest="c26" nameend="c33"><para>3</para></entry>
+                        </row>
+                        <row>
+                          <entry><para>0</para></entry>
+                          <entry><para>1</para></entry>
+                          <entry><para>2</para></entry>
+                          <entry><para>3</para></entry>
+                          <entry><para>4</para></entry>
+                          <entry><para>5</para></entry>
+                          <entry><para>6</para></entry>
+                          <entry><para>7</para></entry>
+                          <entry><para>0</para></entry>
+                          <entry><para>1</para></entry>
+                          <entry><para>2</para></entry>
+                          <entry><para>3</para></entry>
+                          <entry><para>4</para></entry>
+                          <entry><para>5</para></entry>
+                          <entry><para>6</para></entry>
+                          <entry><para>7</para></entry>
+                          <entry><para>0</para></entry>
+                          <entry><para>1</para></entry>
+                          <entry><para>2</para></entry>
+                          <entry><para>3</para></entry>
+                          <entry><para>4</para></entry>
+                          <entry><para>5</para></entry>
+                          <entry><para>6</para></entry>
+                          <entry><para>7</para></entry>
+                          <entry><para>0</para></entry>
+                          <entry><para>1</para></entry>
+                          <entry><para>2</para></entry>
+                          <entry><para>3</para></entry>
+                          <entry><para>4</para></entry>
+                          <entry><para>5</para></entry>
+                          <entry><para>6</para></entry>
+                          <entry><para>7</para></entry>
+                        </row>
+                      </thead>
+                      <tbody>
+                        <row>
+                          <entry><para>0</para></entry>
+                          <entry namest="c2" nameend="c3"><para>Ar</para></entry>
+                          <entry namest="c4" nameend="c33"><para>Accesses / Second</para></entry>
+                        </row>
+                        <row>
+                          <entry><para>1</para></entry>
+                          <entry namest="c2" nameend="c32"><para>RESERVED</para></entry>
+                          <entry><para>R</para></entry>
+                        </row>
+                      </tbody>
+                    </tgroup>
+                  </table>
+
+                  <table>
+                    <title>H_MEMSTAT_CTRL Flag Sub-field Layout</title>
+                    <tgroup cols="5">
+                      <colspec colname="c1" colwidth="10*" align="center"/>
+                      <colspec colname="c2" colwidth="10*" align="center"/>
+                      <colspec colname="c3" colwidth="10*" align="center"/>
+                      <colspec colname="c4" colwidth="10*" align="center"/>
+                      <colspec colname="c5" colwidth="60*"/>
+                      <thead>
+                        <row>
+                          <entry>
+                            <para>Word</para>
+                          </entry>
+                          <entry>
+                            <para>Byte</para>
+                          </entry>
+                          <entry>
+                            <para>Bit</para>
+                          </entry>
+                          <entry>
+                            <para>Name</para>
+                          </entry>
+                          <entry align="center">
+                            <para>Comment</para>
+                          </entry>
+                        </row>
+                      </thead>
+                      <tbody valign="middle">
+                        <row>
+                          <entry morerows="2">
+                            <para>0</para>
+                          </entry>
+                          <entry morerows="1">
+                            <para>0</para>
+                          </entry>
+                          <entry>
+                            <para>0-1</para>
+                          </entry>
+                          <entry>
+                            <para>Ar</para>
+                          </entry>
+                          <entry>
+                            <para>Access Rate Filter Control<?linebreak?>
+                            0b00 Do not filter based upon Access Rate (ignore flags bits 2-31)<?linebreak?>
+                            0b01 Reserved (Returns H_Parameter if this condition value is set)<?linebreak?>
+                            0b10 Select if page access per second is greater than the value in bits 2::31. Note if the
+                            specified value is greater than the MUI facilities’ maximum access rate capacity per the
+                            <emphasis role="bold"><literal>&#8220;ibm,mui-ranges&#8221;</literal></emphasis> 
+                            property this condition will not be met.<?linebreak?>
+                            0b11 Reserved (Returns H_Parameter if this condition value is set)</para>
+                          </entry>
+                        </row>
+                        <row>
+                          <entry>
+                            <para>2-7</para>
+                          </entry>
+                          <entry namest="c4" nameend="c5" morerows="1">
+                            <para>Accesses per second</para>
+                          </entry>
+                        </row>
+                        <row>
+                          <entry>
+                            <para>1-3</para>
+                          </entry>
+                          <entry>
+                            <para>All</para>
+                          </entry>
+                        </row>
+                        <row>
+                          <entry morerows="2">
+                            <para>1</para>
+                          </entry>
+                          <entry>
+                            <para>0-2</para>
+                          </entry>
+                          <entry>
+                            <para>All</para>
+                          </entry>
+                          <entry morerows="1">
+                            <para>Reserved</para>
+                          </entry>
+                          <entry morerows="1">
+                            <para>Reserved (Returns H_Parameter if this condition value is set)</para>
+                          </entry>
+                        </row>
+                        <row>
+                          <entry morerows="1">
+                            <para>3</para>
+                          </entry>
+                          <entry>
+                            <para>0-6</para>
+                          </entry>
+                        </row>
+                        <row>
+                          <entry>
+                            <para>7</para>
+                          </entry>
+                          <entry>
+                            <para>R</para>
+                          </entry>
+                          <entry>
+                            <para>0: Returns page usage data for up to 5 pages specified one each in parameters
+                            lpn0::lpn4</para>
+                            <para>1: Returns page usage data for the range from the logical page in parameter lpn0
+                            through lpn1</para>
+                          </entry>
+                        </row>
+                      </tbody>
+                    </tgroup>
+                  </table>
+                </listitem>
+                <listitem>
+                  <para>buffer: 4kB-aligned output buffer</para>
+                  <para><emphasis role="bold">Implementation Note:</emphasis>
+                  This buffer is output only and may be initialized with dcbz
+                  instructions to preclude memory error handling.</para>                 
+                </listitem>
+                <listitem>
+                  <para>lpx0: The logical page number index for the first page.</para>                 
+                </listitem>
+                <listitem>
+                  <para>lpx1: For page Range option, the last logical page number index. For the list option,
+                  and not the list terminator value (-1) continue to return page usage data for the
+                  logical page number specified, else terminate the call.</para>                 
+                </listitem>
+                <listitem>
+                  <para>lpx1::lpx4: For the list option, and not the list terminator value (-1) continue to return page
+                  usage data for the logical page number specified, else terminate the call</para>                 
+                </listitem>
+              </itemizedlist>
+            </listitem>
+            
+            <listitem>
+              <para>Output:</para>
+              <itemizedlist>
+                <listitem>
+                  <para>R3: Return Code</para>
+                </listitem>
+                <listitem>
+                  <para>R4: Number of matching entry records in destination buffer</para>
+                </listitem>
+                <listitem>
+                  <para>R5: For the range RETURN option, if the return code is H_CONTINUE this value is
+                  the value of the lpn0 parameter for a subsequent call to continue the RETURN.</para>
+                </listitem>
+                <listitem>
+                  <para>R6::R10: Reserved</para>
+                </listitem>
+              </itemizedlist>
+            </listitem>
+          </itemizedlist>
+          
+          <table>
+            <title>Buffer Record Format</title>
+            <tgroup cols="3">
+              <colspec colname="c1" colwidth="15*"/>
+              <colspec colname="c2" colwidth="15*"/>
+              <colspec colname="c3" colwidth="70*"/>
+              <thead>
+                <row>
+                  <entry align="center">
+                    <para>Field Name</para>
+                  </entry>
+                  <entry align="center">
+                    <para>Byte Offset</para>
+                  </entry>
+                  <entry align="center">
+                    <para>Description</para>
+                  </entry>
+                </row>
+              </thead>
+              <tbody>
+                <row>
+                  <entry>
+                    <para>lpx</para>
+                  </entry>
+                  <entry>
+                    <para>0::7</para>
+                  </entry>
+                  <entry>
+                    <para>The logical page number index of the selected page</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>access_rate</para>
+                  </entry>
+                  <entry>
+                    <para>8::15</para>
+                  </entry>
+                  <entry>
+                    <para>Accesses per second</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>affinity_log</para>
+                  </entry>
+                  <entry>
+                    <para>16::23</para>
+                  </entry>
+                  <entry>
+                    <para>Eight single byte integers. One integer for each of the past
+                    eight ALSP intervals. The non-zero integer value
+                    representing one of the masters that referenced the page
+                    during the period. A zero value indicating that valid data is
+                    not available for the represented period. The associativity list
+                    for the referencing master is found in the 
+                    <emphasis role="bold"><literal>&#8220;ibm,muiassociativity-mapping&#8221;</literal></emphasis>
+                    property.</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>Reserved</para>
+                  </entry>
+                  <entry>
+                    <para>24::29</para>
+                  </entry>
+                  <entry>
+                    <para>&#160;</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>flags</para>
+                  </entry>
+                  <entry>
+                    <para>30</para>
+                  </entry>
+                  <entry>
+                    <para>Bit 0 is a 1 if the page is AMS paged out (CMO option) else 0<?linebreak?>
+                    Bit 1 is a 1 if the access_rate value is valid else 0<?linebreak?>
+                    Bit 2 is a 1 if the affinity_log value is valid else 0<?linebreak?>
+                    Bit 3 is a 1 if the age value is valid else 0<?linebreak?>
+                    Bits 4::7 Reserved</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>age</para>
+                  </entry>
+                  <entry>
+                    <para>31</para>
+                  </entry>
+                  <entry>
+                    <para>Page age in units of the Page Age Granule</para>
+                  </entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
+        </simplesect>
+
+        <simplesect>
+          <title>Semantics:</title>
+          
+          <itemizedlist>
+            <listitem>
+              <para>If any reserved flags bits are set return H_Parameter.</para>
+            </listitem>
+            <listitem>
+              <para>Returns H_Function if function does not exist.</para>
+            </listitem>
+            <listitem>
+              <para>Returns H_P2 if buffer is not 4k aligned or if the logical page number is outside of the caller’s
+              range.</para>
+            </listitem>
+            <listitem>
+              <para>count = 0; /* number of entries matching in dest */</para>
+            </listitem>
+            <listitem>
+              <para><literallayout>if (Range_Search = 1) // lpn0..lpn1 range case
+  {
+  if(lpx0 is not a page owned by the calling partition) return H_P3;
+  if(lpx1 is less than lpx0 or outside of the LMB containing lpx0) return H_P4;
+  dest = buffer;
+  for(mem=lpx0; (mem&lt;=lpx1) &amp;&amp; (count &lt; 128); mem++)
+    {
+    If (hit (mem, filter)) /* returns true if the logical page mem matches the selection criteria */
+      { /* per the definition of the filter parameter above */
+      fillrecord (dest, mem) ; /* fills in a record per {cross reference to table {BRF}} */
+      count++ ;
+      Increment dest to next record (+32 bytes);
+      }
+    }
+  R4 = count ; R5 = mem;
+  If (mem > lpx1) then return H_Success else return H_CONTINUE;
+  }</literallayout></para>
+            </listitem>
+            <listitem>
+              <para><literallayout>if (Range_Search = 0) // memory buffer case
+  {
+  dest = buffer; count = 0;
+  for each of lpx0..4
+    Exits for each if the LPX is FFFF_FFFF_FFFF_FFFF.
+    if (the LPX is not a page owned by the calling partition) return H_P(3..7);
+    if (hit (the LPX, filter)) /* returns true if the logical page mem matches the selection criteria */
+      { /* per the definition of the filter parameter above */
+      fillrecord (dest, lpnx) ; /* fills in a record per {cross reference to table {BRF}} */
+      count++ ;
+      Increment dest to next record (+32 bytes);
+      }
+  R4 = count; return H_Success;
+  }</literallayout></para>
+            </listitem>
+          </itemizedlist>
+        </simplesect>
+      </section>
+
+      <section xml:id="sec_bulk_read_hba">
+        <title>H_BULK_READ_HBA</title>
+
+        <para>H_BULK_READ_HBA returns the Reference History Bit Array entry for multiple pages in one call. The
+        returned values present the reference history for up to 64 HUC intervals. Starting with the high order bit
+        representing the most recent HUC interval, the returned value contains a one in the corresponding bit
+        position if the page was accessed during that interval. Due to hardware limitations, the system might not
+        have data for a full 64 intervals; in that case low order bits are zero filled.</para>
+        
+        <simplesect>
+          <title>Syntax:</title>
+          <programlisting><![CDATA[int64                  /* H_Success: Expected Return code */
+                       /* H_Parameter: An undefined flags option specified. */
+                       /* H_P2..H_p7: Corresponding lpx1..lpx6 invalid (not owned */
+                       /*   by calling partition */
+                       /* H_Function if feature not enabled */
+hcall ( const uint64 H_BULK_READ_HBA, uint64 flags, int64 lpx1, int64 lpx2, 
+        int64 lpx3, int64 lpx4, int64 lpx5, int64 lpx6);]]></programlisting>
+        </simplesect>
+
+        <simplesect>
+          <title>Parameters:</title>
+          
+          <itemizedlist>
+            <listitem>
+              <para>Input:</para>
+              <itemizedlist>
+                <listitem>
+                  <para>flags: bits 0::63: Reserved</para>
+                </listitem>
+
+                <listitem>
+                  <para>lpx1::lpx6: The logical page number index to be used to index into appropriate position in
+                  HBA. HBA value for a given LPX is returned in the same argument register.</para>
+                </listitem>
+              </itemizedlist>
+            </listitem>
+            
+            <listitem>
+              <para>Output:</para>
+              <itemizedlist>
+                <listitem>
+                  <para>R3: Return code</para>
+                </listitem>
+
+                <listitem>
+                  <para>R4: Reserved</para>
+                </listitem>
+
+                <listitem>
+                  <para>R5: HBA corresponding to lpx1</para>
+                </listitem>
+
+                <listitem>
+                  <para>R6: HBA corresponding to lpx2</para>
+                </listitem>
+
+                <listitem>
+                  <para>R7: HBA corresponding to lpx3</para>
+                </listitem>
+
+                <listitem>
+                  <para>R8: HBA corresponding to lpx4</para>
+                </listitem>
+
+                <listitem>
+                  <para>R9: HBA corresponding to lpx5</para>
+                </listitem>
+
+                <listitem>
+                  <para>R10: HBA corresponding to lpx6</para>
+                </listitem>
+              </itemizedlist>
+            </listitem>
+          </itemizedlist>
+        </simplesect>
+
+        <simplesect>
+          <title>Semantics:</title>
+          
+          <itemizedlist>
+            <listitem>
+              <para>If Reference History is not enabled, returns H_Function.</para>
+            </listitem>
+            <listitem>
+              <para>If a reserved flags bit is set return appropriate H_UNSUPPORTED_FLAG value.</para>
+            </listitem>
+            <listitem>
+              <para><literallayout>for each of lpx1..6
+  Exits for each if the LPX is FFFF_FFFF_FFFF_FFFF.
+    If lpn1..6 not owned by the calling partition, return H_P2..7 as appropriate
+    Load HBA corresponding to the LPX into the high-order bits of R5-R10
+      (corresponding to lpx1..6), zero out remaining lower bits of the register
+      and shift the register right (zero insert) by the difference between the current
+      time and the page’s PUT timestamp.
+    // end of for each lpx1..6</literallayout></para>
             </listitem>
             <listitem>
               <para>Return H_Success.</para>

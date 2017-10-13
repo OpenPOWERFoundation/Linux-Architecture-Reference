@@ -771,7 +771,7 @@ xml:lang="en">
         <para>A logical path location label consists of the prefix 
         &#x201C;L&#x201D; followed by a decimal or hexadecimal number with no leading 
         zeros. Refer to <xref linkend="dbdoclet.50569341_26909"/> through 
-        <xref linkend="dbdoclet.50569341_35517"/> to determine when decimal and hexadecimal 
+        <xref linkend="sec_nvme_device_logical_path_location_codes"/> to determine when decimal and hexadecimal 
         values are allowed. A location code may have zero or more logical path location 
         labels. When present, the logical path location label follows the location 
         label of the resource that interfaces with the resource being located, usually 
@@ -1124,20 +1124,30 @@ xml:lang="en">
 
       <section xml:id="dbdoclet.50569341_32742">
         <title>Virtual Card Connector Location Codes</title>
-        <para>Virtual card connector location codes are formed as though there 
-        were a virtual planar with card slots. For example, a virtual IOA would have a 
-        location code of form: </para>
+        <para>Virtual card connector location codes are formed as 
+        though there were a virtual planar with card slots.
+        For example, the location code for a virtual IOA in partition 
+        5 and in virtual slot 3 would be of the form:</para>
         <itemizedlist mark="none">
           <listitem>
-            <para>U9117.150.1054321-V5-C2</para>
+            <para>U9117.001.1076DEF-V5-C4</para>
           </listitem>
         </itemizedlist>
-        <para>In the virtual card connector location code, the unit location 
-        label specifies the system location code, not the CEC enclosure location 
-        code.</para>
-        <para>It is recommended that the card connector location label have a 
-        non-zero numeric part, for human factors reasons.</para>
+        <para>The partition number 5 is specified in the V label 
+        and the virtual slot number 3 is specified in the C
+        label. Also note that the U label specifies the system 
+        type, model, and serial (the system location code),
+        not the enclosure type, model, and serial.</para>
+        
+        <para>Some operating systems may append a T label 
+        to the virtual IOA location code. For example:</para>
+        <itemizedlist mark="none">
+          <listitem>
+            <para>U9117.001.1076DEF-V5-C4-T1</para>
+          </listitem>
+        </itemizedlist>
       </section>
+      
       <section xml:id="dbdoclet.50569341_26909">
         <title>Port Location Codes</title>
         <para>Port location codes are formed by appending the port location 
@@ -1241,8 +1251,7 @@ xml:lang="en">
       </section>
 
       <section>
-        <title>SCSI Device Logical Path Location Codes -- Real and 
-        Virtual</title>
+        <title>SCSI Device Logical Path Location Codes -- Real</title>
         <para>SCSI (Small Computer System Interface) devices whose parent does 
         not support location label VPD will have location codes that are composed of 
         the location code of the controlling SCSI port followed by the SCSI Target 
@@ -1253,24 +1262,6 @@ xml:lang="en">
           <listitem>
             <para>U7043.150.1076543-P4-T3-L13-L0 <?linebreak?>
             (Decimal L values)</para>
-          </listitem>
-        </itemizedlist>
-
-        <para>For virtual SCSI, a 48-bit ID is currently used (but is not limited 
-        from moving to 64-bit) to identify the attached virtualized SCSI device. This 
-        48/64 bit ID is represented with a -L# in hexadecimal. There is no separate 
-        LUN#. Examples are:</para>
-        <itemizedlist mark="none">		      
-          <listitem>
-            <para>U7043.150.1076543-P4-T1-L830000000000<?linebreak?>
-            (Hexadecimal L value)</para>
-          </listitem>
-          <listitem>
-            <para>or</para>
-          </listitem>
-          <listitem>
-            <para>U7043.150.1076543-P4-T3-W830000000000-L0 <?linebreak?>
-            (Hexadecimal W and L values)</para>
           </listitem>
         </itemizedlist>
       </section>
@@ -1319,7 +1310,7 @@ xml:lang="en">
 
       <section>
         <title>Fibre Channel Device Logical Path Location Codes -- 
-        Real and Virtual</title>
+        Real</title>
         <para>Fibre channel devices that are not mounted/docked on a backplane 
         that supports location code VPD will have location codes composed of the 
         location of the port on the controlling IOA followed by the worldwide unique 
@@ -1330,15 +1321,6 @@ xml:lang="en">
         <itemizedlist mark="none">		      
           <listitem>
             <para>U787A.001.1012345-P1-C5-T2-W123456789ABCDEF0-L1A05000000000000</para>
-          </listitem>
-        </itemizedlist>
-
-        <para>The same disk being accessed through virtual fibre channel would 
-        appear like:</para>
-        
-        <itemizedlist mark="none">		      
-          <listitem>
-            <para>U9111.520.1012345-V2-C4-T1-W123456789ABCDEF0-L1A05000000000000</para>
           </listitem>
         </itemizedlist>
       </section>
@@ -1581,6 +1563,177 @@ xml:lang="en">
           </listitem>
         </itemizedlist>
       </section>
+    </section>
+    
+    <section xml:id="sec_resource_location_codes">
+      <title>Resource Location Codes</title>
+      
+      <para>The resource location label consists of the 
+      prefix 'R' followed by a non-zero decimal number. A
+      resource location code identifies a chip or function 
+      embedded on a FRU. There may be multiple
+      resources associated with a FRU. The numbering of the 
+      resources on a particular FRU should match
+      the left to right, top to bottom positioning of the 
+      resources on the FRU when the FRU is in a typical
+      service position.</para>
+      
+      <para>It should be noted that embedded adapters with 
+      internal ports existed prior to introduction of the
+      resource label. Use of the resource label for unique 
+      partitionable endpoint identification may or may
+      not be retrofitted to those adapters as they are 
+      carried forward to new platforms.</para>
+    </section>
+    
+    <section xml:id="sec_multiple_frus_same_physical_space">
+      <title>Multiple FRUs In The Same Physical Space</title>
+      
+      <para>A physical location code is tied to the connector 
+      that a FRU plugs into. If two different parts with
+      different part numbers can plug into the same connector, 
+      both parts will have the same location code.
+      However, if two different parts can plug into two 
+      different connectors but share the same physical
+      space when either is installed, those parts should 
+      each have a different location code. For example, if
+      two different GX adapters (such as the Bjorn IB adapter 
+      and Newcombe PCI slot riser on Jupiter-IOC)
+      connect to the same planar using the same connector, 
+      they should both be assigned the same location
+      code. But if a GX adapter or a PCI adapter can be 
+      installed on a planar, but not both at the same time
+      as they both can't fit at the same time given the 
+      placement of the connectors on the planar, both slots
+      should be assigned unique location codes.</para>
+    </section>
+    
+    <section xml:id="sec_pcie_attached_io_drawers">
+      <title>PCI-E Attached I/O Drawers</title>
+      
+      <para>A PCI-E attached I/O drawer is an I/O drawer that 
+      attaches to a GX adapter in the CEC via PCI-E
+      cables (as opposed to RIO or IB cables). There are two 
+      different types of PCI-E attached I/O drawers:
+      ones where PHB(s) on the GX adapter connect directly 
+      to I/O devices in the drawer and ones where the
+      PHB(s) on the GX adapter connect to switches (or other 
+      fan-out logic) in the I/O drawer. In the former
+      case, the partitionable endpoint (PE) is the logical 
+      PHB connection to the device. In the latter case, the
+      PEs are the slots wired to the downstream switch ports.</para>
+
+      <para>For GX cards whose PHBs connect directly to 
+      devices in the I/O drawer (such as Bluehawk), the
+      location code and DRC name of the I/O slot partitionable 
+      endpoint will be of the form Ucec-Pw-Cx-
+      Ty-Lz. Here, Ucec is the type/model/serial of the CEC 
+      that contains the GX adapter, Pw is the planar
+      that contains the GX adapter, Cx is the GX adapter, 
+      Ty is one of the ports on the adapter, and Lz is a
+      logical label representing a logical PCI-e connection 
+      to an I/O device at the other end of the PCI-e
+      cable plugged into that port (note that there may be 
+      multiple Cx labels if the GX adapter doesn't plug
+      directly into the planar in the system in question). 
+      This location code and DRC name will be generated
+      by system firmware for each PE on each GX adapter that 
+      is installed in the system and that supports
+      direct-connect drawers (i.e. drawers without a PCI-E 
+      switch in them). The location code and DRC
+      name will be generated regardless of whether or not a 
+      PCI-E cable is attached to the GX adapter.
+      It is permissible to append additional labels beyond 
+      the L label to create different location codes for
+      FRUs/devices downstream from the I/O device in the 
+      drawer that is attached to the PCI-e cable. It is
+      not required that all subsequent labels be logical labels.</para>
+
+      <para>For GX cards whose ports connect to a PCI-E switch 
+      in an I/O drawer via PCI-E cables, the location
+      code format has not yet been defined.</para>
+    </section>
+    
+    <section xml:id="sec_virtual_scsi_device_location_codes">
+      <title>Virtual SCSI (vSCSI) Device Location Codes</title>
+      
+      <para>The location code for a virtual SCSI (vSCSI) 
+      device is formed by appending an L label to the location
+      code of the parent virtual IOA. The L label contains a 
+      48 or 64 bit hexadecimal value that uniquely
+      identifies the virtualized SCSI device. A virtual 
+      SCSI device attached to a virtual IOA at
+      U9119.MME.1085B17-V4-C5-T1 would have a location code of the form:
+      U9119.MME.1085B17-V4-C5-T1-L8100000000000000
+      Note that some old pSeries firmware may represent 
+      the virtualized device identifier as
+      W8100000000000000-L0 rather than simply L8100000000000000. This approach was abandoned in
+      late 2008.</para>
+      
+      <para>See <xref linkend="dbdoclet.50569341_32742" /> for a description of the 
+      virtual IOA location code.</para>
+    </section>
+    
+    <section xml:id="sec_virtual_fibre_channel_device_location_codes">
+      <title>Virtual Fibre Channel Device Location Codes</title>
+      
+      <para>The location code for a virtual fibre channel device 
+      is formed by appending the worldwide unique port
+      identifier (W label) and LUN (L label) to the location 
+      code of the parent virtual IOA. The values of
+      the L and W labels are both in hexadecimal. A fibre 
+      channel disk attached to a virtual IOA at
+      U9119.MME.1085B17-V4-C5-T1 would have a location 
+      code of the form:</para>
+      
+      <itemizedlist mark="none">
+        <listitem>
+          <para>U9119.MME.1085B17-V2-C4-T1-W123456789ABCDEF0-L1A05000000000000</para>
+        </listitem>
+      </itemizedlist>
+      
+      <para>See <xref linkend="dbdoclet.50569341_32742" /> for a description of the 
+      virtual IOA location code.</para>
+    </section>
+    
+    <section xml:id="sec_nvme_device_logical_path_location_codes">
+      <title>NVMe Device Logical Path Location Codes</title>
+      
+      <para>Non-volatile memory (NVM) devices that are 
+      not mounted/docked on a backplane that supports
+      location code VPD will have location codes composed 
+      of the location code of the controlling IOA
+      followed by a L label. The number value of L label 
+      is a decimal value, and it is the unique NVMe
+      namespace identifier. An NVMe device controlled by 
+      an IOA at U787A.001.1012345-P1-C5 would
+      have a location code of the form:</para>
+      
+      <itemizedlist mark="none">
+        <listitem>
+          <para>U787A.001.1012345-P1-C5-L3</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+    
+    <section xml:id="sec_virtual_capi_function_location_codes">
+      <title>Virtual Coherent Accelerator (CAPI) Function Location Codes</title>
+      
+      <para>The location code for a virtual coherent accelerator 
+      (CA) function is formed by appending two S labels,
+      the first specifying the identifier of the physical 
+      function and the second specifying the identifier of the
+      logical function, both in decimal, to the location code of 
+      the physical CAPI adapter. A virtual CA
+      function associated with physical function 1 and logical 
+      function 2 on the CAPI adapter at location
+      U78CA.001.1234567-P1-C4-C1 would have location code:</para>
+      
+      <itemizedlist mark="none">
+        <listitem>
+          <para>U78CA.001.1234567-P1-C4-C1-S1-S2</para>
+        </listitem>
+      </itemizedlist>
     </section>
   </section>
 
@@ -2956,6 +3109,27 @@ xml:lang="en">
               </row>
               <row>
                 <entry>
+                  <para> ME </para>
+                </entry>
+                <entry>
+                  <para> ASCII</para>
+                </entry>
+                <entry>
+                  <para> 8</para>
+                </entry>
+                <entry>
+                  <para> --</para>
+                </entry>
+                <entry>
+                  <para>Microcode Service Entitlement Expiration Date</para>
+                  <para>This is the date a customer's system firmware service warranty period 
+                  expires.  System firmware images with MG dates that are later than a system's 
+                  ME date are not entitled to be flashed on that system.</para>
+                  <para>Format:<?linebreak?>yyyymmdd</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
                   <para> MF </para>
                 </entry>
                 <entry>
@@ -2971,6 +3145,25 @@ xml:lang="en">
                   <para> Map Format: Two hex characters identify the slot or port 
                   map format that follows. This keyword must immediately precede the SM or PM 
                   keyword.</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para> MG </para>
+                </entry>
+                <entry>
+                  <para> ASCII</para>
+                </entry>
+                <entry>
+                  <para> 8</para>
+                </entry>
+                <entry>
+                  <para> --</para>
+                </entry>
+                <entry>
+                  <para>Microcode General Availability/Release Date</para>
+                  <para>This is the date the system firmware image was released and published for customer use.</para>
+                  <para>Format:<?linebreak?>yyyymmdd</para>
                 </entry>
               </row>
               <row>

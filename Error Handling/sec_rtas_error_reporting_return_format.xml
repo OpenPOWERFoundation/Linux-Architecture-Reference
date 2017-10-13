@@ -466,8 +466,9 @@
                 later)</para>
                 <para>Dump notification event (228) (for Version 6 or
                 later)</para>
+                <para>Hot-plug-events (229) (for Version 6 or later)</para>
                 <para>&#160;</para>
-                <para>Vendor-specific events(229-255): Non-architected</para>
+                <para>Vendor-specific events(230-255): Non-architected</para>
                 <para>&#160;</para>
                 <para>Other (0): none of the above</para>
               </entry>
@@ -634,6 +635,9 @@
 						      <para>For the EPOW Type, the EPOW section must be provided.</para>
 							  </listitem>
 
+							  <listitem>
+						      <para>For the HOTPLUG Type, the Hotplug section must be provided.</para>
+							  </listitem>
 							</orderedlist>
 					      
 	    			</listitem>
@@ -1032,6 +1036,19 @@
                 severity caused by a machine check interrupt. If present, this
                 section follows the Main-B. See 
                 <xref linkend="dbdoclet.50569337_54366"/>.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>&#160;</para>
+              </entry>
+              <entry>
+                <para>???</para>
+              </entry>
+              <entry>
+                <para>Hotplug Section (ID = “HP”). Optional, present only for 
+                Hotplug event notification. If present, this section follows 
+                Main-B section. See <xref linkend="error.hotplug"/>.</para>
               </entry>
             </row>
             <row>
@@ -4050,6 +4067,217 @@
       
     </section>
 
+    <section xml:id="error.hotplug">
+      <title>Platform Event Log Format, Hotplug Section</title>
+      
+      <table frame="all" pgwide="1" xml:id="table.error.hotplug">
+        <title>Platform Error Event Log Format, Version 6, Hotplug Section</title>
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="10*" align="center" />
+          <colspec colname="c2" colwidth="10*" align="center" />
+          <colspec colname="c3" colwidth="5*" />
+          <colspec colname="c4" colwidth="75*" />
+          <thead valign="top">
+            <row>
+              <entry>
+                <para><emphasis role="bold">Offset</emphasis></para>
+              </entry>
+              <entry>
+                <para><emphasis role="bold">Length in Bytes</emphasis></para>
+              </entry>
+              <entry namest='c3' nameend='c4' align="center">
+                <para><emphasis role="bold">Description</emphasis></para>
+              </entry>
+            </row>
+          </thead>
+          <tbody valign="top">
+            <row>
+              <entry>
+                <para>0x00</para>
+              </entry>
+              <entry>
+                <para>2</para>
+              </entry>
+              <entry namest='c3' nameend='c4'>
+                <para>Section ID: A two-ASCII character field which uniquely 
+                identifies the type of section. Value = “HP”.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x02</para>
+              </entry>
+              <entry>
+                <para>2</para>
+              </entry>
+              <entry namest='c3' nameend='c4' >
+                <para>Section length: Length in bytes of the section, including 
+                the section ID.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x04</para>
+              </entry>
+              <entry>
+                <para>1</para>
+              </entry>
+              <entry namest='c3' nameend='c4'>
+                <para>Section Version</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x05</para>
+              </entry>
+              <entry>
+                <para>1</para>
+              </entry>
+              <entry namest='c3' nameend='c4'>
+                <para>Section subType</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x06</para>
+              </entry>
+              <entry>
+                <para>2</para>
+              </entry>
+              <entry namest='c3' nameend='c4'>
+                <para>Creator Component ID</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x08</para>
+              </entry>
+              <entry>
+                <para>1</para>
+              </entry>
+              <entry namest='c3' nameend='c4'>
+                <para>Hotplug Resource Type.<?linebreak?>
+                0x01 = CPU<?linebreak?>
+                0x02 = Memory<?linebreak?>
+                0x03 = SLOT<?linebreak?>
+                0x04 = PHB<?linebreak?>
+                0x05 = PCI</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x09</para>
+              </entry>
+              <entry>
+                <para>1</para>
+              </entry>
+              <entry namest='c3' nameend='c4'>
+                <para>Hotplug Action<?linebreak?>
+                0x01 = Add<?linebreak?>
+                0x02 = Remove</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x0A</para>
+              </entry>
+              <entry>
+                <para>1</para>
+              </entry>
+              <entry namest='c3' nameend='c4'>
+                <para>Hotplug Identifier Type<?linebreak?>
+                0x01 = drc name, resource is identified by drc name<?linebreak?>
+                0x02 = drc index, resource is identified by drc index<?linebreak?>
+                0x03 = drc count, number of resources to act upon<?linebreak?>
+                0x04 = drc count indexed, number of resources to act upon beginning at the specified drc index</para>
+              </entry>
+            </row>
+
+            <row>
+              <entry morerows='3'>
+                <para>0x0B</para>
+              </entry>
+              <entry morerows='3'>
+                <para>1</para>
+              </entry>
+              <entry align="center">
+                <para><emphasis role="bold">Bit</emphasis></para>
+              </entry>
+              <entry align="center">
+                <para><emphasis role="bold">Hotplug Event Capability Description</emphasis></para>
+              </entry>
+            </row>
+            <row>
+              <entry align="center">
+                <para>0</para>
+              </entry>
+              <entry>
+                <para>1 = Hotplug Token Present</para>
+              </entry>
+            </row>
+            <row>
+              <entry align="center">
+                <para>1</para>
+              </entry>
+              <entry>
+                <para>0 = Transactional Request: When using “drc count”or “drc count indexed”as the Hotplug 
+                Identifier, the OS should take steps to verify the entirety of the request can be satisfied 
+                before proceeding with the hotplug / unplug operations. If only a partial count can be 
+                satisfied, the OS should ignore the entirety of the request. If the OS cannot determine 
+                this beforehand, it should satisfy the hotplug / unplug request for as many of the 
+                requested resources as possible, and attempt to revert to the original OS / DRC state.</para>
+                <para>1 = Non-transactional Request: When using “drc count”or “drc count indexed”as the 
+                Hotplug Identifier, the OS should attempt to satisfy as much of the request as possible, 
+                even if it cannot be satisfied for all the DRCs specified.</para>
+              </entry>
+            </row>
+            <row>
+              <entry align="center">
+                <para>2:7</para>
+              </entry>
+              <entry>
+                <para>Reserved</para>
+              </entry>
+            </row>
+            
+            <row>
+              <entry>
+                <para>0x0C</para>
+              </entry>
+              <entry>
+                <para>Variable</para>
+              </entry>
+              <entry namest='c3' nameend='c4' >
+                <para>Hotplug Identifier<?linebreak?>
+                Variable length field depending on the Hotplug Identifier Type specified.
+                For drc name, this field is a null-terminated ASCII character field containing 
+                the drc name of the resource to hotplug.</para>
+                <para>For drc index, this is 4 byte field with the drc index of the resource to hotplug.</para>
+                <para>For drc count, this is a 4 byte field with the number of resources to hotplug.</para>
+                <para>For drc count indexed, this is two 4 byte fields the first being the number of resources 
+                to hotplug and the second being the drc index at which to start.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>(Section Length - 4)</para>
+              </entry>
+              <entry>
+                <para>4</para>
+              </entry>
+              <entry namest='c3' nameend='c4' >
+                <para>Hotplug Token<?linebreak?>
+                Present only if corresponding Hotplug Event Capability bit is set.</para>
+                <para>Integer value that can be used in conjunction with other fields of the hotplug 
+                event structure (Hotplug Indentifier, Hotplug Type, etc.) to allow OS to associate 
+                hotplug event with the request which generated it for the purposes of providing 
+                feedback to the requestor, such as debugging or error information.</para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
   </section>
  
 </section>

@@ -734,6 +734,24 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
               <row>
                 <entry>
                   <para>
+                    <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis>
+                  </para>
+                </entry>
+                <entry>
+                  <para>For DR</para>
+                </entry>
+                <entry>
+                  <para>When present replaces the <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis>, 
+                  <emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis>, 
+                  <emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis> and 
+                  <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis> properties. 
+                  This single property is a consolidation of the four pre-existing properties 
+                  and contains all of the required information.</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>
                     <emphasis role="bold"><literal>&#8220;ibm,max-virtual-dma-size&#8221;</literal></emphasis>
                   </para>
                 </entry>
@@ -2082,8 +2100,13 @@ hcall ( const uint64 H_ACCEPT_LOGICAL, /* Returns in R4 handle of a shared logic
               <listitem>
                 <para>Verify that the cookie parameter is valid for the calling
                 partition, else return H_Parameter.</para>
-                <para>n If the cookie represents a logical resources that has been
-                rescinded by the owner, return H_RESCINDED.</para>
+
+                <itemizedlist>		      
+                  <listitem>
+                    <para>If the cookie represents a logical resources that has been
+                    rescinded by the owner, return H_RESCINDED.</para>
+                  </listitem>
+                </itemizedlist>		      
               </listitem>
               
               <listitem>
@@ -2159,11 +2182,16 @@ hcall ( const uint64 H_RETURN_LOGICAL, /* Removes the logical resource from the 
               <listitem>
                 <para>Verify that no virtual to logical mappings exist for the
                 referenced resource, else return H_Resource.</para>
-                <para>n This operation may require extensive processing -- in some cases
-                the hcall may return H_Busy to allow for improved system responsiveness
-                -- in these cases the state of the mapping scan is retained in the
-                hypervisor&#8217;s state structures such that after some number of
-                repeated calls the function is expected to finish.</para>
+
+                <itemizedlist>		      
+                  <listitem>
+                    <para>This operation may require extensive processing -- in some cases
+                    the hcall may return H_Busy to allow for improved system responsiveness
+                    -- in these cases the state of the mapping scan is retained in the
+                    hypervisor&#8217;s state structures such that after some number of
+                    repeated calls the function is expected to finish.</para>
+                  </listitem>
+                </itemizedlist>		      
               </listitem>
               
               <listitem>
@@ -2561,7 +2589,9 @@ hcall ( const unit64 H_VIOCTL, /* Query/Set behaviors for the virtual IOA */
                       <emphasis role="bold"><literal>&#8220;ibm,trunk-adapter&#8221;</literal></emphasis> property</para>
                     </entry>
                     <entry>
-                      <para>&#160;</para>
+                      <para>
+                        <xref linkend="sec_get_illan_switch" />
+                      </para>
                     </entry>
                   </row>
                   <row>
@@ -2578,6 +2608,23 @@ hcall ( const unit64 H_VIOCTL, /* Query/Set behaviors for the virtual IOA */
                     <entry>
                       <para>
                         <xref linkend="dbdoclet.50569348_29651" />
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>0x14</para>
+                    </entry>
+                    <entry>
+                      <para>GET_MAX_REDIRECTED<?linebreak?>_MAPPINGS</para>
+                    </entry>
+                    <entry>
+                      <para>For platforms that support more than a single Redirected RDMA
+                      mapping per virtual TCE.</para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <xref linkend="sec_max_redirected_mappings" />
                       </para>
                     </entry>
                   </row>
@@ -2638,7 +2685,7 @@ hcall ( const unit64 H_VIOCTL, /* Query/Set behaviors for the virtual IOA */
 
               <itemizedlist>		      
                 <listitem>
-                  <para>n Validate the I/O address range is in the required DMA window and
+                  <para>Validate the I/O address range is in the required DMA window and
                   is mapped by valid TCEs, else return H_Parameter.</para>
                 </listitem>
                 
@@ -3167,7 +3214,7 @@ hcall ( const unit64 H_VIOCTL, /* Query/Set behaviors for the virtual IOA */
               <para>Transfer into registers R4 (High order 8 bytes) and R5 (low order
               8 bytes) of the UUID of the client partition that owns the virtual device
               (
-              <xref linkend="LoPAR.RTAS" /> for the format of the UUID string.</para>
+              <xref linkend="LoPAR.DeviceTree" /> for the format of the UUID string.</para>
             </listitem>
             
             <listitem>
@@ -3209,7 +3256,7 @@ hcall ( const unit64 H_VIOCTL, /* Query/Set behaviors for the virtual IOA */
           </simplesect>
         </section>
 
-        <section>
+        <section xml:id="sec_get_illan_switch">
           <title>GET_ILLAN_SWITCHING_MODE Subfunction Semantics</title>
 
           <itemizedlist>		      
@@ -3233,7 +3280,7 @@ hcall ( const unit64 H_VIOCTL, /* Query/Set behaviors for the virtual IOA */
 
         <section xml:id="dbdoclet.50569348_29651">
           <title>DISABLE_INACTIVE_TRUNK_RECEPTION Subfunction
-          Semantics:</title>
+          Semantics</title>
           <para>This subfunction is used to disable the reception of all packets
           for a ILLAN trunk adapter that is not the Active Trunk Adapter as set by
           the H_ILLAN_ATTRIBUTES hcall.</para>
@@ -3262,6 +3309,39 @@ hcall ( const unit64 H_VIOCTL, /* Query/Set behaviors for the virtual IOA */
               <para>Return H_Success.</para>
             </listitem>
           </itemizedlist>		      
+        </section>
+
+        <section xml:id="sec_max_redirected_mappings">
+          <title>GET_MAX_REDIRECTED_MAPPINGS Subfunction
+          Semantics</title>
+          
+          <para>This sub-function retrieves the maximum number of additional 
+          redirected mappings for the specified adapter.</para>
+          
+          <itemizedlist>
+            <listitem>
+              <para>Validate parm-1, parm-2, and parm-3 are set to zero, else return 
+              H_Parameter</para>
+            </listitem>
+            
+            <listitem>
+              <para>Validate that the given virtual IOA is an RDMA-capable server adapter, 
+              else return H_Parameter.</para>
+            </listitem>
+            
+            <listitem>
+              <para>Store the maximum number of additional redirected mappings for 
+              the LIOBN in R4.</para>
+            </listitem>
+            
+            <listitem>
+              <para>Store the maximum number of redirections per client IOBA in R5.</para>
+            </listitem>
+            
+            <listitem>
+              <para>Return H_Success</para>
+            </listitem>
+          </itemizedlist>
         </section>
       </section>
 
@@ -4075,10 +4155,23 @@ hcall ( const unit64 H_VIOCTL, /* Query/Set behaviors for the virtual IOA */
           </listitem>
 
           <listitem>
-            <para>If a server partition tries to get another copy of the same RTCE
-            table TCE it gets an error return (multiple mappings of the same physical
-            page are allowed, they just need to use different RTCE table TCEs just
-            like with physical IOA TCEs).</para>
+            <para>A server partition is guaranteed that it can create one redirected 
+            mapping per RTCE table entry. By default if the
+            server partition tries to create another copy of the same RTCE table TCE 
+            it gets an error return. Platforms that support
+            the H_VIOCTL hcall() might support multiple redirected 
+            RTCE table mappings provided that they do not duplicate
+            existing mappings (the mappings are for different I/O operations); 
+            if they do, the total number of such
+            multiple mappings per LIOBN and per RTCE page is communicated by the
+            “GET_MAX_REDIRECTED_MAPPINGS” sub-function of the H_VIOCTL hcall(). If the
+            “GET_MAX_REDIRECTED_MAPPINGS” sub-function of the 
+            H_VIOCTL hcall() is not implemented then only
+            the default single copy is supported.</para>
+            <note><para>Multiple mappings 
+            of the same physical page are always allowed, as
+            long as they originate from different RTCE table TCEs 
+            just like with physical IOA TCEs.</para></note>
           </listitem>
 
           <listitem>
@@ -4107,17 +4200,17 @@ hcall ( const unit64 H_VIOCTL, /* Query/Set behaviors for the virtual IOA */
 
               <listitem>
                 <para>The RTCE table TCE contains a valid mapping and the TCE copy
-                pointer references a TCE that does not contain a valid copy of the
+                pointers reference TCEs that do not contain a valid copy of the
                 previous mapping in the RTCE table TCE. (The previous mapping was used
                 for Redirected RDMA, however, the server partition has moved on and is no
                 longer targeting the page represented by the old RTCE table TCE mapping):
-                Clear/invalidate the TCE copy pointer and enter the RTCE table TCE
+                Clear/invalidate the TCE copy pointers and enter the RTCE table TCE
                 mapping per the input parameters to the hcall().</para>
               </listitem>
 
               <listitem>
                 <para>The RTCE table TCE contains a valid mapping and the TCE copy
-                pointer references a TCE that does contain a valid copy of the previous
+                pointers reference TCEs that do contain a valid copy of the previous
                 mapping in the RTCE table TCE (the previous mapping is still potentially
                 in use for Redirected RDMA, however, the partner partition has moved on
                 and is no longer interested in the previous I/O operation). The server
@@ -4194,9 +4287,11 @@ hcall ( const unit64 H_VIOCTL, /* Query/Set behaviors for the virtual IOA */
                        /*   shared logical resource. (no mappings changed) */
                        /* H_R_Parm: One or more r-ioba mappings are invalid -- */
                        /*   mappings may have changed */
-                       /* H_Resource: An attempt was made to make multiple */
-                       /*   redirected mappings of an RTCE table entry-- some */
-                       /*   mappings may have changed. */
+                       /* H_Resource: An attempt was made to make more */
+                       /*   redirected mappings of an RTCE table entry than the */
+                       /*   platform supports -- some mappings may have changed. */
+                       /* H_IN_USE: An attempt was made to duplicate a redirected */
+                       /*   mapping */
                        /* H_Hardware: The function failed due to unrecoverable */
                        /*   hardware failure. */
 hcall ( const uint64 H_PUT_RTCE, /* Maps RDMA into IOA’s TCE table */
@@ -4294,11 +4389,44 @@ hcall ( const uint64 H_PUT_RTCE, /* Maps RDMA into IOA’s TCE table */
                       </listitem>
                       
                       <listitem>
-                        <para>Prevent multiple redirected mappings of the same r-ioba: If the
-                        r-ioba entry of the RTCE table TCE contains a valid pointer, and if that
-                        pointer references a TCE that is a clone of the r-ioba entry of the RTCE
-                        table TCE, then return H_Resource with the value of the loop count in
-                        R4.</para>
+                        <para>Prevent more redirected mappings of the same r-ioba than 
+                        the platform supports and/or duplicates: If the r-ioba
+                        entry of the RTCE table TCE contains a valid pointer, and 
+                        if that pointer references a TCE that is a clone of the
+                        r-ioba entry of the RTCE table TCE, then an additional 
+                        redirected mapping, if supported, is used else return
+                        H_Resource with the value of the loop count in R4.</para>
+                        
+                        <itemizedlist>
+                          <listitem>
+                            <para>Validate the liobn and ioba are not already mapped for 
+                            this entry else return H_IN_USE with the value of the
+                            loop count in R4.</para>
+                          </listitem>
+                          
+                          <listitem>
+                            <para>Validate the number of redirected mappings for the 
+                            r-ioba does not exceed the 
+                            <emphasis role="bold"><literal>&#8220;ibm,max-rtce-mappings&#8221;</literal></emphasis>
+                            value for any of the adapters mapped by the RTCE else 
+                            return H_Resource with the value of the loop count in R4.</para>
+                          </listitem>
+                          
+                          <listitem>
+                            <para>Validate the number of redirected mappings for the r-ioba 
+                            does not exceed the per client IOBA value returned
+                            from the H_VIOCTL GET_MAX_REDIRECTED_MAPPINGS sub-function 
+                            else return H_Resource with the value of the loop count in R4.</para>
+                          </listitem>
+                          
+                          <listitem>
+                            <para>Validate the new entry will not cause the number of 
+                            additional redirected mappings that have already been
+                            made for this r-liobn to exceed the maximum retrieved by the H_VIOCTL
+                            GET_MAX_REDIRECTED_MAPPINGS sub-function else return 
+                            H_Resource with the value of the loop count in R4.</para>
+                          </listitem>
+                        </itemizedlist>
                       </listitem>
                       
                       <listitem>
@@ -4354,9 +4482,11 @@ hcall ( const uint64 H_PUT_RTCE, /* Maps RDMA into IOA’s TCE table */
                        /*   shared logical resource (No mappings changed)
                        /* H_R_Parm: One or more r-ioba mappings are invalid -- */
                        /*   mappings may have changed */
-                       /* H_Resource: An attempt was made to make multiple */
-                       /*   redirected mappings of an RTCE table entry-- some */
-                       /*   mappings may have changed. */
+                       /* H_Resource: An attempt was made to make more */
+                       /*   redirected mappings of an RTCE table entry than the */
+                       /*   platform supports -- some mappings may have changed. */
+                       /* H_IN_USE: An attempt was made to duplicate a redirected */
+                       /*   mapping */
                        /* H_Hardware: The function failed due to unrecoverable */
                        /*   hardware failure. */
 hcall ( const uint64 H_PUT_RTCE_INDIRECT, /* Maps RDMA into IOA’s TCE table */
@@ -4477,7 +4607,7 @@ hcall ( const uint64 H_PUT_RTCE_INDIRECT, /* Maps RDMA into IOA’s TCE table */
                   </listitem>
 
                   <listitem>
-                    <para>n End loop</para>
+                    <para>End loop</para>
                   </listitem>
                 </itemizedlist>		      
               </listitem>
@@ -4499,11 +4629,44 @@ hcall ( const uint64 H_PUT_RTCE_INDIRECT, /* Maps RDMA into IOA’s TCE table */
                       </listitem>
 
                       <listitem>
-                        <para>Prevent multiple redirected mappings of the same r-ioba: If the
-                        r-ioba entry of the r-liobn RTCE table contains a valid pointer, and if
-                        that pointer references a TCE entry that is a clone of the r-ioba entry
-                        of the RTCE table, then return H_Resource with the count number in
-                        R4.</para>
+                        <para>Prevent more redirected mappings of the same r-ioba than 
+                        the platform supports and/or duplicates: If the r-ioba
+                        entry of the RTCE table TCE contains a valid pointer, and 
+                        if that pointer references a TCE that is a clone of the
+                        r-ioba entry of the RTCE table TCE, then an additional 
+                        redirected mapping, if supported, is used else return
+                        H_Resource with the value of the loop count in R4.</para>
+                        
+                        <itemizedlist>
+                          <listitem>
+                            <para>Validate the liobn and ioba are not already mapped for 
+                            this entry else return H_IN_USE with the value of the
+                            loop count in R4.</para>
+                          </listitem>
+                          
+                          <listitem>
+                            <para>Validate the number of redirected mappings for the 
+                            r-ioba does not exceed the 
+                            <emphasis role="bold"><literal>&#8220;ibm,max-rtce-mappings&#8221;</literal></emphasis>
+                            value for any of the adapters mapped by the RTCE else 
+                            return H_Resource with the value of the loop count in R4.</para>
+                          </listitem>
+                          
+                          <listitem>
+                            <para>Validate the number of redirected mappings for the r-ioba 
+                            does not exceed the per client IOBA value returned
+                            from the H_VIOCTL GET_MAX_REDIRECTED_MAPPINGS sub-function 
+                            else return H_Resource with the value of the loop count in R4.</para>
+                          </listitem>
+                          
+                          <listitem>
+                            <para>Validate the new entry will not cause the number of 
+                            additional redirected mappings that have already been
+                            made for this r-liobn to exceed the maximum retrieved by the H_VIOCTL
+                            GET_MAX_REDIRECTED_MAPPINGS sub-function else return 
+                            H_Resource with the value of the loop count in R4.</para>
+                          </listitem>
+                        </itemizedlist>
                       </listitem>
 
                       <listitem>
@@ -4670,7 +4833,7 @@ hcall ( const uint64 H_REMOVE_RTCE, /* Unmaps RDMA from IOA’s TCE table */
                   </listitem>
 
                   <listitem>
-                    <para>n End Loop (The critical section lasts for one iteration of the
+                    <para>End Loop (The critical section lasts for one iteration of the
                     loop)</para>
                   </listitem>
                 </itemizedlist>		      
@@ -5778,7 +5941,10 @@ hcall ( const int64 H_FREE_CRQ, /* Function Code */
                     <listitem>
                       <para>Mark the Sub-CRQ enqueue pointer and length variables for the
                       Sub-CRQ as invalid.</para>
-                      <para>n Disable Sub-CRQ interrupts for the Sub-CRQ.</para>
+                    </listitem>
+                    
+                    <listitem>
+                      <para>Disable Sub-CRQ interrupts for the Sub-CRQ.</para>
                     </listitem>
                   </itemizedlist>		      
                 </listitem>
@@ -5854,9 +6020,16 @@ hcall ( const int64 H_SEND_CRQ, /* Function Code */
                 
                 <listitem>
                   <para>msg-high:</para>
-                      <para>n header: high order bit is on -- header of value 0xFF is reserved
-                      for transport error and is invalid for input.</para>
-                      <para>n format: not checked by the firmware.</para>
+                      <itemizedlist>		      
+                        <listitem>
+                          <para>header: high order bit is on -- header of value 0xFF is reserved
+                          for transport error and is invalid for input.</para>
+                        </listitem>
+                        
+                        <listitem>
+                          <para>format: not checked by the firmware.</para>
+                        </listitem>
+                      </itemizedlist>		      
                 </listitem>
                 
                 <listitem>
@@ -6819,7 +6992,7 @@ hcall ( const int64 H_SEND_SUB_CRQ, /* Function Code */
 
                   <itemizedlist>		      
                     <listitem>
-                      <para>n Validate that there is room on the specified Sub-CRQ for the
+                      <para>Validate that there is room on the specified Sub-CRQ for the
                       message and allocate that message, else exit critical Section and return
                       H_Dropped.</para>
                     </listitem>
@@ -7089,9 +7262,20 @@ hcall ( const int64 H_SEND_SUB_CRQ, /* Function Code */
                 platform must implement all of the following subfunctions of the H_VIOCTL
                 hcall() (
                 <xref linkend="dbdoclet.50569348_33176" />):</para>
-                <para>n DISABLE_ALL_VIO_INTERRUPTS</para>
-                <para>n DISABLE_VIO_INTERRUPT</para>
-                <para>n ENABLE_VIO_INTERRUPT</para>
+
+                <itemizedlist>		      
+                  <listitem>
+                    <para>DISABLE_ALL_VIO_INTERRUPTS</para>
+                  </listitem>
+                  
+                  <listitem>
+                    <para>DISABLE_VIO_INTERRUPT</para>
+                  </listitem>
+                  
+                  <listitem>
+                    <para>ENABLE_VIO_INTERRUPT</para>
+                  </listitem>
+                </itemizedlist>		      
               </listitem>
            	</varlistentry>
           </variablelist>
@@ -7251,6 +7435,10 @@ hcall ( const int64 H_SEND_SUB_CRQ, /* Function Code */
         the newly enqueued receive buffer descriptors have a valid bit value of
         0. The hypervisor flips the value of the valid toggle bit each time it
         cycles from the bottom of the receive queue to the top.</para>
+        <para>Bit 5 is the Large Send Indication bit and indicates that this 
+        packet is a large-send packet. See 
+        <xref linkend="sec_illan_large_send_indication" />
+        for more information on the usage of this bit.</para>
         <para>Bit 6 is the No Checksum bit and indicates that there is no
         checksum in this packet. See 
         <xref linkend="dbdoclet.50569350_53238" /> for more information on the
@@ -7356,7 +7544,9 @@ hcall ( const int64 H_SEND_SUB_CRQ, /* Function Code */
                   <para>Bit 1 = 1 if the buffer contains a valid message. Bit 1 =
                   0 if the buffer does not contain a valid message, in which case
                   the device driver recycles the buffer.</para>
-                  <para>Bits 2-5 Reserved.</para>
+                  <para>Bits 2-4 Reserved.</para>
+                  <para>Bit 5: Large Send Indication bit. If a 1, then this 
+                  indicates the packet is a large-send packet.</para>
                   <para>Bit 6: No Checksum bit. If a 1, then this indicates that
                   there is no checksum in this packet (see 
                   <xref linkend="dbdoclet.50569350_53238" /> for more information
@@ -8880,13 +9070,48 @@ hcall ( const uint64 H_CHANGE_LOGICAL_LAN_MAC, /* Change the MAC address */
             <tbody valign="middle">
               <row>
                 <entry>
-                  <para>0-49</para>
+                  <para>0-47</para>
                 </entry>
                 <entry>
                   <para>Reserved</para>
                 </entry>
                 <entry>
                   <para>&#160;</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>48</para>
+                </entry>
+                <entry>
+                  <para>Large Send Indication Supported</para>
+                </entry>
+                <entry>
+                  <para>The bit is implemented when the large send indication bit in
+                  the I/O descriptor passed to H_SEND_LOGICAL_LAN is
+                  supported by firmware.</para>
+                  <para>0: Software must not request large send indication,
+                  by setting Bit 5 of the buffer descriptor.</para>
+                  <para>1: Software may request large send indication, by
+                  setting Bit 5 of the buffer descriptor.</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>49</para>
+                </entry>
+                <entry>
+                  <para>Port Disabled</para>
+                </entry>
+                <entry>
+                  <para>When the bit is a 1, the port is disabled. When
+                  the port is disabled, no Ethernet traffic will be
+                  permitted to be transmitted or received.
+                  H_Parameter will be returned if this bit is turned
+                  on in either the reset or set masks. On firmware
+                  that does not support this function, bit 49 is
+                  reserved and required to be 0. OS can infer that
+                  means the port is enabled.</para>
                 </entry>
               </row>
               <row>
@@ -10394,6 +10619,66 @@ hcall ( const uint64 H_ILLAN_ATTRIBUTES,/* Returns in R4 the resulting ILLAN */
           </variablelist>
         </section>
       </section>
+      
+      <section xml:id="sec_illan_large_send_indication">
+        <title>ILLAN Large Send Indication option</title>
+        
+        <para>This option allows the virtual device to send an 
+        indication to the receiver that the data being sent by
+        H_SEND_LOGICAL_LAN contains a large send packet.</para>
+        
+        <section xml:id="sec_illan_large_send_indication_general">
+          <title>General</title>
+          
+          <para>The following are the general requirements for this option. For H_SEND_LOGICAL_LAN changes, see
+          <xref linkend="sec_send_logical_lan_semantic_change" />.</para>
+          
+          <variablelist>
+           	<varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="sec_illan_large_send_indication_general" 
+              xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+              
+              <listitem>
+                <para><emphasis role="bold">For the ILLAN Large send indication option:</emphasis> 
+                The platform must do all the following:</para>
+                
+                <orderedlist numeration="loweralpha" spacing="compact">
+                  <listitem>
+                    <para>Implement the H_ILLAN_ATTRIBUTES hcall().</para>
+                  </listitem>
+                  
+                  <listitem>
+                    <para>Implement the Large Send Indication bit of the ILLAN Attributes as defined in 
+                    <xref linkend="dbdoclet.50569350_11661" />.</para>
+                  </listitem>
+                </orderedlist>
+              </listitem>
+           	</varlistentry>
+          </variablelist>
+
+        </section>
+        
+        <section xml:id="sec_send_logical_lan_semantic_change">
+          <title>H_SEND_LOGICAL_LAN Semantic Changes</title>
+          
+          <para>The following are the required semantic changes to the H_SEND_LOGICAL_LAN hcall().</para>
+
+          <variablelist>
+            <varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="sec_send_logical_lan_semantic_change" 
+              xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+
+              <listitem>
+                <para><emphasis role="bold">For the ILLAN Large send indication option:</emphasis> 
+                When the Large Send Indication bit of the first buffer descriptor is set to 1, 
+                then the firmware for the H_SEND_LOGICAL_LAN hcall() must set the Large Send Indication 
+                bit in the receiver's receive queue entry to 1 when the packet is copied to the
+                destination receive buffer.</para>
+              </listitem>
+           	</varlistentry>
+          </variablelist>
+        </section>
+      </section>
     </section>
   </section>
 
@@ -11755,31 +12040,68 @@ hcall ( const uint64 H_ILLAN_ATTRIBUTES,/* Returns in R4 the resulting ILLAN */
 
           <simplesect>
             <title>Parameters:</title>
-            <para>n termno: The unit address of the Vterm IOA, from the 
-            <emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis> property of the Vterm IOA.</para>
+            
+            <itemizedlist>
+              <listitem>
+                <para>termno: The unit address of the Vterm IOA, from the
+                <emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis> property of the Vterm IOA.</para>
+              </listitem>
+            </itemizedlist>
           </simplesect>
 
           <simplesect>
             <title>Semantics:</title>
-            <para>n Hypervisor checks the termno parameter for validity against the
-            Vterm IOA unit addresses assigned to the partition, else return
-            H_Parameter.</para>
-            <para>n Hypervisor returns H_Hardware if it detects that the virtual
-            console terminal physical connection is not working.</para>
-            <para>n Hypervisor returns H_Closed if it detects that the virtual
-            console associated with the termno parameter is not open (in the case of
-            connection to a server Vterm IOA, this means that the server code has not
-            made the connection to this specific client Vterm IOA).</para>
-            <para>n Hypervisor returns H_Success in all other cases, returning
-            maximum number of characters available in the partition&#8217;s virtual
-            console terminal input buffer (up to 16) -- a len value of 0 indicates
-            that the input buffer is empty.</para>
-            <para>n Upon return with H_Success register R4 contains the number of
-            bytes (if any) returned in registers R5 and R6.</para>
-            <para>n Upon return with H_Success the return character string starts in
-            the high order byte of register R5 and proceeds toward the low order byte
-            in register R6 for the number of characters specified in R4. The contents
-            of all other byte locations of registers R5 and R6 are undefined.</para>
+            
+            <itemizedlist>
+              <listitem>
+                <para>Hypervisor checks the termno parameter for validity against the
+                Vterm IOA unit addresses assigned to the partition, else return
+                H_Parameter.</para>
+              </listitem>
+
+              <listitem>
+                <para>Hypervisor returns H_Hardware if it detects that the virtual
+                console terminal physical connection is not working.</para>
+              </listitem>
+
+              <listitem>
+                <para>Hypervisor returns H_Closed if it detects that the virtual
+                console associated with the termno parameter is not open (in the case of
+                connection to a server Vterm IOA, this means that the server code has not
+                made the connection to this specific client Vterm IOA).</para>
+              </listitem>
+
+              <listitem>
+                <para>Hypervisor returns H_Success in all other cases, returning
+                maximum number of characters available in the partition&#8217;s virtual
+                console terminal input buffer (up to 16) -- a len value of 0 indicates
+                that the input buffer is empty.</para>
+              </listitem>
+
+              <listitem>
+                <para>Upon return with H_Success register R4 contains the number of
+                bytes (if any) returned in registers R5 and R6.</para>
+              </listitem>
+              
+              <listitem>
+                <para>Upon return with H_Success the return character string starts in
+                the high order byte of register R5 and proceeds toward the low order byte
+                in register R6 for the number of characters specified in R4. The contents
+                of all other byte locations of registers R5 and R6 are undefined.</para>
+              </listitem>
+
+              <listitem>
+                <para>Upon return with H_Success register R4 contains the number of
+                bytes (if any) returned in registers R5 and R6.</para>
+              </listitem>
+              
+              <listitem>
+                <para>Upon return with H_Success the return character string starts in
+                the high order byte of register R5 and proceeds toward the low order byte
+                in register R6 for the number of characters specified in R4. The contents
+                of all other byte locations of registers R5 and R6 are undefined.</para>
+              </listitem>
+            </itemizedlist>
           </simplesect>
         </section>
 
@@ -11797,35 +12119,67 @@ hcall ( const uint64 H_ILLAN_ATTRIBUTES,/* Returns in R4 the resulting ILLAN */
 
           <simplesect>
             <title>Parameters:</title>
-            <para>n termno: The unit address of the Vterm IOA, from the 
-            <emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis> property of the Vterm IOA.</para>
-            <para>n len: The length of the string to transmit through the virtual
-            terminal port. Valid values are in the range of 0-16.</para>
-            <para>n char0_7 and char8_15: The string starts in the high order byte of
-            register R6 and proceeds toward the low order byte in register R7</para>
+            
+            <itemizedlist>		      
+              <listitem>
+                <para>termno: The unit address of the Vterm IOA, from the 
+                <emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis> property of the Vterm IOA.</para>
+              </listitem>
+              
+              <listitem>
+                <para>len: The length of the string to transmit through the virtual
+                terminal port. Valid values are in the range of 0-16.</para>
+              </listitem>
+              
+              <listitem>
+                <para>char0_7 and char8_15: The string starts in the high order byte of
+                register R6 and proceeds toward the low order byte in register R7</para>
+              </listitem>
+            </itemizedlist>		      
+
           </simplesect>
 
           <simplesect>
             <title>Semantics:</title>
-            <para>n Hypervisor checks the termno parameter for validity against the
-            Vterm IOA unit addresses assigned to the partition, else return
-            H_Parameter.</para>
-            <para>n Hypervisor returns H_Hardware if it detects that the virtual
-            console terminal physical connection is not working.</para>
-            <para>n Hypervisor returns H_Closed if it detects that the virtual
-            console session is not open (in the case of connection to a server Vterm
-            IOA, this means that the server code has not made the connection to this
-            specific client Vterm IOA).</para>
-            <para>n If the length parameter is outside of the values 0-16 the
-            hypervisor immediately returns H_Parameter with no other action.</para>
-            <para>n If the partition&#8217;s virtual console terminal buffer has room
-            for the entire string, the hypervisor queues the output string and
-            returns H_Success. 
-            <emphasis role="bold">Note:</emphasis> There is always room for a zero length string (a
-            zero length write can be used to test the virtual console terminal
-            connection).</para>
-            <para>n If the buffer cannot hold the entire string, no data is enqueued
-            and the return code is H_Busy.</para>
+
+            <itemizedlist>		      
+              <listitem>
+                <para>Hypervisor checks the termno parameter for validity against the
+                Vterm IOA unit addresses assigned to the partition, else return
+                H_Parameter.</para>
+              </listitem>
+              
+              <listitem>
+                <para>Hypervisor returns H_Hardware if it detects that the virtual
+                console terminal physical connection is not working.</para>
+              </listitem>
+              
+              <listitem>
+                <para>Hypervisor returns H_Closed if it detects that the virtual
+                console session is not open (in the case of connection to a server Vterm
+                IOA, this means that the server code has not made the connection to this
+                specific client Vterm IOA).</para>
+              </listitem>
+              
+              <listitem>
+                <para>If the length parameter is outside of the values 0-16 the
+                hypervisor immediately returns H_Parameter with no other action.</para>
+              </listitem>
+              
+              <listitem>
+                <para>If the partition&#8217;s virtual console terminal buffer has room
+                for the entire string, the hypervisor queues the output string and
+                returns H_Success. 
+                <emphasis role="bold">Note:</emphasis> There is always room for a zero length string (a
+                zero length write can be used to test the virtual console terminal
+                connection).</para>
+              </listitem>
+              
+              <listitem>
+                <para>If the buffer cannot hold the entire string, no data is enqueued
+                and the return code is H_Busy.</para>
+              </listitem>
+            </itemizedlist>		      
           </simplesect>
         </section>
       </section>
@@ -12610,11 +12964,17 @@ hcall ( const uint64 H_REGISTER_VTERM, /* Makes connection between server and */
                   <para>If partner-partition-id and partner-unit-addr together do not
                   match a valid partition ID and unit address pair in the list of valid
                   connections for this unit-address, then return H_Parameter,</para>
-                  <para>n Else make connection between the server Vterm IOA specified by
-                  unit-address and the client Vterm IOA specified by the
-                  partner-partition-id and partner-unit-addr pair, allowing future
-                  H_PUT_TERM_CHAR and H_GET_TERM_CHAR operations to flow between the two
-                  Vterm IOAs, and return H_Success.</para>
+                  
+                 <itemizedlist>		      
+                    <listitem>
+                      <para>Else make connection between the server Vterm IOA specified by
+                      unit-address and the client Vterm IOA specified by the
+                      partner-partition-id and partner-unit-addr pair, allowing future
+                      H_PUT_TERM_CHAR and H_GET_TERM_CHAR operations to flow between the two
+                      Vterm IOAs, and return H_Success.</para>
+                    </listitem>
+                  </itemizedlist>		      
+
                 </listitem>
               </itemizedlist>		      
 
@@ -13982,13 +14342,7 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
     physical port. The implementation support is provided by code running in a
     server partition that uses the mechanisms of the Synchronous VIO
     Infrastructure (or equivalent thereof as seen by the client) to service I/O
-    requests for code running in a client partition<footnote xml:id="pgfId-1012311">
-      <para>The server partition for VNIC is expected to be part of the
-      platform firmware and therefore an OS interface is not provided in this
-      architecture for the server side. However, the platform firmware is still
-      expected to be implemented by a partition, and hence the term
-      &#8220;server partition.&#8221;</para>
-    </footnote>. The client partition appears to enjoy the services of its own
+    requests for code running in a client partition. The client partition appears to enjoy the services of its own
     NIC adapter. The terms server and client partitions refer to platform
     partitions that are respectively servers and clients of requests, usually
     I/O operations, using the physical NIC that is assigned to the server
@@ -14175,10 +14529,11 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
 
       <table frame="all" pgwide="1" xml:id="dbdoclet.50569366_41555">
         <title>Properties of the <emphasis role="bold"><literal>vnic</literal></emphasis> Node in the OF Device Tree</title>
-        <tgroup cols="3">
+        <tgroup cols="4">
           <colspec colname="c1" colwidth="20*" />
           <colspec colname="c2" colwidth="15*" align="center" />
-          <colspec colname="c3" colwidth="65*" />
+          <colspec colname="c3" colwidth="15*" align="center" />
+          <colspec colname="c4" colwidth="50*" />
           <thead valign="middle">
             <row>
               <entry align="center">
@@ -14188,7 +14543,12 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
               </entry>
               <entry>
                 <para>
-                  <emphasis role="bold">Required?</emphasis>
+                  <emphasis role="bold">Required for vnic?</emphasis>
+                </para>
+              </entry>
+              <entry>
+                <para>
+                  <emphasis role="bold">Required for vnic-server?</emphasis>
                 </para>
               </entry>
               <entry align="center">
@@ -14198,7 +14558,7 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
               </entry>
             </row>
           </thead>
-          <tbody valign="middle">
+          <tbody>
             <row>
               <entry>
                 <para>
@@ -14206,13 +14566,15 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
                 </para>
               </entry>
               <entry>
-                <para>Y</para>
+                <para>Y<?linebreak?>Value = <emphasis role="bold"><literal>&#8220;ibm,vnic&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>Y<?linebreak?>Value = <emphasis role="bold"><literal>&#8220;ibm,vnic-server&#8221;</literal></emphasis></para>
               </entry>
               <entry>
                 <para>Standard property name per 
                 <xref linkend="dbdoclet.50569387_45524" />, specifying the
-                virtual device name, the value shall be 
-                <emphasis role="bold"><literal>&#8220;vnic&#8221;</literal></emphasis>.</para>
+                virtual device name.</para>
               </entry>
             </row>
             <row>
@@ -14223,6 +14585,9 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
               </entry>
               <entry>
                 <para>Y</para>
+              </entry>
+              <entry>
+                <para>N</para>
               </entry>
               <entry>
                 <para>Standard property name per 
@@ -14241,6 +14606,9 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
                 <para>NA</para>
               </entry>
               <entry>
+                <para>NA</para>
+              </entry>
+              <entry>
                 <para>Property not present.</para>
               </entry>
             </row>
@@ -14251,14 +14619,15 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
                 </para>
               </entry>
               <entry>
-                <para>Y</para>
+                <para>Y<?linebreak?>Value includes: <emphasis role="bold"><literal>&#8220;ibm,vnic&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>Y<?linebreak?>Value includes: <emphasis role="bold"><literal>&#8220;ibm,vnic-server&#8221;</literal></emphasis></para>
               </entry>
               <entry>
                 <para>Standard property name per 
                 <xref linkend="dbdoclet.50569387_45524" />, specifying the
-                programming models that are compatible with this virtual IOA,
-                the value shall include 
-                <emphasis role="bold"><literal>&#8220;IBM,vnic&#8221;</literal></emphasis>.</para>
+                programming models that are compatible with this virtual IOA.</para>
               </entry>
             </row>
             <row>
@@ -14268,10 +14637,13 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
                 </para>
               </entry>
               <entry>
-                <para>See definition column</para>
+                <para>Present if appropriate.</para>
               </entry>
               <entry>
                 <para>Present if appropriate.</para>
+              </entry>
+              <entry>
+                <para>&#160;</para>
               </entry>
             </row>
             <row>
@@ -14279,6 +14651,9 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
                 <para>
                   <emphasis role="bold"><literal>&#8220;ibm,loc-code&#8221;</literal></emphasis>
                 </para>
+              </entry>
+              <entry>
+                <para>Y</para>
               </entry>
               <entry>
                 <para>Y</para>
@@ -14293,6 +14668,9 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
                 <para>
                   <emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis>
                 </para>
+              </entry>
+              <entry>
+                <para>Y</para>
               </entry>
               <entry>
                 <para>Y</para>
@@ -14318,15 +14696,28 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
                 </para>
               </entry>
               <entry>
-                <para>Y</para>
+                <para>Y<?linebreak?>Value = a single triplet</para>
+              </entry>
+              <entry>
+                <para>Y<?linebreak?>Value = two triplet</para>
               </entry>
               <entry>
                 <para>Property name specifying the DMA window associated with
-                this virtual IOA presented as an encoded array of three values
+                this virtual IOA presented as an encoded array of one or more sets of three values (triplet)
                 (LIOBN, phys, size) encoded as with 
                 <emphasis role="bold"><literal>encode-int</literal></emphasis>, 
                 <emphasis role="bold"><literal>encode-phys</literal></emphasis>, and 
                 <emphasis role="bold"><literal>encode-int</literal></emphasis>.</para>
+                <para>For the vnic-server the two tripples describe two window panes:
+                the first describes the window pane used to map server partition memory; 
+                the second is the window pane through which the client partition maps 
+                its memory that it makes available to the server partition. 
+                (<emphasis role="bold">Note:</emphasis> the mapping between 
+                the LIOBN in the second window pane of a server virtual IOA’s 
+                <emphasis role="bold"><literal>&#8220;ibm,my-dma-window&#8221;</literal></emphasis> 
+                property and the corresponding client IOA’s RTCE table is made when the 
+                CRQ successfully completes registration. See 
+                <xref linkend="dbdoclet.50569348_40629" />.)</para>
               </entry>
             </row>
             <row>
@@ -14334,6 +14725,9 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
                 <para>
                   <emphasis role="bold"><literal>&#8220;interrupts&#8221;</literal></emphasis>
                 </para>
+              </entry>
+              <entry>
+                <para>Y</para>
               </entry>
               <entry>
                 <para>Y</para>
@@ -14359,6 +14753,9 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
                 <para>For DR</para>
               </entry>
               <entry>
+                <para>For DR</para>
+              </entry>
+              <entry>
                 <para>Present if the platform implements DR for this
                 node.</para>
               </entry>
@@ -14368,6 +14765,9 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
                 <para>
                   <emphasis role="bold"><literal>&#8220;ibm,#dma-size-cells&#8221;</literal></emphasis>
                 </para>
+              </entry>
+              <entry>
+                <para>See definition column</para>
               </entry>
               <entry>
                 <para>See definition column</para>
@@ -14394,6 +14794,9 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
                 <para>See definition column</para>
               </entry>
               <entry>
+                <para>See definition column</para>
+              </entry>
+              <entry>
                 <para>Property name, to define the package&#8217;s dma address
                 format. The property value specifies the number of cells that
                 are used to encode the physical address field of dma-window
@@ -14414,6 +14817,9 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
                 <para>Y</para>
               </entry>
               <entry>
+                <para>NA</para>
+              </entry>
+              <entry>
                 <para>Standard property name per 
                 <xref linkend="dbdoclet.50569387_45524" />, specifying the
                 locally administered MAC addresses are denoted by having the
@@ -14428,6 +14834,9 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
               </entry>
               <entry>
                 <para>Y</para>
+              </entry>
+              <entry>
+                <para>NA</para>
               </entry>
               <entry>
                 <para>Standard property name per 
@@ -14446,6 +14855,9 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
                 <para>Y</para>
               </entry>
               <entry>
+                <para>NA</para>
+              </entry>
+              <entry>
                 <para>Standard property name as per 
                 <emphasis><xref linkend="dbdoclet.50569387_27008" /></emphasis>. 
                 Reports possible types of &#8220;network&#8221;
@@ -14460,6 +14872,9 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
               </entry>
               <entry>
                 <para>Y</para>
+              </entry>
+              <entry>
+                <para>NA</para>
               </entry>
               <entry>
                 <para>Standard property name as per 
@@ -14478,6 +14893,9 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
                 <para>Y</para>
               </entry>
               <entry>
+                <para>NA</para>
+              </entry>
+              <entry>
                 <para>Standard property name per 
                 <xref linkend="dbdoclet.50569387_45524" />, to indicate maximum
                 packet size.</para>
@@ -14493,6 +14911,9 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
                 <para>Y</para>
               </entry>
               <entry>
+                <para>NA</para>
+              </entry>
+              <entry>
                 <para>Standard property name per 
                 <xref linkend="dbdoclet.50569387_45524" />, to indicate network
                 address length.</para>
@@ -14500,7 +14921,10 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
             </row>
             <row>
               <entry>
-                <para>&#8220;interrupt-ranges&#8221;</para>
+                <para><emphasis role="bold"><literal>&#8220;interrupt-ranges&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>Y</para>
               </entry>
               <entry>
                 <para>Y</para>
@@ -14510,6 +14934,52 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
                 number(s) and range(s) handled by this device. Subordinate CRQs
                 associated with this VNIC use interrupt numbers from these
                 ranges.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis role="bold"><literal>&#8220;ibm,vf-loc-code&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>NA</para>
+              </entry>
+              <entry>
+                <para>Y</para>
+              </entry>
+              <entry>
+                <para>Vendor unique property name to define the physical device 
+                virtual function upon which the vnic-server runs. The value is 
+                that of the <emphasis role="bold"><literal>&#8220;ibm,loc-code&#8221;</literal></emphasis>
+                property of the physical device virtual function.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis role="bold"><literal>&#8220;ibm,vnic-mode&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>NA</para>
+              </entry>
+              <entry>
+                <para>Y</para>
+              </entry>
+              <entry>
+                <para>Vendor unique property that represents the operational 
+                mode in which the vnic-server runs.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis role="bold"><literal>&#8220;ibm,vnic-client-mac&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>NA</para>
+              </entry>
+              <entry>
+                <para>Y</para>
+              </entry>
+              <entry>
+                <para>Vendor unique property that represents a vNIC server's client MAC address.</para>
               </entry>
             </row>
           </tbody>

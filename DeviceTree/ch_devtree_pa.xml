@@ -683,7 +683,7 @@
               <listitem>
                 <para>Standard <emphasis>property name</emphasis>. The value of this 
                 property for CPU nodes shall be 
-                <emphasis role="bold"><literal>&#8220;cpu&#8221;</literal></emphasis>.</para>
+                <literal>&#8220;cpu&#8221;</literal>.</para>
               </listitem>
   			  </varlistentry>
   
@@ -710,23 +710,21 @@
                 
                 <itemizedlist>		      
                   <listitem>
-                    <para><emphasis role="bold"><literal>&#8220;okay&#8221;</literal></emphasis> 
-                    for a good processor.</para>
+                    <para><literal>&#8220;okay&#8221;</literal> for a good processor.</para>
                   </listitem>
                   
                   <listitem>
-                    <para><emphasis role="bold"><literal>&#8220;fail&#8221;</literal></emphasis> 
-                    for a processor that fails during power-on testing.</para>
+                    <para><literal>&#8220;fail&#8221;</literal> for a processor that fails during power-on testing.</para>
                   </listitem>
                   
                   <listitem>
-                    <para><emphasis role="bold"><literal>&#8220;fail-offline&#8221;</literal></emphasis> 
+                    <para><literal>&#8220;fail-offline&#8221;</literal> 
                     for a processor that has been automatically deconfigured because of previous 
                     failures.</para>
                   </listitem>
                   
                   <listitem>
-                    <para><emphasis role="bold"><literal>&#8220;disabled&#8221;</literal></emphasis> 
+                    <para><literal>&#8220;disabled&#8221;</literal> 
                     for a processor that has been manually deconfigured.</para>
                   </listitem>
                 </itemizedlist>		      
@@ -1189,7 +1187,7 @@
           <varlistentry>
             <term><emphasis role="bold"><literal>&#8220;ibm,processor-page-sizes&#8221;</literal></emphasis></term>
               <listitem>
-                <para>property name: Relates the number and sizes of the virtual memory
+                <para><emphasis>property name</emphasis>: Relates the number and sizes of the virtual memory
                 page sizes supported by the processor describe by this node.</para>
                 <para><emphasis>prop-encoded-array</emphasis>: One to N cells in ascending
                 value order, each encoded as with 
@@ -1198,6 +1196,19 @@
                 2 of the cell size. i.e. a 4 K page size is represented by the value 12
                 (4 K= 2
                 <superscript>12</superscript>) etc.</para>
+              </listitem>
+  			  </varlistentry>
+  
+          <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;ibm,processor-radix-AP-encodings&#8221;</literal></emphasis></term>
+              <listitem>
+                <para><emphasis>property name</emphasis>: Relates the AP (Actual Page size) encodings 
+                for the supported page sizes used by the TLB management instructions when the processor 
+                is in Radix address translation mode.</para>
+                <para><emphasis>prop-encoded-array</emphasis>: One to N cells in ascending order of 
+                Radix mode supported page size, each encoded as with
+                <emphasis role="bold"><literal>encode-int</literal></emphasis>. The top 3 bits of the low order byte 
+                contain the tlbie AP field associated with the corresponding Radix mode supported page size.</para>
               </listitem>
   			  </varlistentry>
   
@@ -1996,12 +2007,12 @@
                           <para>0</para>
                         </entry>
                         <entry>
-                          <para>2.07 Vector.XOR Support</para>
+                          <para>2.07 Vector.CRYPTO Support</para>
                         </entry>
                         <entry>
-                          <para>The value of 1 indicates that the vector.xor category as
+                          <para>The value of 1 indicates that the vector.crypto category as
                           described by version 2.07 of POWER ISA is supported; else the
-                          2.07 version vector.xor category is not supported.</para>
+                          2.07 version vector.crypto category is not supported.</para>
                         </entry>
                       </row>
                       <row>

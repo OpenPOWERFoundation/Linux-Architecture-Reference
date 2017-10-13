@@ -285,9 +285,9 @@
                   <para>device:bootinfo</para>
                 </entry>
                 <entry>
-                  <para>bootinfo is the value of the &#8220;
-                  <emphasis>bootinfo</emphasis> &#8221; property in a /rom child
-                  node</para>
+                  <para>bootinfo is the value of the 
+                  <emphasis role="bold"><literal>&#8220;bootinfo&#8221;</literal></emphasis> property in a 
+                  <emphasis role="bold">/rom</emphasis> child node</para>
                 </entry>
               </row>
               <row>
@@ -748,10 +748,79 @@
     <section xml:id="dbdoclet.50569368_13582">
       <title>Properties for Dynamic Reconfiguration</title>
       
-      <para>The following standard properties are define for all dynamically
-      reconfigurable platform nodes.</para>
+      <para>The following property, when present, replaces the following four properties: 
+      <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis>, 
+      <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis>, 
+      <emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis> and 
+      <emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis>.  
+      This property is defined for all dynamically reconfigurable platform nodes.</para>
       
       <variablelist>
+        <varlistentry>
+          <term><emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis></term>
+            <listitem>
+              <para><emphasis>property name</emphasis> that defines all required DR information in a new format</para>
+              <para><emphasis>prop-encoded-array</emphasis>: The first element of the array is the number of drc-info entries, 
+              encoded with
+              <emphasis role="bold"><literal>encode-int</literal></emphasis></para>
+              <para>The drc-info entry consists of the following elements:</para>
+              <itemizedlist mark="none">
+                <listitem>
+                  <para>The <emphasis>drc-type</emphasis> encoded with 
+                  <emphasis role="bold"><literal>encode-string</literal></emphasis>. 
+                  Examples include “MEM”  “PHB” and “CPU”</para>
+                </listitem>
+
+                <listitem>
+                  <para>The <emphasis>drc-name-prefix</emphasis> encoded with 
+                  <emphasis role="bold"><literal>encode-string</literal></emphasis>. 
+                  Examples include “LMB” “PHB “ “CPU “ and “U8233.E8B.1000C9P-V1-C”</para>
+                </listitem>
+
+                <listitem>
+                  <para>The <emphasis>drc-index-start</emphasis> encoded with 
+                  <emphasis role="bold"><literal>encode-int</literal></emphasis>. 
+                  The first drc-index of the first entity in the sequence of 
+                  entities described by this <emphasis>ibm,drc-info entry</emphasis>.</para>
+                </listitem>
+
+                <listitem>
+                  <para>The <emphasis>drc-name-suffix-start</emphasis> encoded with 
+                  <emphasis role="bold"><literal>encode-int</literal></emphasis>. 
+                  The integer value that is to be converted to asci and appended to the 
+                  drc-name-prefix to create the complete 
+                  drc-name of the first entity in the sequence of entities 
+                  described by this <emphasis>ibm,drc-info entry</emphasis>.</para>
+                </listitem>
+
+                <listitem>
+                  <para>The <emphasis>number-sequential-elements</emphasis> encoded with 
+                  <emphasis role="bold"><literal>encode-int</literal></emphasis>. 
+                  The number of sequential entities described by this 
+                  <emphasis>ibm,drc-info entry</emphasis>.</para>
+                </listitem>
+
+                <listitem>
+                  <para>The <emphasis>sequential-increment</emphasis> encoded with 
+                  <emphasis role="bold"><literal>encode-int</literal></emphasis>. 
+                  The number by which to increment the drc-index and the name-suffix 
+                  for each sequential entity.</para>
+                </listitem>
+
+                <listitem>
+                  <para>The <emphasis>drc-power-domain</emphasis> encoded with 
+                  <emphasis role="bold"><literal>encode-int</literal></emphasis>.</para>
+                </listitem>
+              </itemizedlist>
+            </listitem>
+			  </varlistentry>
+			</variablelist>
+			
+      <para>The following properties have been replaced by the 
+      <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis> but are documented
+      here for legacy purposes:</para>
+
+			<variablelist>
         <varlistentry>
           <term><emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis></term>
             <listitem>
@@ -1809,7 +1878,7 @@
                 <emphasis>property name</emphasis> indicating that the platform supports
                 the potential migration of this partition.</para>
                 <para>
-                <emphasis>prop-encoded-array</emphasis>: NULL</para>
+                <emphasis>prop-encoded-array</emphasis>: &lt;NULL&gt;</para>
               </listitem>
   			  </varlistentry>
   
@@ -1937,6 +2006,178 @@
                     <para>1 = Platform is operating in the Lightpath mode.</para>
                   </listitem>
                 </itemizedlist>		      
+              </listitem>
+  			  </varlistentry>
+
+          <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;ibm,guid-partition-table&#8221;</literal></emphasis></term>
+              <listitem>
+                <para>
+                <emphasis>property name</emphasis> indicates that the partition supports disks 
+                with the GUID Partition Table.</para>
+                <para>
+                <emphasis>prop-encoded-array</emphasis>: &lt;NULL&gt;</para>
+              </listitem>
+  			  </varlistentry>
+
+          <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;ibm,linux-le-capable&#8221;</literal></emphasis></term>
+              <listitem>
+                <para>
+                <emphasis>property name</emphasis> indicates that the partition is capable of 
+                supporting boot of Little Endian Linux.</para>
+                <para>
+                <emphasis>prop-encoded-array</emphasis>: &lt;NULL&gt;</para>
+              </listitem>
+  			  </varlistentry>
+
+          <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;ibm,partition-uuid&#8221;</literal></emphasis></term>
+              <listitem>
+                <para>
+                <emphasis>property name</emphasis> specifies a universally unique identifier for this partition.</para>
+                <para>
+                <emphasis>prop-encoded-array</emphasis>: A string of data as described below, encoded as with 
+                <emphasis role="bold">encode-string</emphasis></para>
+                <para>The Universally Unique IDentifier (UUID) option provides each partition with a 
+                Universally Unique Identifier that is persisted by the platform across partition 
+                reboots, reconfigurations, OS reinstalls, partition migration, hibernation etc. 
+                The UUID is a 16 byte string of format fields and random bits as defined in 
+                <xref linkend="dbdoclet.50569332_20419"/>.</para>
+                <para>The random bits are generated in an implementation-dependent manner to 
+                achieve a projected probability of collision of not greater than one in 2<superscript>60</superscript>.</para>
+
+                <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_20419">
+                  <title>UUID Format</title>
+                  <tgroup cols="4">
+                    <colspec colname="c1" colwidth="25*" />
+                    <colspec colname="c2" colwidth="25*" />
+                    <colspec colname="c3" colwidth="25*" />
+                    <colspec colname="c4" colwidth="25*" />
+                    <thead>
+                      <row>
+                        <entry>
+                          <para>
+                            <emphasis role="bold">Field</emphasis>
+                          </para>
+                        </entry>
+                        <entry>
+                          <para>
+                            <emphasis role="bold">Byte:Bit</emphasis>
+                          </para>
+                        </entry>
+                        <entry>
+                          <para>
+                            <emphasis role="bold">Size (Bits)</emphasis>
+                          </para>
+                        </entry>
+                        <entry>
+                          <para>
+                            <emphasis role="bold">Values</emphasis>
+                          </para>
+                        </entry>
+                      </row>
+                    </thead>
+                    <tbody>
+                      <row>
+                        <entry>
+                          <para>Version</para>
+                        </entry>
+                        <entry>
+                          <para>0:0</para>
+                        </entry>
+                        <entry>
+                          <para>1</para>
+                        </entry>
+                        <entry>
+                          <para>0: Initial Version</para>
+                          <para>1: Reserved</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>Random Bits</para>
+                        </entry>
+                        <entry>
+                          <para>0:1 thru 5:7</para>
+                        </entry>
+                        <entry>
+                          <para>47</para>
+                        </entry>
+                        <entry>
+                          <para>Random Bits</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>Generation Method</para>
+                        </entry>
+                        <entry>
+                          <para>6:0-3</para>
+                        </entry>
+                        <entry>
+                          <para>4</para>
+                        </entry>
+                        <entry>
+                          <para>0b0000 Never Used</para>
+                          <para>0b0100 Random Generated</para>
+                          <para>All other values are reserved</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>Random Bits</para>
+                        </entry>
+                        <entry>
+                          <para>6:4 - 7:7</para>
+                        </entry>
+                        <entry>
+                          <para>12</para>
+                        </entry>
+                        <entry>
+                          <para>Random Bits</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>Variant</para>
+                        </entry>
+                        <entry>
+                          <para>8:0-1</para>
+                        </entry>
+                        <entry>
+                          <para>2</para>
+                        </entry>
+                        <entry>
+                          <para>0b10 DCE Variant UUID</para>
+                          <para>All other values are reserved</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>Random Bits</para>
+                        </entry>
+                        <entry>
+                          <para>8:2 - 15:7</para>
+                        </entry>
+                        <entry>
+                          <para>62</para>
+                        </entry>
+                        <entry>
+                          <para>Random Bits</para>
+                        </entry>
+                      </row>
+                    </tbody>
+                  </tgroup>
+                </table>
+
+                
+                <para>For the GET_PARTNER_UUID subfunction (See <xref linkend="LoPAR.Virtualization"/>), the data is 
+                represented as 16 bytes as described in <xref linkend="dbdoclet.50569332_20419"/>.</para>
+                <para>For the ibm,partition-uuid property, the data is represented as a string of 
+                hexadecimal characters, with hyphens added for readability.
+                Hexadecimal values a through f are lower case. An example of the string 
+                representation of the UUID is 648a9ca6-1fb4-4f7e-9436-14d015f3dd74</para>
               </listitem>
   			  </varlistentry>
         </variablelist>
@@ -2261,7 +2502,7 @@
                   <para>0</para>
                 </entry>
                 <entry>
-                  <para>Ignore 1</para>
+                  <para>Ignore<superscript><xref linkend="note.ignore" xrefstyle="select: nopage" /></superscript></para>
                 </entry>
               </row>
               <row>
@@ -2269,7 +2510,7 @@
                   <para>1</para>
                 </entry>
                 <entry>
-                  <para>Cessation Policy 2</para>
+                  <para>Cessation Policy<superscript><xref linkend="note.cessation" xrefstyle="select: nopage" /></superscript></para>
                 </entry>
               </row>
               <row>
@@ -2414,7 +2655,7 @@
                   <para>0</para>
                 </entry>
                 <entry>
-                  <para>Ignore 1</para>
+                  <para>Ignore<superscript><xref linkend="note.ignore" xrefstyle="select: nopage" /></superscript></para>
                 </entry>
               </row>
               <row>
@@ -2545,10 +2786,7 @@
                   <para>0-31</para>
                 </entry>
                 <entry>
-                  <para>Minimum size of RMA in MB
-                  <emphasis>
-                    <xref linkend="dbdoclet.50569368_24293" />
-                  </emphasis></para>
+                  <para>Minimum size of RMA in MB<superscript><xref linkend="dbdoclet.50569368_24293" xrefstyle="select: nopage" /></superscript></para>
                   <para>(total bytes = N*(2**20))</para>
                 </entry>
               </row>
@@ -2575,10 +2813,7 @@
                 </entry>
                 <entry>
                   <para>RMA size =&gt; M% * Partition_memory_size where M is the
-                  value of this 8 bit field
-                  <emphasis>
-                    <xref linkend="dbdoclet.50569368_24293" />
-                  </emphasis></para>
+                  value of this 8 bit field<superscript><xref linkend="dbdoclet.50569368_24293" xrefstyle="select: nopage" /></superscript></para>
                 </entry>
               </row>
               <row>
@@ -2611,7 +2846,7 @@
                 </entry>
                 <entry morerows="16">
                   <para>3</para>
-                  <para>IBM PowerPC Server Processor Options6</para>
+                  <para>IBM PowerPC Server Processor Options<superscript><xref linkend="note.opt6" xrefstyle="select: nopage" /></superscript></para>
                 </entry>
                 <entry morerows="7">
                   <para>1</para>
@@ -2620,7 +2855,7 @@
                   <para>0</para>
                 </entry>
                 <entry>
-                  <para>Ignore 1</para>
+                  <para>Ignore<superscript><xref linkend="note.ignore" xrefstyle="select: nopage" /></superscript></para>
                 </entry>
               </row>
               <row>
@@ -2628,7 +2863,7 @@
                   <para>1</para>
                 </entry>
                 <entry>
-                  <para>Cessation Policy 2</para>
+                  <para>Cessation Policy<superscript><xref linkend="note.cessation" xrefstyle="select: nopage" /></superscript></para>
                 </entry>
               </row>
               <row>
@@ -2755,20 +2990,24 @@
                   <para>1</para>
                 </entry>
                 <entry>
-                  <para>Cessation Policy 2</para>
+                  <para>Cessation Policy<superscript><xref linkend="note.cessation" xrefstyle="select: nopage" /></superscript></para>
                 </entry>
               </row>
               <row>
                 <entry>
                   <para>2</para>
                 </entry>
-                <entry morerows="5">
-                  <para>Reserved for Expansion (0b0)</para>
+                <entry>
+                  <para>ibm,change-msi busy: If set, the client program supports RTAS 
+                  ibm,change-msi returning a -2 (Call again) or 990x (Extended delay)</para>
                 </entry>
               </row>
               <row>
                 <entry>
                   <para>3</para>
+                </entry>
+                <entry morerows="4">
+                  <para>Reserved for Expansion (0b0)</para>
                 </entry>
               </row>
               <row>
@@ -2817,7 +3056,7 @@
                 </entry>
                 <entry morerows="18">
                   <para>5</para>
-                  <para>LoPAR or OF Options 5</para>
+                  <para>LoPAR or OF Options<superscript><xref linkend="note.opt5" xrefstyle="select: nopage" /></superscript></para>
                 </entry>
                 <entry morerows="7">
                   <para>1</para>
@@ -2826,7 +3065,7 @@
                   <para>0</para>
                 </entry>
                 <entry>
-                  <para>Ignore 1</para>
+                  <para>Ignore<superscript><xref linkend="note.ignore" xrefstyle="select: nopage" /></superscript></para>
                 </entry>
               </row>
               <row>
@@ -2834,21 +3073,24 @@
                   <para>1</para>
                 </entry>
                 <entry>
-                  <para>Cessation Policy 2</para>
+                  <para>Cessation Policy<superscript><xref linkend="note.cessation" xrefstyle="select: nopage" /></superscript></para>
                 </entry>
               </row>
               <row>
                 <entry>
                   <para>2</para>
                 </entry>
-                <entry morerows="5">
-                  <para>Reserved for Expansion (0b0)</para>
-                  <para>&#160;</para>
+                <entry>
+                  <para>64 bit PE TCEs : If set, the client program supports <emphasis>ibm,query-pe-dma-window</emphasis> 
+                  returning a 64-bit value for PE TCEs</para>
                 </entry>
               </row>
               <row>
                 <entry>
                   <para>3</para>
+                </entry>
+                <entry morerows="4">
+                  <para>Reserved for Expansion (0b0)</para>
                 </entry>
               </row>
               <row>
@@ -2881,7 +3123,7 @@
                 <entry>
                   <para>Logical Partitioning: If set the client program supports
                   logical partitioning and associated hcall()s; else the client
-                  program shall be run with the hypervisor bit on.7</para>
+                  program shall be run with the hypervisor bit on.<superscript><xref linkend="note.hypervisor" xrefstyle="select: nopage" /></superscript></para>
                 </entry>
               </row>
               <row>
@@ -2923,7 +3165,7 @@
                   <para>4</para>
                 </entry>
                 <entry>
-                  <para>Alpha Partition 4</para>
+                  <para>Alpha Partition<superscript><xref linkend="note.alpha" xrefstyle="select: nopage" /></superscript></para>
                 </entry>
               </row>
               <row>
@@ -2965,8 +3207,7 @@
                   value indicates that the client supports the I/O Super Page
                   Option (Support of &gt;4K I/O pages) (Includes extensions to
                   H_MIGRATE_DMA for &gt;4K I/O pages and &gt;256 xlates). 
-                  <xref linkend="LoPAR.Virtualization" />.</para>
-                  <para>&#160;</para>
+                  See <xref linkend="LoPAR.Virtualization" />.</para>
                   <para>In the 
                   <emphasis role="bold"><literal>ibm,architecture-vec-5</literal></emphasis> property of the 
                   <emphasis role="bold"><literal>/chosen</literal></emphasis> node, a non-zero value indicates
@@ -2981,13 +3222,12 @@
                 <entry>
                   <para>On input to ibm,client-architecture-support this field
                   shall be zero.</para>
-                  <para>&#160;</para>
                   <para>In the 
                   <emphasis role="bold"><literal>ibm,architecture-vec-5</literal></emphasis> property of the 
                   <emphasis role="bold"><literal>/chosen</literal></emphasis> node, this field represents the
                   implementation dependent number of xlates entries supported per
                   migration operation as: 256 * 2**N. 
-                  <xref linkend="LoPAR.Virtualization" />.</para>
+                  See <xref linkend="LoPAR.Virtualization" />.</para>
                 </entry>
               </row>
               <row>
@@ -2997,23 +3237,22 @@
                 <entry>
                   <para>On input to ibm,client-architecture-support this field
                   shall be zero.</para>
-                  <para>&#160;</para>
                   <para>In the 
                   <emphasis role="bold"><literal>ibm,architecture-vec-5</literal></emphasis> property of the 
                   <emphasis role="bold"><literal>/chosen</literal></emphasis> node, this field represents the
                   implementation dependent number of simultaneous migration
                   options supported as: 2**N. 
-                  <xref linkend="LoPAR.Virtualization" />.</para>
+                  See <xref linkend="LoPAR.Virtualization" />.</para>
                 </entry>
               </row>
               <row>
-                <entry morerows="20">
+                <entry morerows="26">
                   <para>Base</para>
                   <para>&#160;</para>
                 </entry>
-                <entry morerows="20">
+                <entry morerows="26">
                   <para>5</para>
-                  <para>LoPAR or OF Options 5</para>
+                  <para>LoPAR or OF Options<superscript><xref linkend="note.opt5" xrefstyle="select: nopage" /></superscript></para>
                   <para>&#160;</para>
                 </entry>
                 <entry morerows="3">
@@ -3038,8 +3277,7 @@
                 </entry>
                 <entry>
                   <para>The value of 1 enables the Extended Cooperative Memory
-                  Over-commit</para>
-                  <para>Option</para>
+                  Over-commit Option</para>
                 </entry>
               </row>
               <row>
@@ -3087,7 +3325,7 @@
                 </entry>
               </row>
               <row>
-                <entry morerows="6">
+                <entry morerows="8">
                   <para>6</para>
                 </entry>
                 <entry nameend="c5" namest="c4">
@@ -3125,7 +3363,7 @@
                   <para>3</para>
                 </entry>
                 <entry>
-                  <para>Enable Universlly Unique IDentifier Option (UUID)</para>
+                  <para>Reserved for Expansion</para>
                 </entry>
               </row>
               <row>
@@ -3138,7 +3376,24 @@
               </row>
               <row>
                 <entry>
-                  <para>5-7</para>
+                  <para>5</para>
+                </entry>
+                <entry>
+                  <para>Enable Hotplug Interrupts<?linebreak?>
+                  See Hot Plug Events in <xref linkend="LoPAR.Error" />.</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>6</para>
+                </entry>
+                <entry>
+                  <para>Enable Support for Multiple Hotplug Slots per PHB</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>7</para>
                 </entry>
                 <entry>
                   <para>Reserved for Expansion</para>
@@ -3171,8 +3426,8 @@
                   <para>9-12</para>
                 </entry>
                 <entry nameend="c5" namest="c4">
-                  <para>Max Processors Supported</para>
-                  <para>(For legacy support, if this byte is not present the
+                  <para>Max Processors Supported<?linebreak?>
+                  (For legacy support, if this byte is not present the
                   partition is limited to a maximum of 64 processors)</para>
                 </entry>
               </row>
@@ -3195,29 +3450,58 @@
                 </entry>
                 <entry>
                   <para>Highest Base LoPAR Level Supported as the binary
-                  contents of 13.14</para>
-                  <para>(i.e. level 4.15 would be encoded as 0x040F)</para>
+                  contents of 13.14<?linebreak?>
+                  (i.e. level 4.15 would be encoded as 0x040F)</para>
+                </entry>
+              </row>
+              <row>
+                <entry morerows="4">
+                  <para>15-16</para>
+                </entry>
+                <entry nameend="c5" namest="c4">
+                  <para>Memory Reference Instrumentation</para>
                 </entry>
               </row>
               <row>
                 <entry>
-                  <para>15-16</para>
+                  <para>0</para>
                 </entry>
                 <entry>
-                  <para>&#160;</para>
+                  <para>Reference History Array</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>1</para>
+                </entry>
+                <entry>
+                  <para>Access Rate Array</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>2</para>
+                </entry>
+                <entry>
+                  <para>Affinity Domain Access Log</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>3-15</para>
                 </entry>
                 <entry>
                   <para>Reserved for Expansion</para>
                 </entry>
               </row>
               <row>
-                <entry>
+                <entry morerows="9">
                   <para>Base</para>
                   <para>&#160;</para>
                 </entry>
-                <entry>
+                <entry morerows="9">
                   <para>5</para>
-                  <para>LoPAR or OF Options 5</para>
+                  <para>LoPAR or OF Options<superscript><xref linkend="note.opt5" xrefstyle="select: nopage" /></superscript></para>
                   <para>&#160;</para>
                 </entry>
                 <entry morerows="4">
@@ -3230,12 +3514,6 @@
               </row>
               <row>
                 <entry>
-                  <para>&#160;</para>
-                </entry>
-                <entry>
-                  <para>&#160;</para>
-                </entry>
-                <entry>
                   <para>0</para>
                 </entry>
                 <entry>
@@ -3243,12 +3521,6 @@
                 </entry>
               </row>
               <row>
-                <entry>
-                  <para>&#160;</para>
-                </entry>
-                <entry>
-                  <para>&#160;</para>
-                </entry>
                 <entry>
                   <para>1</para>
                 </entry>
@@ -3258,12 +3530,6 @@
               </row>
               <row>
                 <entry>
-                  <para>&#160;</para>
-                </entry>
-                <entry>
-                  <para>&#160;</para>
-                </entry>
-                <entry>
                   <para>2</para>
                 </entry>
                 <entry>
@@ -3271,12 +3537,6 @@
                 </entry>
               </row>
               <row>
-                <entry>
-                  <para>&#160;</para>
-                </entry>
-                <entry>
-                  <para>&#160;</para>
-                </entry>
                 <entry>
                   <para>3-31</para>
                 </entry>
@@ -3286,12 +3546,6 @@
               </row>
               <row>
                 <entry>
-                  <para>&#160;</para>
-                </entry>
-                <entry>
-                  <para>&#160;</para>
-                </entry>
-                <entry>
                   <para>21</para>
                 </entry>
                 <entry>
@@ -3299,27 +3553,56 @@
                 </entry>
                 <entry>
                   <para>Sub-Processor Representation Level --</para>
-                  <para>Defined Values:</para>
-                  <para>&#160;</para>
-                  <para>0: Sub-Processors not supported</para>
-                  <para>1: 1,2,or 4 Sub-Processors supported</para>
-                  <para>2-255 Reserved</para>
+                  <para>Defined Values:<?linebreak?>
+                  0: Sub-Processors not supported<?linebreak?>
+                  1: 1,2,or 4 Sub-Processors supported<?linebreak?>
+                  2-255 Reserved</para>
+                </entry>
+              </row>
+              <row>
+                <entry morerows="2">
+                  <para>22</para>
+                </entry>
+                <entry>
+                  <para>0</para>
+                </entry>
+                <entry>
+                  <para>If set the client program supports the 
+                  <emphasis role="bold"><literal>&#8220;ibm,dynamic-memory-v2&#8221;</literal></emphasis> 
+                  property in the 
+                  <emphasis role="bold"><literal>&#8220;ibm,dynamic-reconfiguration-memory&#8221;</literal></emphasis> 
+                  node and it may be presented in the device tree; 
+                  else, the <emphasis role="bold"><literal>&#8220;ibm,dynamic-memory&#8221;</literal></emphasis> 
+                  property shall be represented.</para>
                 </entry>
               </row>
               <row>
                 <entry>
-                  <para>&#160;</para>
+                  <para>1</para>
                 </entry>
                 <entry>
-                  <para>&#160;</para>
+                  <para>If set the client program supports the 
+                  <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis> 
+                  property definition and it may be presented in the device tree; 
+                  else, the <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis>, 
+                  <emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis>, 
+                  <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis>, and 
+                  <emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis> properies shall be presented.</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>2-7</para>
                 </entry>
                 <entry>
-                  <para>22-256</para>
+                  <para>Reserved for Expansion</para>
                 </entry>
+              </row>
+              <row>
                 <entry>
-                  <para>&#160;</para>
+                  <para>23-256</para>
                 </entry>
-                <entry>
+                <entry nameend="c5" namest="c4">
                   <para>Reserved for Expansion</para>
                 </entry>
               </row>
@@ -3436,11 +3719,11 @@
                 </entry>
                 <entry>
                   <para>OS Name: Represents the name of the client OS. Defined
-                  values include:</para>
-                  <para>0x0: Reserved</para>
-                  <para>0x1: AIX</para>
-                  <para>0x2: Linux</para>
-                  <para>0x3-0xFF: Reserved for Expansion</para>
+                  values include:<?linebreak?>
+                  0x0: Reserved<?linebreak?>
+                  0x1: AIX<?linebreak?>
+                  0x2: Linux<?linebreak?>
+                  0x3-0xFF: Reserved for Expansion</para>
                 </entry>
               </row>
               <row>
@@ -3496,7 +3779,7 @@
         <para><emphasis  role="bold">Notes:</emphasis></para>
         
         <orderedlist>		      
-          <listitem>
+          <listitem xml:id="note.ignore">
             <para>The Ignore Policy bit indicates that the client program assumes
             all responsibility for the options represented by the option vector. The
             firmware is to configure the platform at the highest level consistent
@@ -3506,7 +3789,7 @@
             care).</para>
           </listitem>
   
-          <listitem>
+          <listitem xml:id="note.cessation">
             <para>The Cessation Policy Bit determines if the partition continues
             to run if the platform must operate with an option enabled that is not
             explicitly supported by the client program as represented by the option
@@ -3553,7 +3836,7 @@
             <emphasis>memory</emphasis> property.</para>
           </listitem>
   
-          <listitem>
+          <listitem xml:id="note.alpha">
             <para>The Alpha flag only applies to the first partition of a non HMC
             managed system and activates overrides to the partition's I/O resource
             allocation as defined in the partition definition.</para>
@@ -3589,7 +3872,7 @@
             </itemizedlist>		      
           </listitem>
   
-          <listitem>
+          <listitem xml:id="note.opt5">
             <para>Given that the Ignore policy bit is off and the partition
             continues to run, the options and values presented in by this option
             vector and supported/chosen by the platform firmware are reported in the 
@@ -3597,7 +3880,7 @@
             <emphasis role="bold"><literal>/chosen</literal></emphasis> node.</para>
           </listitem>
   
-          <listitem>
+          <listitem xml:id="note.opt6">
             <para>Option vector number 1 &#8220;PowerPC Server Processor
             Architecture Level&#8221; and the property that reports the chosen value
             (i.e., 
@@ -3614,7 +3897,7 @@
             processor support still exceeds the most restrictive case.</para>
           </listitem>
   
-          <listitem>
+          <listitem xml:id="note.hypervisor">
             <para>If a client program does not support logical partitioning no
             other client programs may be running simultaneously on the platform. The
             platform may impose further restrictions beyond the scope of LoPAR. If
@@ -3651,7 +3934,7 @@
                   <emphasis>prop-encoded-array</emphasis>: A string, encoded as with 
                   <emphasis role="bold"><literal>encode-string</literal></emphasis>.</para>
                   <para>The value of this property shall be 
-                  <emphasis role="bold"><literal>&#8220;rom&#8221;</literal></emphasis>.</para>
+                  <literal>&#8220;rom&#8221;</literal>.</para>
                 </listitem>
     			  </varlistentry>
     
@@ -3967,7 +4250,7 @@
                 <emphasis>prop-encoded-array</emphasis>: A string, encoded as with 
                 <emphasis role="bold"><literal>encode-string</literal></emphasis>.</para>
                 <para>The value of this property shall be 
-                <emphasis role="bold"><literal>&#8220;rtas&#8221;</literal></emphasis>.</para>
+                <literal>&#8220;rtas&#8221;</literal>.</para>
               </listitem>
   			  </varlistentry>
   
@@ -4573,7 +4856,7 @@
                 <emphasis>property name</emphasis> indicating the platform supports the 
                 <emphasis>ibm,change-msi</emphasis> RTAS call with 
                 <emphasis>Number of Outputs</emphasis> equal to 4 and 
-                <emphasis>Functions</emphasis> 3 and 4.</para>
+                <emphasis>Functions</emphasis> 3, 4, and 5.</para>
                 <para>
                 <emphasis>prop-encoded-array</emphasis>: &lt;none&gt;</para>
               </listitem>
@@ -4830,7 +5113,8 @@
               
           
       <para>To support dynamic addition and removal of processors, the /cpus
-      node contains the properties: 
+      node contains either the 
+      <emphasis>ibm,drc-info</emphasis> property or the following set of four properties: 
       <emphasis>ibm,drc-types</emphasis> (cpu),
       <emphasis>ibm,drc-indexes ibm,drc-names</emphasis> and 
       <emphasis>ibm,drc-power-domains</emphasis> (-1's). These properties have
@@ -5051,7 +5335,8 @@
         numbers if it expects to make subsequent use of the any RTAS PCI
         configuration access services.</para>
         <para>To support dynamic addition and removal of PHBs, the / node
-        contains the properties: 
+        contains either the 
+        <emphasis>ibm,drc-info</emphasis> property or the following set of four properties: 
         <emphasis>ibm,drc-types</emphasis> (phb),
         <emphasis>ibm,drc-indexes ibm,drc-names</emphasis> and 
         <emphasis>ibm,drc-power-domains</emphasis> (-1's). These properties have
@@ -5232,15 +5517,23 @@
                   <para><emphasis>property name</emphasis> indicates the collection of PCI Express
                   link-speed capabilities and measurements at the PE below the PHB.</para>
                   <para><emphasis>prop-encoded-array</emphasis>: 2 integers encoded with 
-                  <emphasis role="bold"><literal>encode-int</literal></emphasis>. The format of each integer is identical
-                  to the link speed encodings defined in the PCI Express Capability
-                  Structure chapter of the 
-                  <xref linkend="dbdoclet.50569387_66784" />. In the 2.0 version of that
-                  specification, it defines 0x1 = 2.5 GT/s and 0x2 = 5.0 GT/s.</para>
-                  <para>The first integer represents the maximum PCI Express link-speed at
-                  the Partitionable Endpoint.</para>
-                  <para>The second integer represents the actual PCI Express link-speed at
-                  the Partitionable Endpoint.</para>
+                  <emphasis role="bold"><literal>encode-int</literal></emphasis>. The value of each integer is 
+                  based on which bit is set to reflect link speed according to the Supported Link Speed Vector 
+                  segment of the Link Capabilities 2 Register as defined in the PCI Express Capability Structure 
+                  chapter of the <xref linkend="dbdoclet.50569387_66784" />. In the 3.0 version of that
+                  specification, the supported values are 0x1 (bit 0) =  2.5 GT/s, 0x2 (bit 1) = 5.0 GT/s, and 0x4 (bit 2) = 8.0 GT/s.</para>
+                </listitem>
+    			  </varlistentry>
+      
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;ibm,max-rtce-mappings&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para><emphasis>property name</emphasis>: for platforms that support the hcall-migrate function 
+                  set and more than a single Redirected RDMA mapping per virtual TCE, this property indicates 
+                  that there are limits to the number if such multiple Redirected RDMA mappings when used 
+                  by children of this PHB as indicated by the property value.</para>
+                  <para><emphasis>prop-encoded-array</emphasis>: Maximum number of Redirected RTCE mappings encoded as with 
+                  <emphasis role="bold"><literal>encode-int</literal></emphasis>.</para>
                 </listitem>
     			  </varlistentry>
           </variablelist>
@@ -5420,8 +5713,8 @@
                   <listitem>
                     <para><emphasis>property name</emphasis> indicates why this PHB's 
                     <emphasis role="bold"><literal>&#8220;status&#8221;</literal></emphasis> property contains the value of 
-                    <emphasis role="bold"><literal>&#8220;reserved&#8221;</literal></emphasis> or 
-                    <emphasis role="bold"><literal>&#8220;reserved-uninitialized&#8221;</literal></emphasis>.</para>
+                    <literal>&#8220;reserved&#8221;</literal> or 
+                    <literal>&#8220;reserved-uninitialized&#8221;</literal>.</para>
                     <para><emphasis>prop-encoded-array</emphasis>: Text string, encoded as with 
                     <emphasis role="bold"><literal>encode-string</literal></emphasis>.</para>
                     <para>The property value, when present, can have the values specified in 
@@ -5716,7 +6009,8 @@
       <emphasis>memory</emphasis> node that includes dynamic reconfiguration
       (DR) properties or by an entry in <emphasis role="bold"><literal>/ibm,dynamic-reconfiguration-memory</literal></emphasis> nodes.</para>
       <para>To support dynamic addition and removal of regions, the / node
-      contains the properties: 
+      contains either the 
+      <emphasis>ibm,drc-info</emphasis> property or the following set of four properties: 
       <emphasis>ibm,drc-types</emphasis> (MEM),
       <emphasis>ibm,drc-indexes ibm,drc-names</emphasis> and 
       <emphasis>ibm,drc-power-domains</emphasis> (-1's). These properties have
@@ -5917,7 +6211,7 @@
                 <para>The following bits in the &#8220;flags word&#8221; above are
                 defined.</para>
           
-                <table frame="all" pgwide="1">
+                <table frame="all" pgwide="1" xml:id="table_flag_word">
                   <title>Flag Word</title>
                   <tgroup cols="3">
                     <colspec colname="c1" colwidth="20*" align="center" />
@@ -6024,10 +6318,14 @@
                         <entry>
                           <para>If b'0', the DRC field of 
                           <emphasis role="bold"><literal>&#8220;ibm,dynamic-memory&#8221;</literal></emphasis> property
-                          is valid.</para>
+                          is valid or the DRC values for the set of  
+                          <emphasis role="bold"><literal>&#8220;ibm,dynamic-memory-v2&#8221;</literal></emphasis>  
+                          property are valid.</para>
                           <para>If b'1', the DRC field of 
                           <emphasis role="bold"><literal>&#8220;ibm,dynamic-memory&#8221;</literal></emphasis> property
-                          is invalid.</para>
+                          is invalid or the DRC values for the set of  
+                          <emphasis role="bold"><literal>&#8220;ibm,dynamic-memory-v2&#8221;</literal></emphasis>  
+                          property are invalid.</para>
                         </entry>
                       </row>
                       <row>
@@ -6040,10 +6338,10 @@
                         <entry>
                           <para>If b'0', the Associativity List Index field of 
                           <emphasis role="bold"><literal>&#8220;ibm,dynamic-memory&#8221;</literal></emphasis> property
-                          is valid.</para>
+                          or <emphasis role="bold"><literal>&#8220;ibm,dynamic-memory-v2&#8221;</literal></emphasis> is valid.</para>
                           <para>If b'1', the Associativity List Index field of 
                           <emphasis role="bold"><literal>&#8220;ibm,dynamic-memory&#8221;</literal></emphasis> property
-                          is invalid.</para>
+                          or <emphasis role="bold"><literal>&#8220;ibm,dynamic-memory-v2&#8221;</literal></emphasis> is invalid.</para>
                         </entry>
                       </row>
                       <row>
@@ -6068,6 +6366,40 @@
               </listitem>
   			  </varlistentry>
   
+          <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;ibm,dynamic-memory-v2&#8221;</literal></emphasis></term>
+            
+            <listitem>
+              <para><emphasis>property name</emphasis> that defines memory subject to dynamic 
+              reconfiguration with data in version 2 format.</para>
+              
+              <para><emphasis>prop-encoded-array</emphasis>: The number N of LMB set entries, encoded with
+              <emphasis role="bold"><literal>encode-int</literal></emphasis>, 
+              followed by N LMB set entries.</para>
+              
+              <para>The <emphasis>number-of-sequential-lmbs</emphasis> encoded with 
+              <emphasis role="bold"><literal>encode-int</literal></emphasis>. 
+              The number of LMBs in the set.</para>
+              
+              <para>The <emphasis>starting-logical-address</emphasis> encoded with 
+              <emphasis role="bold"><literal>encode-phys</literal></emphasis>. 
+              The logical address of the first LMB in the set.</para>
+              
+              <para>The <emphasis>starting-drc-index</emphasis> encoded with 
+              <emphasis role="bold"><literal>encode-int</literal></emphasis>. 
+              The drc-index of the first LMB in the set.</para>
+              
+              <para>The <emphasis>associativity-index</emphasis> encoded with 
+              <emphasis role="bold"><literal>encode-int</literal></emphasis>. 
+              All LMBs within the set share the same associativity.</para>
+              
+              <para>The <emphasis>flags</emphasis> word encoded with 
+              <emphasis role="bold"><literal>encode-int</literal></emphasis>. 
+              All LMBs within the set share the same flag value. The bits in the flags word are defined in 
+              <xref linkend="table_flag_word" />.</para>
+            </listitem>
+          </varlistentry>
+          
           <varlistentry>
             <term><emphasis role="bold"><literal>&#8220;ibm,memory-flags-mask&#8221;</literal></emphasis></term>
               <listitem>
@@ -6145,7 +6477,7 @@
                 <para><emphasis>prop-encoded-array</emphasis>: A string, encoded as with 
                 <emphasis role="bold"><literal>encode-string</literal></emphasis>.</para>
                 <para>The value of this property shall be 
-                <emphasis role="bold"><literal>&#8220;memory-controller&#8221;</literal></emphasis>.</para>
+                <literal>&#8220;memory-controller&#8221;</literal>.</para>
               </listitem>
   			  </varlistentry>
   
@@ -6454,7 +6786,7 @@
                   <para><emphasis>prop-encoded-array</emphasis>: A string, encoded as with 
                   <emphasis role="bold"><literal>encode-string</literal></emphasis>.</para>
                   <para>The value of this string shall be 
-                  <emphasis role="bold"><literal>&#8220;interrupt-controller&#8221;</literal></emphasis>.</para>
+                  <literal>&#8220;interrupt-controller&#8221;</literal>.</para>
                 </listitem>
     			  </varlistentry>
     
@@ -6467,7 +6799,7 @@
                   <para><emphasis>prop-encoded-array</emphasis>: A string, encoded as with 
                   <emphasis role="bold"><literal>encode-string</literal></emphasis>.</para>
                   <para>The value of this property shall be 
-                  <emphasis role="bold"><literal>&#8220;PowerPC-External-Interrupt-Presentation&#8221;</literal></emphasis>.</para>
+                  <literal>&#8220;PowerPC-External-Interrupt-Presentation&#8221;</literal>.</para>
                 </listitem>
     			  </varlistentry>
     
@@ -6609,7 +6941,7 @@
                   <para><emphasis>prop-encoded-array</emphasis>: A string, encoded as with 
                   <emphasis role="bold"><literal>encode-string</literal></emphasis>.</para>
                   <para>The value of this string shall be 
-                  <emphasis role="bold"><literal>&#8220;interrupt-controller&#8221;</literal></emphasis>.</para>
+                  <literal>&#8220;interrupt-controller&#8221;</literal>.</para>
                 </listitem>
     			  </varlistentry>
     
@@ -6622,12 +6954,10 @@
                   <para><emphasis>prop-encoded-array</emphasis>: A string, encoded as with 
                   <emphasis role="bold"><literal>encode-string</literal></emphasis>.</para>
                   <para>The value of this property shall be one of the following:</para>
-                  <para>
-                  <emphasis role="bold"><literal>&#8220;PowerPC-LSI-Source&#8221;</literal></emphasis>.</para>
-                  <para>For Level Sensitive Interrupt source controllers.</para>
-                  <para>
-                  <emphasis role="bold"><literal>&#8220;PowerPC-MSI-Source&#8221;</literal></emphasis>.</para>
-                  <para>For Message Sensitive Interrupt source controllers such as used
+                  <para><literal>&#8220;PowerPC-LSI-Source&#8221;</literal><?linebreak?>
+                  For Level Sensitive Interrupt source controllers.</para>
+                  <para><literal>&#8220;PowerPC-MSI-Source&#8221;</literal><?linebreak?>
+                  For Message Sensitive Interrupt source controllers such as used
                   with PCI MSI.</para>
                 </listitem>
     			  </varlistentry>
@@ -7088,7 +7418,7 @@
               <para><emphasis>prop-encoded-array</emphasis>: A string, encoded as with 
               <emphasis role="bold"><literal>encode-string</literal></emphasis>.</para>
               <para>The value of this string shall be 
-              <emphasis role="bold"><literal>&#8220;event-sources&#8221;</literal></emphasis>.</para>
+              <literal>&#8220;event-sources&#8221;</literal>.</para>
               <para>When events are reported as virtual interrupts there shall be a
               node of 
               <emphasis role="bold"><literal>device_type
@@ -7179,7 +7509,7 @@
                   <emphasis>prop-encoded-array</emphasis>: A string, encoded as with 
                   <emphasis role="bold"><literal>encode-string</literal></emphasis>.</para>
                   <para>The value of this string shall be 
-                  <emphasis role="bold"><literal>&#8220;internal-error&#8221;</literal></emphasis>.</para>
+                  <literal>&#8220;internal-error&#8221;</literal>.</para>
                 </listitem>
     			  </varlistentry>
           </variablelist>
@@ -7202,7 +7532,7 @@
                   <para><emphasis>prop-encoded-array</emphasis>: A string, encoded as with 
                   <emphasis role="bold"><literal>encode-string</literal></emphasis>.</para>
                   <para>The value of this string shall be 
-                  <emphasis role="bold"><literal>&#8220;epow-events&#8221;</literal></emphasis>.</para>
+                  <literal>&#8220;epow-events&#8221;</literal>.</para>
                 </listitem>
     			  </varlistentry>
           </variablelist>
@@ -7215,7 +7545,7 @@
           <para>The presence of the node indicates that all or some of the function
           has been implemented and will be reported using an interrupt.</para>
           <para>
-          <emphasis role="bold"><literal>&#8220;name&#8221;</literal></emphasis> S</para>
+          <emphasis role="bold"><literal>&#8220;name&#8221;</literal></emphasis></para>
           <para>Standard
           <emphasis>property name</emphasis> that denotes the I/O sub-system
           events.</para>
@@ -7223,10 +7553,34 @@
           <emphasis>prop-encoded-array</emphasis>: A string, encoded as with 
           <emphasis role="bold"><literal>encode-string</literal></emphasis>.</para>
           <para>The value of this string shall be 
-          <emphasis role="bold"><literal>&#8220;ibm,io-events&#8221;</literal></emphasis>.</para>
+          <literal>&#8220;ibm,io-events&#8221;</literal>.</para>
           
         </section>
 
+      </section>
+      
+      <section>
+        <title>hot-plug-events</title>
+        
+          <para>The presence of the node indicates that all or some of the function 
+          has been implemented and will be reported using an interrupt. </para>
+
+          <variablelist>
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;name&#8221;</literal></emphasis></term>
+              <listitem>
+                <para>Standard
+                <emphasis>property name</emphasis> that denotes the hot-plug
+                events.</para>
+                <para>
+                <emphasis>prop-encoded-array</emphasis>: A string, encoded as with 
+                <emphasis role="bold"><literal>encode-string</literal></emphasis>.</para>
+                <para>The value of this string shall be 
+                <literal>&#8220;hot-plug-events&#8221;</literal>.</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        
       </section>
       
     </section>
@@ -7250,7 +7604,7 @@
               <para><emphasis>prop-encoded-array</emphasis>: A string, encoded as with 
               <emphasis role="bold"><literal>encode-string</literal></emphasis>.</para>
               <para>The value of this string shall be 
-              <emphasis role="bold"><literal>&#8220;reserved&#8221;</literal></emphasis>.</para>
+              <literal>&#8220;reserved&#8221;</literal>.</para>
             </listitem>
 			  </varlistentry>
 
@@ -7263,7 +7617,7 @@
               <emphasis>prop-encoded-array</emphasis>: Text string, encoded as with 
               <emphasis role="bold"><literal>encode-string</literal></emphasis>.</para>
               <para>The value of this property shall be 
-              <emphasis role="bold"><literal>&#8220;reserved&#8221;</literal></emphasis>.</para>
+              <literal>&#8220;reserved&#8221;</literal>.</para>
             </listitem>
 			  </varlistentry>
 
@@ -7575,6 +7929,50 @@
                 then used to determine which ILLAN options are implemented.</para>
                 <para><emphasis>prop-encoded-array</emphasis>: None, this is a name only
                 property.</para>
+              </listitem>
+  			  </varlistentry>
+  			  
+  			  <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;ibm,vf-loc-code&#8221;</literal></emphasis></term>
+              <listitem>
+                <para>Vendor unique <emphasis>property name</emphasis> indicating the physical device 
+                virtual function upon which the vnic-server runs. The value is that of the 
+                <emphasis role="bold"><literal>&#8220;ibm,loc-code&#8221;</literal></emphasis>  
+                property of the physical device virtual function.</para>
+                <para><emphasis>prop-encoded-array</emphasis>: an arbitrary number of strings, encoded as with
+                <emphasis role="bold"><literal>encode-string</literal></emphasis>.</para>
+              </listitem>
+  			  </varlistentry>
+
+  			  <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;ibm,vnic-mode&#8221;</literal></emphasis></term>
+              <listitem>
+                <para>Vendor unique <emphasis>property name</emphasis> that represents the operational 
+                mode in which the vnic-server runs.</para>
+                <para><emphasis>prop-encoded-array</emphasis>: a single byte, encoded as with
+                <emphasis role="bold"><literal>encode-bytes</literal></emphasis>.</para>
+                <para>Defined values:</para>
+                <itemizedlist>
+                  <listitem>
+                    <para>0: backing device is dedicated to one VNIC client</para>
+                  </listitem>
+                  <listitem>
+                    <para>1: backing device is shared by multiple VNIC clients</para>
+                  </listitem>
+                  <listitem>
+                    <para>2-255: reserved</para>
+                  </listitem>
+                </itemizedlist>
+              </listitem>
+  			  </varlistentry>
+
+  			  <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;ibm,vnic-client-mac&#8221;</literal></emphasis></term>
+              <listitem>
+                <para>Vendor unique <emphasis>property name</emphasis> that represents the MAC 
+                address of a given vNIC server's client.</para>
+                <para><emphasis>prop-encoded-array</emphasis>: 6 bytes, encoded as with
+                <emphasis role="bold"><literal>encode-bytes</literal></emphasis>.</para>
               </listitem>
   			  </varlistentry>
         </variablelist>
@@ -8009,6 +8407,11 @@
                 <para><emphasis role="bold"><literal>ibm,asym-encryption-v#</literal></emphasis> Asymmetric
                 encryption/decryption engine</para>
               </listitem>
+              
+              <listitem>
+                <para><emphasis role="bold"><literal>ibm,memory-utilization-instrumentation-v#</literal></emphasis> Memory
+                usage information</para>
+              </listitem>
             </itemizedlist>		      
           </listitem>
           
@@ -8156,6 +8559,178 @@
   			  </varlistentry>
         </variablelist>
         
+        <itemizedlist>
+          <listitem>
+            <para>For the memory utilization instrumentation facility node the following properties are defined:</para>
+          </listitem>
+        </itemizedlist>
+
+        <variablelist>
+          <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;ibm,mui-associativity-mapping&#8221;</literal></emphasis></term>
+              <listitem>
+                <para><emphasis>property name</emphasis> to define the mapping between Memory Usage 
+                Instrumentation Affinity Log Array entries and their associated associativity strings.</para>
+                <para><emphasis>property encoded array</emphasis>: An integer (L) encoded as with
+                <emphasis role="bold"><literal>encode-int</literal></emphasis> followed by L sets ALA map entries.</para>
+                <para>Each ALA map entry consisting of:</para>
+                <itemizedlist>
+                  <listitem>
+                    <para>An integer (ALAentry) encoded as with
+                    <emphasis role="bold"><literal>encode-int</literal></emphasis>
+                    as would be found in the affinity_log record for the return buffer 
+                    from the H_RETURN_PAGEINFO hcall() followed by;</para>
+                  </listitem>
+                  
+                  <listitem>
+                    <para>An integer (M) encoded as with 
+                    <emphasis role="bold"><literal>encode-int</literal></emphasis>
+                    that represents the type of source of the reference
+                    (defined values are presented below). Sources of a general 
+                    type are grouped together, so that if the
+                    client program does not recognize a given specific type, 
+                    it can still categorize via the more general
+                    type of source:</para>
+                    
+                    <itemizedlist spacing="compact">
+                      <listitem>
+                        <para>0-100,000,000 CPU</para>
+                      </listitem>
+                      
+                      <listitem>
+                        <para>100,000,001 – 200,000,000 I/O Bridge</para>
+                      </listitem>
+
+                      <listitem>
+                        <para>200,000,001 – 300,000,000 Platform Service Device</para>
+                      </listitem>
+
+                      <listitem>
+                        <para>All other values reserved (may be grouped together as an unknown source type).</para>
+                      </listitem>
+                    </itemizedlist>
+                    <para>Followed by:</para>
+                  </listitem>
+
+                  <listitem>
+                    <para>An integer (N) encoded as with 
+                    <emphasis role="bold"><literal>encode-int</literal></emphasis>
+                    followed by N associativity lists.</para>
+                  </listitem>
+
+                  <listitem>
+                    <para>Each associativity list consisting of a number of entries integer (P) encoded as with 
+                    <emphasis role="bold"><literal>encode-int</literal></emphasis>
+                    followed by P integers encoded as with 
+                    <emphasis role="bold"><literal>encode-int</literal></emphasis>
+                    each representing an associativity
+                    domain number.</para>
+                  </listitem>
+                </itemizedlist>
+              </listitem>
+  			  </varlistentry>
+  			  
+          <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;ibm,mui-ranges&#8221;</literal></emphasis></term>
+              <listitem>
+                <para><emphasis>property name</emphasis> to define the implementation specific 
+                ranges of memory utilization instrumentationmeasures.</para>
+                
+                <para><emphasis>property encoded array</emphasis>: An integer (N) encoded as with 
+                encode-int 
+                which communicates the number of pairs of range values, each being an integer encoded as with 
+                encode-int 
+                which represent the implementation limits of a given measure.  See 
+                <xref linkend="table_mui_range_limits" />
+                for details. The reader is to ignore values pairs beyond those it was designed to use. 
+                If the value of N is zero the MUI measures are not available.</para>
+              </listitem>
+  			  </varlistentry>
+  			</variablelist>
+
+        <table xml:id="table_mui_range_limits">
+          <?dbhtml table-width="75%" ?>
+          <?dbfo table-width="75%" ?>
+          <title><emphasis role="bold"><literal>&#8220;ibm,mui-associativity-mapping&#8221;</literal></emphasis> range limits</title>
+          <tgroup cols="3">
+            <colspec colname="c1" colwidth="10*" align="center" />
+            <colspec colname="c2" colwidth="20*" align="center" />
+            <colspec colname="c3" colwidth="70*" />
+            <thead>
+              <row>
+                <entry>
+                  <para>Pair #</para>
+                </entry>
+                <entry>
+                  <para>&#160;</para>
+                </entry>
+                <entry>
+                  <para>&#160;</para>
+                </entry>
+              </row>
+            </thead>
+            <tbody valign="middle">
+              <row>
+                <entry>
+                  <para>1</para>
+                </entry>
+                <entry>
+                  <para>MIN/MAX</para>
+                </entry>
+                <entry>
+                  <para>The minimum and maximum supported value of the HUC field 
+                  which is the power of 2 multiplier of microseconds that defines the 
+                  History Bit Array update period.</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>2</para>
+                </entry>
+                <entry>
+                  <para>0/MAX</para>
+                </entry>
+                <entry>
+                  <para>The number of bits implemented in the HBA.</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>3</para>
+                </entry>
+                <entry>
+                  <para>0/MAX</para>
+                </entry>
+                <entry>
+                  <para>Access rate in accesses per millisecond.</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>4</para>
+                </entry>
+                <entry>
+                  <para>0/MAX</para>
+                </entry>
+                <entry>
+                  <para>Page Age; the MAX value is the number of Page Age Granules 
+                  which saturates the page age counter.</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>5</para>
+                </entry>
+                <entry>
+                  <para>0/MAX</para>
+                </entry>
+                <entry>
+                  <para>Remote Reference; the MAX value is the number of implemented ALA entries.</para>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
       </section>
       
     </section>
@@ -9580,8 +10155,9 @@
             ibm,dynamic-reconfiguration-memory representation of reconfigurable
             memory may be used. The default value 0x00000000 indicates the new
             definition may not be used. The value 0x00000001 indicates the new
-            definition may be used. All other values are reserved for future
-            use.</para>
+            definition may be used. The value 0x00000001 indicates the original version of the new definition may be used. 
+            The value 0x00000002 indicates the version 2 of the new definition may be used. 
+            All other values are reserved for future use.</para>
             <para>The
             <emphasis role="bold"><literal>ns.large-page-ready</literal></emphasis> field is a flag which indicates
             if the partition OS is prepared to support large pages. The default value

@@ -31,7 +31,9 @@
     <para>The register save area is an area in the partition&#8217;s memory
     used to preserve the registers for the active CPUs during a firmware
     assisted dump. The location and size of this area is specified by the
-    partition when firmware assisted dump. The minimum size will be sent to the
+    partition when firmware assisted dumpwhen it registers for firmware
+    assisted dump using the <xref linkend="dbdoclet.50569332_67111" />. 
+    The minimum size will be sent to the
     partition in the PFDS KDUMP node.</para>
     <para>The register save is a semi-free format list of registers for each
     CPU. Each list of registers for a CPU starts with &#8220;CPUSTRT&#8221; and
@@ -56,6 +58,14 @@
         sorted order with no other interleaving values. All other registers are not
         required to be in any specific order (To make debug easier they will most
         likely be placed in ascending ASCII identifier order)</para>
+      </listitem>
+      
+      <listitem>
+        <para>If the CPU is in a Transactional Memory operating mode such 
+        that there is a valid register check point, the contents of that register 
+        checkpoint is included with register identifiers starting with “X-”, see 
+        <xref linkend="table_identifiers_supported" />,
+        else the checkpoint registers are not included.</para>
       </listitem>
     </orderedlist>		      
     
@@ -426,13 +436,13 @@
       </tgroup>
     </table>
     <para>&#160;</para>
-    <table frame="all" pgwide="1">
+    <table frame="all" pgwide="1" xml:id="table_identifiers_supported">
       <title>Identifiers Supported in Version 0x0 of the
       Table</title>
       <tgroup cols="3">
-        <colspec colname="c1" colwidth="33*" />
-        <colspec colname="c2" colwidth="33*" />
-        <colspec colname="c3" colwidth="33*" />
+        <colspec colname="c1" colwidth="25*" />
+        <colspec colname="c2" colwidth="25*" />
+        <colspec colname="c3" colwidth="50*" />
         <thead>
           <row>
             <entry>
@@ -3773,6 +3783,2173 @@
             </entry>
             <entry>
               <para>Fixed-Point Exception Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4653435200000000</para>
+            </entry>
+            <entry>
+              <para>FSCR</para>
+            </entry>
+            <entry>
+              <para>Facility Status and Control Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x5654420000000000 </para>
+            </entry>
+            <entry>
+              <para>VTB</para>
+            </entry>
+            <entry>
+              <para>Virtual Time Base</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4943000000000000</para>
+            </entry>
+            <entry>
+              <para>IC</para>
+            </entry>
+            <entry>
+              <para>Instruction Counter</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4441575230000000</para>
+            </entry>
+            <entry>
+              <para>DAWR0</para>
+            </entry>
+            <entry>
+              <para>Data Address Watchpoint Register 0</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4441575258300000</para>
+            </entry>
+            <entry>
+              <para>DAWRX0</para>
+            </entry>
+            <entry>
+              <para>Data Address Watchpoint Register Extension 0</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4349414252000000</para>
+            </entry>
+            <entry>
+              <para>CIABR</para>
+            </entry>
+            <entry>
+              <para>Completed Instruction Address Breakpoint Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x5441520000000000</para>
+            </entry>
+            <entry>
+              <para>TAR</para>
+            </entry>
+            <entry>
+              <para>Target Address Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4245534352000000</para>
+            </entry>
+            <entry>
+              <para>BESCR</para>
+            </entry>
+            <entry>
+              <para>Branch Event Status and Control Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4542424852000000</para>
+            </entry>
+            <entry>
+              <para>EBBHR</para>
+            </entry>
+            <entry>
+              <para>Event Based Branch Handler Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4542425252000000</para>
+            </entry>
+            <entry>
+              <para>EBBRR</para>
+            </entry>
+            <entry>
+              <para>Event Based Branch Return Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x49414D5200000000</para>
+            </entry>
+            <entry>
+              <para>IAMR</para>
+            </entry>
+            <entry>
+              <para>Instruction Authority Mask Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x5053504200000000</para>
+            </entry>
+            <entry>
+              <para>PSPB</para>
+            </entry>
+            <entry>
+              <para>Problem State Priority Boost Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x5250520000000000</para>
+            </entry>
+            <entry>
+              <para>RPR</para>
+            </entry>
+            <entry>
+              <para>Relative Priority Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4D4D435232000000</para>
+            </entry>
+            <entry>
+              <para>MMCR2</para>
+            </entry>
+            <entry>
+              <para>Monitor Mode Control Register 2</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x5349455200000000 </para>
+            </entry>
+            <entry>
+              <para>SIER</para>
+            </entry>
+            <entry>
+              <para>Sampled Instruction Event Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4450444553000000</para>
+            </entry>
+            <entry>
+              <para>DPDES</para>
+            </entry>
+            <entry>
+              <para>Directed Priviledged Doorbell State</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x5449520000000000</para>
+            </entry>
+            <entry>
+              <para>TIR</para>
+            </entry>
+            <entry>
+              <para>Physical Thread Identification Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x5449440000000000</para>
+            </entry>
+            <entry>
+              <para>TID</para>
+            </entry>
+            <entry>
+              <para>Logical Thread Identification Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x53504D4331000000</para>
+            </entry>
+            <entry>
+              <para>SPMC1</para>
+            </entry>
+            <entry>
+              <para>Supervisor Performance Monitor Counter 1</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x53504D4332000000 </para>
+            </entry>
+            <entry>
+              <para>SPMC2</para>
+            </entry>
+            <entry>
+              <para>Supervisor Performance Monitor Counter 2</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4D4D435253000000</para>
+            </entry>
+            <entry>
+              <para>MMCRS</para>
+            </entry>
+            <entry>
+              <para>Monitor Mode Control Register S</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x574F524300000000</para>
+            </entry>
+            <entry>
+              <para>WORC</para>
+            </entry>
+            <entry>
+              <para>Workload Optimization Register Core</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x574F525400000000</para>
+            </entry>
+            <entry>
+              <para>WORT</para>
+            </entry>
+            <entry>
+              <para>Workload Optimization Register Thread</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x5446484152000000</para>
+            </entry>
+            <entry>
+              <para>TFHAR</para>
+            </entry>
+            <entry>
+              <para>Transaction Failure Handler Address Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x5446494152000000</para>
+            </entry>
+            <entry>
+              <para>TFIAR</para>
+            </entry>
+            <entry>
+              <para>Transaction Failure Instruction Address Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x5445584153520000</para>
+            </entry>
+            <entry>
+              <para>TEXASR</para>
+            </entry>
+            <entry>
+              <para>Transaction Exception And Summary Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D435200000000</para>
+            </entry>
+            <entry>
+              <para>X-CR</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Condition Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565343520000</para>
+            </entry>
+            <entry>
+              <para>X-VSCR</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint VMX Status and Condition Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D584552000000</para>
+            </entry>
+            <entry>
+              <para>X-XER</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Fixed-Point Exception Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D4C5200000000</para>
+            </entry>
+            <entry>
+              <para>X-LR</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Link Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D435452000000</para>
+            </entry>
+            <entry>
+              <para>X-CTR</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Count Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D465053435200</para>
+            </entry>
+            <entry>
+              <para>X-FPSCR</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Floating Point Status and Control Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D414D52000000</para>
+            </entry>
+            <entry>
+              <para>X-AMR</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Authority Mask Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D545352000000</para>
+            </entry>
+            <entry>
+              <para>X-TSR</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Thread Status Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565253415645</para>
+            </entry>
+            <entry>
+              <para>X-VRSAVE</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint VR Save Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D445343520000</para>
+            </entry>
+            <entry>
+              <para>X-DSCR</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Depth Stream Control Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D544152000000</para>
+            </entry>
+            <entry>
+              <para>X-TAR</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Target Address Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052303000</para>
+            </entry>
+            <entry>
+              <para>X-GPR00</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 0</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052303100</para>
+            </entry>
+            <entry>
+              <para>X-GPR01</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 1</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052303200</para>
+            </entry>
+            <entry>
+              <para>X-GPR02</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 2</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052303300</para>
+            </entry>
+            <entry>
+              <para>X-GPR03</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 3</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052303400</para>
+            </entry>
+            <entry>
+              <para>X-GPR04</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 4</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052303500</para>
+            </entry>
+            <entry>
+              <para>X-GPR05</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 5</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052303600</para>
+            </entry>
+            <entry>
+              <para>X-GPR06</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 6</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052303700</para>
+            </entry>
+            <entry>
+              <para>X-GPR07</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 7</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052303800</para>
+            </entry>
+            <entry>
+              <para>X-GPR08</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 8</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052303900</para>
+            </entry>
+            <entry>
+              <para>X-GPR09</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 9</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052313000</para>
+            </entry>
+            <entry>
+              <para>X-GPR10</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 10</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052313100</para>
+            </entry>
+            <entry>
+              <para>X-GPR11</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 11</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052313200</para>
+            </entry>
+            <entry>
+              <para>X-GPR12</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 12</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052313300</para>
+            </entry>
+            <entry>
+              <para>X-GPR13</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 13</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052313400</para>
+            </entry>
+            <entry>
+              <para>X-GPR14</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 14</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052313500</para>
+            </entry>
+            <entry>
+              <para>X-GPR15</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 15</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052313600</para>
+            </entry>
+            <entry>
+              <para>X-GPR16</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 16</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052313700</para>
+            </entry>
+            <entry>
+              <para>X-GPR17</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 17</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052313800</para>
+            </entry>
+            <entry>
+              <para>X-GPR18</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 18</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052313900</para>
+            </entry>
+            <entry>
+              <para>X-GPR19</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 19</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052323000</para>
+            </entry>
+            <entry>
+              <para>X-GPR20</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 20</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052323100</para>
+            </entry>
+            <entry>
+              <para>X-GPR21</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 21</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052323200</para>
+            </entry>
+            <entry>
+              <para>X-GPR22</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 22</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052323300</para>
+            </entry>
+            <entry>
+              <para>X-GPR23</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 23</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052323400</para>
+            </entry>
+            <entry>
+              <para>X-GPR24</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 24</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052323500</para>
+            </entry>
+            <entry>
+              <para>X-GPR25</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 25</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052323600</para>
+            </entry>
+            <entry>
+              <para>X-GPR26</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 26</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052323700</para>
+            </entry>
+            <entry>
+              <para>X-GPR27</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 27</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052323800</para>
+            </entry>
+            <entry>
+              <para>X-GPR28</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 28</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052323900</para>
+            </entry>
+            <entry>
+              <para>X-GPR29</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 29</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052333000</para>
+            </entry>
+            <entry>
+              <para>X-GPR30</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 30</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D475052333100</para>
+            </entry>
+            <entry>
+              <para>X-GPR31</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint General Purpose Register 31</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565330304849</para>
+            </entry>
+            <entry>
+              <para>X-VS00HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 0 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565330304C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS00LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 0 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565330314849</para>
+            </entry>
+            <entry>
+              <para>X-VS01HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 1 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565330314C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS01LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 1 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565330324849</para>
+            </entry>
+            <entry>
+              <para>X-VS02HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 2 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565330324C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS02LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 2 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565330334849</para>
+            </entry>
+            <entry>
+              <para>X-VS03HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 3 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565330334C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS03LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 3 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565330344849</para>
+            </entry>
+            <entry>
+              <para>X-VS04HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 4 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565330344C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS04LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 4 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565330354849</para>
+            </entry>
+            <entry>
+              <para>X-VS05HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 5 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565330354C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS05LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 5 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565330364849</para>
+            </entry>
+            <entry>
+              <para>X-VS06HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 6 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565330364C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS06LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 6 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565330374849</para>
+            </entry>
+            <entry>
+              <para>X-VS07HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 7 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565330374C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS07LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 7 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565330384849</para>
+            </entry>
+            <entry>
+              <para>X-VS08HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 8 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565330384C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS08LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 8 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565330394849</para>
+            </entry>
+            <entry>
+              <para>X-VS09HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 9 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565330394C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS09LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 9 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565331304849</para>
+            </entry>
+            <entry>
+              <para>X-VS10HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 10 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565331304C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS10LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 10 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565331314849</para>
+            </entry>
+            <entry>
+              <para>X-VS11HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 11 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565331314C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS11LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 11 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565331324849</para>
+            </entry>
+            <entry>
+              <para>X-VS12HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 12 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565331324C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS12LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 12 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565331334849</para>
+            </entry>
+            <entry>
+              <para>X-VS13HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 13 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565331334C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS13LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 13 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565331344849</para>
+            </entry>
+            <entry>
+              <para>X-VS14HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 14 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565331344C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS14LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 14 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565331354849</para>
+            </entry>
+            <entry>
+              <para>X-VS15HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 15 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565331354C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS15LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 15 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565331364849</para>
+            </entry>
+            <entry>
+              <para>X-VS16HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 16 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565331364C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS16LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 16 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565331374849</para>
+            </entry>
+            <entry>
+              <para>X-VS17HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 17 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565331374C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS17LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 17 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565331384849</para>
+            </entry>
+            <entry>
+              <para>X-VS18HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 18 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565331384C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS18LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 18 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565331394849</para>
+            </entry>
+            <entry>
+              <para>X-VS19HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 19 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565331394C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS19LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 19 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565332304849</para>
+            </entry>
+            <entry>
+              <para>X-VS20HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 20 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565332304C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS20LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 20 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565332314849</para>
+            </entry>
+            <entry>
+              <para>X-VS21HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 21 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565332314C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS21LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 21 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565332324849</para>
+            </entry>
+            <entry>
+              <para>X-VS22HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 22 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565332324C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS22LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 22 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565332334849</para>
+            </entry>
+            <entry>
+              <para>X-VS23HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 23 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565332334C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS23LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 23 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565332344849</para>
+            </entry>
+            <entry>
+              <para>X-VS24HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 24 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565332344C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS24LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 24 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565332354849</para>
+            </entry>
+            <entry>
+              <para>X-VS25HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 25 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565332354C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS25LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 25 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565332364849</para>
+            </entry>
+            <entry>
+              <para>X-VS26HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 26 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565332364C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS26LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 26 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565332374849</para>
+            </entry>
+            <entry>
+              <para>X-VS27HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 27 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565332374C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS27LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 27 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565332384849</para>
+            </entry>
+            <entry>
+              <para>X-VS28HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 28 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565332384C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS28LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 28 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565332394849</para>
+            </entry>
+            <entry>
+              <para>X-VS29HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 29 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565332394C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS29LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 29 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565333304849</para>
+            </entry>
+            <entry>
+              <para>X-VS30HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 30 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565333304C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS30LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 30 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565333314849</para>
+            </entry>
+            <entry>
+              <para>X-VS31HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 31 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565333314C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS31LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 31 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565333324849</para>
+            </entry>
+            <entry>
+              <para>X-VS32HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 32 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565333324C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS32LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 32 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565333334849</para>
+            </entry>
+            <entry>
+              <para>X-VS33HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 33 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565333334C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS33LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 33 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565333344849</para>
+            </entry>
+            <entry>
+              <para>X-VS34HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 34 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565333344C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS34LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 34 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565333354849</para>
+            </entry>
+            <entry>
+              <para>X-VS35HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 35 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565333354C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS35LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 35 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565333364849</para>
+            </entry>
+            <entry>
+              <para>X-VS36HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 36 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565333364C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS36LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 36 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565333374849</para>
+            </entry>
+            <entry>
+              <para>X-VS37HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 37 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565333374C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS37LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 37 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565333384849</para>
+            </entry>
+            <entry>
+              <para>X-VS38HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 38 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565333384C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS38LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 38 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565333394849</para>
+            </entry>
+            <entry>
+              <para>X-VS39HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 39 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565333394C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS39LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 39 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565334304849</para>
+            </entry>
+            <entry>
+              <para>X-VS40HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 40 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565334304C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS40LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 40 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565334314849</para>
+            </entry>
+            <entry>
+              <para>X-VS41HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 41 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565334314C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS41LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 41 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565334324849</para>
+            </entry>
+            <entry>
+              <para>X-VS42HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 42 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565334324C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS42LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 42 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565334334849</para>
+            </entry>
+            <entry>
+              <para>X-VS43HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 43 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565334334C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS43LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 43 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565334344849</para>
+            </entry>
+            <entry>
+              <para>X-VS44HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 44 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565334344C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS44LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 44 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565334354849</para>
+            </entry>
+            <entry>
+              <para>X-VS45HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 45 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565334354C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS45LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 45 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565334364849</para>
+            </entry>
+            <entry>
+              <para>X-VS46HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 46 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565334364C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS46LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 46 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565334374849</para>
+            </entry>
+            <entry>
+              <para>X-VS47HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 47 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565334374C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS47LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 47 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565334384849</para>
+            </entry>
+            <entry>
+              <para>X-VS48HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 48 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565334384C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS48LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 48 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565334394849</para>
+            </entry>
+            <entry>
+              <para>X-VS49HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 49 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565334394C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS49LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 49 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565335304849</para>
+            </entry>
+            <entry>
+              <para>X-VS50HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 50 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565335304C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS50LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 50 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565335314849</para>
+            </entry>
+            <entry>
+              <para>X-VS51HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 51 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565355314C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS51LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 51 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565335324849</para>
+            </entry>
+            <entry>
+              <para>X-VS52HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 52 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565335324C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS52LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 52 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565335334849</para>
+            </entry>
+            <entry>
+              <para>X-VS53HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 53 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565335334C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS53LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 53 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565335344849</para>
+            </entry>
+            <entry>
+              <para>X-VS54HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 54 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565335344C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS54LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 54 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565335354849</para>
+            </entry>
+            <entry>
+              <para>X-VS55HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 55 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565335354C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS55LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 55 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565335364849</para>
+            </entry>
+            <entry>
+              <para>X-VS56HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 56 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565335364C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS56LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 56 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565335374849</para>
+            </entry>
+            <entry>
+              <para>X-VS57HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 57 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565335374C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS57LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 57 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565335384849</para>
+            </entry>
+            <entry>
+              <para>X-VS58HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 58 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565335384C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS58LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 58 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565335394849</para>
+            </entry>
+            <entry>
+              <para>X-VS59HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 59 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565335394C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS59LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 59 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565336304849</para>
+            </entry>
+            <entry>
+              <para>X-VS60HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 60 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565336304C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS60LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 60 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565336314849</para>
+            </entry>
+            <entry>
+              <para>X-VS61HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 61 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565336314C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS61LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 61 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565336324849</para>
+            </entry>
+            <entry>
+              <para>X-VS62HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 62 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565336324C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS62LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 62 Low</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565336334849</para>
+            </entry>
+            <entry>
+              <para>X-VS63HI</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 63 High</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x582D565336334C4F</para>
+            </entry>
+            <entry>
+              <para>X-VS63LO</para>
+            </entry>
+            <entry>
+              <para>Transaction Checkpoint Vector Scalar Register 63 Low</para>
             </entry>
           </row>
         </tbody>

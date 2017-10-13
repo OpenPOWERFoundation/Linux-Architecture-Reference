@@ -8793,23 +8793,39 @@
                 
                 <itemizedlist>		      
                   <listitem>
-                    <para>&#8220;MI&#8221; &lt;sp&gt; current-T-image &lt;sp&gt;
+                    <para>&#8220;MI&#8221;&lt;sp&gt; current-T-image &lt;sp&gt;
                     current-P-image &lt;0x0A&gt;</para>
                   </listitem>
                   
                   <listitem>
-                    <para>&#8220;MI&#8221; &lt;sp&gt; new-T-image &lt;sp&gt; new-P-image
+                    <para>&#8220;MI&#8221;&lt;sp&gt; new-T-image &lt;sp&gt; new-P-image
                     &lt;0x00&gt;</para>
                   </listitem>
                   
                   <listitem>
-                    <para>&#8220;ML&#8221; &lt;sp&gt; current-T-image
+                    <para>&#8220;ML&#8221;&lt;sp&gt; current-T-image
                     &lt;sp&gt; current-P-image &lt;0x0A&gt;</para>
                   </listitem>
                   
                   <listitem>
-                    <para>&#8220;ML&#8221; &lt;sp&gt; new-T-image &lt;sp&gt;
+                    <para>&#8220;ML&#8221;&lt;sp&gt; new-T-image &lt;sp&gt;
                     new-P-image &lt;0x00&gt;</para>
+                  </listitem>
+
+                  <listitem>
+                    <para>&#8220;MG&#8221;&lt;sp&gt;current-T-img-ga-date&lt;sp&gt;current-P-img-ga-date&lt;0x0A&gt;</para>
+                  </listitem>
+                  
+                  <listitem>
+                    <para>&#8220;MG&#8221;&lt;sp&gt;new-T-img-ga-date&lt;sp&gt;new-P-img-ga-date&lt;0x0A&gt;</para>
+                  </listitem>
+                  
+                  <listitem>
+                    <para>&#8220;MG&#8221;&lt;sp&gt;input-image-ga-date&lt;0x0A&gt;</para>
+                  </listitem>
+
+                  <listitem>
+                    <para>&#8220;ME&#8221;&lt;sp&gt;fw-service-entitlement-expiration-date&lt;0x00&gt;</para>
                   </listitem>
                 </itemizedlist>		      
                 
@@ -8913,6 +8929,16 @@
                         </entry>
                         <entry>
                           <para>T side will be updated with a downlevel image</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>7</para>
+                        </entry>
+                        <entry>
+                          <para>No update done, the candidate image's release date is later 
+                          than the system's firmware service entitlement date - service 
+                          warranty period has expired</para>
                         </entry>
                       </row>
                       <row>
@@ -11442,7 +11468,7 @@
           specifies that the platform implements the version of this RTAS call that
           allows 
           <emphasis>Number Outputs</emphasis> equal to 4 and 
-          <emphasis>Functions</emphasis> 3 and 4.</para>
+          <emphasis>Functions</emphasis> 3, 4 and 5.</para>
           <para>If the 
           <emphasis>ibm,change-msi</emphasis> RTAS call is made with 
           <emphasis>Number Outputs</emphasis> equal to 4 or with 
@@ -11475,8 +11501,7 @@
                   <xref linkend="dbdoclet.50569332_69854" />.</para>
             
                   <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_69854">
-                    <title>Argument Call Buffer 
-                    <emphasis>ibm,change-msi</emphasis></title>
+                    <title><emphasis>ibm,change-msi</emphasis> Argument Call Buffer</title>
                     <tgroup cols="3">
                       <colspec colname="c1" colwidth="33*" />
                       <colspec colname="c2" colwidth="33*" />
@@ -11607,6 +11632,11 @@
                             &#8220;ibm,change-msix-capable&#8221;</literal></emphasis> exists):
                             Request to set to a new number of MSI-X interrupts (including
                             set to 0)</para>
+                            <para>5: (Only valid if
+                            <emphasis role="bold"><literal>
+                            &#8220;ibm,change-msix-capable&#8221;</literal></emphasis> exists):
+                            Request to set to a new number of 32 bit MSI (including set to 0) 
+                            disregarding the adapter capability to support 64 bit MSI.</para>
                           </entry>
                         </row>
                         <row>
@@ -11620,8 +11650,7 @@
                             configuration address. A value of 0 is specified in order to
                             remove all MSIs for the PCI configuration address. This input
                             parameter is ignored by RTAS for 
-                            <emphasis>Function</emphasis> values other than 1, 3, or
-                            4.</para>
+                            <emphasis>Function</emphasis> values other than 1, 3, 4 or 5.</para>
                           </entry>
                         </row>
                         <row>
@@ -11942,6 +11971,13 @@
               available. In this case a second call to 
               <emphasis>ibm,change-msi</emphasis> to increase the number of interrupts
               may produce a greater number of interrupts.</para>
+            </listitem>
+    
+            <listitem>
+              <para>The platform will return a status -2 or 990x only when the OS 
+              indicates support. The OS indicates support via ibm,client-architecture-support, 
+              vector 4. See <xref linkend="LoPAR.DeviceTree" /> section on "Root Node Methods" 
+              for more information.</para>
             </listitem>
           </orderedlist>		      
           
@@ -18905,15 +18941,13 @@
                 <para>48</para>
               </entry>
               <entry>
-                <para>UUID</para>
+                <para>Reserved</para>
               </entry>
               <entry>
-                <para>16 Byte String</para>
+                <para>&#160;</para>
               </entry>
               <entry>
-                <para>
-                  <xref linkend="dbdoclet.50569332_97508" />
-                </para>
+                <para>&#160;</para>
               </entry>
               <entry>
                 <para>&#160;</para>
@@ -18921,7 +18955,130 @@
             </row>
             <row>
               <entry>
-                <para>&gt;48</para>
+                <para>49</para>
+              </entry>
+              <entry>
+                <para>Reserved</para>
+              </entry>
+              <entry>
+                <para>&#160;</para>
+              </entry>
+              <entry>
+                <para>&#160;</para>
+              </entry>
+              <entry>
+                <para>&#160;</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>50</para>
+              </entry>
+              <entry>
+                <para>TLB Block Invalidate Characteristics</para>
+              </entry>
+              <entry>
+                <para>Variable Length Series of Bytes</para>
+              </entry>
+              <entry>
+                <para>See <xref linkend="sec_tlb_block_invalidate" /></para>
+              </entry>
+              <entry>
+                <para>&#160;</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>51</para>
+              </entry>
+              <entry>
+                <para>Reserved</para>
+              </entry>
+              <entry>
+                <para>&#160;</para>
+              </entry>
+              <entry>
+                <para>&#160;</para>
+              </entry>
+              <entry>
+                <para>&#160;</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>52</para>
+              </entry>
+              <entry>
+                <para>Energy Management Tuning Parameters</para>
+              </entry>
+              <entry>
+                <para>Series of 8 byte entries of bytes encoding the tuning parameters supported by the system</para>
+              </entry>
+              <entry>
+                <para>See <xref linkend="sec_energy_management_tuning_parameters" /></para>
+              </entry>
+              <entry>
+                <para>Used by <emphasis>ibm,get-system-parameter</emphasis>; not supported for 
+                <emphasis>ibm,set-system-parameter</emphasis>.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>53</para>
+              </entry>
+              <entry>
+                <para>Firmware Service Expiration Date</para>
+              </entry>
+              <entry>
+                <para>This is the date a system's system firmware service warranty 
+                period expires. </para>
+              </entry>
+              <entry>
+                <para>8-character null-terminated ASCII string in YYYYMMDD format</para>
+              </entry>
+              <entry>
+                <para>Used by <emphasis>ibm,get-system-parameter</emphasis>; not supported for 
+                <emphasis>ibm,set-system-parameter</emphasis>.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>54</para>
+              </entry>
+              <entry>
+                <para>Firmware Service Entitlement Activation Key</para>
+              </entry>
+              <entry>
+                <para>This is the activation key used to set or extend a system's firmware service 
+                warranty period.</para>
+              </entry>
+              <entry>
+                <para>34-character null-terminated ASCII string key value</para>
+              </entry>
+              <entry>
+                <para>Used by ibm,set-system-parameter; not supported for ibm,get-system-parameter</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>55</para>
+              </entry>
+              <entry>
+                <para>LPAR Name</para>
+              </entry>
+              <entry>
+                <para>Logical Partition name</para>
+              </entry>
+              <entry>
+                <para>Null-terminated ASCII string</para>
+              </entry>
+              <entry>
+                <para>Used by ibm,set-system-parameter; not supported for ibm,get-system-parameter</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>&gt;55</para>
               </entry>
               <entry>
                 <para>Reserved</para>
@@ -24521,193 +24678,378 @@
                 
       </section>
       
-      <section xml:id="dbdoclet.50569332_97508">
-        <title>Universally Unique IDentifier</title>
+      <section xml:id="sec_tlb_block_invalidate">
+        <title>TLB Block Invalidate Characteristics</title>
         
-        <para>The Universally Unique IDentifier (UUID) option provides each
-        partition with a Universally Unique Identifier that is persisted by the
-        platform across partition reboots, reconfigurations, OS reinstalls,
-        partition migration, hibernation etc. The UUID is a 16 byte string of
-        format fields and random bits as defined in 
-        <xref linkend="dbdoclet.50569332_20419" />. The random bits are generated
-        in an implementation dependent manner to achieve a projected probability
-        of collision of not greater than one in 2**60.</para>
-  
-        <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_20419">
-          <title>UUID Format</title>
-          <tgroup cols="4">
-            <colspec colname="c1" colwidth="25*" />
-            <colspec colname="c2" colwidth="25*" />
-            <colspec colname="c3" colwidth="25*" />
-            <colspec colname="c4" colwidth="25*" />
-            <thead>
+        <para>The Block Invalidate option allows for the removal of multiple page table entries with a single platform wide TLB invalidate
+        sequence, providing significantly improved performance when removing a virtual memory object. The size of
+        the block (the number of consecutive virtual memory pages) that is processed by a single TLB invalidate sequence is
+        implementation dependent. This block size might also be dependent upon the page sizes of the TLB entries. This block
+        size represents the upper bound of the number of pages that may be processed in a single operation as for example a
+        single call to H_BLOCK_REMOVE. This system parameter provides the client code the characteristics of the implementation’s
+        TLB invalidate operations. The TLB Invalidate Characteristics return string is a variable length series of
+        bytes which contains one or more TLB Block Invalidate Specifiers as defined in Table 108‚ “TLB Block Invalidate
+        Characteristics Specifier Format‚” on page 253. If the implementation invalidates different sized blocks for different
+        page size encodings, there will be multiple “TLB Block Invalidate Characteristics Specifiers” within the returned
+        string.</para>
+        
+        <table xml:id="table_tlb_block_invalidate_format">
+          <title>TLB Block Invalidate Characteristics Specifier Format</title>
+          <tgroup cols="3">
+            <colspec colname="c1" colwidth="10*" align="center" />
+            <colspec colname="c2" colwidth="15*" align="center" />
+            <colspec colname="c3" colwidth="75*" />
+            <thead valign="middle">
               <row>
                 <entry>
-                  <para>
-                    <emphasis role="bold">Field</emphasis>
-                  </para>
+                  <para>Byte Offset</para>
                 </entry>
                 <entry>
-                  <para>
-                    <emphasis role="bold">Byte:Bit</emphasis>
-                  </para>
+                  <para>Bit Number in Byte</para>
                 </entry>
-                <entry>
-                  <para>
-                    <emphasis role="bold">Size (Bits)</emphasis>
-                  </para>
-                </entry>
-                <entry>
-                  <para>
-                    <emphasis role="bold">Values</emphasis>
-                  </para>
+                <entry align="center">
+                  <para>Description</para>
                 </entry>
               </row>
             </thead>
-            <tbody>
+            <tbody valign="middle">
               <row>
                 <entry>
-                  <para>Version</para>
+                  <para>0</para>
                 </entry>
                 <entry>
-                  <para>0:0</para>
+                  <para>0 - 7</para>
                 </entry>
+                <entry>
+                  <para>LOG base 2 of the TLB invalidate block size being specified</para>
+                </entry>
+              </row>
+              <row>
                 <entry>
                   <para>1</para>
                 </entry>
                 <entry>
-                  <para>0: Initial Version</para>
-                  <para>1: Reserved</para>
+                  <para>0 - 7</para>
+                </entry>
+                <entry>
+                  <para>Number of page sizes (N) that are supported for the specified TLB invalidate block size</para>
+                </entry>
+              </row>
+              <row>
+                <entry morerows="2">
+                  <para>2 - (N+1)</para>
+                </entry>
+                <entry>
+                  <para>0</para>
+                </entry>
+                <entry>
+                  <para>PTE “L” bit:<?linebreak?>
+                  0 = 4K page in a segment who’s base page size is 4K<?linebreak?>
+                  1 = page size and segment base size per bits 2 - 7</para>
                 </entry>
               </row>
               <row>
                 <entry>
-                  <para>Random Bits</para>
+                  <para>1</para>
                 </entry>
                 <entry>
-                  <para>0:1 thru 5:7</para>
-                </entry>
-                <entry>
-                  <para>47</para>
-                </entry>
-                <entry>
-                  <para>Random Bits</para>
+                  <para>Reserved</para>
                 </entry>
               </row>
               <row>
                 <entry>
-                  <para>Generation Method</para>
+                  <para>2 - 7</para>
                 </entry>
                 <entry>
-                  <para>6:0-3</para>
-                </entry>
-                <entry>
-                  <para>4</para>
-                </entry>
-                <entry>
-                  <para>0b0000 Never Used</para>
-                  <para>0b0100 Random Generated</para>
-                  <para>All other values are reserved</para>
-                </entry>
-              </row>
-              <row>
-                <entry>
-                  <para>Random Bits</para>
-                </entry>
-                <entry>
-                  <para>6:4 - 7:7</para>
-                </entry>
-                <entry>
-                  <para>12</para>
-                </entry>
-                <entry>
-                  <para>Random Bits</para>
-                </entry>
-              </row>
-              <row>
-                <entry>
-                  <para>Variant</para>
-                </entry>
-                <entry>
-                  <para>8:0-1</para>
-                </entry>
-                <entry>
-                  <para>2</para>
-                </entry>
-                <entry>
-                  <para>0b10 DCE Variant UUID</para>
-                  <para>All other values are reserved</para>
-                </entry>
-              </row>
-              <row>
-                <entry>
-                  <para>Random Bits</para>
-                </entry>
-                <entry>
-                  <para>8:2 - 15:7</para>
-                </entry>
-                <entry>
-                  <para>62</para>
-                </entry>
-                <entry>
-                  <para>Random Bits</para>
+                  <para>Encoded segment base page size and actual page size per 
+                  <xref linkend="dbdoclet.50569387_99718" /> Book IVa</para>
                 </entry>
               </row>
             </tbody>
           </tgroup>
         </table>
-  
+        
         <variablelist>
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_97508" 
+            <term><emphasis role="bold">R1-<xref linkend="sec_tlb_block_invalidate" 
             xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
               <listitem>
-                <para><emphasis role="bold">For the UUID option with the System Parameters
-                option:</emphasis> For the UUID system parameter, the 
-                <emphasis>ibm,get-system-parameter</emphasis> RTAS call must never return
-                a Status of -9002 (Not Authorized).</para>
+                <para><emphasis role="bold">For the Block Invalidate option with the 
+                System Parameters option:</emphasis> For the Block Invalidate system
+                parameter, the <emphasis>ibm,get-system-parameter</emphasis> RTAS call must 
+                never return a Status of -9002 (Not Authorized).</para>
               </listitem>
          	</varlistentry>
          	
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_97508" 
+            <term><emphasis role="bold">R1-<xref linkend="sec_tlb_block_invalidate" 
             xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
               <listitem>
-                <para><emphasis role="bold">For the UUID option with the System Parameters
-                option:</emphasis> If the UUID option is enabled for the partition, the
-                platform must provide in response to the 
-                <emphasis>ibm,getsystem-parameter</emphasis> for parameter token 48 the
-                calling partition unique 16 byte sting as described in 
-                <xref linkend="dbdoclet.50569332_20419" />.</para>
+                <para><emphasis role="bold">For the Block Invalidate option with the 
+                System Parameters option:</emphasis> If the Block Invalidate option 
+                is enabled for the partition, the platform must provide in response 
+                to the <emphasis>ibm,get-system-parameter</emphasis> for
+                parameter token 50 the one or more TLB Block Invalidate 
+                Specifiers for the calling partition as described in
+                <xref linkend="table_tlb_block_invalidate_format" />.</para>
               </listitem>
          	</varlistentry>
          	
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_97508" 
+            <term><emphasis role="bold">R1-<xref linkend="sec_tlb_block_invalidate" 
             xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
               <listitem>
-                <para><emphasis role="bold">For the UUID option with the System Parameters
-                option:</emphasis> If the UUID option is disabled for the
-                system/partition, the platform must provide in response to the 
-                <emphasis>ibm,get-system-parameter</emphasis> for parameter token 48 the
+                <para><emphasis role="bold">For the Block Invalidate option with the 
+                System Parameters option:</emphasis> If the Block Invalidate
+                option is disabled for the system/partition, the platform must 
+                provide in response to the <emphasis>ibm,get-system-parameter</emphasis> 
+                for parameter token 50 the two byte value 0x0000.</para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_tlb_block_invalidate" 
+            xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For the Block Invalidate option with the 
+                System Parameters option:</emphasis> For the Block Invalidate
+                system parameter, the <emphasis>ibm,get-system-parameter</emphasis>RTAS call must 
+                always return a Status of -9002 (Setting not allowed/authorized).</para>
+              </listitem>
+         	</varlistentry>
+        </variablelist>
+
+      </section>
+      
+      <section xml:id="sec_energy_management_tuning_parameters">
+        <title>Energy Management Tuning Parameters (EMTP)</title>
+        
+        <para>The energy management tuning parameters are reported. Each parameter occupies 
+        its own 8 byte self-defining entry. As many energy management tuning parameter entries 
+        as are supported by the system are reported, subject to the limitation of the buffer 
+        length. Each reported parameter entry is formatted per 
+        <xref linkend="table_format_emtp_entry" />.</para>
+        
+        <table xml:id="table_format_emtp_entry">
+          <title>Format of the Energy Management Tuning Parameter Entry</title>
+          <tgroup cols="8">
+            <colspec colname="c1" colwidth="12*" align="center" />
+            <colspec colname="c2" colwidth="12*" align="center" />
+            <colspec colname="c3" colwidth="12*" align="center" />
+            <colspec colname="c4" colwidth="12*" align="center" />
+            <colspec colname="c5" colwidth="12*" align="center" />
+            <colspec colname="c6" colwidth="12*" align="center" />
+            <colspec colname="c7" colwidth="12*" align="center" />
+            <colspec colname="c8" colwidth="12*" align="center" />
+            <thead valign="middle">
+              <row>
+                <entry><para>Byte 0</para></entry>
+                <entry><para>Byte 1</para></entry>
+                <entry><para>Byte 2</para></entry>
+                <entry><para>Byte 3</para></entry>
+                <entry><para>Byte 4</para></entry>
+                <entry><para>Byte 5</para></entry>
+                <entry><para>Byte 6</para></entry>
+                <entry><para>Byte 7</para></entry>
+              </row>
+            </thead>
+            <tbody valign="middle">
+              <row>
+                <entry>
+                  <para>Parameter Identifier<?linebreak?>See <xref linkend="table_definition_emtp_parms" /> 
+                  for definition values.</para>
+                </entry>
+                <entry>
+                  <para>Parameter Units<?linebreak?>See <xref linkend="table_definition_emtp_parm_unit_vals" /> 
+                  for definition values.</para>
+                </entry>
+                <entry namest="c3" nameend="c4">
+                  <para>Current<?linebreak?>Parameter Value</para>
+                </entry>
+                <entry namest="c5" nameend="c6">
+                  <para>Minimum<?linebreak?>Parameter Value</para>
+                </entry>
+                <entry namest="c7" nameend="c8">
+                  <para>Maximum<?linebreak?>Parameter Value</para>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+
+        <table xml:id="table_definition_emtp_parms">
+          <title>Definition of the Energy Management Tuning Parameters</title>
+          <tgroup cols="2">
+            <colspec colname="c1" colwidth="20*" align="center" />
+            <colspec colname="c2" colwidth="80*" />
+            <thead valign="middle">
+              <row>
+                <entry><para>Parameter ID</para></entry>
+                <entry align="center"><para>Definition</para></entry>
+              </row>
+            </thead>
+            <tbody valign="middle">
+              <row>
+                <entry><para>0x01</para></entry>
+                <entry><para>Utilization threshold for increasing frequency</para></entry>
+              </row>
+              <row>
+                <entry><para>0x02</para></entry>
+                <entry><para>Utilization threshold for decreasing frequency</para></entry>
+              </row>
+              <row>
+                <entry><para>0x03</para></entry>
+                <entry><para>Number of samples for computing utilization statistics</para></entry>
+              </row>
+              <row>
+                <entry><para>0x04</para></entry>
+                <entry><para>Step size for going up in frequency</para></entry>
+              </row>
+              <row>
+                <entry><para>0x05</para></entry>
+                <entry><para>Step size for going down in frequency</para></entry>
+              </row>
+              <row>
+                <entry><para>0x06</para></entry>
+                <entry><para>Delta percentage for determining active cores</para></entry>
+              </row>
+              <row>
+                <entry><para>0x07</para></entry>
+                <entry><para>Utilization threshold to determine active cores with slack</para></entry>
+              </row>
+              <row>
+                <entry><para>0x08</para></entry>
+                <entry><para>Enable/Disable frequency delta between cores</para></entry>
+              </row>
+              <row>
+                <entry><para>0x09</para></entry>
+                <entry><para>Maximum frequency delta between cores</para></entry>
+              </row>
+              <row>
+                <entry namest="c1" nameend="c2"><para>&#160;</para></entry>
+              </row>
+              <row>
+                <entry><para>0x50</para></entry>
+                <entry><para>Idle Power Saver enabled/disabled</para></entry>
+              </row>
+              <row>
+                <entry><para>0x51</para></entry>
+                <entry><para>Delay time to enter Idle Power Saver</para></entry>
+              </row>
+              <row>
+                <entry><para>0x52</para></entry>
+                <entry><para>Utilization threshold to enter Idle Power Saver</para></entry>
+              </row>
+              <row>
+                <entry><para>0x53</para></entry>
+                <entry><para>Delay time to exit Idle Power Saver</para></entry>
+              </row>
+              <row>
+                <entry><para>0x54</para></entry>
+                <entry><para>Utilization threshold to exit Idle Power Saver</para></entry>
+              </row>
+              <row>
+                <entry><para>&#160;</para></entry>
+                <entry>
+                  <para>All other Parameter ID Values are reserved, should calling software 
+                  encounter a parameter id value which was reserved at the time it was 
+                  written, it shall ignore the specific entry, and only that entry.</para>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+
+        <table xml:id="table_definition_emtp_parm_unit_vals">
+          <title>Definition of the Energy Management Parameter Unit Values</title>
+          <tgroup cols="2">
+            <colspec colname="c1" colwidth="20*" align="center" />
+            <colspec colname="c2" colwidth="80*" />
+            <thead valign="middle">
+              <row>
+                <entry><para>Parameter Units</para></entry>
+                <entry align="center"><para>Definition</para></entry>
+              </row>
+            </thead>
+            <tbody valign="middle">
+              <row>
+                <entry><para>0x00</para></entry>
+                <entry><para>Parameter can only be either 1 (enabled) or 0 (disabled)</para></entry>
+              </row>
+              <row>
+                <entry><para>0x01</para></entry>
+                <entry><para>Parameter is time in seconds i.e. 10 = 10 seconds</para></entry>
+              </row>
+              <row>
+                <entry><para>0x02</para></entry>
+                <entry><para>Parameter is a percentage i.e. 10 = 10%</para></entry>
+              </row>
+              <row>
+                <entry><para>0x03</para></entry>
+                <entry><para>Parameter is in 10ths of a percent i.e. 15 = 1.5%</para></entry>
+              </row>
+              <row>
+                <entry><para>0x04</para></entry>
+                <entry><para>Parameter is an integer</para></entry>
+              </row>
+              <row>
+                <entry><para>&#160;</para></entry>
+                <entry>
+                  <para>All other Parameter Unit Values are reserved, should calling software 
+                  encounter a parameter unit value which was reserved at the time it was 
+                  written, it shall ignore the specific entry, and only that entry.</para>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+
+        <variablelist>
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_energy_management_tuning_parameters" 
+            xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For the EMTP option with the System Parameters option:</emphasis>
+                For the EMTP system parameter, the <emphasis>ibm,get-system-parameter</emphasis> RTAS call 
+                must never return a Status of -9002 (Not Authorized).</para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_energy_management_tuning_parameters" 
+            xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For the EMTP option with the System Parameters option:</emphasis>
+                If the EMTP option is enabled for the partition, the platform must provide in response to the 
+                <emphasis>ibm,get-system-parameter</emphasis> for parameter token 52 the Energy Management 
+                Tuning Parameters for the calling system as described in this section.</para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_energy_management_tuning_parameters" 
+            xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For the EMTP option with the System Parameters option:</emphasis>
+                If the EMTP option is disabled for the system/partition, the platform must provide in 
+                response to the <emphasis>ibm,get-system-parameter</emphasis> for parameter token 52 the 
                 two byte value 0x0000.</para>
               </listitem>
          	</varlistentry>
          	
-         	<varlistentry xml:id="dbdoclet.50569332_64091">
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_97508" 
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_energy_management_tuning_parameters" 
             xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
               <listitem>
-                <para><emphasis role="bold">For the UUID option with the System Parameters
-                option:</emphasis> For the UUID system parameter, the 
-                <emphasis>ibm,set-system-parameter</emphasis> RTAS call must always return
-                a Status of -9002 (Setting not allowed/authorized).</para>
+                <para><emphasis role="bold">For the EMTP option with the System Parameters option:</emphasis>
+                For the EMTP system parameter, the <emphasis>ibm,set-system-parameter</emphasis> RTAS call 
+                must always return a Status of -9002 (Setting not allowed/authorized).</para>
               </listitem>
          	</varlistentry>
         </variablelist>
-  
+
       </section>
-    
+          
   </section>
 
   <xi:include href="sec_rtas_get_indices.xml"/>

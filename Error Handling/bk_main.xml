@@ -42,7 +42,7 @@
       <holder>OpenPOWER Foundation</holder>
     </copyright>
     <!-- TODO: Set the correct document releaseinfo -->
-    <releaseinfo>Revision 2.0_pre1</releaseinfo>
+    <releaseinfo>Revision 2.0_pre2</releaseinfo>
     <productname>OpenPOWER</productname>
     <pubdate/>
 
@@ -70,6 +70,105 @@
 
     <revhistory>
       <!-- TODO: Update as new revisions created -->
+      <revision>
+          <date>2017-10-11</date>
+          <revdescription>
+            <itemizedlist spacing="compact">
+              <listitem>
+                <para>Revision 2.0_pre2 - Updates to include latest PAPR ACRs (2.8) as follows:</para>
+                <itemizedlist spacing="compact">
+                  <listitem>
+                    <para>ISA 2.07 privileged doorbell extensions (9/16/2012)</para>
+                  </listitem>
+                  <listitem>
+                    <para>POWER ISA Name Change Category Vector.XOR to Vector.CRYPTO (11/4/2012)</para>
+                  </listitem>
+                  <listitem>
+                    <para>Enable Multiple Redirected RDMA mappings per page (3/5/2013)</para>
+                  </listitem>
+                  <listitem>
+                    <para>Add Block Invalidate Option (3/5/2013)</para>
+                  </listitem>
+                  <listitem>
+                    <para>Implementation Dependent Optimizations (3/13/2013)</para>
+                  </listitem>
+                  <listitem>
+                    <para>System Firmware Service Entitlement Date (Warranty Date) Check (4/3/2013)</para>
+                  </listitem>
+                  <listitem>
+                    <para>New Function for ibm,change-msi to specify 32 bit MSI (5/14/2013)</para>
+                  </listitem>
+                  <listitem>
+                    <para>Remove Client-Architecture-Support bit for UUID option (4/16/2013)</para>
+                  </listitem>
+                  <listitem>
+                    <para>AddClient Architecture Support bit for RTAS ibm,change-msi (5/28/2013)</para>
+                  </listitem>
+                  <listitem>
+                    <para>Add VNIC Server (5/24/2014)</para>
+                  </listitem>
+                  <listitem>
+                    <para>VPA changes for P8 (EBB) (5/24/2013)</para>
+                  </listitem>
+                  <listitem>
+                    <para>Add an hcall to clean up the entire MMU hashtable (11/20/2013)</para>
+                  </listitem>
+                  <listitem>
+                    <para>Add LPCR[ILE] support to H_SET_MODE (5/31/2013)</para>
+                  </listitem>
+                  <listitem>
+                    <para>New Root Node Properties (1/12/2016)</para>
+                  </listitem>
+                  <listitem>
+                    <para>Extended Firmware Assisted Dump for P8 Registers (1/24/2014)</para>
+                  </listitem>
+                  <listitem>
+                    <para>Sufficient H_COP_OP output buffer (6/21/2014)</para>
+                  </listitem>
+                  <listitem>
+                    <para>Extend H_SEND_LOGICAL_LAN for large send packets (6/29/2014)</para>
+                  </listitem>
+                  <listitem>
+                    <para>Extend H_GET_MPP_X reporting coalesced pages (8/24/2014)</para>
+                  </listitem>
+                  <listitem>
+                    <para>Update ibm,pcie-link-speed-stats property to support PCIe 3.0 link speeds (6/12/2015)</para>
+                  </listitem>
+                  <listitem>
+                    <para>Extend ibm,get-system-parameters RTAS to report Energy Management Tuning Parameters (3/18/2015)</para>
+                  </listitem>
+                  <listitem>
+                    <para>Additional System Parameters related to mgmt of FW Service Entitlement Warranty period (6/22/2015)</para>
+                  </listitem>
+                  <listitem>
+                    <para>Additional System Parameter to read LPAR Name string (10/7/2015)</para>
+                  </listitem>
+                  <listitem>
+                    <para>Redesign of properties for DRC information and dynamic memory (7/23/2015)</para>
+                  </listitem>
+                  <listitem>
+                    <para>Add additional logical loction code sections (3/4/2016)</para>
+                  </listitem>
+                  <listitem>
+                    <para>Add ibm,vnic-client-mac to support vNIC failover (2/29/2016)</para>
+                  </listitem>
+                  <listitem>
+                    <para>hcall for registering the process table (3/21/2016)</para>
+                  </listitem>
+                  <listitem>
+                    <para>New device tree property for UUID (3/21/2016)</para>
+                  </listitem>
+                  <listitem>
+                    <para>Changes for Hotplug RTAS Events (10/24/2016)</para>
+                  </listitem>
+                  <listitem>
+                    <para>Support 64-bit PE TCEs in ibm,query-pe-dma-window (7/14/2016)</para>
+                  </listitem>
+                </itemizedlist>
+              </listitem>
+            </itemizedlist>
+          </revdescription>
+      </revision>
       <revision>
           <date>2016-05-04</date>
           <revdescription>

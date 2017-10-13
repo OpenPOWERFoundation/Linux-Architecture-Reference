@@ -23,11 +23,19 @@
          
   <title>Hot Plug Events</title>
   
-  <para>Hot Plug Events, when implemented, are reported through the
-  event-scan RTAS call. These events are surfaced through the fixed
-  portions of the RTAS return value. (see 
-  <xref linkend="dbdoclet.50569337_21249"/>) Some parts of the system may
-  be modified without direct support from the OS.</para>
+  <para>Hot Plug Events, when implemented, are reported through 
+  either the event-scan RTAS call or a hotplug interrupt.</para>
+
+  <para>An OS that wants to be notified of hotplug events will need to 
+  set the appropriate arch-vector bit.  Look for the hot-plug-events 
+  node in the /event-sources node of the OF device tree (see 
+  <xref linkend="LoPAR.DeviceTree" />), enable the interrupts listed 
+  in its “interrupts” property and provide an interrupt handler to call 
+  check-exception when one of those interrupts are received.</para>
+
+  <para>When a hotplug event occurs, whether reported by check-exception 
+  or event-scan, RTAS will directly pass back the Hotplug Event Log as 
+  described in <xref linkend="table.error.hotplug" />.</para>
   
   <variablelist>
   

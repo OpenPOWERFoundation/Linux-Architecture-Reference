@@ -454,7 +454,7 @@
     </variablelist>
 
     <section xml:id="dbdoclet.50569332_30542">
-      <title>RTAS Call <emphasis>ibm,set-dynamic-indicator</emphasis></title>
+      <title><emphasis>ibm,set-dynamic-indicator</emphasis> RTAS Call</title>
       
       <para>This RTAS call behaves as the RTAS 
       <emphasis>set-indicator</emphasis> call, except that the instance of the
@@ -711,7 +711,7 @@
     </section>
     
     <section xml:id="dbdoclet.50569332_61055">
-      <title>RTAS Call <emphasis>ibm,get-dynamic-sensor-state</emphasis></title>
+      <title><emphasis>ibm,get-dynamic-sensor-state</emphasis> RTAS Call</title>
       <para>This RTAS call behaves as the RTAS 
       <emphasis>get-sensor-state</emphasis> call, except that the instance of
       the sensor is identified by a location code instead of a index.</para>
@@ -978,7 +978,7 @@
     </section>
     
     <section xml:id="dbdoclet.50569332_72964">
-      <title>RTAS Call <emphasis>ibm,get-vpd</emphasis></title>
+      <title><emphasis>ibm,get-vpd</emphasis> RTAS Call</title>
       <para>This RTAS call allows for collection of VPD that changes after OS
       boot time (after the initial reporting in the OF device tree). When this
       call is implemented, there is no overlap between what is reported in the
@@ -1853,7 +1853,7 @@
     </section>
     
     <section xml:id="dbdoclet.50569332_45918">
-      <title>RTAS Call <emphasis>ibm,suspend-me</emphasis></title>
+      <title><emphasis>ibm,suspend-me</emphasis> RTAS Call</title>
       <para>The 
       <emphasis>ibm,suspend-me</emphasis> RTAS call provides the calling OS the
       ability to suspend processing. Suspension of processing is required as
@@ -2504,7 +2504,7 @@
     </section>
     
     <section xml:id="dbdoclet.50569332_84414">
-      <title>RTAS Call <emphasis>ibm,update-nodes</emphasis></title>
+      <title><emphasis>ibm,update-nodes</emphasis> RTAS Call</title>
       
       <para>This RTAS call is used to determine which device tree nodes have
       changed due to a massive platform reconfiguration such as when the
@@ -2537,13 +2537,13 @@
         <listitem>
           <para>The opcode of 0x01 is used for deleted nodes -- the operands are
           the 
-          <emphasis>phandle</emphasis> values for the deleted nodes.</para>
+          <emphasis role="bold">phandle</emphasis> values for the deleted nodes.</para>
         </listitem>
         
         <listitem>
           <para>The opcode of 0x02 is used for updated nodes -- the operands are
           the 
-          <emphasis>phandle</emphasis> values for the updated nodes. The updated
+          <emphasis role="bold">phandle</emphasis> values for the updated nodes. The updated
           properties are obtained using the 
           <emphasis>ibm,update-properties</emphasis> RTAS call.</para>
         </listitem>
@@ -2551,11 +2551,11 @@
         <listitem>
           <para>The opcode of 0x03 is used for adding nodes -- the operands are
           pairs of 
-          <emphasis>phandle</emphasis> and 
-          <emphasis>ibm,drc-index</emphasis> values; the 
-          <emphasis>phandle</emphasis> value denotes the parent node of the node to
+          <emphasis role="bold">phandle</emphasis> and 
+          <emphasis role="bold">drc-index</emphasis> values; the 
+          <emphasis role="bold">phandle</emphasis> value denotes the parent node of the node to
           be added and the 
-          <emphasis>ibm,drc-index</emphasis> value is passed with the 
+          <emphasis role="bold">ibm,drc-index</emphasis> value is passed with the 
           <emphasis>ibm,configure-connector</emphasis> RTAS call to obtain the
           contents of the added node.</para>
         </listitem>
@@ -2565,8 +2565,8 @@
       (delete) operations (if any) are presented prior to all opcode 0x02
       (update) operations (if any), and finally any 0x03 (addition) operations
       are presented. The 
-      <emphasis>phandle</emphasis> operand values are the same 
-      <emphasis>phandle</emphasis> values as reported by the 
+      <emphasis role="bold">phandle</emphasis> operand values are the same 
+      <emphasis role="bold">phandle</emphasis> values as reported by the 
       <emphasis role="bold"><literal>&#8220;ibm,phandle&#8221;</literal></emphasis> property.</para>
 
       <variablelist>
@@ -2847,7 +2847,7 @@
               <para>The operands for opcode 0x01 in an 
               <emphasis>ibm,update-nodes</emphasis> RTAS call operation list must be the
               
-              <emphasis>phandle</emphasis> values for the deleted nodes.</para>
+              <emphasis role="bold">phandle</emphasis> values for the deleted nodes.</para>
             </listitem>
        	</varlistentry>
        	
@@ -2867,7 +2867,7 @@
             <listitem>
               <para>The operands for opcode 0x02 in an 
               <emphasis>ibm,update-nodes</emphasis> RTAS call operation list must be the
-              <emphasis>phandle</emphasis> values for the updated nodes that may be used
+              <emphasis role="bold">phandle</emphasis> values for the updated nodes that may be used
               as the 
               <emphasis>ibm,update-properties</emphasis> RTAS call argument to obtain
               the changed properties of the updated node.</para>
@@ -2890,8 +2890,8 @@
             <listitem>
               <para>The operands for opcode of 0x03 in an 
               <emphasis>ibm,update-nodes</emphasis> RTAS call operation list must be 
-              <emphasis>phandle</emphasis> and 
-              <emphasis>ibm,drc-index</emphasis> value pairs (each value being 4 bytes
+              <emphasis role="bold">phandle</emphasis> and 
+              <emphasis role="bold">drc-index</emphasis> value pairs (each value being 4 bytes
               on a natural boundary totalling 8 bytes for the pair) denoting the parent
               node of the added node and the 
               <emphasis>ibm,configure-connector</emphasis> RTAS call argument to obtain
@@ -3005,7 +3005,7 @@
                   </thead>
                   <tbody>
                     <row>
-                      <entry morerows="6">
+                      <entry morerows="7">
                         <para>Negative values: Platform Resource Reassignment events as
                         from 
                         <emphasis>event-scan</emphasis> RTAS</para>
@@ -3074,7 +3074,17 @@
                       </entry>
                     </row>
                     <row>
-                      <entry morerows="12">
+                      <entry>
+                        <para>
+                          <emphasis>ibm,memory-utilization_instrumentation-v#</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>0x01-0x03</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry morerows="13">
                         <para>1 Partition Migration / Hibernation</para>
                       </entry>
                       <entry>
@@ -3204,6 +3214,16 @@
                     </row>
                     <row>
                       <entry>
+                        <para>
+                          <emphasis>ibm,memory-utilization_instrumentation-v#</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>0x01-0x03</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
                         <para>2 Activate Firmware</para>
                       </entry>
                       <entry>
@@ -3225,7 +3245,7 @@
     </section>
     
     <section xml:id="dbdoclet.50569332_40069">
-      <title>TAS Call <emphasis>ibm,update-properties</emphasis></title>
+      <title><emphasis>ibm,update-properties</emphasis> RTAS Call</title>
       
       <para>This RTAS call is used to report updates to the properties changed
       due to a massive platform reconfiguration such as when the partition is
@@ -3251,8 +3271,7 @@
       the previous call.</para>
       <para>A single updated property value string may exceed the capacity of a
       single 4 K work area. In that case, the updated property value descriptor
-      for the property appears in the work area of multiple sequential calls to
-      
+      for the property appears in the work area of multiple sequential calls to     
       <emphasis>ibm,update-properties</emphasis> RTAS. When the updated property
       value descriptor contains the final data for the property value, the
       property string length field of the updated property value descriptor is
@@ -3414,7 +3433,7 @@
                     <row>
                       <entry>
                         <para>
-                        <emphasis>phandle</emphasis> of updated node containing updated
+                        <emphasis role="bold">phandle</emphasis> of updated node containing updated
                         properties to be reported (4 bytes)</para>
                       </entry>
                     </row>
@@ -3423,7 +3442,7 @@
                     <row>
                       <entry>
                         <para>0x00000000 (Indicates Initial call for specified 
-                        <emphasis>phandle</emphasis>)</para>
+                        <emphasis role="bold">phandle</emphasis>)</para>
                       </entry>
                     </row>
                     <row>
@@ -3474,7 +3493,7 @@
                     <row>
                       <entry>
                         <para>
-                        <emphasis>phandle</emphasis> of updated node containing updated
+                        <emphasis role="bold">phandle</emphasis> of updated node containing updated
                         properties to be reported.</para>
                       </entry>
                       <entry>
@@ -3600,7 +3619,7 @@
                     <row>
                       <entry>
                         <para>
-                        <emphasis>phandle</emphasis> of updated node containing updated
+                        <emphasis role="bold">phandle</emphasis> of updated node containing updated
                         properties to be reported (4 Bytes)</para>
                       </entry>
                     </row>
@@ -3670,7 +3689,7 @@
                   </thead>
                   <tbody>
                     <row>
-                      <entry morerows="5">
+                      <entry morerows="6">
                         <para>All negative values: Resource Reassignment events as from
                         event-scan RTAS</para>
                       </entry>
@@ -3678,7 +3697,7 @@
                         <para>/memory</para>
                       </entry>
                       <entry>
-                        <para>&#8220;ibm,associativity&#8221;</para>
+                        <para><emphasis role="bold"><literal>&#8220;ibm,associativity&#8221;</literal></emphasis></para>
                       </entry>
                     </row>
                     <row>
@@ -3686,7 +3705,8 @@
                         <para>ibm,dynamic-reconfiguration-memory</para>
                       </entry>
                       <entry>
-                        <para>&#8220;ibm,dynamic-memory&#8221;</para>
+                        <para><emphasis role="bold"><literal>&#8220;ibm,dynamic-memory&#8221;</literal></emphasis></para>
+                        <para><emphasis role="bold"><literal>&#8220;ibm,dynamic-memory-v2&#8221;</literal></emphasis></para>
                       </entry>
                     </row>
                     <row>
@@ -3700,7 +3720,7 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis>ibm,random-v#</emphasis>
+                          <emphasis role="bold"><literal>ibm,random-v#</literal></emphasis>
                         </para>
                       </entry>
                       <entry>
@@ -3710,7 +3730,7 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis>ibm,compression-v#</emphasis>
+                          <emphasis role="bold"><literal>ibm,compression-v#</literal></emphasis>
                         </para>
                       </entry>
                       <entry>
@@ -3720,7 +3740,7 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis>ibm,encryption-v#</emphasis>
+                          <emphasis role="bold"><literal>ibm,encryption-v#</literal></emphasis>
                         </para>
                       </entry>
                       <entry>
@@ -3728,12 +3748,22 @@
                       </entry>
                     </row>
                     <row>
-                      <entry morerows="29">
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>ibm,memory-utilization_instrumentation-v#</literal></emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>&lt;all&gt;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry morerows="31">
                         <para>1 Partition Migration / Hibernation</para>
                       </entry>
-                      <entry morerows="17">
+                      <entry morerows="18">
                         <para>
-                          <emphasis>root</emphasis>
+                          <emphasis role="bold"><literal>root</literal></emphasis>
                         </para>
                       </entry>
                       <entry>
@@ -3789,6 +3819,13 @@
                       <entry>
                         <para>
                           <emphasis role="bold"><literal>&#8220;ibm,partition-no&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis>
                         </para>
                       </entry>
                     </row>
@@ -3867,7 +3904,7 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis>openprom</emphasis>
+                          <emphasis role="bold"><literal>openprom</literal></emphasis>
                         </para>
                       </entry>
                       <entry>
@@ -3879,7 +3916,7 @@
                     <row>
                       <entry morerows="8">
                         <para>
-                          <emphasis>rtas</emphasis>
+                          <emphasis role="bold"><literal>rtas</literal></emphasis>
                         </para>
                       </entry>
                       <entry>
@@ -3950,9 +3987,9 @@
                       </entry>
                     </row>
                     <row>
-                      <entry>
+                      <entry morerows="1">
                         <para>
-                          <emphasis>vdevice</emphasis>
+                          <emphasis role="bold"><literal>vdevice</literal></emphasis>
                         </para>
                       </entry>
                       <entry>
@@ -3963,8 +4000,15 @@
                     </row>
                     <row>
                       <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
                         <para>children of the 
-                        <emphasis>vdevice</emphasis> node</para>
+                        <emphasis role="bold"><literal>vdevice</literal></emphasis> node</para>
                       </entry>
                       <entry>
                         <para>
@@ -3979,7 +4023,7 @@
                       </entry>
                       <entry morerows="20">
                         <para>
-                          <emphasis>cpu</emphasis>
+                          <emphasis role="bold"><literal>cpu</literal></emphasis>
                         </para>
                       </entry>
                       <entry>
@@ -4124,14 +4168,14 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis>"ibm,sub-processors"</emphasis>
+                          <emphasis role="bold"><literal>&#8220;ibm,sub-processors&#8221;</literal></emphasis>
                         </para>
                       </entry>
                     </row>
                     <row>
                       <entry morerows="4">
                         <para>
-                          <emphasis>cache</emphasis>
+                          <emphasis role="bold"><literal>cache</literal></emphasis>
                         </para>
                       </entry>
                       <entry>
@@ -4164,14 +4208,14 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis>l2-cache</emphasis>
+                          <emphasis role="bold"><literal>l2-cache</literal></emphasis>
                         </para>
                       </entry>
                     </row>
                     <row>
                       <entry>
                         <para>
-                          <emphasis>options</emphasis>
+                          <emphasis role="bold"><literal>options</literal></emphasis>
                         </para>
                       </entry>
                       <entry>
@@ -4183,7 +4227,7 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis>memory</emphasis>
+                          <emphasis role="bold"><literal>memory</literal></emphasis>
                         </para>
                       </entry>
                       <entry>
@@ -4195,28 +4239,29 @@
                     <row>
                       <entry morerows="2">
                         <para>
-                          <emphasis>ibm,dynamic-reconfiguration-memory</emphasis>
+                          <emphasis role="bold"><literal>ibm,dynamic-reconfiguration-memory</literal></emphasis>
                         </para>
                       </entry>
                       <entry>
-                        <para>&#8220;ibm,associativity-lookup-arrays&#8221;</para>
+                        <para><emphasis role="bold"><literal>&#8220;ibm,associativity-lookup-arrays&#8221;</literal></emphasis></para>
                       </entry>
                     </row>
                     <row>
                       <entry>
-                        <para>&#8220;ibm,dynamic-memory&#8221;</para>
+                        <para><emphasis role="bold"><literal>&#8220;ibm,dynamic-memory&#8221;</literal></emphasis></para>
+                        <para><emphasis role="bold"><literal>&#8220;ibm,dynamic-memory-v2&#8221;</literal></emphasis></para>
                         <para>only the associativity list index fields</para>
                       </entry>
                     </row>
                     <row>
                       <entry>
-                        <para>&#8220;ibm,memory-preservation-time&#8221;</para>
+                        <para><emphasis role="bold"><literal>&#8220;ibm,memory-preservation-time&#8221;</literal></emphasis></para>
                       </entry>
                     </row>
                     <row>
                       <entry>
                         <para>
-                          <emphasis>/chosen</emphasis>
+                          <emphasis role="bold"><literal>/chosen</literal></emphasis>
                         </para>
                       </entry>
                       <entry>
@@ -4227,13 +4272,13 @@
                       </entry>
                     </row>
                     <row>
-                      <entry morerows="2">
+                      <entry morerows="3">
                         <para>1 Partition Migration / Hibernation</para>
                         <para>&#160;</para>
                       </entry>
                       <entry>
                         <para>
-                          <emphasis>ibm,random-v#</emphasis>
+                          <emphasis role="bold"><literal>ibm,random-v#</literal></emphasis>
                         </para>
                       </entry>
                       <entry>
@@ -4243,7 +4288,7 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis>ibm,compression-v#</emphasis>
+                          <emphasis role="bold"><literal>ibm,compression-v#</literal></emphasis>
                         </para>
                       </entry>
                       <entry>
@@ -4253,7 +4298,17 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis>ibm,encryption-v#</emphasis>
+                          <emphasis role="bold"><literal>ibm,encryption-v#</literal></emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>&lt;all&gt;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>ibm,memory-utilization_instrumentation-v#</literal></emphasis>
                         </para>
                       </entry>
                       <entry>
@@ -4266,7 +4321,7 @@
                       </entry>
                       <entry>
                         <para>
-                          <emphasis>rtas</emphasis>
+                          <emphasis role="bold"><literal>rtas</literal></emphasis>
                         </para>
                       </entry>
                       <entry>
@@ -4306,7 +4361,7 @@
     </section>
     
     <section xml:id="dbdoclet.50569332_67111">
-      <title>RTAS call <emphasis>ibm,configure-kernel-dump</emphasis></title>
+      <title><emphasis>ibm,configure-kernel-dump</emphasis> RTAS Call</title>
       
       <para>This RTAS call is used to register and unregister with the platform
       a data structure describing kernel dump information. This dump
@@ -5087,6 +5142,11 @@
         <para>This RTAS call allows for the discovery of the resources necessary
         to make a successful subsequent call to 
         <emphasis>ibm,create-dma-window</emphasis>.</para>
+        
+        <para>If the <emphasis>ibm,query-pe-dma-window</emphasis> RTAS call is made with Number Outputs 
+        equal to 6, and the <emphasis role="bold"><literal>&#8220;ibm,ddw-extensions&#8221;</literal></emphasis>
+        property does not include list index of 3, 
+        then the call will return a Status of -3 (Invalid Parameter).</para>
   
         <variablelist>
          	<varlistentry>
@@ -5156,7 +5216,9 @@
                           </para>
                         </entry>
                         <entry>
-                          <para>5</para>
+                          <para>5 or 6. The value 6 may be used when the ibm,ddw-extensions property 
+                          in the PHB node specified by this call indicates support for a 64-bit value of 
+                          PE TCEs. See <xref linkend="dbdoclet.50569332_25585" />.</para>
                         </entry>
                       </row>
                       <row>
@@ -5195,7 +5257,7 @@
                         </entry>
                       </row>
                       <row>
-                        <entry morerows="4">
+                        <entry morerows="5">
                           <para>Out</para>
                         </entry>
                         <entry>
@@ -5227,11 +5289,20 @@
                       </row>
                       <row>
                         <entry>
-                          <para>PE TCEs</para>
+                          <para>PE TCEs hi</para>
                         </entry>
                         <entry>
-                          <para>Largest contiguous block of TCEs allocated specifically
-                          for (that is, are reserved for) this PE. See also Requirement 
+                          <para>Represents the most-significant 32-bits of the largest contiguous 
+                          block of TCEs allocated specifically for (that is, are reserved for) this PE.</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>PE TCEs lo</para>
+                        </entry>
+                        <entry>
+                          <para>Represents the least-significant 32-bits of the largest contiguous block 
+                          of TCEs allocated specifically for (that is, are reserved for) this PE. See also Requirement 
                           <xref linkend="dbdoclet.50569332_91197" />.</para>
                         </entry>
                       </row>
@@ -5749,6 +5820,18 @@
                 <entry>
                   <para>Token of the i
                   <emphasis>bm,reset-pe-dma-windows</emphasis> RTAS Call</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>2.7</para>
+                </entry>
+                <entry>
+                  <para>3</para>
+                </entry>
+                <entry>
+                  <para>Value of 1 indicates the OS may invoke RTAS <emphasis>ibm,query-pe-dma-window</emphasis> 
+                  with Number Outputs equal to 6.  Other values are reserved.</para>
                 </entry>
               </row>
             </tbody>
