@@ -1,5 +1,5 @@
 # Linux Architecture Reference Specification for OpenPOWER
-This repository hold the source for the source for the
+This repository holds the source for the
 Linux on Power Architecture Reference documents.  There are
 multiple component documents as follows:
 

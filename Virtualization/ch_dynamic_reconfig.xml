@@ -1122,14 +1122,13 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
       </section>
       
       <section xml:id="dbdoclet.50569342_17435">
-        <title>Property
-        <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis></title>
+        <title><emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis> Property</title>
         <para>This property is added for the DR option to specify for each DR
         connector an index to be passed between the OS and RTAS to identify the
         DR connector to be operated upon. This property is in the parent node of
         the DR connector to which the property applies. See 
         <xref linkend="LoPAR.DeviceTree" /> for the definition of this
-        property.</para>
+        property.  See <xref linkend="sec_ibmdrcinfo_property" /> for additional information.</para>
 
         <variablelist>
          	<varlistentry>
@@ -1146,8 +1145,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
       </section>
       
       <section xml:id="dbdoclet.50569342_31379">
-        <title>Property
-        <emphasis role="bold"><literal>&#8220;ibm,my-drc-index&#8221;</literal></emphasis></title>
+        <title><emphasis role="bold"><literal>&#8220;ibm,my-drc-index&#8221;</literal></emphasis> Property</title>
         <para>This property is added for the DR option to specify for each node
         which has a DR connector between it and its parent, the value of the
         entry in the 
@@ -1171,12 +1169,11 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
       </section>
       
       <section xml:id="dbdoclet.50569342_22748">
-        <title>Property
-        <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis></title>
+        <title><emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis> Property</title>
         <para>This property is added for the DR option to specify for each DR
         connector a user-readable location code for the connector. See 
         <xref linkend="LoPAR.DeviceTree" /> for the definition of this
-        property.</para>
+        property.  See <xref linkend="sec_ibmdrcinfo_property" /> for additional information.</para>
 
         <variablelist>
          	<varlistentry>
@@ -1287,7 +1284,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
         <para>This property is added for the DR option to specify for each DR
         connector the power domain in which the connector resides. See 
         <xref linkend="LoPAR.DeviceTree" /> for the definition of this
-        property.</para>
+        property.  See <xref linkend="sec_ibmdrcinfo_property" /> for additional information.</para>
 
         <variablelist>
          	<varlistentry xml:id="dbdoclet.50569342_45966">
@@ -1323,12 +1320,11 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
       </section>
       
       <section xml:id="dbdoclet.50569342_27002">
-        <title>Property
-        <emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis></title>
+        <title><emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis> Property</title>
         <para>This property is added for the DR option to specify for each DR
         connector a user-readable connector type for the connector. See 
         <xref linkend="LoPAR.DeviceTree" /> for the definition of this
-        property.</para>
+        property.  See <xref linkend="sec_ibmdrcinfo_property" /> for additional information.</para>
         <para>
         <emphasis role="bold">Architecture Note:</emphasis> The logical connectors (CPU, MEM
         etc.) represent DR boundaries that may not have physical DR connectors
@@ -1354,8 +1350,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
       </section>
       
       <section xml:id="dbdoclet.50569342_79298">
-        <title>Property
-        <emphasis role="bold"><literal>&#8220;ibm,phandle&#8221;</literal></emphasis></title>
+        <title><emphasis role="bold"><literal>&#8220;ibm,phandle&#8221;</literal></emphasis> Property</title>
         <para>This property is added for the DR option to specify the phandle for
         each OF device tree node returned by ibm,configure-connector. See 
         <xref linkend="LoPAR.DeviceTree" /> for the definition of this
@@ -1376,6 +1371,57 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               </listitem>
          	</varlistentry>
         </variablelist>
+      </section>
+      
+      <section xml:id="sec_ibmdrcinfo_property">
+        <title><emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis> Property</title>
+        
+        <para>This property is added to consolidate the information provided by the 
+        <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis>, 
+        <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis>, 
+        <emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis> and 
+        <emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis> properties.  
+        When present, it replaces those properties.</para>
+        
+        <variablelist>
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_ibmdrcinfo_property" 
+            xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+              <listitem>
+                <para>For each OF device tree node which supports DR operations on its children, OF must 
+                provide an <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis> 
+                property for that node.</para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_ibmdrcinfo_property" 
+            xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+              <listitem>
+                <para>The <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis> property shall only 
+                be present if the Operating System indicates support for this new property definition, 
+                otherwise, the <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis>, 
+                <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis>, 
+                <emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis> and 
+                <emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis> will be present.</para>
+              </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_ibmdrcinfo_property" 
+            xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+              <listitem>
+                <para>Following live partition migration the Operating System must be prepared to support 
+                either the <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis> property or the 
+                <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis>, 
+                <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis>, 
+                <emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis> and 
+                <emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis>  
+                set of properties. The property or properties presented will based on the capability of the target partition.</para>
+              </listitem>
+         	</varlistentry>
+        </variablelist>
+        
       </section>
     </section>
 
@@ -1416,7 +1462,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
         <para>This RTAS call is used in DR to power up or power down a DR
         connector, if necessary (that is, if there is a non-zero power domain
         listed for the DR connector in the 
-        <emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis> property). The
+        <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis> or
+        <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis> property). The
         input is the power domain and the output is the power level that is
         actually to be set for that domain; for purposes of DR, only two of the
         current power levels are of interest: &#8220;full on&#8221; and
@@ -1769,7 +1816,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                 <emphasis>get-sensor-state</emphasis> RTAS call for the sensors in 
                 <xref linkend="dbdoclet.50569342_92542" /> must be the index for the
                 connector, as passed in the 
-                <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis> property.</para>
+                <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis> or
+                <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis> property.</para>
                 <para>
                 <emphasis role="bold">Hardware and Software Implementation Note:</emphasis> The status
                 introduced in Requirement 
@@ -1997,7 +2045,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                 <emphasis>set-indicator</emphasis> RTAS call for the indicators in 
                 <xref linkend="dbdoclet.50569342_34333" /> must be the index for the
                 connector, as passed in the 
-                <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis> property.</para>
+                <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis> or
+                <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis> property.</para>
               </listitem>
          	</varlistentry>
          	
@@ -2269,7 +2318,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                         </entry>
                         <entry>
                           <para>entry from the 
-                          <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis> property for
+                          <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis> or
+                          <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis> property for
                           the connector to configure</para>
                         </entry>
                       </row>
@@ -2325,10 +2375,12 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
         which returns &#8220;configuration complete&#8221; status. A subsequent
         sequence of calls to 
         <emphasis>ibm,configure-connector</emphasis> with the same entry from the 
-        <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis> property will restart
+        <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis> or
+        <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis> property will restart
         the configuration of devices which were not completely configured.</para>
         <para>If the index from 
-        <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis> refers to a connector
+        <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis> or
+        <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis> refers to a connector
         that would return an &#8220;DR entity unusable&#8221; status (2) to the 
         <emphasis>get-sensor</emphasis> RTAS call with dr-entity-sense token, the 
         <emphasis>ibm,configure-connector</emphasis> RTAS call for that index
@@ -3670,6 +3722,17 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                 <xref linkend="LoPAR.DeviceTree" />.</para>
               </entry>
             </row>
+            <row>
+              <entry>
+                <para>
+                  <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis>
+                </para>
+              </entry>
+              <entry>
+                <para>As defined in 
+                <xref linkend="sec_ibmdrcinfo_property" />.</para>
+              </entry>
+            </row>
           </tbody>
         </tgroup>
       </table>
@@ -3690,14 +3753,15 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
           xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For the LRDR option:</emphasis> The 
-              <emphasis role="bold"><literal>/cpus</literal></emphasis> OF device tree node must include 
-              <emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis> (of type CPU),
-              <emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis>
-               (of value -1),
-              <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis>, and    
-              <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis>
-              properties with entries for each potentially
-              supported dynamically reconfigurable processor.</para>
+              <emphasis role="bold"><literal>/cpus</literal></emphasis> OF device tree node must include
+              either the <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis>
+              property or the following four properties: 
+              <emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis>, 
+              <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis>, 
+              <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis> and 
+              <emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis>.  
+              The drc-type must be type CPU, and the drc-power-domain must have the value -1. The 
+              property or properties must contain entries for each potentially supported dynamically reconfigurable processor.</para>
             </listitem>
        	</varlistentry>
        	
@@ -3707,14 +3771,15 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
             <listitem>
               <para><emphasis role="bold">For the LRDR option:</emphasis> The root node of the OF device
               tree must include 
-              <emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis>
-               (of type MEM),
-              <emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis>
-               (of value -1),
-              <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis>, and
-              <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis>
-               properties with entries for each potentially
-              supported dynamically reconfigurable memory region.</para>
+              ither the <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis> 
+              property or the following four properties: 
+              <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis>, 
+              <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis>,  
+              <emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis> and 
+              <emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis>.  
+              The drc-type must be type MEM and the drc-power-domain must have the value -1.
+              The property or properties must contain entries for each potentially supported dynamically 
+              reconfigurable memory region.</para>
             </listitem>
        	</varlistentry>
        	
@@ -3735,14 +3800,15 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
             <listitem>
               <para><emphasis role="bold">For the LRDR option:</emphasis> The root node of the OF device
               tree must include 
-              <emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis>
-               (of type PHB),
-              <emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis>
-               (of value -1),
-              <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis>, and
-              <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis>
-               properties with entries for each potentially
-              supported dynamically reconfigurable PHB.</para>
+              either the <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis> 
+              property or the following four properties: 
+              <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis>, 
+              <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis>,  
+              <emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis> and 
+              <emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis>.  
+              The drc-type must be type PHB, and the drc-power-domain must have the value -1. 
+              The property or properties must contain entries for each potentially supported dynamically 
+              reconfigurable PHB.</para>
             </listitem>
        	</varlistentry>
        	
@@ -3753,14 +3819,15 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               <para><emphasis role="bold">For the LRDR option:</emphasis> The 
               <emphasis role="bold"><literal>/pci</literal></emphasis> OF device tree node representing a PHB must
               include 
-              <emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis>
-               (of type SLOT),
-              <emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis>
-               (of value -1),
-              <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis>, and
-              <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis>
-               properties with entries for each potentially
-              supported dynamically reconfigurable PCI SLOT.</para>
+              either the <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis> 
+              property or the following four properties: 
+              <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis>, 
+              <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis>,  
+              <emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis> and 
+              <emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis>.  
+              The drc-type must be type SLOT, and the drc-power-domain must have the value -1.  
+              The property or properties must contain entries for each potentially supported dynamically 
+              reconfigurable PCI SLOT.</para>
             </listitem>
        	</varlistentry>
        	

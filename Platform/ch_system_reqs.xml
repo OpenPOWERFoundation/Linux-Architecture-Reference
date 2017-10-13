@@ -2460,7 +2460,7 @@ ELSE
             </entry>
             <entry>
               <para>
-                <xref linkend="LoPAR.Virtualization"/>
+                <xref linkend="LoPAR.DeviceTree"/> for information on ibm,partition-uuid.
               </para>
             </entry>
           </row>
@@ -2491,6 +2491,64 @@ ELSE
             <entry>
               <para> Introduces additional cooperative memory overcommitment 
               functions see <xref linkend="LoPAR.Virtualization"/></para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para> Memory Usage Instrumentation Option (MUI)</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> See <xref linkend="LoPAR.Virtualization"/>.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Block Invalidate Option</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para>Allows improved performance for removing page table entries representing a naturally aligned
+              block of virtual addresses.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Energy Management Tuning Parameters (EMTP)</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para>Reports the system Energy Management tuning values.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>In-Memory Table Translation Option</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para> O</para>
+            </entry>
+            <entry>
+              <para>Provides support for the system wide Memory Management Unit 
+              architecture introduced in POWER ISA 3.0</para>
             </entry>
           </row>
         </tbody>

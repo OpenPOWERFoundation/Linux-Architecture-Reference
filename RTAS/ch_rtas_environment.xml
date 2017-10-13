@@ -1541,7 +1541,7 @@
                           <emphasis role="bold"><literal>&#8220;ibm,get-indices&#8221;</literal></emphasis>
                         </para>
                         <para>
-                          <xref linkend="dbdoclet.50569332_64091" />
+                          <xref linkend="sec_get_indices_rtas_call" />
                         </para>
                       </entry>
                       <entry>
@@ -1934,7 +1934,7 @@
         time and do not change. Information about non-DR dynamic indicators and
         sensors, needs to be gathered via the 
         <emphasis>ibm,get-indices</emphasis> RTAS call (see 
-        <xref linkend="dbdoclet.50569332_64091" />), and sensors, instead of
+        <xref linkend="sec_get_indices_rtas_call" />), and sensors, instead of
         being represented in the device tree.</para>
         <para>Indicators and sensors within a platform generally have location
         codes associated with them. Location code information for static
