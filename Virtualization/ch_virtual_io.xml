@@ -1228,10 +1228,9 @@ hcall ( const int64 H_VIO_SIGNAL, /* Function Code */
             xrefstyle="select: labelnumber nopage"/>-8.</emphasis></term>
 
             <listitem>
-              <!-- FIXME: What should this requirement really read? >
-              <para>R1-17.2.1.4-8. 
-              </para-->
-              <para>Reserved</para>
+              <para><emphasis role="bold">For the SMC options:</emphasis> 
+              The platform must specify the ASQ interrupt as the second interrupt in the
+              <emphasis role="bold"><literal>&#8220;interrupts&#8221;</literal></emphasis> property for a virtual IOA.</para>
             </listitem>
          	</varlistentry>
          	
@@ -1312,15 +1311,14 @@ hcall ( const int64 H_VIO_SIGNAL, /* Function Code */
             xrefstyle="select: labelnumber nopage"/>-14.</emphasis></term>
 
             <listitem>
-              <!-- FIXME: What should this requirement really read? >
-              <para>R1-17.2.1.4-14. 
-              </para>
-              <para>
-              <emphasis role="bold">Implementation Note:</emphasis> In order to meet Requirement 
-              <xref linkend="dbdoclet.50569348_86469" />, it may be necessary for
-              implementations to assign an implementation dependent default size to all
-              RTCE tables.</para-->
-              <para>Reserved</para>
+              <para><emphasis role="bold">For the SMC option:</emphasis>
+              There must exist three triples (three window panes) in the
+              <emphasis role="bold"><literal>&#8220;ibm,my-dma-window&#8221;</literal></emphasis> 
+              property of all partitions which contain an SMC virtual IOA, and the size field
+              of the second triple (second window pane) of an 
+              <emphasis role="bold"><literal>&#8220;ibm,my-dma-window&#8221;</literal></emphasis> property must be equal to the
+              size field of the corresponding third triple (third window pane) of the associated partner partition’s
+              <emphasis role="bold"><literal>&#8220;ibm,my-dma-window&#8221;</literal></emphasis> property.</para>
             </listitem>
          	</varlistentry>
          	
@@ -3267,7 +3265,7 @@ hcall ( const unit64 H_VIOCTL, /* Query/Set behaviors for the virtual IOA */
             
             <listitem>
               <para>Validate that the given virtual IOA is a ILLAN adapter with the
-              "ibm,trunk-adapter", else return H_Parameter.</para>
+              <emphasis role="bold"><literal>&#8220;ibm,trunk-adapter&#8221;</literal></emphasis>, else return H_Parameter.</para>
             </listitem>
             
             <listitem>
@@ -3297,7 +3295,7 @@ hcall ( const unit64 H_VIOCTL, /* Query/Set behaviors for the virtual IOA */
             
             <listitem>
               <para>Validate that the given virtual IOA is a ILLAN adapter with the
-              "ibm,trunk-adapter", else return H_Parameter.</para>
+              <emphasis role="bold"><literal>&#8220;ibm,trunk-adapter&#8221;</literal></emphasis>, else return H_Parameter.</para>
             </listitem>
             
             <listitem>
@@ -13060,6 +13058,3682 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
     </section>
   </section>
 
+  <section xml:id="sec_vmc">
+    <title>Virtual Management Channel (VMC)</title>
+    
+    <para>PAPR Virtual Management Channel (VMC) support is provided 
+    by code running in a logical partition that uses the
+    mechanisms of the Reliable Command/Response Transport and 
+    Logical Remote DMA of the Synchronous VIO Infrastructure
+    to service and to send requests to platform code. The 
+    purpose of this interface is to communicate platform
+    management information between designated logical 
+    partition and the platform.</para>
+    
+    <para>The VMC architecture is built upon the architecture specified in the following sections:</para>
+    
+    <itemizedlist>
+      <listitem>
+        <para><xref linkend="dbdoclet.50569348_21877" /></para>
+      </listitem>
+      <listitem>
+        <para><xref linkend="dbdoclet.50569348_94955" /></para>
+      </listitem>
+      <listitem>
+        <para><xref linkend="dbdoclet.50569348_51946" /></para>
+      </listitem>
+    </itemizedlist>
+    
+    <section xml:id="sec_vmc_requirement">
+      <title>Virtual Management Channel Requirements</title>
+      
+      <para>This normative section provides the general requirements for the support of VMC.</para>
+      
+      <variablelist>
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vmc_requirement" 
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VMC option:</emphasis>The platform must 
+            implement the Reliable Command/Response Transport option
+            as defined in <xref linkend="dbdoclet.50569348_48491" />.</para>
+          </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vmc_requirement" 
+          xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VMC option:</emphasis>The platform must 
+            implement the Logical Remote DMA option as defined in
+            <xref linkend="dbdoclet.50569348_61656" />.</para>
+          </listitem>
+       	</varlistentry>
+      </variablelist>
+
+      <para>In addition to the firmware primitives, and the structures 
+      they define, the partition’s OS needs to know specific information
+      regarding the configuration of the virtual IOAs that it has been 
+      assigned so that it can load and configure the
+      correct device driver code. This information is provided by the Open 
+      Firmware device tree node associated with the
+      virtual IOA (see <xref linkend="sec_vmc_devtree" />).</para>
+      
+    </section>
+
+    <section xml:id="sec_vmc_devtree">
+      <title>Partition Virtual Management Channel Device Tree Node</title>
+      
+      <para>Partition VMC IOA nodes have no children nodes.</para>
+      
+      <variablelist>
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vmc_devtree" 
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VMC option:</emphasis> The platform’s 
+            Open Firmware device tree for client partitions must include as
+            a child of the <emphasis role="bold"><literal>/vdevice</literal></emphasis> 
+            node, a node of type &#8220;vmc&#8221; as the 
+            parent of a sub-tree representing the virtual IOAs
+            assigned to the partition.</para>
+          </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vmc_devtree" 
+          xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VMC option:</emphasis> The platform’s 
+            <emphasis role="bold"><literal>vmc</literal></emphasis>
+            Open Firmware node must contain properties as defined in 
+            <xref linkend="table_vmc_node_properties" />
+            (other standard I/O adapter properties are permissible as appropriate).</para>
+          </listitem>
+       	</varlistentry>
+      </variablelist>
+
+      <table frame="all" pgwide="1" xml:id="table_vmc_node_properties">
+        <title>Properties of the VMC Node in the Client Partition</title>
+        <tgroup cols="3">
+          <colspec colname="c1" colwidth="30*" align="left" />
+          <colspec colname="c2" colwidth="10*" align="center" />
+          <colspec colname="c3" colwidth="60*" align="left" />
+          <thead valign="middle">
+            <row>
+              <entry align="center">
+                <para>
+                  <emphasis role="bold">Property Name</emphasis>
+                </para>
+              </entry>
+              <entry align="center">
+                <para>
+                  <emphasis role="bold">Required?</emphasis>
+                </para>
+              </entry>
+              <entry align="center">
+                <para>
+                  <emphasis role="bold">Definition</emphasis>
+                </para>
+              </entry>
+            </row>
+          </thead>
+          <tbody valign="middle">
+            <row>
+              <entry>
+                <para><emphasis role="bold"><literal>&#8220;name&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>Y</para>
+              </entry>
+              <entry>
+                <para>Standard property name per <citetitle>IEEE 1275</citetitle> specifying the virtual 
+                device name, the value shall be 
+                <literal>&#8220;ibm,vmc&#8221;</literal>.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis role="bold"><literal>&#8220;device_type&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>Y</para>
+              </entry>
+              <entry>
+                <para>Standard property name per <citetitle>IEEE 1275</citetitle> specifying the virtual 
+                device type, the value shall be 
+                <literal>&#8220;ibm,vmc&#8221;</literal>.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis role="bold"><literal>&#8220;model&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>NA</para>
+              </entry>
+              <entry>
+                <para>Property not present.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis role="bold"><literal>&#8220;compatible&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>Y</para>
+              </entry>
+              <entry>
+                <para>Standard property name per <citetitle>IEEE 1275</citetitle> specifying the programming 
+                models that are compatible with this virtual IOA, the value shall be 
+                <literal>&#8220;IBM,vmc&#8221;</literal>.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis role="bold"><literal>&#8220;used-by-rtas&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>See Definition Column</para>
+              </entry>
+              <entry>
+                <para>Present if appropriate.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis role="bold"><literal>&#8220;ibm,loc-code&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>Y</para>
+              </entry>
+              <entry>
+                <para>Property name specifying the unique and 
+                persistent location code associated with this virtual IOA
+                presented as an encoded array as with 
+                <emphasis role="bold"><literal>encode-string</literal></emphasis>. 
+                The value shall be of the form specified in
+                <xref linkend="LoPAR.Platform" /> information on 
+                Virtual Card Connector Location Codes.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>Y</para>
+              </entry>
+              <entry>
+                <para>Standard property name per <citetitle>IEEE 1275</citetitle> specifying the 
+                register addresses, used as the unit address (unit
+                ID), associated with this virtual IOA presented as 
+                an encoded array as with <emphasis role="bold"><literal>encode-phys</literal></emphasis> of length
+                <emphasis role="bold"><literal>&#8220;#address-cells&#8221;</literal></emphasis> 
+                value shall be 0xwhatever (virtual 
+                <emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis> 
+                property used for unit address no actual locations used, therefore, the size field 
+                has zero cells (does not exist) as determined by the value of the 
+                <emphasis role="bold"><literal>&#8220;#size-cells&#8221;</literal></emphasis> property).</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis role="bold"><literal>&#8220;ibm,my-dma-window&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>Y</para>
+              </entry>
+              <entry>
+                <para>Property name specifying the DMA window 
+                associated with this virtual IOA presented as an encoded
+                array of two sets (two window panes) of three values (LIOBN, phys, size) encoded as with
+                <emphasis role="bold"><literal>encode-int</literal></emphasis>, 
+                <emphasis role="bold"><literal>encode-phys</literal></emphasis>, and 
+                <emphasis role="bold"><literal>encode-int</literal></emphasis>. 
+                Of these two triples, the first describes the window
+                pane used to map server partition (the 
+                designated management partition) memory, the second is the
+                window pane through which the client partition 
+                (the platform partition) maps its memory that it makes
+                available to the server partition.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis role="bold"><literal>&#8220;interrupts&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>Y</para>
+              </entry>
+              <entry>
+                <para>Standard property name specifying the interrupt source 
+                number and sense code associated with this virtual
+                IOA presented as an encoded array of two cells encoded as with 
+                <emphasis role="bold"><literal>encode-int</literal></emphasis> with the first cell
+                containing the interrupt source number, and the 
+                second cell containing the sense code 0 indicating positive
+                edge triggered. The interrupt source number being the value 
+                returned by the H_XIRR or H_IPOLL hcall().</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis role="bold"><literal>&#8220;ibm,my-drc-index&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>For DR</para>
+              </entry>
+              <entry>
+                <para>Present if the platform implements DR for this node.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis role="bold"><literal>&#8220;ibm,#dma-size-cells&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>See Definition Column</para>
+              </entry>
+              <entry>
+                <para>Property name, to define the package’s dma address 
+                size format. The property value specifies the number
+                of cells that are used to encode the size field of 
+                dma-window properties. This property is present when the
+                dma address size format cannot be derived using 
+                the method described in the definition for the
+                <emphasis role="bold"><literal>&#8220;ibm,#dma-size-cells&#8221;</literal></emphasis> 
+                property in 
+                <xref linkend="LoPAR.DeviceTree" /> section on System Bindings.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis role="bold"><literal>&#8220;ibm,#dma-address-cells&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>See Definition Column</para>
+              </entry>
+              <entry>
+                <para>Property name, to define the package’s dma address 
+                format. The property value specifies the number
+                of cells that are used to encode the physical address field of 
+                dma-window properties. This property is present when the
+                dma address format cannot be derived using 
+                the method described in the definition for the
+                <emphasis role="bold"><literal>&#8220;ibm,#dma-address-cells&#8221;</literal></emphasis> 
+                property in 
+                <xref linkend="LoPAR.DeviceTree" /> section on System Bindings.</para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    
+    </section>
+  </section>
+  
+  <section xml:id="sec_vasi">
+    <title>Virtual Asynchronous Services Interface (VASI)</title>
+    
+    <para>The PAPR Virtual Asynchronous Services Interface (VASI) 
+    allows an authorized virtual server partition (VSP) to
+    safely access the internal state of a specific partition. 
+    The access provided by VASI enables high level administrative
+    services such as partition migration, hibernation and 
+    virtualization of partition logical real memory. VASI uses the
+    mechanisms of the Reliable Command/Response Transport a
+    nd Logical Remote DMA of the Synchronous VIO Infrastructure
+    to service requests.</para>
+    
+    <para>VASI is built upon the architecture specified in the following sections:</para>
+    
+    <itemizedlist>
+      <listitem>
+        <para><xref linkend="dbdoclet.50569348_21877" /></para>
+      </listitem>
+      <listitem>
+        <para><xref linkend="dbdoclet.50569348_94955" /></para>
+      </listitem>
+      <listitem>
+        <para><xref linkend="dbdoclet.50569348_51946" /></para>
+      </listitem>
+    </itemizedlist>
+    
+    <section xml:id="sec_vasi_overview">
+      <title> VASI Overview</title>
+      
+      <section xml:id="sec_vasi_streams">
+        <title>VASI Streams, Services and States</title>
+        
+        <para>A single VASI virtual IOA may be capable of supporting 
+        multiple streams of operations (up to the number presented in the 
+        <emphasis role="bold"><literal>&#8220;ibm,#vasi-streams&#8221;</literal></emphasis>
+        property, see 
+        <xref linkend="table_vasi_node_properties" />)
+        each representing a specific high level operation such as an 
+        individual logical partition migration, or a unique logical
+        partition hibernation, etc. The hypervisor and the various 
+        logical partitions use the VASI_Stream_ID as a handle to associate
+        the services that each provide to the specific high level function. 
+        Similarly a single VASI virtual IOA may be
+        capable of supporting multiple service sessions (opens) for 
+        each VASI_Stream_ID (up to the number negotiated by the
+        #Opens field of the capabilities string, see 
+        <xref linkend="sec_vasi_exchange_capabilities" />).</para>
+      
+        <para>VASI streams and individual service sessions may be in 
+        one of several states. Refer to the specific high level function description in
+        <xref linkend="sec_vasi_op_stream_specs" /> 
+        for the state descriptions and transition triggers that are defined for each high level function.</para>
+
+      </section>
+
+      <section xml:id="sec_vasi_handles">
+        <title>VASI Handles</title>
+        
+        <para>VASI defines several versions of handles. The VASI Stream 
+        ID is used to associate the elements of the same high level
+        function (such as a specific partition migration operation). 
+        In this case, the various partitions are assigned roles and a
+        VASI Stream ID. By opening a VASI virtual IOA with a given 
+        VASI Stream ID and Service parameter, the partition declares
+        its intent to perform the specified service for the specific 
+        high level operation. By means outside the scope of
+        PAPR, the platform is told to expect such service from the 
+        specific partition; thus when the match happens, the high
+        level operation is enabled. At open time, the platform and 
+        partition negotiate a pair of convenient handles to use as a
+        substitute for the architecturally opaque VASI Stream ID. 
+        This pair of 4 byte handles are called the TOP/BOTTOM.
+        The TOP field is used by the partition to denote its 
+        operations for the specific VASI Stream ID, while the BOTTOM
+        field provides that function for the platform firmware.</para>
+      
+        <para>The first 8 bytes of a VASI data buffer are reserved for 
+        Virtual Server Partition (VSP) use as the buffer correlator field.
+        The buffer correlator field is architecturally opaque. The 
+        architectural intent is that the buffer correlator field is a VSP
+        handle to the data buffer control block.</para>
+      
+      </section>
+
+      <section xml:id="sec_vasi_semantics">
+        <title>Semantic Conventions</title>
+        
+        <para>The convention for the specification of VASI CRQ message 
+        processing semantics is via a specifically ordered sequence
+        of operations. Implementations are not required to code in these 
+        sequences but are required to appear as if they
+        did. In general, parameters and operational state are first 
+        verified, followed by the operation to be performed if all the
+        parameter/state checks succeed. If a check fails, a response is 
+        generated at that point and further processing of the message
+        is abandoned. Note that standard CRQ processing operations 
+        (message enqueue and dequeue processing such as
+        finding the next valid message, resetting the 
+        valid message bit when processing is complete, etc. (See 
+        <xref linkend="dbdoclet.50569348_48491"/>)
+        are assumed and not explicitly included in the semantic
+        specification.</para>
+      
+      </section>
+    </section>
+    
+    <section xml:id="sec_vasi_data_buffers">
+      <title>VASI Data Buffers (Normative)</title>
+      
+      <para>Data buffers used by VASI are defined as from ILLAN (See
+      <xref linkend="dbdoclet.50569350_23147" />).
+      VASI references data buffers via a valid buffer descriptor (Control 
+      Byte = 0x80) as from ILLAN (See 
+      <xref linkend="dbdoclet.50569350_23147" />).
+      relative to first pane of the VASI virtual IOA 
+      <emphasis role="bold"><literal>&#8220;ibm,my-dma-window&#8221;</literal></emphasis> property. The first 8 bytes of a 
+      data buffer are reserved for an OS opaque handle.
+      A filled data buffer contains either a VASI Download Request 
+      Specifier or a VASI Operation Request Specifier; refer to 
+      <xref linkend="sec_vasi_download_request" /> or
+      <xref linkend="sec_vasi_operation_request" />
+      respectively, following the opaque handle. Buffers are supplied to 
+      the VASI virtual IOA via the VASI Add Buffer CRQ request message, 
+      and returned to the VASI device driver in operation requests such as the VASI
+      Operation CRQ request message or, for those that have not 
+      been used by operation requests, via responses to the VASI
+      Free Buffer CRQ request message. Closing a VASI service 
+      session releases buffers queued for that service session in
+      the VASI virtual IOA, while deregistering the VASI virtual 
+      IOA CRQ does the same for all of the VASI virtual IOA
+      service sessions.</para>
+      
+      <variablelist>
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_data_buffers" 
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> The platform 
+            must implement the Reliable Command/Response Transport option (See 
+            <xref linkend="dbdoclet.50569348_48491" />).</para>
+          </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_data_buffers" 
+          xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> The storage 
+            for VASI data buffers to be used by a given VASI virtual IOA
+            must be TCE mapped within the first pane of the 
+            <emphasis role="bold"><literal>&#8220;ibm,my-dma-window&#8221;</literal></emphasis> 
+            property as presented in the device
+            tree node of the VASI virtual IOA Open Firmware 
+            device tree node.</para>
+          </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_data_buffers" 
+          xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> Firmware must 
+            not modify the first 8 bytes (Buffer Correlator field) of a VASI data buffer.</para>
+          </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_data_buffers" 
+          xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> Immediately following 
+            the first 8 bytes of a filled VASI data buffer must be either
+            a VASI Download Request Specifier or a VASI Operation Request Specifier.</para>
+          </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_data_buffers" 
+          xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> The VASI Download 
+            Request Specifier must be formatted as per 
+            <xref linkend="sec_vasi_download_request" />.</para>
+          </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_data_buffers" 
+          xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> The VASI Operation 
+            Request Specifier must be formatted as per 
+            <xref linkend="sec_vasi_operation_request" />.</para>
+          </listitem>
+       	</varlistentry>
+      </variablelist>
+
+      <section xml:id="sec_vasi_download_request">
+        <title>VASI Download Request Specifier</title>
+        
+        <para>The VASI Download Request Specifier is presented in 
+        <xref linkend="figure_vasi_download_req" />.
+        The VASI Download Request Specifier is used with the VASI Download Request 
+        message see
+        <xref linkend="sec_vasi_download" />.</para>
+        
+        <figure xml:id="figure_vasi_download_req">
+          <title>VASI Download Request Specifier structure</title>
+          <mediaobject>
+            <imageobject role="html">
+              <imagedata fileref="figures/vasi_download_request_specifier.gif" format="GIF"
+              scalefit="1" />
+            </imageobject>
+            <imageobject role="fo">
+              <imagedata contentdepth="100%" fileref="figures/vasi_download_request_specifier.gif"
+              format="GIF" scalefit="1" width="100%" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+        
+      
+      </section>
+
+      <section xml:id="sec_vasi_operation_request">
+        <title>VASI Operation Request Specifier</title>
+        
+        <para>The VASI Operation Request Specifier is presented in 
+        <xref linkend="figure_vasi_operation_request_specifier" />. 
+        The TOP/BOTTOM (8 bytes) field is a pair of 4 byte opaque handles 
+        as negotiated by the VASI Open Request/Response pair see 
+        <xref linkend="sec_vasi_open" />. </para>
+ 
+        <orderedlist>
+          <title>Expected Semantics of VASI operation requests:</title>
+          <listitem>
+            <para>Operation length is communicated by the summation of the 
+            lengths of the buffer segment control structures following
+            the operation correlator field.</para>
+          </listitem>
+          <listitem>
+            <para>Operations that write at the end of the file normally 
+            extend the file. If extending the file is not possible due to resource
+            constraints, then the operation is aborted at the end of 
+            the file, the VASI operation response message carries
+            the “End of File” status with the Residual field containing 
+            the number of requested bytes that were not transferred
+            (Residual value of all ones indicates Residual field overflow).</para>
+          </listitem>
+          <listitem>
+            <para>Read operations that access beyond the end of the file are 
+            aborted at the end of the file. The VASI operation response
+            message carries the “End of File” status with the Residual 
+            field containing the number of requested bytes
+            that were not transferred (Residual value of all 
+            ones indicates Residual field overflow).</para>
+          </listitem>
+          <listitem>
+            <para>Sequential writes deliver the input stream of bytes to the 
+            receiver in the same order, but not necessarily in the same
+            blocking as originated by the sender.</para>
+          </listitem>
+          <listitem>
+            <para>Index operations carry the additional semantic over the 
+            corresponding sequential operation that they are a collection
+            of one or more sub-operations of the same type (read/write). 
+            Each sub-operation specification starts with a
+            control field encoding of 0xC0 that carries the 512 
+            byte file block index of the start of the operation. The file cursor
+            can then be adjusted within the block using a control 
+            field of 0x40 followed by a 3 byte binary offset (legal
+            values 0-511). This offset allows operations to beginning 
+            on any byte boundary within the specified 512 byte
+            block index. The remainder of each sub-operation 
+            specification is a scatter gather list. The sub-operation length is
+            defined by the number of bytes of data/buffer 
+            supplied in the sub-operation scatter gather list.</para>
+          </listitem>
+          <listitem>
+            <para>The “Hardware” status code indicates a failure due to 
+            any hardware problem including physical I/O.</para>
+          </listitem>
+          <listitem>
+            <para>The “Invalid Buffer Correlator” status code is reserved 
+            for failure to find the operation buffer.</para>
+          </listitem>
+          <listitem>
+            <para>The “Invalid VASI Operation Request Specifier” status 
+            code is used for any failure in the decode of the operation
+            buffer not specifically called out by a previous semantic.</para>
+          </listitem>
+          <listitem>
+            <para>The first control field of a scatter gather list may be a 
+            byte offset encoded with a control field of 0x40 and followed
+            by a 3 byte binary offset (legal values 0-511). This offset 
+            allows operations to beginning on any byte boundary
+            within the specified 512 byte block index.</para>
+          </listitem>
+          <listitem>
+            <para>The control field encoding 0xC0 indicates that the original 
+            operation is conjoined with a second indexed operation
+            of the same direction starting at a new 512 byte block 
+            index (as indicated in the following 7 bytes). The conjoined
+            index operation has its own scatter gather list optionally 
+            starting with a byte offset, followed by one or more data
+            buffers.</para>
+          </listitem>
+          <listitem>
+            <para>Operation Modifiers:</para>
+            
+            <orderedlist numeration="loweralpha">		      
+              <listitem>
+                <para>000: Base Operation</para>
+              </listitem>
+
+              <listitem>
+                <para>001: Server Takeover Warning: informs the targeted 
+                VASI server that another VASI server had previously
+                hosted the operation stream and that it may need to 
+                perform additional steps to process this request.</para>
+              </listitem>
+
+              <listitem>
+                <para>010 : 111 Reserved</para>
+              </listitem>
+            </orderedlist>		      
+          </listitem>
+        </orderedlist>
+        
+        <figure xml:id="figure_vasi_operation_request_specifier">
+          <title>VASI Operation Request Specifier structure</title>
+          <mediaobject>
+            <imageobject role="html">
+              <imagedata fileref="figures/vasi_operation_request_specifier.gif" format="GIF"
+              scalefit="1" />
+            </imageobject>
+            <imageobject role="fo">
+              <imagedata contentdepth="100%" fileref="figures/vasi_operation_request_specifier.gif"
+              format="GIF" scalefit="1" width="100%" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+
+      </section>
+    </section>
+
+    <section xml:id="sec_vasi_crq_message">
+      <title>VASI CRQ Message Definition (Normative)</title>
+      
+      <para>For the VASI interface, all CRQ messages are defined to use the following base format:</para>
+
+      <table frame="all" pgwide="1" xml:id="table_vasi_general_crq_element">
+        <title>General Form of VASI Reliable CRQ Element</title>
+        <tgroup cols="3">
+          <colspec colname="c1" colwidth="15*" align="center" />
+          <colspec colname="c2" colwidth="15*" align="center" />
+          <colspec colname="c3" colwidth="70*" align="left" />
+          <thead valign="middle">
+            <row>
+              <entry>
+                <para>
+                  <emphasis role="bold">Byte Offset</emphasis>
+                </para>
+              </entry>
+              <entry>
+                <para>
+                  <emphasis role="bold">Field Name</emphasis>
+                </para>
+              </entry>
+              <entry align="center">
+                <para>
+                  <emphasis role="bold">Description</emphasis>
+                </para>
+              </entry>
+            </row>
+          </thead>
+          <tbody valign="middle">
+            <row>
+              <entry>
+                <para>0</para>
+              </entry>
+              <entry>
+                <para>Header</para>
+              </entry>
+              <entry>
+                <para>Contains Element Valid Bit plus Event Type Encodings (
+                <xref linkend="dbdoclet.50569348_49382" />).</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>1</para>
+              </entry>
+              <entry>
+                <para>Format/Transport Event Code</para>
+              </entry>
+              <entry>
+                <para>For Valid Command Response Entries, see 
+                <xref linkend="table_reliable_crq_entry_format_for_vasi" />.
+                For Transport Event Codes see 
+                <xref linkend="dbdoclet.50569348_93265" />.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>2-15</para>
+              </entry>
+              <entry>
+                <para>Payload</para>
+              </entry>
+              <entry>
+                <para>Format dependent.</para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+
+      <figure xml:id="figure_general_format_crq_element">
+        <title>General format of a CRQ element</title>
+        <mediaobject>
+          <imageobject role="html">
+            <imagedata fileref="figures/general_format_crq_element.gif" format="GIF"
+            scalefit="1" />
+          </imageobject>
+          <imageobject role="fo">
+            <imagedata contentdepth="100%" fileref="figures/general_format_crq_element.gif"
+            format="GIF" scalefit="1" width="100%" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <variablelist>
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_crq_message" 
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> The format byte of VASI 
+            CRQ messages must be as defined in
+            <xref linkend="table_reliable_crq_entry_format_for_vasi" />.</para>
+          </listitem>
+       	</varlistentry>
+      </variablelist>
+
+      <table frame="all" pgwide="1" xml:id="table_reliable_crq_entry_format_for_vasi">
+        <?dbhtml table-width="50%" ?><?dbfo table-width="50%" ?>
+        <title>Reliable CRQ Entry Format Byte Definitions for VASI (Header=0x80)</title>
+        <tgroup cols="2">
+          <colspec colname="c1" colwidth="50*" align="center" />
+          <colspec colname="c2" colwidth="50*" align="left" />
+          <thead valign="middle">
+            <row>
+              <entry>
+                <para>
+                  <emphasis role="bold">Format Byte Value</emphasis>
+                </para>
+              </entry>
+              <entry align="center">
+                <para>
+                  <emphasis role="bold">Definition</emphasis>
+                </para>
+              </entry>
+            </row>
+          </thead>
+          <tbody valign="middle">
+            <row>
+              <entry>
+                <para>0x0</para>
+              </entry>
+              <entry>
+                <para>Unused</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x1</para>
+              </entry>
+              <entry>
+                <para>VASI Capabilities Request</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x2</para>
+              </entry>
+              <entry>
+                <para>VASI Open Request</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x3</para>
+              </entry>
+              <entry>
+                <para>VASI Close Request</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x4</para>
+              </entry>
+              <entry>
+                <para>VASI Add Buffer Request</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x5</para>
+              </entry>
+              <entry>
+                <para>VASI Free Buffer Request</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x6</para>
+              </entry>
+              <entry>
+                <para>VASI Download Request</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x07</para>
+              </entry>
+              <entry>
+                <para>VASI Operation Request</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x8</para>
+              </entry>
+              <entry>
+                <para>VASI Signal Request</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x9</para>
+              </entry>
+              <entry>
+                <para>VASI State Request</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x0A-0x0F</para>
+              </entry>
+              <entry>
+                <para>Reserved</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x10</para>
+              </entry>
+              <entry>
+                <para>VASI Progress Request</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x11-0x80</para>
+              </entry>
+              <entry>
+                <para>Reserved</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x81</para>
+              </entry>
+              <entry>
+                <para>VASI Capabilities Response</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x82</para>
+              </entry>
+              <entry>
+                <para>VASI Open Response</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x83</para>
+              </entry>
+              <entry>
+                <para>VASI Close Response</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x84</para>
+              </entry>
+              <entry>
+                <para>VASI Add Buffer Response</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x85</para>
+              </entry>
+              <entry>
+                <para>VASI Free Buffer Response</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x86</para>
+              </entry>
+              <entry>
+                <para>VASI Download Response</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x87</para>
+              </entry>
+              <entry>
+                <para>VASI Operation Response</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x88</para>
+              </entry>
+              <entry>
+                <para>VASI Signal Response</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x89-0x8F</para>
+              </entry>
+              <entry>
+                <para>Reserved</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x90</para>
+              </entry>
+              <entry>
+                <para>VASI Progress Response</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x91-0xFF</para>
+              </entry>
+              <entry>
+                <para>Reserved</para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    
+      <variablelist>
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_crq_message" 
+          xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> The status byte 
+            of VASI CRQ response messages must be as defined in
+able 252‚ “VASI Reliable CRQ Response Status Values‚” on page 721.
+            <xref linkend="table_vasi_reliable_crq_response_status" />.</para>
+          </listitem>
+       	</varlistentry>
+      </variablelist>
+
+      <table frame="all" pgwide="1" xml:id="table_vasi_reliable_crq_response_status">
+        <title>VASI Reliable CRQ Response Status Values</title>
+        <tgroup cols="2">
+          <colspec colname="c1" colwidth="25*" align="center" />
+          <colspec colname="c2" colwidth="75*" align="left" />
+          <thead valign="middle">
+            <row>
+              <entry>
+                <para>
+                  <emphasis role="bold">Format Byte Value</emphasis>
+                </para>
+              </entry>
+              <entry align="center">
+                <para>
+                  <emphasis role="bold">Definition</emphasis>
+                </para>
+              </entry>
+            </row>
+          </thead>
+          <tbody valign="middle">
+            <row>
+              <entry>
+                <para>0x0</para>
+              </entry>
+              <entry>
+                <para>Success</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x1</para>
+              </entry>
+              <entry>
+                <para>Hardware Error</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x2</para>
+              </entry>
+              <entry>
+                <para>Invalid Stream ID</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x3</para>
+              </entry>
+              <entry>
+                <para>Stream ID Abort</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x4</para>
+              </entry>
+              <entry>
+                <para>Invalid Buffer Descriptor: Either the IOBA is too large for
+                the LIOBN or its logical TCE does not contain a valid
+                logical address mapping.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x5</para>
+              </entry>
+              <entry>
+                <para>Invalid buffer length: Either the buffer is less than the
+                minimum useful buffer size or it does not match one of the first 
+                <emphasis role="bold"><literal>&#8220;ibm,#buffer-pools&#8221;</literal></emphasis>
+                sizes that were added.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x6</para>
+              </entry>
+              <entry>
+                <para>Empty: The request could not be satisfied because the
+                buffer pool was empty</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x7</para>
+              </entry>
+              <entry>
+                <para>Invalid VASI Download Request Specifier</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x8</para>
+              </entry>
+              <entry>
+                <para>Invalid VASI Download data: The download data format is invalid.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x9</para>
+              </entry>
+              <entry>
+                <para>Invalid Buffer Correlator: Does not correspond to an
+                outstanding data buffer.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x0A</para>
+              </entry>
+              <entry>
+                <para>Invalid VASI Operation Request Specifier</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x0B</para>
+              </entry>
+              <entry>
+                <para>Invalid Service Specifier</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x0C</para>
+              </entry>
+              <entry>
+                <para>Too many opens</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x0D</para>
+              </entry>
+              <entry>
+                <para>Invalid BOTTOM</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x0E</para>
+              </entry>
+              <entry>
+                <para>Invalid TOP</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x0F</para>
+              </entry>
+              <entry>
+                <para>End of File</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x10</para>
+              </entry>
+              <entry>
+                <para>Invalid Format</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x11</para>
+              </entry>
+              <entry>
+                <para>Unknown Reserved Value</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x12</para>
+              </entry>
+              <entry>
+                <para>Invalid State Transition</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x13</para>
+              </entry>
+              <entry>
+                <para>Race Lost</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x14</para>
+              </entry>
+              <entry>
+                <para>Invalid Signal Code</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x15-0xFF</para>
+              </entry>
+              <entry>
+                <para>Reserved</para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+    <section xml:id="sec_vasi_req_resp">
+      <title>VASI Request/Response Pairs</title>
+      
+      <variablelist>
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp" 
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis>
+            The platform must validate the format byte in all VASI messages that it receives.</para>
+          </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp" 
+          xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> 
+            The platform must initiate the processing of VASI messages in the order received
+            on a given CRQ.</para>
+          </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp" 
+          xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> 
+            If the format byte value of a received VASI message, as specified in
+            <xref linkend="table_reliable_crq_entry_format_for_vasi" />,
+            is “Unused”, “Reserved”, “VASI Operation Request”, or a response other 
+            than “VASI Operation Response”, the platform must declare the format byte invalid.</para>
+          </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp" 
+          xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> 
+            If the format byte value is invalid, then the platform must generate a response
+            message on the corresponding CRQ by copying the received 
+            message with the high order format byte bit set
+            to a one and the status byte with the “Invalid Format” 
+            status code, and discard the received CRQ message.</para>
+          </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp" 
+          xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> 
+            The platform must fill in all reserved fields in VASI messages that it generates with zeros.</para>
+          </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp" 
+          xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> 
+            The platform must check that all reserved fields in a VASI message, except the
+            for the Capability String of the VASI Exchange Capabilities message, that it receives are filled with zeros,
+            else return the corresponding VASI reply message with a status of “Unknown Reserved Value”.</para>
+          </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp" 
+          xrefstyle="select: labelnumber nopage"/>-7.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> 
+             The VASI Exchange Capabilities message must be as defined in
+             <xref linkend="figure_format_vasi_exchange_cap_crq_elem" />.</para>
+          </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp" 
+          xrefstyle="select: labelnumber nopage"/>-8.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> 
+            The VASI Open message must be as defined in 
+            <xref linkend="figure_format_vasi_open_crq_elem" />.</para>
+          </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp" 
+          xrefstyle="select: labelnumber nopage"/>-9.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> 
+            The platform must process the VASI Open Request message per the semantics described in 
+            <xref linkend="sec_vasi_open" />.</para>
+          </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp" 
+          xrefstyle="select: labelnumber nopage"/>-10.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> 
+            The VASI Close message must be as defined in 
+            <xref linkend="figure_format_vasi_close_crq_elem" />.</para>
+          </listitem>
+       	</varlistentry>
+      
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp" 
+          xrefstyle="select: labelnumber nopage"/>-11.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> 
+            The platform must process the VASI Close Request message per the semantics described in 
+            <xref linkend="sec_vasi_close" />.</para>
+          </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp" 
+          xrefstyle="select: labelnumber nopage"/>-12.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> 
+            The VASI Add Buffer message must be as defined in 
+            <xref linkend="figure_format_vasi_add_buffer_crq_elem" />.</para>
+          </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp" 
+          xrefstyle="select: labelnumber nopage"/>-13.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> 
+            The platform must process the VASI Add Buffer Request message per the semantics described in 
+            <xref linkend="sec_vasi_add_buffer" />.</para>
+          </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp" 
+          xrefstyle="select: labelnumber nopage"/>-14.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> 
+            The VASI Free Buffer message must be as defined in 
+            <xref linkend="figure_format_vasi_free_buffer_crq_elem" />.</para>
+          </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp" 
+          xrefstyle="select: labelnumber nopage"/>-15.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> 
+            The platform must process the VASI Free Buffer Request message per the semantics described in 
+            <xref linkend="sec_vasi_free_buffer" />.</para>
+          </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp" 
+          xrefstyle="select: labelnumber nopage"/>-16.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> 
+            The platform must process the VASI Download Request message per the semantics described in 
+            <xref linkend="sec_vasi_download" />.</para>
+          </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp" 
+          xrefstyle="select: labelnumber nopage"/>-17.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> 
+            The VASI Download message must be as defined in 
+            <xref linkend="figure_format_vasi_download_crq_elem" />.</para>
+          </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp" 
+          xrefstyle="select: labelnumber nopage"/>-18.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> 
+            The platform must process the VASI Operation Response message per the semantics described in 
+            <xref linkend="sec_vasi_operation" />.</para>
+          </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp" 
+          xrefstyle="select: labelnumber nopage"/>-19.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> 
+            The VASI Operation message must be as defined in 
+            <xref linkend="figure_format_vasi_operation_crq_elem" />.</para>
+          </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp" 
+          xrefstyle="select: labelnumber nopage"/>-20.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> 
+            The platform must process the VASI State Request message per the semantics described in 
+            <xref linkend="sec_vasi_state" />.</para>
+          </listitem>
+       	</varlistentry>
+      
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp" 
+          xrefstyle="select: labelnumber nopage"/>-21.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> 
+            The VASI State message must be as defined in 
+            <xref linkend="figure_format_vasi_state_crq_elem" />.</para>
+          </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp" 
+          xrefstyle="select: labelnumber nopage"/>-22.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> 
+            The platform must process the VASI Progress Request message per the semantics described in 
+            <xref linkend="sec_vasi_progress" />.</para>
+          </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp" 
+          xrefstyle="select: labelnumber nopage"/>-23.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> 
+            The VASI Progress message must be as defined in 
+            <xref linkend="figure_format_vasi_progress_crq_elem" />.</para>
+          </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp" 
+          xrefstyle="select: labelnumber nopage"/>-24.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> 
+            The platform must process the VASI Signal Request message per the semantics described in 
+            <xref linkend="sec_vasi_signal" />.</para>
+          </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp" 
+          xrefstyle="select: labelnumber nopage"/>-25.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> 
+            The VASI Signal message must be as defined in 
+            <xref linkend="figure_format_vasi_signal_crq_elem" />.</para>
+          </listitem>
+       	</varlistentry>
+       	
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp" 
+          xrefstyle="select: labelnumber nopage"/>-26.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis> 
+            To avoid a return code of “Invalid TOP” or “Invalid BOTTOM”; the VASI
+            messages: VASI Progress, VASI Add Buffer, VASI Free Buffer, VASI Download, VASI Operation, VASI Signal
+            and VASI State requests must only be sent after successful VASI Opens and prior to a VASI Close.</para>
+          </listitem>
+       	</varlistentry>
+      </variablelist>
+    
+      <section xml:id="sec_vasi_exchange_capabilities">
+        <title>VASI Exchange Capabilities</title>
+        
+        <para>The VASI Exchange Capabilities command response pair is used to negotiate run time characteristics of the VASI virtual
+        IOA. The using partition issues one VASI Exchange Capabilities request message for each service that it plans to
+        support, filling in the Capability String field of the exchange capabilities request (see 
+        <xref linkend="table_vasi_capability_string_fields" />)
+        with the values that it plans to use for that service and enqueues the request. The VASI virtual
+        IOA copies to the response Capability String, the values from the request capability string that it can support. The Capability
+        string boolean fields are defined such that zero indicates that the characteristic is not supported. Capability
+        string fields that represent numeric values may be reduced by the VASI virtual IOA from the requested value to the
+        supported value with the numeric value zero being possible.</para>
+        <para>Status Values defined for the VASI Exchange Capabilities response message:</para>
+        
+        <itemizedlist spacing="compact" mark="none">		      
+          <listitem>
+            <para>Success</para>
+          </listitem>
+
+          <listitem>
+            <para>Hardware</para>
+          </listitem>
+        </itemizedlist>		      
+
+        <figure xml:id="figure_format_vasi_exchange_cap_crq_elem">
+          <title>Format of the VASI Exchange Capabilities CRQ elements</title>
+          <mediaobject>
+            <imageobject role="html">
+              <imagedata fileref="figures/figure_format_vasi_exchange_cap_crq_elem.gif" format="GIF"
+              scalefit="1" />
+            </imageobject>
+            <imageobject role="fo">
+              <imagedata contentdepth="100%" fileref="figures/figure_format_vasi_exchange_cap_crq_elem.gif"
+              format="GIF" scalefit="1" width="100%" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+
+        <table frame="all" pgwide="1" xml:id="table_vasi_capability_string_fields">
+          <title>Capability String Fields</title>
+          <tgroup cols="3">
+            <colspec colname="c1" colwidth="20*" align="left" />
+            <colspec colname="c2" colwidth="30*" align="left" />
+            <colspec colname="c3" colwidth="50*" align="left" />
+            <thead valign="middle">
+              <row>
+                <entry align="center">
+                  <para>
+                    <emphasis role="bold">Field Name</emphasis>
+                  </para>
+                </entry>
+                <entry align="center">
+                  <para>
+                    <emphasis role="bold">Location (Byte:Bit - Byte:Bit)</emphasis>
+                  </para>
+                </entry>
+                <entry align="center">
+                  <para>
+                    <emphasis role="bold">Description</emphasis>
+                  </para>
+                </entry>
+              </row>
+            </thead>
+            <tbody valign="middle">
+              <row>
+                <entry>
+                  <para>Service</para>
+                </entry>
+                <entry>
+                  <para>3:0 - 3:7</para>
+                </entry>
+                <entry>
+                  <para>Supported Services code see <xref linkend="sec_vasi_op_stream_specs" /></para>
+                </entry>
+              </row>
+              <row>
+                <entry namest="c1" nameend="c3">
+                  <para>&#160;</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>Reserved 1</para>
+                </entry>
+                <entry>
+                  <para>4:1 - 13:5</para>
+                </entry>
+                <entry>
+                  <para>Reserved for future expansion</para>
+                </entry>
+              </row>
+              <row>
+                <entry namest="c1" nameend="c3">
+                  <para>&#160;</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>Supported Download Forms</para>
+                </entry>
+                <entry>
+                  <para>13:6 Immediate <?linebreak?>
+                  13:7 Indirect</para>
+                </entry>
+                <entry>
+                  <para>The forms of VASI Download that are supported. This is a bit
+                  field so any combination is possible to represent. Immediate
+                  and indirect refer to the buffer placement, either directly
+                  following in the operation specifier or at a location specified by
+                  an address.</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>Supported Operations</para>
+                </entry>
+                <entry>
+                  <para>14:0 Read Squential Immediate <?linebreak?>
+                  14:1 Read Sequential Indirect<?linebreak?>
+                  14:2 Read Indexed Immediate<?linebreak?>
+                  14:3 Read Indexed Indirect<?linebreak?>
+                  14:4 Write Sequential Immediate<?linebreak?>
+                  14:5 Write Sequential Indirect<?linebreak?>
+                  14:6 Write Indexed Immediate<?linebreak?>
+                  14:7 Write Indexed Indirect </para>
+                </entry>
+                <entry>
+                  <para>The forms of VASI Operations that are supported. This is a bit
+                  field so any combination is possible to represent. Sequential
+                  and indexed refer to the starting point of the operation
+                  (following the last operation or at a specific block offset).
+                  Immediate and indirect refer to the buffer placement, either
+                  directly following in the operation specifier or at a location
+                  specified by an address.</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>#Opens</para>
+                </entry>
+                <entry>
+                  <para>15:0 - 15-7</para>
+                </entry>
+                <entry>
+                  <para>Number of opens (unique TOP/BOTTOM pairs) per VASI
+                  stream that are supported on this VASI Virtual IOA. Valid
+                  values (1-255)</para>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      
+      </section>
+
+      <section xml:id="sec_vasi_open">
+        <title>VASI Open</title>
+        
+        <para>The VASI Open Command message, see
+        <xref linkend="figure_format_vasi_open_crq_elem" />,
+        indicates to the hypervisor that the originator VASI device driver is prepared to provide 
+        the indicated processing service (role) for the indicated VASI stream.</para>
+        
+        <para>The VASI Open Response message indicates to the originating VASI device driver that the hypervisor is prepared to
+        proceed with the indicated VASI stream.</para>
+        
+        <para>Status Values defined for the VASI Open response message:</para>
+
+        <itemizedlist spacing="compact" mark="none">
+          <listitem>
+            <para>Success</para>
+          </listitem>
+          <listitem>
+            <para>Hardware</para>
+          </listitem>
+          <listitem>
+            <para>Invalid Stream ID: The Stream ID parameter is not currently valid for this VASI virtual device.</para>
+          </listitem>
+          <listitem>
+            <para>Stream ID Aborted</para>
+          </listitem>
+          <listitem>
+            <para>Too many opens</para>
+          </listitem>
+          <listitem>
+            <para>Invalid Service Specifier: Either reserved value or service not defined for this VASI stream.</para>
+          </listitem>
+        </itemizedlist>      
+
+        <itemizedlist>
+          <title>Semantics for VASI Open Request Message:</title>
+          <listitem>
+            <para>Construct VASI Open Response message prototype (Including service parameter from request).</para>
+          </listitem>
+          <listitem>
+            <para>Copy low order 8 bytes from Request message to response prototype.</para>
+          </listitem>
+          <listitem>
+            <para>Verify that the Stream ID parameter of the VASI Open Request message is valid for the caller, else respond with the
+            status of “Invalid Stream ID”.</para>
+          </listitem>
+          <listitem>
+            <para>Verify that the Service parameter of the VASI Open Request message is valid for the caller plus Stream ID pair, else
+            respond with the status of “Invalid Service Specifier”. Note that the valid “Service” values vary with the specific
+            high level function being performed (see
+            <xref linkend="sec_vasi_op_stream_specs" />)
+            and the role assigned to the calling partition by mechanisms outside of the scope of PAPR.</para>
+          </listitem>
+          <listitem>
+            <para>If the state of the VASI stream specified by the Stream ID of a VASI Open Request message is “Aborted”, respond
+            with the status value of “Stream ID Aborted”.</para>
+          </listitem>
+          <listitem>
+            <para>If the maximum number of opens has not been reached, then allocate control structures to maintain the state of this
+            open instance and associate them with a unique BOTTOM parameter -- copy BOTTOM parameter to response message;
+            else respond with “Too many opens”.</para>
+          </listitem>
+          <listitem>
+            <para>Record the associated TOP parameter value for use in subsequent VASI response and operation request messages.</para>
+          </listitem>
+          <listitem>
+            <para>Respond with Success.</para>
+          </listitem>
+        </itemizedlist>      
+      
+        <figure xml:id="figure_format_vasi_open_crq_elem">
+          <title>Format of the VASI Open CRQ elements</title>
+          <mediaobject>
+            <imageobject role="html">
+              <imagedata fileref="figures/figure_format_vasi_open_crq_elem.gif" format="GIF"
+              scalefit="1" />
+            </imageobject>
+            <imageobject role="fo">
+              <imagedata contentdepth="100%" fileref="figures/figure_format_vasi_open_crq_elem.gif"
+              format="GIF" scalefit="1" width="100%" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+      
+      </section>
+
+      <section xml:id="sec_vasi_close">
+        <title>VASI Close</title>
+        
+        <para>The VASI Close Command message, see
+        <xref linkend="figure_format_vasi_close_crq_elem" />,
+        requests the receiver to close the indicated BOTTOM instance of the VASI stream. 
+        Note, other BOTTOM instances remain open.</para>
+        <para>The VASI Close Response message indicates that the VASI Close command receiver has processed the associated
+        VASI Close Command message and all previously enqueued messages to the BOTTOM instance. No further CRQ
+        messages will be enqueued by the closed BOTTOM service, and all enqueued buffers are forgotten.</para>
+                
+        <para>Status Values defined for the VASI Close response message:</para>
+
+        <itemizedlist spacing="compact" mark="none">
+          <listitem>
+            <para>Success</para>
+          </listitem>
+          <listitem>
+            <para>Hardware</para>
+          </listitem>
+          <listitem>
+            <para>Invalid BOTTOM</para>
+          </listitem>
+        </itemizedlist>      
+
+        <itemizedlist>
+          <title>Semantics for VASI Close Request Message:</title>
+          <listitem>
+            <para>Construct VASI Close Response message prototype (copy low order 14 bytes from request message).</para>
+          </listitem>
+          <listitem>
+            <para>Validate the BOTTOM parameter is valid for caller, else respond “invalid BOTTOM”</para>
+          </listitem>
+          <listitem>
+            <para>Transition the service for the specified VASI stream instance to the “Closed” state -- This process ends after all previously
+            initiated VASI request messages for the BOTTOM instance have completed.</para>
+          </listitem>
+          <listitem>
+            <para>Insert the TOP recorded at open time for the specified BOTTOM into the response prototype.</para>
+          </listitem>
+          <listitem>
+            <para>Free queued buffers and deallocate the control structures associated with the BOTTOM parameter, then respond
+            Success.</para>
+          </listitem>
+        </itemizedlist>      
+      
+        <figure xml:id="figure_format_vasi_close_crq_elem">
+          <title>Format of the VASI Close CRQ elements</title>
+          <mediaobject>
+            <imageobject role="html">
+              <imagedata fileref="figures/figure_format_vasi_close_crq_elem.gif" format="GIF"
+              scalefit="1" />
+            </imageobject>
+            <imageobject role="fo">
+              <imagedata contentdepth="100%" fileref="figures/figure_format_vasi_close_crq_elem.gif"
+              format="GIF" scalefit="1" width="100%" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+      
+      </section>
+
+      <section xml:id="sec_vasi_add_buffer">
+        <title>VASI Add Buffer</title>
+        
+        <para>The VASI Add Buffer Command message, see 
+        <xref linkend="figure_format_vasi_add_buffer_crq_elem" />,
+        indicates to the hypervisor that the originator VSP device driver is providing the hypervisor with an empty
+        buffer for the specific BOTTOM instance.</para>
+        <para>The hypervisor organizes its input buffers into N buffer pools per service, by size as indicated by the buffer descriptor.
+        The VASI 
+        <emphasis role="bold"><literal>&#8220;ibm,#buffer-pools&#8221;</literal></emphasis>
+        device tree property relates how many buffer size pools the firmware implements.
+        The first N different sizes supplied by the device driver specifies the sizes of the N buffer size pools -- buffers of
+        other sizes are rejected.</para>
+        <para>The VASI Add Buffer Response message indicates to the originating VASI device driver that the hypervisor has processed
+        the associated VASI Add Buffer Command message. All VASI Add Buffer CRQ messages generate a VASI
+        Add Buffer Response message to provide feedback to the VASI device driver for flow control of the firmware's VASI
+        CRQ.</para>
+        <para>The successful Add Buffer Response CRQ message indicates the buffer size of the pool upon which the buffer was enqueued,
+        and the number of free buffers on the indicated buffer size pool after the add (to indicate buffer utilization).</para>
+        
+        <para>Status Values defined for the VASI Add Buffer response message:</para>
+
+        <itemizedlist spacing="compact" mark="none">
+          <listitem>
+            <para>Success</para>
+          </listitem>
+          <listitem>
+            <para>Hardware</para>
+          </listitem>
+          <listitem>
+            <para>Invalid BOTTOM</para>
+          </listitem>
+          <listitem>
+            <para>Invalid Buffer Descriptor</para>
+          </listitem>
+          <listitem>
+            <para>Invalid Buffer Length</para>
+          </listitem>
+        </itemizedlist>      
+
+        <itemizedlist>
+          <title>Semantics for VASI Add Buffer Request Message:</title>
+          <listitem>
+            <para>Construct VASI Add Buffer Response message prototype (copy low order 14 bytes from the request message to the
+            response prototype).</para>
+          </listitem>
+          <listitem>
+            <para>Validate the BOTTOM field, else respond “Invalid BOTTOM”.</para>
+          </listitem>
+          <listitem>
+            <para>Insert the TOP recorded for the open BOTTOM into the response prototype.</para>
+          </listitem>
+          <listitem>
+            <para>Validate high order Buffer Descriptor bit is 0b1, else respond with “Invalid Buffer Descriptor”</para>
+          </listitem>
+          <listitem>
+            <para>Validate that the Buffer Descriptor address translates through the LIOBN of the first pane of the 
+            <emphasis role="bold"><literal>&#8220;ibm,my-dma-window&#8221;</literal></emphasis>
+            property, else respond with “Invalid Buffer Descriptor”.</para>
+          </listitem>
+          <listitem>
+            <para>Copy the first 8 bytes at the translated Buffer Descriptor address into the low order 8 bytes of the response prototype.</para>
+          </listitem>
+          <listitem>
+            <para>If the Buffer Descriptor length field does not match the buffer length of one of the buffer pools then:
+              <itemizedlist>
+                <listitem>
+                  <para>If buffer lengths are assigned to all buffer pools, then respond with “Invalid Buffer Length”</para>
+                </listitem>
+                <listitem>
+                  <para>Else select an unassigned buffer pool, and assign its length to match the length field of the Buffer Descriptor.</para>
+                </listitem>
+              </itemizedlist>            
+            </para>
+          </listitem>
+          <listitem>
+            <para>Enqueue the buffer descriptor onto the per service session (“BOTTOM”) pool whose buffer length matches the
+            length field of the Buffer Descriptor, increment the Free Buffers in Pool count for the pool; inserting the result into
+            the response prototype along with the buffer size, clear the reserved fields and respond with “Success”</para>
+          </listitem>
+        </itemizedlist>      
+      
+        <figure xml:id="figure_format_vasi_add_buffer_crq_elem">
+          <title>Format of the VASI Add Buffer CRQ elements</title>
+          <mediaobject>
+            <imageobject role="html">
+              <imagedata fileref="figures/figure_format_vasi_add_buffer_crq_elem.gif" format="GIF"
+              scalefit="1" />
+            </imageobject>
+            <imageobject role="fo">
+              <imagedata contentdepth="100%" fileref="figures/figure_format_vasi_add_buffer_crq_elem.gif"
+              format="GIF" scalefit="1" width="100%" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+      
+      </section>
+
+      <section xml:id="sec_vasi_free_buffer">
+        <title>VASI Free Buffer</title>
+        
+        <para>The VASI Free Buffer Command message, see 
+        <xref linkend="figure_format_vasi_free_buffer_crq_elem" />
+        requests the hypervisor to return an empty data buffer of the specified size to the originator VSP device
+        driver. This call is used to recover buffers. It may be used to recover buffers at the completion of a VASI operation
+        stream. All buffers added to a VASI virtual IOA service session (“BOTTOM”) are forgotten by the virtual IOA when
+        the service session is closed or the IOA’s CRQ is deregistered.</para>
+        <para>The VASI Free Buffer Response message indicates to the originating VASI device driver that the hypervisor has processed
+        the associated VASI Free Buffer Command message. All VASI Free Buffer CRQ messages generate a VASI
+        Free Buffer Response message. If the Status field of the VASI Free Buffer Response CRQ message is “Success” then
+        the last 8 bytes contain the Buffer Correlator (first 8 bytes of the data buffer) of the selected empty data buffer. The last
+        8 bytes of the VASI Free Buffer Response CRQ message are undefined for any non “Success” Status value.</para>
+       
+        
+        <para>Status Values defined for the VASI Free Buffer response message:</para>
+
+        <itemizedlist spacing="compact" mark="none">
+          <listitem>
+            <para>Success</para>
+          </listitem>
+          <listitem>
+            <para>Hardware</para>
+          </listitem>
+          <listitem>
+            <para>Invalid BOTTOM</para>
+          </listitem>
+          <listitem>
+            <para>Invalid Buffer Length</para>
+          </listitem>
+          <listitem>
+            <para>Empty</para>
+          </listitem>
+        </itemizedlist>      
+
+        <itemizedlist>
+          <title>Semantics for VASI Free Buffer Request Message:</title>
+          <listitem>
+            <para>Construct VASI Free Buffer Response message prototype with the Buffer Correlator field zero.</para>
+          </listitem>
+          <listitem>
+            <para>Validate the BOTTOM field, else respond “Invalid BOTTOM”.</para>
+          </listitem>
+          <listitem>
+            <para>Insert the TOP recorded for the open BOTTOM into the response prototype.</para>
+          </listitem>
+          <listitem>
+            <para>If the request message Buffer Length field does not match one of the pool lengths, then respond “Invalid Buffer
+            Length”.</para>
+          </listitem>
+          <listitem>
+            <para>If the buffer pool associated with the Buffer Length field is empty, then respond “Empty”.</para>
+          </listitem>
+          <listitem>
+            <para>Dequeue a Buffer Descriptor from the buffer pool associated with the Buffer Length field.</para>
+          </listitem>
+          <listitem>
+            <para>Copy the first 8 bytes at the translated Buffer Descriptor address into the low order 8 bytes of the response prototype
+            and respond “Success”.</para>
+          </listitem>
+        </itemizedlist>      
+      
+        <figure xml:id="figure_format_vasi_free_buffer_crq_elem">
+          <title>Format of the VASI Free Buffer CRQ elements</title>
+          <mediaobject>
+            <imageobject role="html">
+              <imagedata fileref="figures/figure_format_vasi_free_buffer_crq_elem.gif" format="GIF"
+              scalefit="1" />
+            </imageobject>
+            <imageobject role="fo">
+              <imagedata contentdepth="100%" fileref="figures/figure_format_vasi_free_buffer_crq_elem.gif"
+              format="GIF" scalefit="1" width="100%" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+      
+      </section>
+
+      <section xml:id="sec_vasi_download">
+        <title>VASI Download</title>
+        
+        <para>The VASI Download Command message, see 
+        <xref linkend="figure_format_vasi_download_crq_elem" />
+        requests the hypervisor to process the VASI Download data buffer specified by the 
+        originator VSP device driver.</para>
+        
+        <para>The VASI Download Response message indicates to the originating VSP that the hypervisor has processed the associated
+        VASI Download Command message. Unless the Status field of the VASI Download Response CRQ message is
+        “Invalid Buffer Descriptor”, the last 8 bytes contain the Buffer Correlator (first 8 bytes of the data buffer) of the data
+        buffer specified by the Buffer Descriptor field of the VASI Download Command CRQ message. The last 8 bytes of the
+        VASI Download Response CRQ message are undefined for the “Invalid Buffer Descriptor” Status value.</para>
+        
+        <para>Status Values defined for the VASI Download response message:</para>
+
+        <itemizedlist spacing="compact" mark="none">
+          <listitem>
+            <para>Success</para>
+          </listitem>
+          <listitem>
+            <para>Hardware</para>
+          </listitem>
+          <listitem>
+            <para>Invalid BOTTOM</para>
+          </listitem>
+          <listitem>
+            <para>Invalid Buffer Descriptor</para>
+          </listitem>
+          <listitem>
+            <para>Invalid VASI Download Request Specifier</para>
+          </listitem>
+          <listitem>
+            <para>Invalid VASI Download data</para>
+          </listitem>
+        </itemizedlist>      
+
+        <itemizedlist>
+          <title>Semantics for VASI Download Request Message:</title>
+          <listitem>
+            <para>Construct VASI Download Response message prototype (copy low order 14 bytes from Request message to response
+            prototype).</para>
+          </listitem>
+          <listitem>
+            <para>Validate the BOTTOM field, else respond “Invalid BOTTOM”.</para>
+          </listitem>
+          <listitem>
+            <para>Insert the TOP recorded for the open BOTTOM into the response prototype.</para>
+          </listitem>
+          <listitem>
+            <para>Validate high order Buffer Descriptor bit is 0b1, else respond with “Invalid Buffer Descriptor”</para>
+          </listitem>
+          <listitem>
+            <para>Validate that the Buffer Descriptor address translates through the LIOBN of the first pane of the 
+            <emphasis role="bold"><literal>&#8220;ibm,my-dma-window&#8221;</literal></emphasis>
+            property, else respond with “Invalid Buffer Descriptor”.</para>
+          </listitem>
+          <listitem>
+            <para>Copy the first 8 bytes at the translated Buffer Descriptor address into the low order 8 bytes of the response prototype.</para>
+          </listitem>
+          <listitem>
+            <para>Verify that the BOTTOM parameter of the buffer’s VASI Download Request Specifier is valid for the caller and the
+            Download service for the associated Stream ID is Open by the caller, else respond with “Invalid VASI Download
+            Request Specifier”.</para>
+          </listitem>
+          <listitem>
+            <para>The Download service processes the buffer data; if an error is detected in the buffer data respond with “Invalid VASI
+            Download data”, else respond with “Success”.</para>
+          </listitem>
+        </itemizedlist>      
+      
+        <figure xml:id="figure_format_vasi_download_crq_elem">
+          <title>Format of the VASI Download CRQ elements</title>
+          <mediaobject>
+            <imageobject role="html">
+              <imagedata fileref="figures/figure_format_vasi_download_crq_elem.gif" format="GIF"
+              scalefit="1" />
+            </imageobject>
+            <imageobject role="fo">
+              <imagedata contentdepth="100%" fileref="figures/figure_format_vasi_download_crq_elem.gif"
+              format="GIF" scalefit="1" width="100%" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+      
+      </section>
+
+      <section xml:id="sec_vasi_operation">
+        <title>VASI Operation</title>
+        
+        <para>The VASI Operation Request message, see Figure 47‚ “Format of the VASI Operation CRQ elements‚” on page 731,
+        requests the receiving VSP to process the VASI Operation specified in the data buffer indicated by the Buffer Correlator
+        field. The Buffer Correlator field is copied from the first 8 bytes of the data buffer as supplied by the VSP using the
+        VASI add buffer request. VASI Operation Requests are used to upload data on migration/hibernation (Write Sequential)
+        and for VPM paging requests (using indexed Read/Write).</para>
+        <para>The VASI Operation Response message indicates to the hypervisor that the VSP has processed the associated VASI
+        Operation Command message. Unless the Status field of the VASI Operation Response CRQ message is “Invalid
+        Buffer Correlator”, the last 8 bytes contain the Operation Correlator (fourth 8 bytes of the data buffer) of the data buffer
+        that the hypervisor selected for this operation. The last 8 bytes of the VASI Operation Response CRQ message are undefined
+        for the “Invalid Buffer Correlator” Status value. The VSP validates that the TOP parameter corresponds to an 
+        open instance against a VASI stream ID, else it responds “Invalid TOP”. Similarly the VSP validates the format of the
+        remainder of the buffer, else responds “Invalid VASI Operation Request Specifier”.</para>
+        
+        <para>Status Values defined for the VASI Operation response message:</para>
+
+        <itemizedlist spacing="compact" mark="none">
+          <listitem>
+            <para>Success</para>
+          </listitem>
+          <listitem>
+              <para>Hardware</para>
+          </listitem>
+          <listitem>
+              <para>Invalid Buffer Correlator</para>
+          </listitem>
+          <listitem>
+              <para>Invalid TOP</para>
+          </listitem>
+          <listitem>
+              <para>Invalid VASI Operation Request Specifier</para>
+          </listitem>
+          <listitem>
+              <para>Stream ID Aborted</para>
+          </listitem>
+          <listitem>
+              <para>End of File</para>
+          </listitem>
+        </itemizedlist>      
+
+        <itemizedlist>
+          <title>Semantics for VASI Operation Response Message:</title>
+          <listitem>
+            <para>Verify that the Operation Correlator references a valid outstanding VASI Operation, else discard message.<?linebreak?>
+            NOTE: while an invalid operation correlator is a very serious error there is no obvious instance to which to deliver the
+            error.</para>
+          </listitem>
+          <listitem>
+            <para>Mark the operation control block as referenced by the Operation Correlator with the Status and Residual values, refer
+            to <xref linkend="sec_vasi_operation_request" />, from the Response message and mark the
+            response message as being processed.</para>
+          </listitem>
+          <listitem>
+            <para>Further processing of the operation control block is covered in the specification for the specific VASI Operation
+            Stream. See <xref linkend="sec_vasi_op_stream_specs" />.</para>
+          </listitem>
+        </itemizedlist>      
+      
+        <figure xml:id="figure_format_vasi_operation_crq_elem">
+          <title>Format of the VASI Operation CRQ elements</title>
+          <mediaobject>
+            <imageobject role="html">
+              <imagedata fileref="figures/figure_format_vasi_operation_crq_elem.gif" format="GIF"
+              scalefit="1" />
+            </imageobject>
+            <imageobject role="fo">
+              <imagedata contentdepth="100%" fileref="figures/figure_format_vasi_operation_crq_elem.gif"
+              format="GIF" scalefit="1" width="100%" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+      
+      </section>
+
+      <section xml:id="sec_vasi_signal">
+        <title>VASI Signal</title>
+        
+        <para>The VASI Signal Command message (See
+        <xref linkend="figure_format_vasi_signal_crq_elem" />)
+        informs the VASI Virtual IOA of the VASI Stream, associated with the BOTTOM parameter, of the condition specified
+        by the “Signal Code” parameter; optionally, a non-zero reason code may be associated with the event so that firmware
+        may record the event using facilities and methods that are outside the scope of this architecture.</para>
+        <para>The valid signal codes, and reason codes are unique to the specific VASI operation stream. See 
+        <xref linkend="table_vasi_signal_codes" /> and
+        <xref linkend="sec_vasi_op_stream_specs" />
+        respectively for more details.</para>
+        
+        <para>Status Values defined for the VASI State response message:</para>
+
+        <itemizedlist spacing="compact" mark="none">
+          <listitem>
+            <para>Success</para>
+          </listitem>
+          <listitem>
+            <para>Hardware</para>
+          </listitem>
+          <listitem>
+            <para>Invalid BOTTOM</para>
+          </listitem>
+          <listitem>
+            <para>Invalid Signal Code</para>
+          </listitem>
+        </itemizedlist>      
+
+        <itemizedlist>
+          <title>Semantics for processing the VASI Signal Request Message:</title>
+          <listitem>
+            <para>Construct VASI Signal Response message prototype (copy the low order 14 bytes from the Request message to the
+            response prototype).</para>
+          </listitem>
+          <listitem>
+            <para>Validate the BOTTOM parameter for the caller; else respond “Invalid BOTTOM”</para>
+          </listitem>
+          <listitem>
+            <para>Insert the TOP recorded for the open BOTTOM into the response prototype.</para>
+          </listitem>
+          <listitem>
+            <para>Determine the VASI stream associated with the BOTTOM parameter.</para>
+          </listitem>
+          <listitem>
+            <para>If the “Signal” parameter represents an invalid signal 
+            code for the VASI operation stream represented by the BOTTOM parameter (refer to 
+            <xref linkend="table_vasi_signal_codes" />),
+            then respond “Invalid Signal Code”.</para>
+          </listitem>
+          <listitem>
+            <para>Initiate the VASI stream event processing for the VASI operation 
+            stream represented by the BOTTOM parameter as defined under 
+            <xref linkend="sec_vasi_op_stream_specs" />
+            for the current state and the condition represented by the “Signal” 
+            parameter, record the value of the “Reason” parameter, and respond “Success”.</para>
+          </listitem>
+        </itemizedlist>      
+      
+        <figure xml:id="figure_format_vasi_signal_crq_elem">
+          <title>Format of the VASI Signal CRQ elements</title>
+          <mediaobject>
+            <imageobject role="html">
+              <imagedata fileref="figures/figure_format_vasi_signal_crq_elem.gif" format="GIF"
+              scalefit="1" />
+            </imageobject>
+            <imageobject role="fo">
+              <imagedata contentdepth="100%" fileref="figures/figure_format_vasi_signal_crq_elem.gif"
+              format="GIF" scalefit="1" width="100%" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+      
+      </section>
+
+      <section xml:id="sec_vasi_state">
+        <title>VASI State</title>
+        
+        <para>The VASI virtual IOA generates a VASI State Request message, see 
+        <xref linkend="figure_format_vasi_state_crq_elem" />,
+        to each VASI open session instance (TOP), that is associated (through a VASI Open) with the
+        VASI Stream ID, each time the VASI stream changes state. Such state change request messages may include an optional
+        non-zero reason code.</para>
+        <para>No VASI State Response message is defined. The VASI State Request message is informational, and the receiver does
+        not generate a response.</para>
+        
+        <para>The valid states, state transitions, and reason codes are unique to the specific VASI operation stream, see
+        <xref linkend="sec_vasi_op_stream_specs" />.</para>
+
+        <itemizedlist>
+          <title>Semantics for VASI State Request Message sent only after all other VASI stream state transition processing completes:</title>
+          <listitem>
+            <para>For each TOP opened for the VASI stream that changed state.
+              <itemizedlist>
+                <listitem>
+                  <para>Construct VASI State Request message prototype.</para>
+                </listitem>
+                <listitem>
+                  <para>Fill in the TOP from the values recorded at VASI open time.</para>
+                </listitem>
+                <listitem>
+                  <para>Fill in the “Reason” and “To” fields per the completed transition.</para>
+                </listitem>
+                <listitem>
+                  <para>Enqueue the request message to the CRQ used to open the associated TOP.</para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+          <listitem>
+            <para>Mark the VASI stream state transition complete.</para>
+          </listitem>
+        </itemizedlist>      
+      
+        <figure xml:id="figure_format_vasi_state_crq_elem">
+          <title>Format of the VASI State CRQ elements</title>
+          <mediaobject>
+            <imageobject role="html">
+              <imagedata fileref="figures/figure_format_vasi_state_crq_elem.gif" format="GIF"
+              scalefit="1" />
+            </imageobject>
+            <imageobject role="fo">
+              <imagedata contentdepth="100%" fileref="figures/figure_format_vasi_state_crq_elem.gif"
+              format="GIF" scalefit="1" width="100%" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+      
+      </section>
+
+      <section xml:id="sec_vasi_progress">
+        <title>VASI Progress</title>
+        
+        <para>The VASI Progress Command message, see 
+        <xref linkend="figure_format_vasi_progress_crq_elem" />,
+        is applicable to Migration and Hibernation high level operations. It requests the hypervisor to report the number of bytes
+        of partition state that need to be processed for the VASI migration/hibernation stream associated with the “BOTTOM”
+        parameter. If this request is made prior to any state transfer requests, it represents the total size of the partition state
+        data.</para>
+
+        <para>If the Status field of the VASI Progress Response CRQ message is “Invalid BOTTOM”, the last 8 bytes of the VASI
+        Progress Response CRQ message are copied from the corresponding VASI Progress Request message in all cases.</para>
+        
+        <para>Status Values defined for the VASI State response message:</para>
+
+        <itemizedlist spacing="compact" mark="none">
+          <listitem>
+            <para>Success</para>
+          </listitem>
+          <listitem>
+            <para>Hardware</para>
+          </listitem>
+          <listitem>
+            <para>Invalid BOTTOM</para>
+          </listitem>
+          <listitem>
+            <para>Invalid Service Specifier</para>
+          </listitem>
+        </itemizedlist>      
+
+        <itemizedlist>
+          <title>Semantics for VASI Progress Request Message:</title>
+          <listitem>
+            <para>Construct VASI Progress Response message prototype (copy the low order 14 bytes from Request message to response
+            prototype).</para>
+          </listitem>
+          <listitem>
+            <para>Validate the BOTTOM parameter for the caller, else respond “invalid BOTTOM”</para>
+          </listitem>
+          <listitem>
+            <para>Insert the TOP recorded for the open BOTTOM into the response prototype.</para>
+          </listitem>
+          <listitem>
+            <para>Validate that the operation stream associated with the BOTTOM parameter is either a migration or a hibernation;
+            else respond “Invalid Service Specifier”.</para>
+          </listitem>
+          <listitem>
+            <para>Estimate the number of bytes left to transfer (this is best effort since the number may constantly change) placing the
+            value into the “Number of Bytes Left” field and respond Success.
+              <itemizedlist>
+                <listitem>
+                  <para>For the source side of an operation the estimate of the number of bytes left is the number of bytes of dirty status.</para>
+                </listitem>
+                <listitem>
+                  <para>For the destination side of an operation the estimate of the number of bytes left is the number of expected status
+                  bytes that the destination knows are not valid (either they were never sent or there has been an indication that they
+                  were subsequently made invalid).</para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+        </itemizedlist>      
+      
+        <figure xml:id="figure_format_vasi_progress_crq_elem">
+          <title>Format of the VASI Progress CRQ elements</title>
+          <mediaobject>
+            <imageobject role="html">
+              <imagedata fileref="figures/figure_format_vasi_progress_crq_elem.gif" format="GIF"
+              scalefit="1" />
+            </imageobject>
+            <imageobject role="fo">
+              <imagedata contentdepth="100%" fileref="figures/figure_format_vasi_progress_crq_elem.gif"
+              format="GIF" scalefit="1" width="100%" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+      
+      </section>
+    </section>
+
+    <section xml:id="sec_vasi_virtual_ioa_devtree">
+      <title>VASI Virtual IOA Device Tree</title>
+      
+      <table frame="all" pgwide="1" xml:id="table_vasi_node_properties">
+        <title>Properties of the VASI Node in a Partition</title>
+        <tgroup cols="3">
+          <colspec colname="c1" colwidth="30*" align="left" />
+          <colspec colname="c2" colwidth="10*" align="center" />
+          <colspec colname="c3" colwidth="60*" align="left" />
+          <thead valign="middle">
+            <row>
+              <entry align="center">
+                <para>
+                  <emphasis role="bold">Property Name</emphasis>
+                </para>
+              </entry>
+              <entry align="center">
+                <para>
+                  <emphasis role="bold">Required?</emphasis>
+                </para>
+              </entry>
+              <entry align="center">
+                <para>
+                  <emphasis role="bold">Definition</emphasis>
+                </para>
+              </entry>
+            </row>
+          </thead>
+          <tbody valign="middle">
+            <row>
+              <entry>
+                <para><emphasis role="bold"><literal>&#8220;name&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>Y</para>
+              </entry>
+              <entry>
+                <para>IBM,VASI</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis role="bold"><literal>&#8220;device_type&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>Y</para>
+              </entry>
+              <entry>
+                <para>IBM,VASI-1</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis role="bold"><literal>&#8220;model&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>NA</para>
+              </entry>
+              <entry>
+                <para>Property not present.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis role="bold"><literal>&#8220;compatible&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>Y</para>
+              </entry>
+              <entry>
+                <para>IBM,VASI-1</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis role="bold"><literal>&#8220;used-by-rtas&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>N</para>
+              </entry>
+              <entry>
+                <para>Property not present.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis role="bold"><literal>&#8220;ibm,loc-code&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>Y</para>
+              </entry>
+              <entry>
+                <para>Property name specifying the unique and 
+                persistent location code associated with this virtual IOA
+                presented as an encoded array as with 
+                <emphasis role="bold"><literal>encode-string</literal></emphasis>. 
+                The value shall be of the form specified in
+                <xref linkend="LoPAR.Platform" /> information on 
+                Virtual Card Connector Location Codes.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>Y</para>
+              </entry>
+              <entry>
+                <para>Standard property name per <citetitle>IEEE 1275</citetitle> specifying the 
+                register addresses, used as the unit address (unit
+                ID), associated with this virtual IOA presented as 
+                an encoded array as with <emphasis role="bold"><literal>encode-phys</literal></emphasis> of length
+                <emphasis role="bold"><literal>&#8220;#address-cells&#8221;</literal></emphasis> 
+                value shall be 0xwhatever (virtual 
+                <emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis> 
+                property used for unit address no actual locations used, therefore, the size field 
+                has zero cells (does not exist) as determined by the value of the 
+                <emphasis role="bold"><literal>&#8220;#size-cells&#8221;</literal></emphasis> property).</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis role="bold"><literal>&#8220;ibm,my-dma-window&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>Y</para>
+              </entry>
+              <entry>
+                <para>Property name specifying the DMA window 
+                associated with this virtual IOA presented as an encoded
+                array of tripples; each triple consisting of three values (LIOBN, phys, size) encoded as with
+                <emphasis role="bold"><literal>encode-int</literal></emphasis>, 
+                <emphasis role="bold"><literal>encode-phys</literal></emphasis>, and 
+                <emphasis role="bold"><literal>encode-int</literal></emphasis> respectively.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis role="bold"><literal>&#8220;interrupts&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>Y</para>
+              </entry>
+              <entry>
+                <para>Standard property name specifying the interrupt source 
+                number and sense code associated with this virtual
+                IOA presented as an encoded array of two cells encoded as with 
+                <emphasis role="bold"><literal>encode-int</literal></emphasis> with the first cell
+                containing the interrupt source number, and the 
+                second cell containing the sense code 0 indicating positive
+                edge triggered. The interrupt source number being the value 
+                returned by the H_XIRR or H_IPOLL hcall().</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis role="bold"><literal>&#8220;ibm,my-drc-index&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>For DR</para>
+              </entry>
+              <entry>
+                <para>Present if the platform implements DR for this node.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis role="bold"><literal>&#8220;ibm,#dma-size-cells&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>N</para>
+              </entry>
+              <entry>
+                <para>Property name, to define the package’s dma address 
+                size format. The property value specifies the number
+                of cells that are used to encode the size field of 
+                dma-window properties. If the
+                <emphasis role="bold"><literal>&#8220;ibm,#dma-size-cells&#8221;</literal></emphasis> 
+                property is missing, the default value is the 
+                <emphasis role="bold"><literal>&#8220;#size-cells&#8221;</literal></emphasis> 
+                property for the parent package.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis role="bold"><literal>&#8220;ibm,#dma-address-cells&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>N</para>
+              </entry>
+              <entry>
+                <para>Property name, to define the package’s dma address 
+                format. The property value specifies the number
+                of cells that are used to encode the physical address field of 
+                child's dma-window properties.  If the
+                <emphasis role="bold"><literal>&#8220;ibm,#dma-address-cells&#8221;</literal></emphasis> 
+                property is missing, the default value is the 
+                <emphasis role="bold"><literal>&#8220;#address-cells&#8221;</literal></emphasis> 
+                property for the parent package.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis role="bold"><literal>&#8220;ibm,#buffer-pools&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>Y</para>
+              </entry>
+              <entry>
+                <para>Property name to define number, encoded as with 
+                <emphasis role="bold"><literal>encode-int</literal></emphasis>
+                of different data buffer size pools
+                supported by the VASI virtual IOA service sessions.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis role="bold"><literal>&#8220;ibm,crq-size&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>Y</para>
+              </entry>
+              <entry>
+                <para>Property name to define the size, in bytes, of the VASI virtual IOA CRQ; encoded as with 
+                <emphasis role="bold"><literal>encode-int</literal></emphasis>.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis role="bold"><literal>&#8220;ibm,#vasi-streams&#8221;</literal></emphasis></para>
+              </entry>
+              <entry>
+                <para>Y</para>
+              </entry>
+              <entry>
+                <para>Property name to define the number of simultaneous 
+                unique VASI stream IDs that may be supported by
+                the VASI virtual IOA CRQ; encoded as with 
+                <emphasis role="bold"><literal>encode-int</literal></emphasis>.</para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    
+    </section>
+
+    <section xml:id="sec_vasi_hcalls">
+      <title>VASI Support hcall()s</title>
+      
+      <para>The hcall()s of this section support the VASI option. H_DONOR_OPERATION supplies the hypervisor with processor
+      cycles to perform administrative services. H_VASI_SIGNAL allows partitions to signal anomalous conditions such as
+      the need to abort the administrative service stream without having to have an open VASI virtual IOA. While the
+      H_VASI_STATE allows partitions that do not have an open VASI virtual IOA for a given VASI stream ID to poll the
+      state of their administrative service streams.</para>
+    
+      <section xml:id="sec_vasi_h_donor_operations">
+        <title>H_DONOR_OPERATION</title>
+        
+        <para>This hcall() supplies donor partition cycles to perform hypervisor operations for a given VASI Stream. The TOP/BOTTOM
+        parameter indicates the VASI stream, and thus a specific operating context relative to the caller and callee. The
+        cycles donated by any and all TOP/BOTTOMs associated with the VASI Stream are combined by the platform to perform
+        the needed processing for the stream. A platform may use the cycles from different TOP/BOTTOM pairs to create
+        parallel processes to improve the stream performance.</para>
+        
+        <simplesect>
+          <title>Syntax:</title>
+          
+          <programlisting><![CDATA[int64                  /* H_Success:        Expected final Return code */
+                       /* H_IN_PROGRESS:    The requested operation has not */
+                       /*                     completed call again */
+                       /* H_LongBusyOrder*: Wait the indicated time and call again */
+                       /* H_Parameter:      The handle parameter is invalid */
+                       /* H_Aborted:        The operation received an abort signal*/
+                       /* H_Hardware:       The hardware experienced a fault */
+                       /*                     causing the function to fail. */
+hcall ( const uint64 H_DONOR_OPERATION, /* Use my processor to perform platform */
+                                        /*   operations */
+        uint64 TOP/BOTTOM_ID); /* Opaque handles of a specific VASI operation */
+                               /*   stream relative to the caller and callee.*/]]></programlisting>
+
+        </simplesect>
+        
+        <simplesect>
+          <title>Parameters:</title>
+          
+          <itemizedlist>
+            <listitem>
+              <para>TOP/BOTTOM_ID (The opaque handles of a specific VASI operation stream relative to the caller and callee.)</para>
+            </listitem>
+          </itemizedlist>
+        </simplesect>
+        
+        <simplesect>
+          <title>Semantics:</title>
+      
+          <itemizedlist>
+            <listitem>
+              <para>If the TOP/BOTTOM_ID parameter is invalid relative to the calling partition, return H_Parameter.</para>
+            </listitem>
+            <listitem>
+              <para>If the VASI stream is in the aborted state, return H_Aborted.</para>
+            </listitem>
+            <listitem>
+              <para>Perform the next operation associated with the specified VASI stream. Note the amount of processing performed on
+              any one call is limited by the interrupt hold off constraints of standard hypervisor calls. (The format of the platform
+              operation state structure is outside of the scope of this architecture.)</para>
+            </listitem>
+            <listitem>
+              <para>If the specific VASI stream operation is fully complete, return H_Success.</para>
+            </listitem>
+            <listitem>
+              <para>If the specific VASI stream requires more processing to fully complete the platform operation and is not blocked
+              waiting for asynchronous agent(s), return H_IN_PROGRESS.</para>
+            </listitem>
+            <listitem>
+              <para>If the VASI stream is blocked waiting for asynchronous agent(s), return H_LongBusyOrder* (where * is the appropriate
+              expected waiting time).</para>
+            </listitem>
+          </itemizedlist>
+          
+          <variablelist>
+           	<varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="sec_vasi_h_donor_operations" 
+              xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For the VASI option:</emphasis> 
+                The platform must implement the H_DONOR_OPERATION hcall() following
+                the syntax and semantics of 
+                <xref linkend="sec_vasi_h_donor_operations" />.</para>
+              </listitem>
+           	</varlistentry>
+          </variablelist>
+
+        </simplesect>       
+      </section>
+    
+      <section xml:id="sec_h_vasi_signal">
+        <title>H_VASI_SIGNAL</title>
+        
+        <para>This hcall() signals the condition specified by the “signal code” 
+        parameter to the VASI Virtual IOA of the VASI Stream
+        associated with the “handle” parameter; optionally, a non-zero 
+        “reason code” may be associated with the signal code so
+        that firmware may record the signal using facilities and methods 
+        that are outside the scope of this architecture.</para>
+        
+        <simplesect>
+          <title>Syntax:</title>
+          
+          <programlisting><![CDATA[int64                  /* H_Success:   Expected final Return code */
+                       /* H_Parameter: The VASI_Stream_ID parameter is invalid */
+                       /* H_NOOP:      The signal_code value was invalid for the */
+                       /*                current state.*/
+                       /* H_P2:        The signal_code value was invalid*/
+                       /* H_Hardware:  The hardware experienced a fault causing the */
+                       /*                function to fail. */
+hcall ( const uint64 H_VASI_SIGNAL, /* Signal the VASI operation stream of */
+                                    /*   condition signal_code. */
+        uint64 handle, /* Opaque handle of a specific VASI operation stream */
+                       /*   relative to the caller and callee.*/
+        int64 signal_code, /* signal_code value */
+        int64 reason_code);/* reason_code value */]]></programlisting>
+        </simplesect>
+        
+        <simplesect>
+          <title>Parameters:</title>
+      
+          <itemizedlist>
+            <listitem>
+              <para>handle -- the VASI Stream ID (The opaque handle of a specific VASI operation stream.)</para>
+            </listitem>
+            <listitem>
+              <para>signal_code -- one of the values listed in
+              <xref linkend="table_vasi_signal_codes" /> 
+              right justified with high order bytes zero.</para>
+            </listitem>
+            <listitem>
+              <para>reason_code -- Code user gives as reason for signal right 
+              justified with high order bytes zero -- The value is simply
+              transported not checked by the platform.</para>
+            </listitem>
+          </itemizedlist>
+        </simplesect>
+        
+        <simplesect>
+          <title>Semantics:</title>
+      
+          <itemizedlist>
+            <listitem>
+              <para>If the “handle” parameter is invalid relative to the calling partition, then return H_Parameter.</para>
+            </listitem>
+            <listitem>
+              <para>If the “signal_code” is invalid based upon the values listed in 
+              <xref linkend="table_vasi_signal_codes" />, 
+              then return H_P2.</para>
+            </listitem>
+            <listitem>
+              <para>If the “signal_code” is valid for the current VASI stream state, 
+              initiate the processing defined for the “signal_code”;
+              else return H_NOOP.</para>
+            </listitem>
+          </itemizedlist>
+
+          <table frame="all" pgwide="1" xml:id="table_vasi_signal_codes">
+            <title>VASI Signal Codes</title>
+            <tgroup cols="6">
+              <colspec colname="c1" colwidth="10*" align="center" />
+              <colspec colname="c2" colwidth="10*" align="center" />
+              <colspec colname="c3" colwidth="30*" align="left" />
+              <colspec colname="c4" colwidth="20*" align="center" />
+              <colspec colname="c5" colwidth="15*" align="center" />
+              <colspec colname="c6" colwidth="15*" align="center" />
+              <thead valign="middle">
+                <row>
+                  <entry morerows="1">
+                    <para>
+                      <emphasis role="bold">Name</emphasis>
+                    </para>
+                  </entry>
+                  <entry morerows="1">
+                    <para>
+                      <emphasis role="bold">Value</emphasis>
+                    </para>
+                  </entry>
+                  <entry morerows="1" align="center">
+                    <para>
+                      <emphasis role="bold">Description</emphasis>
+                    </para>
+                  </entry>
+                  <entry morerows="1">
+                    <para>
+                      <emphasis role="bold">VASI Operation Stream</emphasis>
+                    </para>
+                  </entry>
+                  <entry namest="c5" nameend="c6">
+                    <para>
+                      <emphasis role="bold">Valid for Interface</emphasis>
+                    </para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>
+                      <emphasis role="bold">VASI Signal Message</emphasis>
+                    </para>
+                  </entry>
+                  <entry>
+                    <para>
+                      <emphasis role="bold">H_VASI_SIGNAL</emphasis>
+                    </para>
+                  </entry>
+                </row>
+              </thead>
+              <tbody valign="middle">
+                <row>
+                  <entry>
+                    <para>Null</para>
+                  </entry>
+                  <entry>
+                    <para>0x0</para>
+                  </entry>
+                  <entry>
+                    <para>Not used (invalid)</para>
+                  </entry>
+                  <entry>
+                    <para>All</para>
+                  </entry>
+                  <entry>
+                    <para>N</para>
+                  </entry>
+                  <entry>
+                    <para>N</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>Cancel</para>
+                  </entry>
+                  <entry>
+                    <para>0x1</para>
+                  </entry>
+                  <entry>
+                    <para>Gracefully cancel processing if possible</para>
+                  </entry>
+                  <entry>
+                    <para>Partition Migration<?linebreak?>Partition Hibernation</para>
+                  </entry>
+                  <entry>
+                    <para>Y</para>
+                  </entry>
+                  <entry>
+                    <para>Y</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>Abort</para>
+                  </entry>
+                  <entry>
+                    <para>0x2</para>
+                  </entry>
+                  <entry>
+                    <para>Immediately halt function</para>
+                  </entry>
+                  <entry>
+                    <para>Partition Migration<?linebreak?>Partition Hibernation</para>
+                  </entry>
+                  <entry>
+                    <para>Y</para>
+                  </entry>
+                  <entry>
+                    <para>N</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>Suspend</para>
+                  </entry>
+                  <entry>
+                    <para>0x3</para>
+                  </entry>
+                  <entry>
+                    <para>Suspend target partition</para>
+                  </entry>
+                  <entry>
+                    <para>Partition Migration<?linebreak?>Partition Hibernation</para>
+                  </entry>
+                  <entry>
+                    <para>Y</para>
+                  </entry>
+                  <entry>
+                    <para>N</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>Complete</para>
+                  </entry>
+                  <entry>
+                    <para>0x4</para>
+                  </entry>
+                  <entry>
+                    <para>Complete paging operation</para>
+                  </entry>
+                  <entry>
+                    <para>Paging</para>
+                  </entry>
+                  <entry>
+                    <para>Y</para>
+                  </entry>
+                  <entry>
+                    <para>N</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>Enable</para>
+                  </entry>
+                  <entry>
+                    <para>0x5</para>
+                  </entry>
+                  <entry>
+                    <para>Enabling paging operation</para>
+                  </entry>
+                  <entry>
+                    <para>Paging</para>
+                  </entry>
+                  <entry>
+                    <para>Y</para>
+                  </entry>
+                  <entry>
+                    <para>N</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>Reserved</para>
+                  </entry>
+                  <entry>
+                    <para>0x6-0xFFFF</para>
+                  </entry>
+                  <entry>
+                    <para>Reserved</para>
+                  </entry>
+                  <entry>
+                    <para>All</para>
+                  </entry>
+                  <entry>
+                    <para>N</para>
+                  </entry>
+                  <entry>
+                    <para>N</para>
+                  </entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
+
+          <variablelist>
+           	<varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="sec_h_vasi_signal" 
+              xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For the VASI option:</emphasis> 
+                The platform must implement the H_VASI_SIGNAL hcall() following the syntax and semantics of
+                <xref linkend="sec_h_vasi_signal" />.</para>
+              </listitem>
+           	</varlistentry>
+          </variablelist>
+        </simplesect>       
+      
+      </section>
+    
+      <section xml:id="sec_h_vasi_state">
+        <title>H_VASI_STATE</title>
+        
+        <para>This hcall() returns the state of the specific VASI operation stream.</para>
+        
+        <simplesect>
+          <title>Syntax:</title>
+          
+          <programlisting><![CDATA[int64                  /* H_Success:   Expected final Return code */
+                       /* H_Parameter: The handle parameter is invalid */
+                       /* H_Hardware:  The hardware experienced a fault causing the */
+                       /*                 function to fail. */
+hcall ( const uint64 H_VASI_STATE, /* Return the state of the VASI service */
+                                   /*   associated with handle */
+        uint64 handle);/* The opaque handle of a specific VASI operation stream */
+                       /*   relative to the caller and callee.*/]]></programlisting>
+
+        </simplesect>
+        
+        <simplesect>
+          <title>Parameters:</title>
+      
+          <itemizedlist>
+            <listitem>
+              <para>handle -- the VASI Stream ID (The opaque handle of a specific VASI operation stream relative to the caller and callee.)</para>
+            </listitem>
+          </itemizedlist>
+        </simplesect>       
+        
+        <simplesect>
+          <title>Semantics:</title>
+      
+          <itemizedlist>
+            <listitem>
+              <para>If the “handle” parameter is invalid relative to the calling partition, return H_Parameter.</para>
+            </listitem>
+            <listitem>
+              <para>Else enter the value of the VASI state variable (see 
+              <xref linkend="table_vasi_partition_migration_states" />)
+              for the indicated stream into R4 and return H_Success</para>
+            </listitem>
+          </itemizedlist>
+
+          <variablelist>
+           	<varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="sec_h_vasi_state" 
+              xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For the VASI option:</emphasis> 
+                The platform must implement the H_VASI_STATE hcall() following the syntax and semantics of 
+                <xref linkend="sec_h_vasi_state" />.</para>
+              </listitem>
+           	</varlistentry>
+          </variablelist>
+        </simplesect>       
+      </section>
+    </section>
+
+    <section xml:id="sec_vasi_op_stream_specs">
+      <title>VASI Operation Stream Specifications</title>
+      
+      <para>This section defines the usage of VASI to accomplish specific administrative services. Each section specifies the valid
+      VASI state codes, state transitions, and reason codes, the action of the VASI virtual IOA in each state and the expected
+      behavior of the VASI device driver in order to achieve the operational goal.</para>
+
+      <table frame="all" pgwide="1" xml:id="table_vasi_stream_services_for_partition_migration">
+        <title>VASI Stream Services for Partition Migration</title>
+        <tgroup cols="3">
+          <colspec colname="c1" colwidth="20*" align="center" />
+          <colspec colname="c2" colwidth="15*" align="center" />
+          <colspec colname="c3" colwidth="65*" align="left" />
+          <thead valign="middle">
+            <row>
+              <entry>
+                <para>
+                  <emphasis role="bold">Name</emphasis>
+                </para>
+              </entry>
+              <entry>
+                <para>
+                  <emphasis role="bold">Value</emphasis>
+                </para>
+              </entry>
+              <entry align="center">
+                <para>
+                  <emphasis role="bold">Description</emphasis>
+                </para>
+              </entry>
+            </row>
+          </thead>
+          <tbody valign="middle">
+            <row>
+              <entry>
+                <para>Unused</para>
+              </entry>
+              <entry>
+                <para>0</para>
+              </entry>
+              <entry>
+                <para>&#160;</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>Source Mover for Partition Migration</para>
+              </entry>
+              <entry>
+                <para>1</para>
+              </entry>
+              <entry>
+                <para>VASI device will be used to extract partition state from the source platform to the target
+                platform using VASI Operations (Write sequential) to extract partition state, and VASI
+                Download commands to give source platform paging requests. See 
+                <xref linkend="sec_vasi_partition_migration" />.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>Target Mover for Partition Migration</para>
+              </entry>
+              <entry>
+                <para>2</para>
+              </entry>
+              <entry>
+                <para>VASI device will be used to insert migrating partition’s state to the target platform. VASI
+                Download requests will be used to give platform firmware partition state, and VASI
+                Operations (Write sequential) will be used by platform firmware to give paging requests to
+                the Mover partition to deliver to the source platform.See 
+                <xref linkend="sec_vasi_partition_migration" />.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>Pager for the CMO option</para>
+              </entry>
+              <entry>
+                <para>3</para>
+              </entry>
+              <entry>
+                <para>VASI device will be used to handle CMO paging requests See 
+                <xref linkend="sec_vasi_memory_overcommit" />.</para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+
+    
+      <section xml:id="sec_vasi_partition_migration">
+        <title>Partition Migration</title>
+        
+        <para><xref linkend="table_vasi_stream_services_for_partition_migration" />
+        defines the VASI Services for Partition Migration for use in the VASI Open CRQ request, as defined in 
+        <xref linkend="sec_vasi_open" />.</para>
+        
+        <para><emphasis role="bold">Requirements:</emphasis></para>
+        
+        <variablelist>
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_vasi_partition_migration" 
+            xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the Partition Migration Option:</emphasis>
+              If any partition code uses the value of the processor PVR to modify its operation, to ensure 
+              valid operation after the resume from suspension, prior to executing any such
+              modified operation code, partition code must reread the PVR value and be prepared to remodify its operation.</para>
+            </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_vasi_partition_migration" 
+            xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the Partition Migration Option:</emphasis>
+              In order that LAN communication partners may learn of the
+              new MAC address that may be associated with a migrated partition, the migrated partition must generate
+              “gratuitous ARP” messages. It is suggested that these “gratuitous ARP” messages be sent at the rate of once
+              per second between the time that the migrating partition resumes and the H_VASI_STATE hcall() responds
+              with “Completed”.</para>
+            </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_vasi_partition_migration" 
+            xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the Partition Migration Option:</emphasis>
+              To maintain the platform capability to perform live firmware
+              updates, the OS must call the 
+              <emphasis>ibm,activate-firmware</emphasis> RTAS service after waking from a migration suspension.</para>
+            </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_vasi_partition_migration" 
+            xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the Partition Migration Option:</emphasis>
+              The platform must implement the ILLAN option (see
+              <xref linkend="dbdoclet.50569350_23147" />).</para>
+            </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_vasi_partition_migration" 
+            xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the Partition Migration Option:</emphasis>
+              Platform firmware must support both immediate and indirect
+              data in its VASI Download data buffers.</para>
+            </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_vasi_partition_migration" 
+            xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the Partition Migration Option:</emphasis>
+              If multiple partition migrations are being performed using a
+              single VASI device, to ensure none of the migrations are starved, partition software must call
+              H_DONOR_OPERATION with TOP/BOTTOMs associated with each migration (VASI Stream ID).</para>
+            </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_vasi_partition_migration" 
+            xrefstyle="select: labelnumber nopage"/>-7.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the Partition Migration Option:</emphasis>
+              If the platform detects any unrecoverable error in processing
+              a VASI Download command, it must transition the associated VASI stream to the “Aborted” state.</para>
+            </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_vasi_partition_migration" 
+            xrefstyle="select: labelnumber nopage"/>-8.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the Partition Migration Option:</emphasis>
+              The VASI stream ID for the specific high level migration
+              function must be the same value in both the source and target platforms.</para>
+            </listitem>
+         	</varlistentry>
+        </variablelist>
+      
+        <para><emphasis role="bold">Programming Note:</emphasis>
+        If partition software wishes to get an accurate count of the number of bytes to be transferred using
+        the VASI Progress CRQ message, it should be issued immediately following a VASI open and before any cycles
+        are donated for that migration via H_DONOR_OPERATION.</para>
+        
+        <section xml:id="sec_vasi_partition_migration_abort_reasons">
+          <title>Partition Migration Abort Reason Codes</title>
+          
+          <para><xref linkend="table_partition_migration_abort_codes" />
+          defines the Abort reason code layout for Partition Migration for use with the 
+          H_VASI_SIGNAL hypervisor call and the VASI Signal and State CRQ requests, as defined in
+          <xref linkend="sec_vasi_state" />.</para>
+        
+          <table frame="all" pgwide="1" xml:id="table_partition_migration_abort_codes">
+            <title>Partition Migration Abort Reason Codes</title>
+            <tgroup cols="3">
+              <colspec colname="c1" colwidth="20*" align="center" />
+              <colspec colname="c2" colwidth="10*" align="center" />
+              <colspec colname="c2" colwidth="70*" align="left" />
+              <thead valign="middle">
+                <row>
+                  <entry>
+                    <para>
+                      <emphasis role="bold">Name</emphasis>
+                    </para>
+                  </entry>
+                  <entry>
+                    <para>
+                      <emphasis role="bold">Byte</emphasis>
+                    </para>
+                  </entry>
+                  <entry align="center">
+                    <para>
+                      <emphasis role="bold">Description</emphasis>
+                    </para>
+                  </entry>
+                </row>
+              </thead>
+              <tbody valign="middle">
+                <row>
+                  <entry>
+                    <para>Aborting Entity</para>
+                  </entry>
+                  <entry>
+                    <para>0</para>
+                  </entry>
+                  <entry>
+                    <para>1=Orchestrator<?linebreak?>
+                          2=VSP providing VASI partition source migration service<?linebreak?>
+                          3=Partition Firmware<?linebreak?>
+                          4=Platform Firmware<?linebreak?>
+                          5=VSP providing VASI partition target migration service<?linebreak?>
+                          6=Migrating partition</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>Detailed Error</para>
+                  </entry>
+                  <entry>
+                    <para>1-3</para>
+                  </entry>
+                  <entry>
+                    <para>Bytes one through three of the reason code are opaque values, architected by
+                    individual aborting entities.</para>
+                  </entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
+        </section>
+
+        <section xml:id="sec_vasi_partition_migration_states">
+          <title>Partition Migration VASI States</title>
+          
+          <para>This section defines the partition migration VASI states as used in the VASI State request CRQ message and as returned
+          from the H_VASI_STATE hcall.</para>
+          
+          <table frame="all" pgwide="1" xml:id="table_vasi_partition_migration_states">
+            <title>VASI Migration Session States</title>
+            <tgroup cols="3">
+              <colspec colname="c1" colwidth="25*" align="center" />
+              <colspec colname="c2" colwidth="15*" align="center" />
+              <colspec colname="c3" colwidth="60*" align="left" />
+              <thead valign="middle">
+                <row>
+                  <entry>
+                    <para>
+                      <emphasis role="bold">Name</emphasis>
+                    </para>
+                  </entry>
+                  <entry>
+                    <para>
+                      <emphasis role="bold">Value</emphasis>
+                    </para>
+                  </entry>
+                  <entry align="center">
+                    <para>
+                      <emphasis role="bold">Description</emphasis>
+                    </para>
+                  </entry>
+                </row>
+              </thead>
+              <tbody valign="middle">
+                <row>
+                  <entry>
+                    <para>Invalid</para>
+                  </entry>
+                  <entry>
+                    <para>0x0</para>
+                  </entry>
+                   <entry>
+                    <para>This state is defined on both the source and destination platform
+                    and indicates either that the specified Stream ID is not valid (or
+                    is no longer valid) or the invoking partition is not authorized to
+                    utilize the Stream ID.</para>
+                  </entry>
+               </row>
+                <row>
+                  <entry>
+                    <para>Enabled</para>
+                  </entry>
+                  <entry>
+                    <para>1</para>
+                  </entry>
+                   <entry>
+                    <para>This state is defined on both the source and destination platform
+                    and indicates that the partition has been enabled for migration
+                    but has not progressed beyond this initial state.</para>
+                    <para>The transition to this state is triggered by events outside of the
+                    scope of PAPR.</para>
+                    <para>The partition on the source server transitions to this state first
+                    and then the partition on the destination server.</para>
+                  </entry>
+               </row>
+                <row>
+                  <entry>
+                    <para>Aborted</para>
+                  </entry>
+                  <entry>
+                    <para>2</para>
+                  </entry>
+                   <entry>
+                    <para>This state is defined on both the source and the destination
+                    platform and indicates that the abort processing has completed.</para>
+                    <para>If the migration has been aborted, this is the final state of the
+                    migration and platform firmware ensures that all interested
+                    partitions see this state at least once. Platform firmware
+                    continues to return this state until events outside of the scope of
+                    PAPR terminate the operation and all interested partitions have
+                    seen this final state.</para>
+                    <para>In this state VASI download request information is flushed,
+                    returning success status. VASI signal requests other than
+                    “abort” are treated as an invalid state transition.
+                    The transition to this state occurs on the two servers
+                    independently and thus it is a race condition which server
+                    transitions to this state first.</para>
+                  </entry>
+               </row>
+                <row>
+                  <entry>
+                    <para>Suspending</para>
+                  </entry>
+                  <entry>
+                    <para>3</para>
+                  </entry>
+                   <entry>
+                    <para>This state is defined only on the source platform and indicates
+                    that the partition is in the process of suspending itself. When the
+                    migrating partition sees this state, it enters its suspension
+                    sequence that concludes with the call to ibm,suspend-me.</para>
+                    <para>The transition to this state occurs when the source VSP directs
+                    platform firmware to suspend the partition via a VASI Signal
+                    request (Signal Code = Suspend) on the VASI device.</para>
+                  </entry>
+               </row>
+                <row>
+                  <entry>
+                    <para>Suspended</para>
+                  </entry>
+                  <entry>
+                    <para>4</para>
+                  </entry>
+                   <entry>
+                    <para>This state is defined only on the source platform and indicates
+                    that the partition has suspended itself via the ibm,suspend-me
+                    RTAS call. This is the point in the sequence where platform
+                    firmware will reject attempts by the user to abort the migration.</para>
+                  </entry>
+               </row>
+                <row>
+                  <entry>
+                    <para>Resumed</para>
+                  </entry>
+                  <entry>
+                    <para>5</para>
+                  </entry>
+                   <entry>
+                    <para>This state is defined on both the source and destination platform
+                    and indicates that the partition has resumed execution on the
+                    destination platform.</para>
+                    <para>The transition to this state occurs on the destination platform
+                    first when it receives the dirty page bitmap from the source
+                    platform firmware. It is at this point the virtual processors of the
+                    migrating partition are dispatched on the destination platform.</para>
+                  </entry>
+               </row>
+                <row>
+                  <entry>
+                    <para>Completed</para>
+                  </entry>
+                  <entry>
+                    <para>6</para>
+                  </entry>
+                   <entry>
+                    <para>This state is defined on both the source and destination platform
+                    and indicates that the migration has completed and all partition
+                    state has been transferred to the destination platform. This is the
+                    final state of the migration and platform firmware ensures that
+                    all interested partitions see this state at least once. Platform
+                    firmware continues to return this state until events outside of the
+                    scope of PAPR terminate the operation and all interested
+                    partitions have seen this final state.</para>
+                    <para>The transition to this state occurs on the source platform first as
+                    soon as all of the residual state of the migrating partition has
+                    been successfully transferred to the destination platform. The
+                    transition to this state on the destination platform occurs when
+                    all of the partition state has been received from the source
+                    platform.</para>
+                    <para>For an inactive migration, the partition is transferred as a single
+                    unit so the partition in the destination platform just moves from
+                    Enabled to Completed on a successful inactive migration.</para>
+                  </entry>
+               </row>
+              </tbody>
+            </tgroup>
+          </table>
+          
+        
+        </section>
+      </section>
+
+      <section xml:id="sec_vasi_partition_hibernation">
+        <title>Partition Hibernation</title>
+        
+        <variablelist>
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_vasi_partition_hibernation" 
+            xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the Partition Hibernation Option:</emphasis>
+              The platform must ensure that all hibernating partition dynamic
+              reconfiguration operations are complete prior to signaling suspension of the partition.</para>
+            </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_vasi_partition_hibernation" 
+            xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the Partition Hibernation Option:</emphasis>
+              If any partition code uses the value of the processor PVR
+              to modify its operation, after the resume from suspension, but prior to executing any such modified operation
+              code, it must reread the PVR value and be prepared to remodify its operation.</para>
+            </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_vasi_partition_hibernation" 
+            xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the Partition Hibernation Option:</emphasis>
+              In order that LAN communication partners may learn of
+              the new MAC address that may be associated with a hibernated partition the hibernated partition must generate
+              “gratuitous ARP” messages. It is suggested that these “gratuitous ARP” messages be sent at the rate of
+              once per second between the time that the hibernated partition resumes and the H_VASI_STATE hcall() responds
+              with “Completed”.</para>
+            </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_vasi_partition_hibernation" 
+            xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the Partition Hibernation Option:</emphasis>
+              To maintain the platform capability to perform live firmware
+              updates, the OS must call the <emphasis>ibm,activate-firmware</emphasis>
+              RTAS service after waking from a hibernation suspension.</para>
+            </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_vasi_partition_hibernation" 
+            xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the Partition Hibernation Option:</emphasis>
+              The platform must implement the ILLAN option (see
+              <xref linkend="dbdoclet.50569350_23147" />).</para>
+            </listitem>
+         	</varlistentry>
+         	
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_vasi_partition_hibernation" 
+            xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the Partition Hibernation Option:</emphasis>
+              The VASI stream ID for the specific high level migration
+              function must be the same value for both the suspend and wake phases.</para>
+            </listitem>
+         	</varlistentry>
+        </variablelist>
+      
+      </section>
+
+      <section xml:id="sec_vasi_memory_overcommit">
+        <title>Cooperative Memory Overcommitment</title>
+        
+        <para>The CMO option defines the stream service value 3 for “Pager”. The Pager VASI device is used to page out paging partition
+        state to the VASI Server Partition (VSP) using VASI Operation requests (Write indexed) and also to page in partition
+        state from the VSP using VASI Operation requests (Read indexed). The Pager VASI service utilizes a subset of
+        the VASI Operation request architecture; specifically in the VASI Operation Request Specifier structure, the File offset
+        of the start for indexed operations field (Bytes 9:15) is not used (value = 0x00); the scatter/gather list is a series of 1 –
+        N sub operation specifications each starting with the positioning of the file cursor using a type 0xC0 control element to
+        establish the file block location, optionally followed by a type 0x40 control element to position the file cursor to a byte
+        within the established file block, this is followed by one and only one type 0x80 control element per sub operation to
+        transfer the sub operation data. The VASI Operation Request Specifier structure terminates as always with a type 0x00
+        control element with a segment length field of 0x000000.</para>
+        
+        <para>When a Pager VASI service aborts, the reason code returned is per 
+        <xref linkend="table_cmo_vasi_abort_codes" />.
+        The Pager Service VASI States as in the state request CRQ message and as returned from the
+        H_VASI_STATE hcall are as defined in 
+        <xref linkend="table_cmo_vasi_states" />.</para>
+      
+        <table frame="all" pgwide="1" xml:id="table_cmo_vasi_abort_codes">
+          <title>CMO VASI Abort Reason Codes</title>
+          <tgroup cols="3">
+            <colspec colname="c1" colwidth="30*" align="center" />
+            <colspec colname="c2" colwidth="15*" align="center" />
+            <colspec colname="c3" colwidth="55*" align="left" />
+            <thead valign="middle">
+              <row>
+                <entry>
+                  <para>
+                    <emphasis role="bold">Name</emphasis>
+                  </para>
+                </entry>
+                <entry>
+                  <para>
+                    <emphasis role="bold">Byte</emphasis>
+                  </para>
+                </entry>
+                <entry align="center">
+                  <para>
+                    <emphasis role="bold">Description</emphasis>
+                  </para>
+                </entry>
+              </row>
+            </thead>
+            <tbody valign="middle">
+              <row>
+                <entry>
+                  <para>Entity (who is issuing state change or signal)</para>
+                </entry>
+                <entry>
+                  <para>0</para>
+                </entry>
+                <entry>
+                  <para>1 = VASI<?linebreak?>
+                  2 = I/O Provider<?linebreak?>
+                  3 = Platform Firmware</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>Detailed Reason</para>
+                </entry>
+                <entry>
+                  <para>1-3</para>
+                </entry>
+                <entry>
+                  <para>Bytes one through three of the reason code are opaque values, architected by individual entities.</para>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+
+        <table frame="all" pgwide="1" xml:id="table_cmo_vasi_states">
+          <title>CMO VASI States</title>
+          <tgroup cols="3">
+            <colspec colname="c1" colwidth="15*" align="center" />
+            <colspec colname="c2" colwidth="15*" align="center" />
+            <colspec colname="c3" colwidth="70*" align="left" />
+            <thead valign="middle">
+              <row>
+                <entry>
+                  <para>
+                    <emphasis role="bold">Name</emphasis>
+                  </para>
+                </entry>
+                <entry>
+                  <para>
+                    <emphasis role="bold">Value</emphasis>
+                  </para>
+                </entry>
+                <entry align="center">
+                  <para>
+                    <emphasis role="bold">Description</emphasis>
+                  </para>
+                </entry>
+              </row>
+            </thead>
+            <tbody valign="middle">
+              <row>
+                <entry>
+                  <para>Invalid</para>
+                </entry>
+                <entry>
+                  <para>0x0</para>
+                </entry>
+                <entry>
+                  <para>This state indicates that the specified Stream ID is not valid (or is no longer valid) or the invoking
+                  partition is not authorized to utilize the Stream ID.</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>Disabled</para>
+                </entry>
+                <entry>
+                  <para>1</para>
+                </entry>
+                <entry>
+                  <para>This state indicates that the specified Stream ID is valid, but the stream has not been yet opened
+                  by the VSP providing VASI paging service. The transition to this state is triggered by events
+                  outside of the scope of PAPR.</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>Suspended</para>
+                </entry>
+                <entry>
+                  <para>2</para>
+                </entry>
+                <entry>
+                  <para>This state indicates that the specified Stream ID is valid, but the client partition has not yet been
+                  powered on</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>Enabled</para>
+                </entry>
+                <entry>
+                  <para>3</para>
+                </entry>
+                <entry>
+                  <para>This state indicates that the stream has been opened by the VSP providing VASI paging service
+                  and the client partition is powered on</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>Stopped</para>
+                </entry>
+                <entry>
+                  <para>4</para>
+                </entry>
+                <entry>
+                  <para>This state indicates that the specified Stream ID is valid, however platform firmware is no longer
+                  using the stream to perform paging. The transition to this state is triggered by events outside of the
+                  scope of PAPR.</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>Completed</para>
+                </entry>
+                <entry>
+                  <para>5</para>
+                </entry>
+                <entry>
+                  <para>This state indicates that paging has been terminated for this stream by a request to halt paging for
+                  this Stream ID.</para>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </section>
+    </section>
+  </section>
+  
   <section xml:id="dbdoclet.50569364_64078">
     <title>Virtual Fibre Channel (VFC) using NPIV</title>
     <para>N_Port ID Virtualization (NPIV) is part of the Fibre Channel (FC)
