@@ -1292,19 +1292,35 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
               thread</para>
             </entry>
           </row>
-          <!-- FIXME: Missing documentation.  Do we need these hcalls? >
-                <row>
-                  <entry><para> <xref linkend="error_section"/>november_source/17f VMC and VASI.htm#21878&#160;</para></entry>
-                  <entry><para> Use the calling processor to perform platform operations.</para></entry>
-                </row>
-                <row>
-                  <entry><para> <xref linkend="error_section"/>november_source/17f VMC and VASI.htm#97419&#160;</para></entry>
-                  <entry><para> Transition VASI operation stream state.</para></entry>
-                </row>
-                <row>
-                  <entry><para> <xref linkend="error_section"/>november_source/17f VMC and VASI.htm#49070&#160;</para></entry>
-                  <entry><para> Return the VASI operation stream state.</para></entry>
-                </row -->
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_vasi_h_donor_operations" xrefstyle="select: title nopage" /> / <xref linkend="sec_vasi_h_donor_operations" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Use the calling processor to perform platform operations.</para></entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_h_vasi_signal" xrefstyle="select: title nopage" /> / <xref linkend="sec_h_vasi_signal" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Transition VASI operation stream state.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_h_vasi_state" xrefstyle="select: title nopage" /> / <xref linkend="sec_h_vasi_state" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para> Return the VASI operation stream state.</para>
+            </entry>
+          </row>
           <row>
             <entry>
               <para>
@@ -3224,28 +3240,63 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
                 <para>hcall-join</para>
               </entry>
             </row>
-            <!-- FIXME: Missing documentation.  Do we need these hcalls? >
-                  <row>
-                    <entry><para> <xref linkend="error_section"/>november_source/17f VMC and VASI.htm#21878&#160;</para></entry>
-                    <entry><para> 0x29C</para></entry>
-                    <entry><para> Normal</para></entry>
-                    <entry><para> If VASI option is implemented</para></entry>
-                    <entry><para> hcall-vasi</para></entry>
-                  </row>
-                  <row>
-                    <entry><para> <xref linkend="error_section"/>november_source/17f VMC and VASI.htm#97419&#160;</para></entry>
-                    <entry><para> 0x2A0</para></entry>
-                    <entry><para> Normal</para></entry>
-                    <entry><para> If VASI option is implemented</para></entry>
-                    <entry><para> hcall-vasi</para></entry>
-                  </row>
-                  <row>
-                    <entry><para> <xref linkend="error_section"/>november_source/17f VMC and VASI.htm#49070&#160;</para></entry>
-                    <entry><para> 0x2A4</para></entry>
-                    <entry><para> Normal</para></entry>
-                    <entry><para> If VASI option is implemented</para></entry>
-                    <entry><para> hcall-vasi</para></entry>
-                  </row-->
+            <row>
+              <entry>
+                <para> 
+                  <xref linkend="sec_vasi_h_donor_operations" xrefstyle="select: title nopage" /> / <xref linkend="sec_vasi_h_donor_operations" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x29C</para>
+              </entry>
+              <entry>
+                <para>Normal</para>
+              </entry>
+              <entry>
+                <para>If VASI option is implemented</para>
+              </entry>
+              <entry>
+                <para>hcall-vasi</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para> 
+                  <xref linkend="sec_h_vasi_signal" xrefstyle="select: title nopage" /> / <xref linkend="sec_h_vasi_signal" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x2A0</para>
+              </entry>
+              <entry>
+                <para>Normal</para>
+              </entry>
+              <entry>
+                <para>If VASI option is implemented</para>
+              </entry>
+              <entry>
+                <para> hcall-vasi</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_h_vasi_state" xrefstyle="select: title nopage" /> / <xref linkend="sec_h_vasi_state" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x2A4</para>
+              </entry>
+              <entry>
+                <para>Normal</para>
+              </entry>
+              <entry>
+                <para>If VASI option is implemented</para>
+              </entry>
+              <entry>
+                <para>hcall-vasi</para>
+              </entry>
+            </row>
             <row>
               <entry>
                 <para>
@@ -14804,12 +14855,10 @@ hcall ( const uint64 H_HOME_NODE_ASSOCIATIVITY), /* Returns in R4-R9 the home no
           <term><emphasis role="bold">R1-<xref linkend="sec_partition_migration_hibernation" 
           xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
             <listitem>
-                <!-- FIXME: Where do we point this requirement? >
-                <para>R1-14.12.1-2. <emphasis> For the Partition Migration and Partition 
-                Hibernation options: </emphasis> The platform must implement the VASI 
-                option (See <xref linkend="error_section"/>november_source/17f VMC and VASI.htm#76020)>.
-                </para-->
-                <para>Reserved</para>
+              <para><emphasis> For the Partition Migration and Partition 
+              Hibernation options: </emphasis> The platform must implement the VASI 
+              option (See <xref linkend="sec_vasi"/>).
+              </para>
             </listitem>
        	</varlistentry>
        	
