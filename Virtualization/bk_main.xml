@@ -19,10 +19,7 @@
   xmlns:xi="http://www.w3.org/2001/XInclude"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   version="5.0"
-  status="draft"
   xml:id="bk_main">
-
-    <!-- TODO: When ready to publish document, remove the 'status="draft"' statement from the book object above. -->
 
     <title>Virtualization</title>
     <subtitle>Linux on Power Architecture Reference</subtitle>
@@ -42,7 +39,7 @@
       <holder>OpenPOWER Foundation</holder>
     </copyright>
     <!-- TODO: Set the correct document releaseinfo -->
-    <releaseinfo>Revision 2.0_pre2</releaseinfo>
+    <releaseinfo>Revision 0.5_pre3</releaseinfo>
     <productname>OpenPOWER</productname>
     <pubdate/>
 
@@ -53,14 +50,17 @@
       </annotation>
     </legalnotice>
     
-    <!-- TODO: Update the following text with the correct document description (first paragraph),
-               Work Group name, and Work Product track (both in second paragraph). -->
     <abstract>
       <para>The purpose of this document is to provide firmware and software
-      architectural details for the base Platform hardware associated with an OpenPOWER Systems.
-      The base content for this document were contributed to the OpenPOWER Foundation in the
+      architectural details for the virtualization components associated with an OpenPOWER Systems.
+      The base content for this document was contributed to the OpenPOWER Foundation in the
       <citetitle>IBM Linux on Power Architecture Platform Reference (LoPAPR) Draft</citetitle>
-      document. It had numerous contributors inside IBM.</para>
+      document which detailed Linux running on PowerVM. While this information is not always
+      immediately applicable to new OpenPOWER modes of bare metal or KVM, many of the
+      concepts and interfaces remain in some form.  Until such time as the document addresses
+      these new OpenPOWER modes and components, it will remain versioned less than 1.0.  It should 
+      also be noted that the original document had numerous contributors inside IBM.</para>
+ 
       <para>This document is a Standard Track, Work Group Specification work product owned by the
       System Software Workgroup and handled in compliance with the requirements outlined in the
       <citetitle>OpenPOWER Foundation Work Group (WG) Process</citetitle> document.  It was
@@ -71,6 +71,24 @@
 
     <revhistory>
       <!-- TODO: Update as new revisions created -->
+      <revision>
+          <date>2018-07-30</date>
+          <revdescription>
+            <itemizedlist spacing="compact">
+              <listitem>
+                <para>Revision 0.5_pre3 - Updates to documentation in preparation for System SW WG review:</para>
+                <orderedlist spacing="compact">
+                  <listitem>
+                    <para>Reset document version to 0.5</para>
+                  </listitem>
+                  <listitem>
+                    <para>Improved Abstract</para>
+                  </listitem>
+                </orderedlist>
+              </listitem>
+            </itemizedlist>
+          </revdescription>
+      </revision>
       <revision>
           <date>2017-10-11</date>
           <revdescription>
