@@ -1983,10 +1983,10 @@
                           </entry>
                         </row>
                         <row>
-                          <entry morerows="9">
+                          <entry morerows="4">
                             <para>Out</para>
                           </entry>
-                          <entry morerows="5">
+                          <entry morerows="0">
                             <para>
                               <emphasis>Status</emphasis>
                             </para>
@@ -1998,31 +1998,6 @@
                             <para>0: Dump complete</para>
                             <para>1: Continue dump</para>
                             <para>990x: Extended Delay where x is a number 0-5</para>
-                          </entry>
-                        </row>
-                        <row>
-                          <entry>
-                            <para />
-                          </entry>
-                        </row>
-                        <row>
-                          <entry>
-                            <para />
-                          </entry>
-                        </row>
-                        <row>
-                          <entry>
-                            <para />
-                          </entry>
-                        </row>
-                        <row>
-                          <entry>
-                            <para />
-                          </entry>
-                        </row>
-                        <row>
-                          <entry>
-                            <para />
                           </entry>
                         </row>
                         <row>
@@ -8445,7 +8420,7 @@
                     </thead>
                     <tbody>
                       <row>
-                        <entry morerows="4">
+                        <entry morerows="3">
                           <para>In</para>
                         </entry>
                         <entry>
@@ -8478,7 +8453,7 @@
                         </entry>
                       </row>
                       <row>
-                        <entry morerows="1">
+                        <entry morerows="0">
                           <para>
                             <emphasis>Image to Commit</emphasis>
                           </para>
@@ -8489,15 +8464,10 @@
                         </entry>
                       </row>
                       <row>
-                        <entry>
-                          <para />
-                        </entry>
-                      </row>
-                      <row>
-                        <entry morerows="6">
+                        <entry morerows="0">
                           <para>Out</para>
                         </entry>
-                        <entry morerows="6">
+                        <entry morerows="0">
                           <para>
                             <emphasis>Status</emphasis>
                           </para>
@@ -8511,36 +8481,6 @@
                           Error</para>
                           <para>-9002 Not Authorized</para>
                           <para>990x: Extended Delay</para>
-                        </entry>
-                      </row>
-                      <row>
-                        <entry>
-                          <para />
-                        </entry>
-                      </row>
-                      <row>
-                        <entry>
-                          <para />
-                        </entry>
-                      </row>
-                      <row>
-                        <entry>
-                          <para />
-                        </entry>
-                      </row>
-                      <row>
-                        <entry>
-                          <para />
-                        </entry>
-                      </row>
-                      <row>
-                        <entry>
-                          <para />
-                        </entry>
-                      </row>
-                      <row>
-                        <entry>
-                          <para />
                         </entry>
                       </row>
                     </tbody>
@@ -8691,10 +8631,10 @@
                         </entry>
                       </row>
                       <row>
-                        <entry morerows="5">
+                        <entry morerows="1">
                           <para>Out</para>
                         </entry>
-                        <entry morerows="4">
+                        <entry morerows="0">
                           <para>
                             <emphasis>Status</emphasis>
                           </para>
@@ -8706,26 +8646,6 @@
                           <para>-2: Busy</para>
                           <para>-3: Parameter Error</para>
                           <para>-9002: Not authorized</para>
-                        </entry>
-                      </row>
-                      <row>
-                        <entry>
-                          <para />
-                        </entry>
-                      </row>
-                      <row>
-                        <entry>
-                          <para />
-                        </entry>
-                      </row>
-                      <row>
-                        <entry>
-                          <para />
-                        </entry>
-                      </row>
-                      <row>
-                        <entry>
-                          <para />
                         </entry>
                       </row>
                       <row>
@@ -9038,10 +8958,10 @@
                         </entry>
                       </row>
                       <row>
-                        <entry morerows="4">
+                        <entry morerows="0">
                           <para>Out</para>
                         </entry>
-                        <entry morerows="4">
+                        <entry morerows="0">
                           <para>
                             <emphasis>Status</emphasis>
                           </para>
@@ -9053,26 +8973,6 @@
                           <para>-2: Busy, try again later</para>
                           <para>-3: Parameter Error</para>
                           <para>-9001: No valid FW available to activate</para>
-                        </entry>
-                      </row>
-                      <row>
-                        <entry>
-                          <para />
-                        </entry>
-                      </row>
-                      <row>
-                        <entry>
-                          <para />
-                        </entry>
-                      </row>
-                      <row>
-                        <entry>
-                          <para />
-                        </entry>
-                      </row>
-                      <row>
-                        <entry>
-                          <para />
                         </entry>
                       </row>
                     </tbody>
@@ -10063,10 +9963,10 @@
                         </entry>
                       </row>
                       <row>
-                        <entry morerows="2">
+                        <entry morerows="0">
                           <para>Out</para>
                         </entry>
-                        <entry morerows="2">
+                        <entry morerows="0">
                           <para>
                             <emphasis>Status</emphasis>
                           </para>
@@ -10075,16 +9975,6 @@
                           <para>0:success</para>
                           <para>-1:hardware error</para>
                           <para>-2:hardware busy, try again later</para>
-                        </entry>
-                      </row>
-                      <row>
-                        <entry>
-                          <para />
-                        </entry>
-                      </row>
-                      <row>
-                        <entry>
-                          <para />
                         </entry>
                       </row>
                     </tbody>
@@ -10285,10 +10175,10 @@
                         </entry>
                       </row>
                       <row>
-                        <entry morerows="3">
+                        <entry morerows="0">
                           <para>Out</para>
                         </entry>
-                        <entry morerows="3">
+                        <entry morerows="0">
                           <para>
                             <emphasis>Status</emphasis>
                           </para>
@@ -10299,21 +10189,6 @@
                           <para>-2:hardware busy, try again later</para>
                           <para>-3: Parameter error</para>
                           <para>990x:Extended delay where x is a number 0-5</para>
-                        </entry>
-                      </row>
-                      <row>
-                        <entry>
-                          <para />
-                        </entry>
-                      </row>
-                      <row>
-                        <entry>
-                          <para />
-                        </entry>
-                      </row>
-                      <row>
-                        <entry>
-                          <para />
                         </entry>
                       </row>
                     </tbody>
@@ -17038,7 +16913,7 @@
                       </entry>
                     </row>
                     <row>
-                      <entry morerows="3">
+                      <entry morerows="0">
                         <para>corrupted-dcache-start</para>
                         <para>corrupted-dcache-end</para>
                       </entry>
@@ -17062,22 +16937,7 @@
                       </entry>
                     </row>
                     <row>
-                      <entry>
-                        <para />
-                      </entry>
-                    </row>
-                    <row>
-                      <entry>
-                        <para />
-                      </entry>
-                    </row>
-                    <row>
-                      <entry>
-                        <para />
-                      </entry>
-                    </row>
-                    <row>
-                      <entry morerows="8">
+                      <entry morerows="0">
                         <para>corrupted-icache-start</para>
                         <para>corrupted-icache-end</para>
                       </entry>
@@ -17092,46 +16952,6 @@
                         <para>0: single</para>
                         <para>1: solid</para>
                         <para>2: hang</para>
-                      </entry>
-                    </row>
-                    <row>
-                      <entry>
-                        <para />
-                      </entry>
-                    </row>
-                    <row>
-                      <entry>
-                        <para />
-                      </entry>
-                    </row>
-                    <row>
-                      <entry>
-                        <para />
-                      </entry>
-                    </row>
-                    <row>
-                      <entry>
-                        <para />
-                      </entry>
-                    </row>
-                    <row>
-                      <entry>
-                        <para />
-                      </entry>
-                    </row>
-                    <row>
-                      <entry>
-                        <para />
-                      </entry>
-                    </row>
-                    <row>
-                      <entry>
-                        <para />
-                      </entry>
-                    </row>
-                    <row>
-                      <entry>
-                        <para />
                       </entry>
                     </row>
                     <row>
