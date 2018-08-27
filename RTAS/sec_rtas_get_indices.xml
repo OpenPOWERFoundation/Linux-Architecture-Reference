@@ -67,9 +67,9 @@
               <title>Argument Call Buffer 
               <emphasis>ibm,get-indices</emphasis></title>
               <tgroup cols="3">
-                <colspec colname="c1" colwidth="33*" />
-                <colspec colname="c2" colwidth="33*" />
-                <colspec colname="c3" colwidth="33*" />
+                <colspec colname="c1" colwidth="1*" />
+                <colspec colname="c2" colwidth="2*" />
+                <colspec colname="c3" colwidth="4*" />
                 <thead>
                   <row>
                     <entry>
@@ -486,9 +486,9 @@
                 <title>Argument Call Buffer 
                 <emphasis>ibm,set-dynamic-indicator</emphasis></title>
                 <tgroup cols="3">
-                  <colspec colname="c1" colwidth="33*" />
-                  <colspec colname="c2" colwidth="33*" />
-                  <colspec colname="c3" colwidth="33*" />
+                  <colspec colname="c1" colwidth="1*" />
+                  <colspec colname="c2" colwidth="2*" />
+                  <colspec colname="c3" colwidth="4*" />
                   <thead>
                     <row>
                       <entry>
@@ -742,9 +742,9 @@
                 <title>Argument Call Buffer
                 <emphasis>ibm,get-dynamic-sensor-state</emphasis></title>
                 <tgroup cols="3">
-                  <colspec colname="c1" colwidth="33*" />
-                  <colspec colname="c2" colwidth="33*" />
-                  <colspec colname="c3" colwidth="33*" />
+                  <colspec colname="c1" colwidth="1*" />
+                  <colspec colname="c2" colwidth="2*" />
+                  <colspec colname="c3" colwidth="4*" />
                   <thead>
                     <row>
                       <entry>
@@ -1014,9 +1014,9 @@
                 <title>Argument Call Buffer 
                 <emphasis>ibm,get-vpd</emphasis></title>
                 <tgroup cols="3">
-                  <colspec colname="c1" colwidth="33*" />
-                  <colspec colname="c2" colwidth="33*" />
-                  <colspec colname="c3" colwidth="33*" />
+                  <colspec colname="c1" colwidth="1*" />
+                  <colspec colname="c2" colwidth="2*" />
+                  <colspec colname="c3" colwidth="4*" />
                   <thead>
                     <row>
                       <entry>
@@ -1638,9 +1638,9 @@
                 <title>Argument Call Buffer 
                 <emphasis>ibm,lpar-perftools</emphasis></title>
                 <tgroup cols="3">
-                  <colspec colname="c1" colwidth="33*" />
-                  <colspec colname="c2" colwidth="33*" />
-                  <colspec colname="c3" colwidth="33*" />
+                  <colspec colname="c1" colwidth="1*" />
+                  <colspec colname="c2" colwidth="2*" />
+                  <colspec colname="c3" colwidth="4*" />
                   <thead>
                     <row>
                       <entry>
@@ -1913,9 +1913,9 @@
                 <title>Argument Call Buffer 
                 <emphasis>ibm,suspend-me</emphasis></title>
                 <tgroup cols="3">
-                  <colspec colname="c1" colwidth="33*" />
-                  <colspec colname="c2" colwidth="33*" />
-                  <colspec colname="c3" colwidth="33*" />
+                  <colspec colname="c1" colwidth="1*" />
+                  <colspec colname="c2" colwidth="2*" />
+                  <colspec colname="c3" colwidth="4*" />
                   <thead>
                     <row>
                       <entry>
@@ -2596,9 +2596,9 @@
                 <title>Argument Call Buffer
                 <emphasis>ibm,update-nodes</emphasis></title>
                 <tgroup cols="3">
-                  <colspec colname="c1" colwidth="33*" />
-                  <colspec colname="c2" colwidth="33*" />
-                  <colspec colname="c3" colwidth="33*" />
+                  <colspec colname="c1" colwidth="1*" />
+                  <colspec colname="c2" colwidth="2*" />
+                  <colspec colname="c3" colwidth="4*" />
                   <thead>
                     <row>
                       <entry>
@@ -3302,9 +3302,9 @@
                 <title>Argument Call Buffer
                 <emphasis>ibm,update-properties</emphasis></title>
                 <tgroup cols="3">
-                  <colspec colname="c1" colwidth="33*" />
-                  <colspec colname="c2" colwidth="33*" />
-                  <colspec colname="c3" colwidth="33*" />
+                  <colspec colname="c1" colwidth="1*" />
+                  <colspec colname="c2" colwidth="2*" />
+                  <colspec colname="c3" colwidth="4*" />
                   <thead>
                     <row>
                       <entry>
@@ -4383,9 +4383,9 @@
                 <title>Argument Call Buffer
                 <emphasis>ibm,configure-kernel-dump</emphasis></title>
                 <tgroup cols="3">
-                  <colspec colname="c1" colwidth="33*" />
-                  <colspec colname="c2" colwidth="33*" />
-                  <colspec colname="c3" colwidth="33*" />
+                  <colspec colname="c1" colwidth="1*" />
+                  <colspec colname="c2" colwidth="2*" />
+                  <colspec colname="c3" colwidth="4*" />
                   <tbody>
                     <row>
                       <entry>
@@ -5162,9 +5162,9 @@
                   <title>Argument Call Buffer 
                   <emphasis>ibm,query-pe-dma-window</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -5392,9 +5392,9 @@
                   <title>Argument Call Buffer 
                   <emphasis>ibm,create-pe-dma-window</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -5619,9 +5619,9 @@
                   <title>Argument Call Buffer 
                   <emphasis>ibm,remove-pe-dma-window</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -5889,9 +5889,9 @@
                     <title>Argument Call Buffer 
                     <emphasis>ibm,reset-pe-dma-windows</emphasis></title>
                     <tgroup cols="3">
-                      <colspec colname="c1" colwidth="33*" />
-                      <colspec colname="c2" colwidth="33*" />
-                      <colspec colname="c3" colwidth="33*" />
+                      <colspec colname="c1" colwidth="1*" />
+                      <colspec colname="c2" colwidth="2*" />
+                      <colspec colname="c3" colwidth="4*" />
                       <thead>
                         <row>
                           <entry>
