@@ -4837,7 +4837,7 @@
           <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_67111" 
           xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
             <listitem>
-              <para>If <emphasis>ibm.comfigure-kernel-dump</emphasis> RTAS call is made to
+              <para>If <emphasis>ibm,configure-kernel-dump</emphasis> RTAS call is made to
               register or unregister for a dump while a dump is currently active, the
               platform must return a 
               <emphasis>Status</emphasis> of -9, &#8220;Dump Active&#8221; indicating
@@ -4851,7 +4851,7 @@
           <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_67111" 
           xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
             <listitem>
-              <para>If <emphasis>ibm.comfigure-kernel-dump</emphasis> RTAS call is made to
+              <para>If <emphasis>ibm,configure-kernel-dump</emphasis> RTAS call is made to
               register a dump after a dump has already been registered by a call, the
               platform must return a 
               <emphasis>Status</emphasis> of -8, &#8220;Dump Already Registered&#8221;
