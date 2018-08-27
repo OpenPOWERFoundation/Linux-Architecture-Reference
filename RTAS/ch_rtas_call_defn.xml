@@ -61,9 +61,9 @@
                   <title>Argument Call Buffer 
                   <emphasis>nvram-fetch</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*"/>
                     <thead>
                       <row>
                         <entry>
@@ -202,9 +202,9 @@
                   <title>Argument Call Buffer 
                   <emphasis>nvram-store</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -424,9 +424,9 @@
                   <title>Argument Call Buffer 
                   <emphasis>get-time-of-day</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -609,9 +609,9 @@
                   <title>Argument Call Buffer 
                   <emphasis>set-time-of-day</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -814,9 +814,9 @@
                   <title>Argument Call Buffer
                   <emphasis>set-time-for-power-on</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -1107,9 +1107,9 @@
                   <title>Argument Call Buffer
                   <emphasis>event-scan</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -1362,9 +1362,9 @@
                   <title>Argument Call Buffer
                   <emphasis>check-exception</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -1685,9 +1685,9 @@
                   <title>Argument Call Buffer
                   <emphasis>rtas-last-error</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -1858,9 +1858,9 @@
                     <title>Argument Call Buffer 
                     <emphasis>ibm,platform-dump</emphasis></title>
                     <tgroup cols="3">
-                      <colspec colname="c1" colwidth="33*" />
-                      <colspec colname="c2" colwidth="33*" />
-                      <colspec colname="c3" colwidth="33*" />
+                      <colspec colname="c1" colwidth="1*" />
+                      <colspec colname="c2" colwidth="2*" />
+                      <colspec colname="c3" colwidth="4*" />
                       <thead>
                         <row>
                           <entry>
@@ -2915,9 +2915,9 @@
                   <title>Argument Call Buffer 
                   <emphasis>ibm,read-pci-config</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -3115,9 +3115,9 @@
                   <title>Argument Call Buffer 
                   <emphasis>ibm,write-pci-config</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -3863,9 +3863,9 @@
                   <title>Argument Call Buffer
                   <emphasis>display-character</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -4764,9 +4764,9 @@
                   <title>Argument Call Buffer
                   <emphasis>set-indicator</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -5624,9 +5624,9 @@
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_20789.1">
                   <title><emphasis>get-sensor-state</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -6967,9 +6967,9 @@
                   <title>Argument Call Buffer
                   <emphasis>set-power-level</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -7214,9 +7214,9 @@
                   <title>Argument Call Buffer 
                   <emphasis>get-power-level</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -7348,9 +7348,9 @@
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_40594">
                   <title><emphasis>power-off</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -7637,9 +7637,9 @@
                   <title>Argument Call Buffer
                   <emphasis>ibm,power-off-ups</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -7820,9 +7820,9 @@
                   <title>Argument Call Buffer
                   <emphasis>system-reboot</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -7930,9 +7930,9 @@
                   <title>Argument Call Buffer
                   <emphasis>ibm,update-flash-64-and-reboot</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -8421,9 +8421,9 @@
                   <title>Argument Call Buffer
                   <emphasis>ibm,manage-flash-image</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -8612,9 +8612,9 @@
                   <title>Argument Call Buffer
                   <emphasis>ibm,validate-flash-image</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -8980,9 +8980,9 @@
                   <title>Argument Call Buffer
                   <emphasis>ibm,activate-firmware</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -9160,9 +9160,9 @@
                   <title>Argument Call Buffer
                   <emphasis>stop-self</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -9338,9 +9338,9 @@
                   <title>Argument Call Buffer
                   <emphasis>start-cpu</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -9755,9 +9755,9 @@
                   <title>Argument Call Buffer
                   <emphasis>query-cpu-stopped-state</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -9995,9 +9995,9 @@
                   <title>Argument Call Buffer 
                   <emphasis>ibm,os-term</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -10217,9 +10217,9 @@
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_29660">
                   <title>ibm,exti2c Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -10741,9 +10741,9 @@
                   <title>Argument Call Buffer 
                   <emphasis>ibm,get-xive</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -10937,9 +10937,9 @@
                   <title>Argument Call Buffer 
                   <emphasis>ibm,set-xive</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -11131,9 +11131,9 @@
                   <title>Argument Call Buffer 
                   <emphasis>ibm,int-off</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -11301,9 +11301,9 @@
                   <title>Argument Call Buffer 
                   <emphasis>ibm,int-on</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -11503,9 +11503,9 @@
                   <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_69854">
                     <title><emphasis>ibm,change-msi</emphasis> Argument Call Buffer</title>
                     <tgroup cols="3">
-                      <colspec colname="c1" colwidth="33*" />
-                      <colspec colname="c2" colwidth="33*" />
-                      <colspec colname="c3" colwidth="33*" />
+                      <colspec colname="c1" colwidth="1*" />
+                      <colspec colname="c2" colwidth="2*" />
+                      <colspec colname="c3" colwidth="4*" />
                       <thead>
                         <row>
                           <entry>
@@ -12017,9 +12017,9 @@
                     <title>Argument Call Buffer 
                     <emphasis>ibm,query-interrupt-source-number</emphasis></title>
                     <tgroup cols="3">
-                      <colspec colname="c1" colwidth="33*" />
-                      <colspec colname="c2" colwidth="33*" />
-                      <colspec colname="c3" colwidth="33*" />
+                      <colspec colname="c1" colwidth="1*" />
+                      <colspec colname="c2" colwidth="2*" />
+                      <colspec colname="c3" colwidth="4*" />
                       <thead>
                         <row>
                           <entry>
@@ -13366,9 +13366,9 @@
                   <title>Argument Call Buffer 
                   <emphasis>ibm,set-eeh-option</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -13703,9 +13703,9 @@
                   <title>Argument Call Buffer 
                   <emphasis>ibm,set-slot-reset</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -14042,9 +14042,9 @@
                   <title>Argument Call Buffer 
                   <emphasis>ibm,read-slot-reset-state2</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -14476,9 +14476,9 @@
                   <title>Argument Call Buffer 
                   <emphasis>ibm,get-config-addr-info2</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -14765,9 +14765,9 @@
                   <title>Argument Call Buffer 
                   <emphasis>ibm,slot-error-detail</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -15648,9 +15648,9 @@
                   <title>Argument Call Buffer 
                   <emphasis>ibm,configure-bridge</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -15937,9 +15937,9 @@
                   <title>Argument Call Buffer 
                   <emphasis>ibm,configure-pe</emphasis></title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
                         <entry>
@@ -16283,9 +16283,9 @@
                 <title>Argument Call Buffer 
                 <emphasis>ibm,open-errinjct</emphasis></title>
                 <tgroup cols="3">
-                  <colspec colname="c1" colwidth="33*" />
-                  <colspec colname="c2" colwidth="33*" />
-                  <colspec colname="c3" colwidth="33*" />
+                  <colspec colname="c1" colwidth="1*" />
+                  <colspec colname="c2" colwidth="2*" />
+                  <colspec colname="c3" colwidth="4*" />
                   <thead>
                     <row>
                       <entry>
@@ -16432,9 +16432,9 @@
                 <title>Argument Call Buffer 
                 <emphasis>ibm,close-errinjct</emphasis></title>
                 <tgroup cols="3">
-                  <colspec colname="c1" colwidth="33*" />
-                  <colspec colname="c2" colwidth="33*" />
-                  <colspec colname="c3" colwidth="33*" />
+                  <colspec colname="c1" colwidth="1*" />
+                  <colspec colname="c2" colwidth="2*" />
+                  <colspec colname="c3" colwidth="4*" />
                   <thead>
                     <row>
                       <entry>
@@ -16560,9 +16560,9 @@
                 <title>Argument Call Buffer 
                 <emphasis>ibm,errinjct</emphasis></title>
                 <tgroup cols="3">
-                  <colspec colname="c1" colwidth="33*" />
-                  <colspec colname="c2" colwidth="33*" />
-                  <colspec colname="c3" colwidth="33*" />
+                  <colspec colname="c1" colwidth="1*" />
+                  <colspec colname="c2" colwidth="2*" />
+                  <colspec colname="c3" colwidth="4*" />
                   <thead>
                     <row>
                       <entry>
@@ -17771,9 +17771,9 @@
                 <title>Argument Call Buffer
                 <emphasis>ibm,nmi-register or ibm,nmi-register-2</emphasis></title>
                 <tgroup cols="3">
-                  <colspec colname="c1" colwidth="33*" />
-                  <colspec colname="c2" colwidth="33*" />
-                  <colspec colname="c3" colwidth="33*" />
+                  <colspec colname="c1" colwidth="1*" />
+                  <colspec colname="c2" colwidth="2*" />
+                  <colspec colname="c3" colwidth="4*" />
                   <thead>
                     <row>
                       <entry>
@@ -18104,9 +18104,9 @@
                 <title>Argument Call Buffer
                 <emphasis>ibm,nmi-interlock</emphasis></title>
                 <tgroup cols="3">
-                  <colspec colname="c1" colwidth="33*" />
-                  <colspec colname="c2" colwidth="33*" />
-                  <colspec colname="c3" colwidth="33*" />
+                  <colspec colname="c1" colwidth="1*" />
+                  <colspec colname="c2" colwidth="2*" />
+                  <colspec colname="c3" colwidth="4*" />
                   <thead>
                     <row>
                       <entry>
@@ -19305,9 +19305,9 @@
           <title>Argument Call Buffer
           <emphasis>ibm,get-system-parameter</emphasis></title>
           <tgroup cols="3">
-            <colspec colname="c1" colwidth="33*" />
-            <colspec colname="c2" colwidth="33*" />
-            <colspec colname="c3" colwidth="33*" />
+            <colspec colname="c1" colwidth="1*" />
+            <colspec colname="c2" colwidth="2*" />
+            <colspec colname="c3" colwidth="4*" />
             <thead>
               <row>
                 <entry>
@@ -19453,9 +19453,9 @@
           <title>Argument Call Buffer
           <emphasis>ibm,set-system-parameter</emphasis></title>
           <tgroup cols="3">
-            <colspec colname="c1" colwidth="33*" />
-            <colspec colname="c2" colwidth="33*" />
-            <colspec colname="c3" colwidth="33*" />
+            <colspec colname="c1" colwidth="1*" />
+            <colspec colname="c2" colwidth="2*" />
+            <colspec colname="c3" colwidth="4*" />
             <thead>
               <row>
                 <entry>
