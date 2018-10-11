@@ -26,10 +26,6 @@
       <itemizedlist>
       
 	    <listitem>
-          <para>To provide an architecture which can be supported by converged AS/RS hardware designs.</para>
-	    </listitem>
-	    
-	    <listitem>
           <para>To create a stable platform architecture to be used by platforms based on processors 
           defined by <xref linkend="dbdoclet.50569387_99718"/>. <emphasis>Processor</emphasis> 
           implementations based on this 
