@@ -15651,8 +15651,7 @@ hcall ( const uint64 H_VRMASD, /* Change the page mapping characteristics of the
     </section>
 
     <section xml:id="dbdoclet.50569344_44716">
-      <title>Cooperative Memory Over-commitment Option (CMO)
-      Cooperative Memory Over-commitment Option (CMO)</title>
+      <title>Cooperative Memory Over-commitment Option (CMO)</title>
       <para>The over-commitment of logical memory is accomplished by the
       platform reassigning pages of memory among the partitions to create the
       appearance of more memory than is actually present. This is commonly
@@ -15723,7 +15722,7 @@ hcall ( const uint64 H_VRMASD, /* Change the page mapping characteristics of the
               <itemizedlist>
                 <listitem>
                   <para>Define 
-                  <emphasis role="bold"><literal>ibm,architectue.vec-5</literal></emphasis> option Byte 4 bit 0 as
+                  <emphasis role="bold"><literal>ibm,architecture.vec-5</literal></emphasis> option Byte 4 bit 0 as
                   &#8220;Client supports cooperative logical real memory
                   over-commitment&#8221;.</para>
                 </listitem>
@@ -15940,8 +15939,8 @@ hcall ( const uint64 H_VRMASD, /* Change the page mapping characteristics of the
         &#8220;loaned&#8221; state and decremented when/if the page state is
         changed) thus it can keep track of how well a partition is doing against
         the donation request that has been made of it. Partitions that do not
-        respond to donation requests need</para>
-        <para>to have their pages stolen to make up the difference. Pages that
+        respond to donation requests need
+        to have their pages stolen to make up the difference. Pages that
         are &#8220;unused&#8221; or &#8220;loaned&#8221; are automatically
         applied to the free list. &#8220;Loaned&#8221; pages are expected to
         raise the partition's free list low water mark so that the OS only
