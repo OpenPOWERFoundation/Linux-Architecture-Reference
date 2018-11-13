@@ -161,8 +161,10 @@
       
       <para>OF shall use the memory resources within the space indicated by the
       
-      <emphasis>real-base, real-size, virt-base</emphasis> and
-      <emphasis>virt-size</emphasis> Configuration Variables defined for the PA.
+      <emphasis role="bold"><literal>real-base</literal></emphasis>, 
+      <emphasis role="bold"><literal>real-size</literal></emphasis>, 
+      <emphasis role="bold"><literal>virt-base</literal></emphasis>, and
+      <emphasis role="bold"><literal>virt-size</literal></emphasis> Configuration Variables defined for the PA.
       As described in the applicable platform binding, a mechanism is defined
       to enable OF to determine if its current configuration is consistent with
       the requirements of the client.</para>
@@ -172,20 +174,20 @@
       OF loads the client program, it inspects the program header, and if its
       current usage of physical memory or virtual address space conflicts with
       that specified in the program header, OF shall set the 
-      <emphasis>real-base</emphasis>, 
-      <emphasis>real-size</emphasis>, 
-      <emphasis>virt-base</emphasis>, and 
-      <emphasis>virt-size</emphasis> to the configuration variables as specified
+      <emphasis role="bold"><literal>real-base</literal></emphasis>, 
+      <emphasis role="bold"><literal>real-size</literal></emphasis>, 
+      <emphasis role="bold"><literal>virt-base</literal></emphasis>, and 
+      <emphasis role="bold"><literal>virt-size</literal></emphasis> to the configuration variables as specified
       in the header and restart itself. 
-      <emphasis>Real-base</emphasis>, 
-      <emphasis>real-size</emphasis>, 
-      <emphasis>virt-base</emphasis>, and 
-      <emphasis>virt-size</emphasis> may be specified as -1, in which case the
+      <emphasis role="bold"><literal>Real-base</literal></emphasis>, 
+      <emphasis role="bold"><literal>real-size</literal></emphasis>, 
+      <emphasis role="bold"><literal>virt-base</literal></emphasis>, and 
+      <emphasis role="bold"><literal>virt-size</literal></emphasis> may be specified as -1, in which case the
       firmware is permitted to choose appropriate values for the variables
       specified as -1.</para>
       <para>If the values of the 
-      <emphasis>real-size</emphasis> and/or 
-      <emphasis>virt-size</emphasis> configuration variables do not provide
+      <emphasis role="bold"><literal>real-size</literal></emphasis> and/or 
+      <emphasis role="bold"><literal>virt-size</literal></emphasis> configuration variables do not provide
       sufficient memory and/or virtual address space for the firmware's own
       use, then the firmware shall not attempt to load a client program and the
       condition should be reported to the user. The possibility of not being
@@ -242,12 +244,12 @@
         interface handler, that is passed to the client, has to be a real
         address.</para>
         <para>The Configuration Variables 
-        <emphasis>real-base</emphasis> and 
-        <emphasis>real-size</emphasis> should indicate the physical memory base
+        <emphasis role="bold"><literal>real-base</literal></emphasis> and 
+        <emphasis role="bold"><literal>real-size</literal></emphasis> should indicate the physical memory base
         and size in which OF must locate itself. In Real-Mode, the Configuration
         Variables 
-        <emphasis>virt-base</emphasis> and
-        <emphasis>virt-size</emphasis> do not have meaning and should be set to
+        <emphasis role="bold"><literal>virt-base</literal></emphasis> and
+        <emphasis role="bold"><literal>virt-size</literal></emphasis> do not have meaning and should be set to
         -1.</para>
         
       </section>
@@ -263,11 +265,11 @@
         interfaces to allow OF and its client to ensure that this single virtual
         address model can be maintained.</para>
         <para>The Configuration Variables 
-        <emphasis>virt-base</emphasis> and
-        <emphasis>virt-size</emphasis> should indicate the virtual address space
+        <emphasis role="bold"><literal>virt-base</literal></emphasis> and
+        <emphasis role="bold"><literal>virt-size</literal></emphasis> should indicate the virtual address space
         base address and size that OF should use. The Configuration Variables 
-        <emphasis>real-base</emphasis> and 
-        <emphasis>real-size</emphasis> should indicate the physical memory base
+        <emphasis role="bold"><literal>real-base</literal></emphasis> and 
+        <emphasis role="bold"><literal>real-size</literal></emphasis> should indicate the physical memory base
         and size in which OF must locate itself.</para>
         
       </section>
