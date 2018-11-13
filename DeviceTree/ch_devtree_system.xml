@@ -540,7 +540,7 @@
     <icon size=64,64 color-space=3,3,2><bitmap>hh ... hh1</bitmap></icon>
 </chrp-boot>]]></programlisting></para>
 
-            <para>AIX Diagnostics Bootinfo Object Example:
+            <para><emphasis role="bold">AIX Diagnostics Bootinfo Object Example:</emphasis>
               <programlisting><![CDATA[<chrp-boot>
     <description>AIX 4.2.D.0 Diagnostics</description>
     <os-name>AIX 4.2.D.0 Diagnostics</os-name>
@@ -4694,7 +4694,7 @@
                         <entry>
                           <para>0</para>
                         </entry>
-                        <entry morerows="1">
+                        <entry morerows="1" valign="middle">
                           <para>0b11 for H_CONFER &amp; H_PROD</para>
                         </entry>
                       </row>
@@ -4707,7 +4707,7 @@
                         <entry>
                           <para>2</para>
                         </entry>
-                        <entry>
+                        <entry  valign="middle">
                           <para>Set to 1 if H_PURR is implemented with a reduced volatile
                           kill set of r3 &amp; r4; else set to 0.</para>
                         </entry>
@@ -4716,7 +4716,7 @@
                         <entry>
                           <para>3</para>
                         </entry>
-                        <entry morerows="4">
+                        <entry morerows="4" valign="middle">
                           <para>Reserved for future expansion (0b0)</para>
                         </entry>
                       </row>
@@ -7544,16 +7544,21 @@
           
           <para>The presence of the node indicates that all or some of the function
           has been implemented and will be reported using an interrupt.</para>
-          <para>
-          <emphasis role="bold"><literal>&#8220;name&#8221;</literal></emphasis></para>
-          <para>Standard
-          <emphasis>property name</emphasis> that denotes the I/O sub-system
-          events.</para>
-          <para>
-          <emphasis>prop-encoded-array</emphasis>: A string, encoded as with 
-          <emphasis role="bold"><literal>encode-string</literal></emphasis>.</para>
-          <para>The value of this string shall be 
-          <literal>&#8220;ibm,io-events&#8221;</literal>.</para>
+          <variablelist>
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;name&#8221;</literal></emphasis> [S]</term>
+                <listitem>
+                  <para>Standard
+                  <emphasis>property name</emphasis> that denotes the I/O sub-system
+                  events.</para>
+                  <para>
+                  <emphasis>prop-encoded-array</emphasis>: A string, encoded as with 
+                  <emphasis role="bold"><literal>encode-string</literal></emphasis>.</para>
+                  <para>The value of this string shall be 
+                  <literal>&#8220;ibm,io-events&#8221;</literal>.</para>
+                </listitem>
+    			  </varlistentry>
+          </variablelist>
           
         </section>
 
@@ -8419,7 +8424,7 @@
             <para><emphasis role="bold"><literal>&#8220;status&#8221;</literal></emphasis></para>
           </listitem>
         </itemizedlist>		      
-        <para><emphasis>Optionally</emphasis> the children of the 
+        <para><emphasis role="bold">Optionally</emphasis> the children of the 
         <emphasis role="bold"><literal>/ibm,platform-facilities</literal></emphasis> node may contain as
         appropriate the following standard properties with their standard
         definitions:</para>
@@ -8430,7 +8435,7 @@
           </listitem>
         </itemizedlist>		      
   
-        <para><emphasis>Additionally</emphasis> the children of the 
+        <para><emphasis role="bold">Additionally</emphasis> the children of the 
         <emphasis role="bold"><literal>/ibm,platform-facilities</literal></emphasis> node may contain as
         appropriate the following unique properties:</para>
   
@@ -9974,11 +9979,12 @@
           the endian-ness specified by the EI-DATA field of the file.</para>
           <para>The format of a Note Section header can be described by an OF
           struct as:</para>
-          <para>struct \ Note Section header for OF</para>
-          <para>/L field ns.namesz \ length of ns.name, including NULL</para>
-          <para>/L field ns.descrsz</para>
-          <para>/L field ns.type</para>
-          <para>0 field ns.name \ NULL-terminated, /L padded</para>
+          
+          <programlisting><![CDATA[struct                              \ Note Section header for OF
+/L    field       ns.namesz         \ length of ns.name, including NULL
+/L    field       ns.descrsz
+/L    field       ns.type
+0     field       ns.name           \ NULL-terminated, /L padded]]></programlisting>
 
           <section>
             <title>1275 PowerPC Note Definition</title>
@@ -9992,13 +9998,14 @@
             depends upon the kind of Note Section in which it is contained. For the
             PowerPC OF note, the format of the Note Section&#8217;s descriptor can be
             described by an OF struct, as follows:</para>
-            <para>struct \ Note Section descriptor for CHRP OF</para>
-            <para>/L field ns.real-mode</para>
-            <para>/L field ns.real-base</para>
-            <para>/L field ns.real-size</para>
-            <para>/L field ns.virt-base</para>
-            <para>/L field ns.virt-size</para>
-            <para>/L field ns.load-base</para>
+            
+            <programlisting><![CDATA[struct                            \ Note Section descriptor for CHRP OF</para>
+/L   field        ns.real-mode
+/L   field        ns.real-base
+/L   field        ns.real-size
+/L   field        ns.virt-base
+/L   field        ns.virt-size
+/L   field        ns.load-base]]></programlisting>
             <para>If the 
             <emphasis role="bold"><literal>ns.load-base</literal></emphasis> value is not -1, then that value is
             compared against the current value of the 
@@ -10073,7 +10080,7 @@
             the Note Section&#8217;s descriptor can be described by an OF struct, as
             follows:</para>
 
-            <programlisting linenumbering="numbered"><![CDATA[struct                              \ Note Section descriptor for OF
+            <programlisting><![CDATA[struct                              \ Note Section descriptor for OF
 /L   field      ns.lparaffinity     \= “0/1” (default assumption to be “N”)
 /L   field      ns.min-rmo-size     \Minimum size of the Real Mode Accessible Storage
                                     \ Area in MB
@@ -10092,7 +10099,8 @@
                                            \ variables based upon the values in this 
                                            \ header.
                                            \ (default value 0)
-/L   field      ns.large-page-ready \Flag to indicate the partition OS is prepared for large pages.
+/L   field      ns.large-page-ready \Flag to indicate the partition OS is prepared for
+                                    \  large pages.
 /L   field      ns.force_alpha_mode]]></programlisting>
 
             <para><emphasis role="bold">Note:</emphasis> The size of the /L field is based off of
