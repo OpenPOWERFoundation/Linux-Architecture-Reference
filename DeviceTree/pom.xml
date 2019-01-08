@@ -80,8 +80,8 @@
                                        questions about which value to select.
                                        
                                        If no value is provided below, the document will default to "Work Group Notes".-->
-                            <!-- workProduct>workgroupNotes</workProduct -->
-                            <workProduct>workgroupSpecification</workProduct>
+                            <workProduct>workgroupNotes</workProduct>
+                            <!-- workProduct>workgroupSpecification</workProduct -->
                             <!-- workProduct>candidateStandard</workProduct -->
                             <!-- workProduct>openpowerStandard</workProduct -->
 
@@ -119,8 +119,8 @@
                                            review =    this document is presently being reviewed
 
                                        The appropriate starting security for a new document is "draft". -->
-                            <documentStatus>draft</documentStatus>
-                            <!-- documentStatus>review</documentStatus -->
+                            <!-- documentStatus>draft</documentStatus -->
+                            <documentStatus>review</documentStatus>
                             <!-- documentStatus>publish</documentStatus -->                            
 
                         </configuration>
