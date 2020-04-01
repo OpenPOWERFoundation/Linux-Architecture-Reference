@@ -6360,6 +6360,18 @@
                           value of &#8220;reserved&#8221;.</para>
                         </entry>
                       </row>
+                      <row>
+                        <entry>
+                          <para>Hot-removable Memory</para>
+                        </entry>
+                        <entry>
+                          <para>0x00000100</para>
+                        </entry>
+                        <entry>
+                          <para>If b'1', this LMB can be &#8220;hot-removed&#8221;.</para>
+                          <para>If b'0', this LMB may fail to be &#8220;hot-removed&#8221;.</para>
+                        </entry>
+                      </row>
                     </tbody>
                   </tgroup>
                 </table>
