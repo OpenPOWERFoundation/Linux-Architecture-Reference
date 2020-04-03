@@ -4048,6 +4048,23 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
             </row>
             <row>
               <entry>
+                <para>hcalls to support an Ultravisor</para>
+              </entry>
+              <entry>
+                <para>0xEF00 - 0xEF80</para>
+              </entry>
+              <entry>
+                <para>&#160;</para>
+              </entry>
+              <entry>
+                <para>&#160;</para>
+              </entry>
+              <entry>
+                <para>&#160;</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
                 <para>Reserved for platform-dependent hcall()s / 
                 <xref linkend="dbdoclet.50569383_58396" xrefstyle="select: label nopage"  /></para>
               </entry>
@@ -4087,7 +4104,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
                 <para>Reserved</para>
               </entry>
               <entry>
-                <para>0x380 - 0xEFFC and 0x10000 - 0xFFFFFFFF-<?linebreak?>FFFFFFFC: RTAS
+                <para>0x380 - 0xEEFF and 0x10000 - 0xFFFFFFFF-<?linebreak?>FFFFFFFC: RTAS
                 implementations may assigns values in these ranges to their own
                 internal interfaces, as long as they are prepared for the
                 growth of architected functions into this range.</para>
