@@ -5952,6 +5952,39 @@
               <para>Transaction Checkpoint Vector Scalar Register 63 Low</para>
             </entry>
           </row>
+          <row>
+            <entry>
+              <para>0x4C4D525200000000</para>
+            </entry>
+            <entry>
+              <para>LMRR</para>
+            </entry>
+            <entry>
+              <para>Load Monitored Region Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x4C4D534552000000</para>
+            </entry>
+            <entry>
+              <para>LMSER</para>
+            </entry>
+            <entry>
+              <para>Load Monitored Section Enable Register</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x5053534352000000</para>
+            </entry>
+            <entry>
+              <para>PSSCR</para>
+            </entry>
+            <entry>
+              <para>Processor Stop Status and Control Register</para>
+            </entry>
+          </row>
         </tbody>
       </tgroup>
     </table>
