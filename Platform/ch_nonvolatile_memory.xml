@@ -630,6 +630,12 @@ unsigned int nbytes; /* number of bytes to sum */
               <listitem>
                 <para><emphasis role="bold"><literal>reboot-command</literal></emphasis> [*]</para>
               </listitem>
+              <listitem>
+                <para><emphasis role="bold"><literal>ibm,shadow-boot-device</literal></emphasis> [1]</para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold"><literal>ibm,last-booted</literal></emphasis> [1]</para>
+              </listitem>
             </itemizedlist>
           </section>
 
