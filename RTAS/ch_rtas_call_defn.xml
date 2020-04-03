@@ -18937,7 +18937,27 @@
             </row>
             <row>
               <entry>
-                <para>&gt;57</para>
+                <para>58</para>
+              </entry>
+              <entry>
+                <para>NVDIMM Secure Erase Command</para>
+              </entry>
+              <entry>
+                <para>Sends specified commands to the platform to drive the secure
+                erase and verification of a partition's NVDIMMs.</para>
+              </entry>
+              <entry>
+                <para>One byte decimal:</para>
+                <para>0 = start NVDIMM secure erase</para>
+                <para>1 = check secure erase status</para>
+              </entry>
+              <entry>
+                <para>2, 5</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>&gt;58</para>
               </entry>
               <entry>
                 <para>Reserved</para>
@@ -18984,6 +19004,17 @@
         <listitem>
           <para>See <xref linkend="dbdoclet.50569382_58396" />.</para>
           <para>Further parameters will be defined as required.</para>
+        </listitem>
+
+        <listitem>
+          <para>To drive an NVDIMM secure erase and verification procedure,
+          Software must 'start' the erase procedure and then continue with
+          repeated  'check' commands for up to a time period required by
+          the platform.  The repeated 'check' commands signal the platform
+          to continually monitor the status of the ongoing erase operation
+          which must continue until either the partition receives an
+          'NVDIMM status change' event notification via RTAS check-exception
+          or the time period is exhausted.</para>
         </listitem>
       </orderedlist>		      
       
