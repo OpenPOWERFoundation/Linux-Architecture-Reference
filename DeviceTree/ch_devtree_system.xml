@@ -3411,14 +3411,29 @@
                 </entry>
               </row>
               <row>
-                <entry>
+                <entry morerows="2">
                   <para>8</para>
                 </entry>
+                <entry nameend="c5" namest="c4">
+                  <para>SRIOV Virtual Functions Options</para>
+                </entry>
+              </row>
+              <row>
                 <entry>
-                  <para>&#160;</para>
+                  <para>0</para>
                 </entry>
                 <entry>
-                  <para>Reserved for Expansion</para>
+                  <para> SRIOV Virtual Functions Support Dynamic DMA Windows (DDW):<?linebreak?>
+                  0: SRIOV Virtual Functions do not support DDW
+                  1: SRIOV Virtual Functions do support DDW</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>1-7</para>
+                </entry>
+                <entry>
+                  <para> Reserved For Expansion</para>
                 </entry>
               </row>
               <row>
