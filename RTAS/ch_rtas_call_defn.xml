@@ -18897,7 +18897,47 @@
             </row>
             <row>
               <entry>
-                <para>&gt;55</para>
+                <para>56</para>
+              </entry>
+              <entry>
+                <para>NVDIMM Protection State</para>
+              </entry>
+              <entry>
+                <para>Controls whether or not the platform will copy the contents of a partition's
+                NVDIMMs to flash on EPOW loss-of-power and other normal power off events.</para>
+              </entry>
+              <entry>
+                <para>One byte decimal:</para>
+                <para>0 = disabled/disarmed</para>
+                <para>1 = enabled/armed</para>
+              </entry>
+              <entry>
+                <para>2</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>57</para>
+              </entry>
+              <entry>
+                <para>NVDIMM Encryption State</para>
+              </entry>
+              <entry>
+                <para>Controls whether or not the platform will encrypt the contents of
+                a partition's NVDIMMs.</para>
+              </entry>
+              <entry>
+                <para>One byte decimal:</para>
+                <para>0 = disabled</para>
+                <para>1 = enabled</para>
+              </entry>
+              <entry>
+                <para>2</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>&gt;57</para>
               </entry>
               <entry>
                 <para>Reserved</para>
