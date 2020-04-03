@@ -13051,6 +13051,14 @@ hcall ( const uint64 H_GET_DMA_XLATES_LIMITED, /*Return I/O Bus and correspondin
           </listitem>
 
           <listitem>
+            <para>If the subfunction is a Register VPA or a Deregister VPA or SLB
+            shadow buffer, verify that the proc-no parameter references an
+            offline virtual proc or that the proc-no parameter matches the
+            current virtual processor making the hcall, else return H_STATE
+            </para>
+          </listitem>
+
+          <listitem>
             <para>The old virtual processor exhausted its time slice (HDECR
             interrupt).</para>
           </listitem>
@@ -13297,6 +13305,9 @@ hcall ( const uint64 H_GET_DMA_XLATES_LIMITED, /*Return I/O Bus and correspondin
                        /* H_MLENGTH_PARM: For the CMO option, the requested area to */
                        /*   be registered crossed a memory entitlement granule */
                        /*   boundary */
+                       /* H_STATE: The proc-no parameter referenced a virtual */
+                       /*   processor that was in an invalid state for registering */
+                       /*   or deregistering the VPA or SLB shadow buffer */
 hcall ( const unit64 H_REGISTER_VPA, /* Register the specified per virtual */
                        /*   Processor Area */
         uint64 flags   /* The sub functions for this hcall() are encoded in bits */
