@@ -9343,6 +9343,7 @@
                         <entry>
                           <para>0: Success</para>
                           <para>-1: Hardware Error</para>
+                          <para>3: Not enough resources available to start CPU</para>
                         </entry>
                       </row>
                     </tbody>
