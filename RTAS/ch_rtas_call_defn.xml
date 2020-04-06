@@ -14108,7 +14108,14 @@
                           <emphasis>PE Reset State</emphasis> is a value of 2. This is a
                           32-bit field with bit significance, as follows:</para>
                           <para>&#160;</para>
-                          <para>Bits 0:27 - Reserved</para>
+                          <para>Bits 0:26 - Reserved</para>
+                          <para>&#160;</para>
+                          <para>Bit 27 - XIVE ESB Reset Status (valid for XIVE Exploitation mode only)</para>
+                          <para>Bit 27 = 0: XIVE ESBs for this PE were not reset as a result of the
+                          platform transition for PE Reset State of 2.</para>
+                          <para>Bit 27 = 1: XIVE ESBs for this PE were reset as a result of the
+                          platform transition for PE Reset State of 2.  The ESB state for each
+                          interrupt must be reinitialized prior to recovering the device.</para>
                           <para>&#160;</para>
                           <para>Bits 28:29 - PE platform reset type. Only valid when bit
                           31 of this field is a value of 1.</para>
