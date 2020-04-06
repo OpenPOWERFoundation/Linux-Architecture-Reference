@@ -3233,6 +3233,7 @@
                 <para>0x04 = Node off-line</para>
                 <para>0x05 = platform-dump-max-size change</para>
                 <para>0x08 = Generic Notification</para>
+                <para>0x09 = NVDIMM status change</para>
                 <para>All other values = Reserved</para>
               </entry>
             </row>
