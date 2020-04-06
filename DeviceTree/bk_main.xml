@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   Copyright (c) 2016 OpenPOWER Foundation
-  
+
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
@@ -13,7 +13,7 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-  
+
 -->
 <book xmlns="http://docbook.org/ns/docbook"
   xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -38,11 +38,11 @@
       </affiliation>
     </author>
     <copyright>
-      <year>2016</year>
+      <year>2016, 2018, 2020</year>
       <holder>OpenPOWER Foundation</holder>
     </copyright>
     <!-- TODO: Set the correct document releaseinfo -->
-    <releaseinfo>Revision 0.5_pre4</releaseinfo>
+    <releaseinfo>Revision 0.5_pre5</releaseinfo>
     <productname>OpenPOWER</productname>
     <pubdate/>
 
@@ -52,7 +52,7 @@
           <remark>Copyright details are filled in by the template.</remark>
       </annotation>
     </legalnotice>
-    
+
     <!-- TODO: Update the following text with the correct document description (first paragraph),
                Work Group name, and Work Product track (both in second paragraph). -->
     <abstract>
@@ -63,19 +63,123 @@
       document which detailed Linux running on PowerVM. While this information is not always
       immediately applicable to new OpenPOWER modes of bare metal or KVM, many of the
       concepts and interfaces remain in some form.  Until such time as the document addresses
-      these new OpenPOWER modes and components, it will remain versioned less than 1.0.  It should 
+      these new OpenPOWER modes and components, it will remain versioned less than 1.0.  It should
       also be noted that the original document had numerous contributors inside IBM.</para>
-      
+
       <para>This document is a Standard Track, Work Group Specification work product owned by the
       System Software Workgroup and handled in compliance with the requirements outlined in the
       <citetitle>OpenPOWER Foundation Work Group (WG) Process</citetitle> document.  It was
       created using the <citetitle>Master Template Guide</citetitle> version 0.9.5. Comments,
-      questions, etc. can be submitted to the public mailing list  for this document at 
+      questions, etc. can be submitted to the public mailing list  for this document at
       <link xlink:href="http://tbd.openpowerfoundation.org">TBD</link>.</para>
     </abstract>
 
     <revhistory>
       <!-- TODO: Update as new revisions created -->
+      <revision>
+        <date>2020-04-06</date>
+        <revdescription>
+          <itemizedlist spacing="compact">
+            <listitem>
+              <para>Revision 0.5_pre5 - Updates to include latest PAPR ACRs (2.9) as follows:</para>
+              <itemizedlist spacing="compact">
+                <listitem>
+                  <para>Add H_VIOCTL subfunctions for VNIC failover support</para>
+                </listitem>
+                <listitem>
+                  <para>Add H_VIOCTL subfunction for virtual ethernet MAC scan functionality</para>
+                </listitem>
+                <listitem>
+                  <para>Add H_VIOCTL subfunctions for virtual scsi and FC mobility preparation functionality</para>
+                </listitem>
+                <listitem>
+                  <para>ibm,current-associativity-domain property</para>
+                </listitem>
+                <listitem>
+                  <para>HPT resizing option - KVM only</para>
+                </listitem>
+                <listitem>
+                  <para>Add Coherent Platform Facilities (CAPI)</para>
+                </listitem>
+                <listitem>
+                  <para>XIVE Exploitation</para>
+                </listitem>
+                <listitem>
+                  <para>Add 'OCC online/offline' events to 'IE' error log subsection</para>
+                </listitem>
+                <listitem>
+                  <para>LPM Redundancy Phase II: Redundancy</para>
+                </listitem>
+                <listitem>
+                  <para>Add optional sub-queue support to VFC on P9 and newer</para>
+                </listitem>
+                <listitem>
+                  <para>Increase max num-entries for H_SEND_SUB_CRQ_INDIRECT to 128</para>
+                </listitem>
+                <listitem>
+                  <para>Add Virtual Serial Multiplex adapter interfaces</para>
+                </listitem>
+                <listitem>
+                  <para>Maximum size of Dispatch Trace Log Buffer</para>
+                </listitem>
+                <listitem>
+                  <para>Eliminate requirement for clearing TCP checksum field for ILLAN checksum calculation</para>
+                </listitem>
+                <listitem>
+                  <para>Continued Extension of H_Send_Logical_LAN for large send packets</para>
+                </listitem>
+                <listitem>
+                  <para>Add LPM Capablity keyword to RTAS AIX Support system parameter</para>
+                </listitem>
+                <listitem>
+                  <para>XIVE Exploitation addition: Add ESB Reset Status to RTAS ibm,read-slot-reset-state2</para>
+                </listitem>
+                <listitem>
+                  <para>Add NVDIMM Protection and Encryption State system parameters</para>
+                </listitem>
+                <listitem>
+                  <para>Change or Remove 0x9 and 0xA event subtypes for 'IE' error log subsection</para>
+                </listitem>
+              </itemizedlist>
+            </listitem>
+            <listitem>
+              <para>Additional, post PAPR 2.9 ACRs as follows:</para>
+              <itemizedlist spacing="compact">
+                <listitem>
+                  <para>Reserve a range of hcalls to to support Ultravisor</para>
+                </listitem>
+                <listitem>
+                  <para>Add New CAS Bit For SRIOV Virtual Function (VF) Dynamic DMA Window (DDW) Support</para>
+                </listitem>
+                <listitem>
+                  <para>Updates to support vTPM 2.0</para>
+                </listitem>
+                <listitem>
+                  <para>Update XIVE Legacy hcalls to add H_Function</para>
+                </listitem>
+                <listitem>
+                  <para>Add NVDIMM Secure Erase Command system parameter</para>
+                </listitem>
+                <listitem>
+                  <para>Update H_REGISTER_VPA to add H_STATE return code for VPA and SLB shadow buffer.</para>
+                </listitem>
+                <listitem>
+                  <para>Extend Firmware Assisted Dump for ISA Version 3.0</para>
+                </listitem>
+                <listitem>
+                  <para>Add a new return code, H_NOT_AVAILABLE, to start-cpu rtas call</para>
+                </listitem>
+                <listitem>
+                  <para>Document already-implemented NVRAM variables</para>
+                </listitem>
+                <listitem>
+                  <para>Update ibm,dynamic-memory-vN flags to include a "Hotplugged Memory" flag</para>
+                </listitem>
+              </itemizedlist>
+            </listitem>
+          </itemizedlist>
+        </revdescription>
+      </revision>
       <revision>
           <date>2019-01-08</date>
           <revdescription>
