@@ -7958,7 +7958,12 @@ hcall ( const int64 H_SEND_SUB_CRQ, /* Function Code */
             hcall(). If a virtual IOA exists in the device tree after migration that
             requires by this architecture the presence of this hcall(), then if that
             virtual IOA exists after the migration, it can be expected that the
-            hcall() will, also.</para>
+            hcall() will, also. The maximum num-entries has increased on some platforms
+            from 16 to 128. On platforms that implement the partition migration option,
+            after partition migration the support for this hcall() might change, and the
+            caller should be prepared to receive an H_Parameter return code in the situation
+            where more than 16 num-entries have been sent, indicating the platform does not
+            support more than 16 num-entries.</para>
 
             <simplesect>
               <title>Syntax:</title>
@@ -8016,6 +8021,11 @@ hcall ( const int64 H_SEND_SUB_CRQ, /* Function Code */
                 <listitem>
                   <para>If ioba is outside of the range of the calling partition assigned
                   values, then return H_Parameter.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If num-entries is not in the range of 1 to 128, then return
+                  H_Parameter.</para>
                 </listitem>
 
                 <listitem>
