@@ -12310,7 +12310,7 @@ hcall ( const uint64 H_GET_DMA_XLATES_LIMITED, /*Return I/O Bus and correspondin
       <para>Dispatch Trace Log Buffer: This area is optionally registered by
       OS&#8217;s that desire to collect performance measurement data relative
       to its shared processor dispatching. The minimum size of this area is 48
-      bytes while the maximum is 4 GB. See
+      bytes while the maximum is 4 KB. See
       <xref linkend="dbdoclet.50569344_29153" /> for more details</para>
       <para>SLB Shadow Buffer: This area is optionally registered by OS&#8217;s
       that support the SLB-shadow function set. The structure may not span a
