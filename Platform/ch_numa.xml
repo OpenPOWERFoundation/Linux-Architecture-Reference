@@ -1,62 +1,62 @@
 <?xml version="1.0"?>
-<chapter xmlns="http://docbook.org/ns/docbook" 
+<chapter xmlns="http://docbook.org/ns/docbook"
 xmlns:xl="http://www.w3.org/1999/xlink"
 xml:id="dbdoclet.50569346_35960"
-version="5.0" 
+version="5.0"
 xml:lang="en">
   <title>Non Uniform Memory Access (NUMA) Option</title>
-  
+
   <section>
     <title>Summary of Extensions to Support NUMA</title>
-    <para>NUMA platforms to a first level approximation are simply a large 
-    scale Symmetric Multi-Processor. However to tune system performance and to aid 
-    in platform maintenance, the OS needs additional information and mechanisms. 
+    <para>NUMA platforms to a first level approximation are simply a large
+    scale Symmetric Multi-Processor. However to tune system performance and to aid
+    in platform maintenance, the OS needs additional information and mechanisms.
     These include:</para>
 
-    <itemizedlist>		      
+    <itemizedlist>
       <listitem>
-        <para>Associativity -- to determine the platform resource 
+        <para>Associativity -- to determine the platform resource
         groupings.</para>
       </listitem>
-      
+
       <listitem>
-        <para>Relative Performance Distances -- to determine the performance 
+        <para>Relative Performance Distances -- to determine the performance
         between resources within different groupings.</para>
       </listitem>
-      
+
       <listitem>
-        <para>Performance Monitor -- to provide usage data on the NUMA 
+        <para>Performance Monitor -- to provide usage data on the NUMA
         fabric.</para>
       </listitem>
-      
+
       <listitem>
-        <para>Dynamic Reconfiguration -- due to such causes as platform upgrade, 
+        <para>Dynamic Reconfiguration -- due to such causes as platform upgrade,
         reallocation of resources, or a repair of a failure.</para>
       </listitem>
-    </itemizedlist>		      
+    </itemizedlist>
 
-    <para>There are two NUMA support options: the &#x201C;NUMA&#x201D; option 
-    and its proper subset the &#x201C;Associativity Information&#x201D; 
+    <para>There are two NUMA support options: the &#x201C;NUMA&#x201D; option
+    and its proper subset the &#x201C;Associativity Information&#x201D;
     option.</para>
   </section>
-  
+
   <section xml:id="dbdoclet.50569346_90086">
     <title>NUMA Resource Associativity</title>
-    <para>Associativity Codes represent the groupings of the various platform 
-    resources into domains of substantially similar mean performance relative to 
-    resources outside of that domain. Resources subsets of a given domain that 
-    exhibit better performance relative to each other than relative to other 
-    resources subsets, are represented as being members of a sub-grouping domain. 
-    Such sub-domain grouping is represented to any level deemed significant by the 
-    platform design. <xref linkend="dbdoclet.50569346_57930"/> presents a simple 
-    system configuration with one possible decomposition into associativity 
-    domains. From the decomposition provided the 
-    <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis> value string for each resource is 
+    <para>Associativity Codes represent the groupings of the various platform
+    resources into domains of substantially similar mean performance relative to
+    resources outside of that domain. Resources subsets of a given domain that
+    exhibit better performance relative to each other than relative to other
+    resources subsets, are represented as being members of a sub-grouping domain.
+    Such sub-domain grouping is represented to any level deemed significant by the
+    platform design. <xref linkend="dbdoclet.50569346_57930"/> presents a simple
+    system configuration with one possible decomposition into associativity
+    domains. From the decomposition provided the
+    <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis> value string for each resource is
     enumerated. </para>
 
     <figure xml:id="dbdoclet.50569346_57930">
-      <title>Example NUMA configuration with 
-      domains and corresponding <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis> 
+      <title>Example NUMA configuration with
+      domains and corresponding <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis>
       values  </title>
       <mediaobject>
         <imageobject role="html">
@@ -67,231 +67,231 @@ xml:lang="en">
         </imageobject>
       </mediaobject>
     </figure>
- 
-    <para> The OF Device Tree node for each allocable resource 
-    (processor, memory region, and IO slot) conveys information about the resources 
-    statically assigned to the client program; and contains the 
-    <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis> 
-    property (see <xref linkend="LoPAR.RTAS"/>). This property allows the client 
-    program to determine the associativity between any two of it&#x2019;s 
-    resources. The greater the associativity the greater the expected performance 
+
+    <para> The OF Device Tree node for each allocable resource
+    (processor, memory region, and IO slot) conveys information about the resources
+    statically assigned to the client program; and contains the
+    <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis>
+    property (see <xref linkend="LoPAR.RTAS"/>). This property allows the client
+    program to determine the associativity between any two of it&#x2019;s
+    resources. The greater the associativity the greater the expected performance
     when using those two resources in a given operation.</para>
-    <para>The legal form of the <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis> 
-    property is dependent upon the setting of the 
-    <emphasis role="bold"><literal>&#x201C;ibm,architecture-vec-5&#x201D;</literal></emphasis> 
-    property byte 5 bit 0. The bit value of zero allows the 
-    <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis> property string to be sequenced in 
-    priority order; this form is being deprecated for new implementations in favor 
-    of the form indicated by the 
+    <para>The legal form of the <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis>
+    property is dependent upon the setting of the
     <emphasis role="bold"><literal>&#x201C;ibm,architecture-vec-5&#x201D;</literal></emphasis>
-    property byte 5 bit 0 having the value of one in which the 
-    <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis> property string represents the 
+    property byte 5 bit 0. The bit value of zero allows the
+    <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis> property string to be sequenced in
+    priority order; this form is being deprecated for new implementations in favor
+    of the form indicated by the
+    <emphasis role="bold"><literal>&#x201C;ibm,architecture-vec-5&#x201D;</literal></emphasis>
+    property byte 5 bit 0 having the value of one in which the
+    <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis> property string represents the
     strict physical hierarchy of the platform.</para>
-    <para>When the LPAR option is also implemented, the partition virtual 
-    resources may be mapped onto physical resources with in a very dynamic manor. 
-    Given that the resource mapping to the associativity domain is substantially 
-    consistent, the client program can make use of the associativity information to 
-    on the average optimize performance. If the resource mapping to the 
-    associativity domain is substantially inconsistent, then associativity 
-    information for the resources is not provided to prevent erroneous operation. 
-    If the long term mapping changes the client program can be made aware of the 
-    new associativity information using the <emphasis>ibm,update-properties</emphasis> RTAS call (See 
+    <para>When the LPAR option is also implemented, the partition virtual
+    resources may be mapped onto physical resources with in a very dynamic manor.
+    Given that the resource mapping to the associativity domain is substantially
+    consistent, the client program can make use of the associativity information to
+    on the average optimize performance. If the resource mapping to the
+    associativity domain is substantially inconsistent, then associativity
+    information for the resources is not provided to prevent erroneous operation.
+    If the long term mapping changes the client program can be made aware of the
+    new associativity information using the <emphasis>ibm,update-properties</emphasis> RTAS call (See
     <xref linkend="LoPAR.RTAS"/>).</para>
 
     <variablelist>
      	<varlistentry xml:id="dbdoclet.50569346_19785">
-        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569346_90086" 
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569346_90086"
         xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
           <listitem>
-            <para><emphasis role="bold">For the NUMA or Associativity 
-            Information option:</emphasis> The platform must include the 
-            <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis> in the OF device tree 
-            <emphasis role="bold"><literal>memory</literal></emphasis> node and the nodes of each processor, memory 
-            region, and PCI bridge onto which IOAs may be plugged if the component is 
-            dedicated to the partition. (The device tree node for a component that the 
-            platform intends to virtualize should include an 
-            <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis> property if the associativity 
+            <para><emphasis role="bold">For the NUMA or Associativity
+            Information option:</emphasis> The platform must include the
+            <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis> in the OF device tree
+            <emphasis role="bold"><literal>memory</literal></emphasis> node and the nodes of each processor, memory
+            region, and PCI bridge onto which IOAs may be plugged if the component is
+            dedicated to the partition. (The device tree node for a component that the
+            platform intends to virtualize should include an
+            <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis> property if the associativity
             domain information is substantially accurate.)</para>
           </listitem>
      	</varlistentry>
-     	
+
      	<varlistentry>
-        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569346_90086" 
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569346_90086"
         xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
           <listitem>
-            <para><emphasis role="bold">For the NUMA option and SPLPAR 
-            option:</emphasis> In the case that both the NUMA and SPLPAR options are 
-            implemented, Requirement <xref linkend="dbdoclet.50569346_19785"/> is modified 
-            to remove processors from the list of system elements that must include the 
-            respective properties or interfaces described by that requirement. (The 
-            platform is encouraged to provide processor associativity information if it is 
+            <para><emphasis role="bold">For the NUMA option and SPLPAR
+            option:</emphasis> In the case that both the NUMA and SPLPAR options are
+            implemented, Requirement <xref linkend="dbdoclet.50569346_19785"/> is modified
+            to remove processors from the list of system elements that must include the
+            respective properties or interfaces described by that requirement. (The
+            platform is encouraged to provide processor associativity information if it is
             substantially accurate.)</para>
           </listitem>
      	</varlistentry>
     </variablelist>
 
-    <para>The <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis> 
-    property contains one or more lists of numbers representing the 
-    resource&#x2019;s platform grouping domains. Each list, starts with a number 
-    representing the domain number of the highest level grouping within which the 
-    platform is capable of supporting direct access. This highest level may be a 
-    NUMA collective or possibly a cluster of machines with direct DMA access. 
-    Successive numbers represent sub-divisions of the previous higher level within 
-    which the expected mean value of the performance relative to outside resources 
-    is substantially similar. Implementations determine the number of levels that 
-    they report, subject to Requirements <xref linkend="dbdoclet.50569346_19785"/> 
-    and <xref linkend="dbdoclet.50569346_29131"/>. The lowest level always being 
-    that of the allocable resource itself. The user of this information is 
-    cautioned not to imply any specific physical/logical significance of the 
+    <para>The <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis>
+    property contains one or more lists of numbers representing the
+    resource&#x2019;s platform grouping domains. Each list, starts with a number
+    representing the domain number of the highest level grouping within which the
+    platform is capable of supporting direct access. This highest level may be a
+    NUMA collective or possibly a cluster of machines with direct DMA access.
+    Successive numbers represent sub-divisions of the previous higher level within
+    which the expected mean value of the performance relative to outside resources
+    is substantially similar. Implementations determine the number of levels that
+    they report, subject to Requirements <xref linkend="dbdoclet.50569346_19785"/>
+    and <xref linkend="dbdoclet.50569346_29131"/>. The lowest level always being
+    that of the allocable resource itself. The user of this information is
+    cautioned not to imply any specific physical/logical significance of the
     various intermediate levels.</para>
-     	
+
     <variablelist>
      	<varlistentry xml:id="dbdoclet.50569346_29131">
-        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569346_90086" 
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569346_90086"
         xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
           <listitem>
-            <para><emphasis role="bold">For the NUMA or Associativity 
-            Information option:</emphasis> Differing levels of resource grouping represented in the 
-            <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis> property 
-            must reflect statistically repeatable differences in the expected mean of 
+            <para><emphasis role="bold">For the NUMA or Associativity
+            Information option:</emphasis> Differing levels of resource grouping represented in the
+            <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis> property
+            must reflect statistically repeatable differences in the expected mean of
             measured performance.</para>
           </listitem>
      	</varlistentry>
-     	
+
      	<varlistentry>
-        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569346_90086" 
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569346_90086"
         xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
           <listitem>
-            <para><emphasis role="bold">For the NUMA or Associativity 
-            Information option:</emphasis> The expected mean performance of any resource 
-            of a given type within the same grouping domain represented in the 
-            <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis> property relative to 
+            <para><emphasis role="bold">For the NUMA or Associativity
+            Information option:</emphasis> The expected mean performance of any resource
+            of a given type within the same grouping domain represented in the
+            <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis> property relative to
             resources outside of that grouping domain must be substantially similar.</para>
           </listitem>
      	</varlistentry>
     </variablelist>
     <para>The reason that the <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis>
-    property may contain 
-    multiple associativity lists is that a resource may be multiply connected into 
-    the platform. This resource then has a different associativity characteristics 
-    relative to its multiple connections. To determine the associativity between 
-    any two resources, the OS scans down the two resources associativity lists in 
-    all pair wise combinations counting how many domains are the same until the 
-    first domain where the two list do not agree. The highest such count is the 
+    property may contain
+    multiple associativity lists is that a resource may be multiply connected into
+    the platform. This resource then has a different associativity characteristics
+    relative to its multiple connections. To determine the associativity between
+    any two resources, the OS scans down the two resources associativity lists in
+    all pair wise combinations counting how many domains are the same until the
+    first domain where the two list do not agree. The highest such count is the
     associativity between the two resources.</para>
   </section>
-  
+
   <section xml:id="sec_numa_perf_distance">
     <title>Relative Performance Distance</title>
-    <para>An OS applies its NUMA tuning techniques based upon associativity and 
-    relative performance distance attributes. As a guide to relative performance 
-    distance, RISC Platforms provide the <emphasis role="bold"><literal>&#x201C;ibm,associativity-reference-points&#x201D;</literal></emphasis> 
-    property. The information in this property represents a first order approximation to points 
-    having associativity and relative performance distance characteristics deemed 
+    <para>An OS applies its NUMA tuning techniques based upon associativity and
+    relative performance distance attributes. As a guide to relative performance
+    distance, RISC Platforms provide the <emphasis role="bold"><literal>&#x201C;ibm,associativity-reference-points&#x201D;</literal></emphasis>
+    property. The information in this property represents a first order approximation to points
+    having associativity and relative performance distance characteristics deemed
     to be of significant interest to optimizing client program performance.</para>
-    <para>The contents of the <emphasis role="bold"><literal>&#x201C;ibm,associativity-reference-points&#x201D;</literal></emphasis> 
-    property is dependent upon the setting of the 
-    <emphasis role="bold"><literal>&#x201C;ibm,architecture-vec-5&#x201D;</literal></emphasis> 
-    property byte 5 bit 0. The bit value of zero allows the 
-    <emphasis role="bold"><literal>&#x201C;ibm,associativity-reference-points&#x201D;</literal></emphasis> property string 
-    to indicate logical structure points; this form is being deprecated for new 
-    implementations in favor of the form indicated by the 
-    <emphasis role="bold"><literal>&#x201C;ibm,architecture-vec-5&#x201D;</literal></emphasis> 
-    property byte 5 bit 0 having the value of one in which the 
-    <emphasis role="bold"><literal>&#x201C;ibm,associativity-reference-points&#x201D;</literal></emphasis> property string 
-    represents boundaries between associativity domains presented by the 
-    <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis> property containing 
+    <para>The contents of the <emphasis role="bold"><literal>&#x201C;ibm,associativity-reference-points&#x201D;</literal></emphasis>
+    property is dependent upon the setting of the
+    <emphasis role="bold"><literal>&#x201C;ibm,architecture-vec-5&#x201D;</literal></emphasis>
+    property byte 5 bit 0. The bit value of zero allows the
+    <emphasis role="bold"><literal>&#x201C;ibm,associativity-reference-points&#x201D;</literal></emphasis> property string
+    to indicate logical structure points; this form is being deprecated for new
+    implementations in favor of the form indicated by the
+    <emphasis role="bold"><literal>&#x201C;ibm,architecture-vec-5&#x201D;</literal></emphasis>
+    property byte 5 bit 0 having the value of one in which the
+    <emphasis role="bold"><literal>&#x201C;ibm,associativity-reference-points&#x201D;</literal></emphasis> property string
+    represents boundaries between associativity domains presented by the
+    <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis> property containing
     &#x201C;near&#x201D; and &#x201C;far&#x201D; resources.</para>
 
     <variablelist>
      	<varlistentry>
-        <term><emphasis role="bold">R1-<xref linkend="sec_numa_perf_distance" 
+        <term><emphasis role="bold">R1-<xref linkend="sec_numa_perf_distance"
         xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
           <listitem>
-            <para><emphasis role="bold">For the NUMA or Associativity 
-            Information option:</emphasis> The RTAS OF device tree node must contain the 
+            <para><emphasis role="bold">For the NUMA or Associativity
+            Information option:</emphasis> The RTAS OF device tree node must contain the
             <emphasis role="bold"><literal>&#x201C;ibm,associativity-reference-points&#x201D;</literal></emphasis>.</para>
           </listitem>
      	</varlistentry>
     </variablelist>
-    
+
     <section>
       <title>Form 0</title>
       <para>When the <emphasis role="bold"><literal>&#x201C;ibm,architecture-vec-5&#x201D;</literal></emphasis>
-      property byte 5 bit 0 has the value of zero, the 
-      <emphasis role="bold"><literal>&#x201C;ibm,associativity-reference-points&#x201D;</literal></emphasis> property defines 
-      reference points in the <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis> 
-      property (see <xref linkend="LoPAR.DeviceTree"/>) which roughly correspond to 
-      traditional notions of platform topology constructs. It is important for the 
-      user to realize that these reference points are not exact and their 
+      property byte 5 bit 0 has the value of zero, the
+      <emphasis role="bold"><literal>&#x201C;ibm,associativity-reference-points&#x201D;</literal></emphasis> property defines
+      reference points in the <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis>
+      property (see <xref linkend="LoPAR.DeviceTree"/>) which roughly correspond to
+      traditional notions of platform topology constructs. It is important for the
+      user to realize that these reference points are not exact and their
       characteristics vary among implementations. </para>
-      <para>The first integer in the <emphasis role="bold"><literal>&#x201C;ibm,associativity-reference-points&#x201D;</literal></emphasis> 
-      property relates the 1 based ordinal in the associativity lists of the platform&#x2019;s 
-      <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis> property associated 
-      with the traditional notion of a symmetric multi-processor within a NUMA 
-      platform. That is the level that represents building blocks of processors and 
+      <para>The first integer in the <emphasis role="bold"><literal>&#x201C;ibm,associativity-reference-points&#x201D;</literal></emphasis>
+      property relates the 1 based ordinal in the associativity lists of the platform&#x2019;s
+      <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis> property associated
+      with the traditional notion of a symmetric multi-processor within a NUMA
+      platform. That is the level that represents building blocks of processors and
       memory that have the following characteristics:</para>
 
-      <itemizedlist>		      
+      <itemizedlist>
         <listitem>
-          <para>An OS is likely to view all members having roughly uniform access 
+          <para>An OS is likely to view all members having roughly uniform access
           characteristics.</para>
         </listitem>
-        
+
         <listitem>
-          <para>Represents the highest level before an OS is likely to notice 
+          <para>Represents the highest level before an OS is likely to notice
           major Non-Uniformity of access.</para>
         </listitem>
-      </itemizedlist>		      
+      </itemizedlist>
 
-      <para>The second integer in the <emphasis role="bold"><literal>&#x201C;ibm,associativity-reference-points&#x201D;</literal></emphasis> 
-      property relates the 1 based ordinal in the associativity lists of the platform&#x2019;s 
-      <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis> property associated 
-      with the traditional notion of a processor group which is sometimes packaged in 
-      a multi-chip module. A processor group has similar characteristics to an SMP, 
-      however, several processor groups get packaged densely within the same physical 
-      enclosure forming an SMP. While the intra processor group accesses are 
-      measurably greater than inter processor group accesses they are a second order 
+      <para>The second integer in the <emphasis role="bold"><literal>&#x201C;ibm,associativity-reference-points&#x201D;</literal></emphasis>
+      property relates the 1 based ordinal in the associativity lists of the platform&#x2019;s
+      <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis> property associated
+      with the traditional notion of a processor group which is sometimes packaged in
+      a multi-chip module. A processor group has similar characteristics to an SMP,
+      however, several processor groups get packaged densely within the same physical
+      enclosure forming an SMP. While the intra processor group accesses are
+      measurably greater than inter processor group accesses they are a second order
       effect. </para>
       <para>Subsequent <emphasis>ibm,associativity-reference-points</emphasis> entries are reserved.</para>
     </section>
-    
+
     <section xml:id="dbdoclet.50569346_82008">
       <title>Form 1</title>
       <para>When the <emphasis role="bold"><literal>&#x201C;ibm,architecture-vec-5&#x201D;</literal></emphasis>
-      property byte 5 bit 0 has the value of one, the 
-      <emphasis role="bold"><literal>&#x201C;ibm,associativity-reference-points&#x201D;</literal></emphasis> property 
-      indicates boundaries between associativity domains presented by the 
-      <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis> property containing 
-      &#x201C;near&#x201D; and &#x201C;far&#x201D; resources. The first such boundary 
-      in the list represents the 1 based ordinal in the associativity lists of the 
-      most significant boundary, with subsequent entries indicating progressively 
+      property byte 5 bit 0 has the value of one, the
+      <emphasis role="bold"><literal>&#x201C;ibm,associativity-reference-points&#x201D;</literal></emphasis> property
+      indicates boundaries between associativity domains presented by the
+      <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis> property containing
+      &#x201C;near&#x201D; and &#x201C;far&#x201D; resources. The first such boundary
+      in the list represents the 1 based ordinal in the associativity lists of the
+      most significant boundary, with subsequent entries indicating progressively
       less significant boundaries.</para>
-      <para><emphasis role="bold">Note</emphasis>: Platforms are encouraged to report 
-      boundaries of actual significance. Thus if a platform has only a single 
-      significant boundary to report, the preferred form of the 
-      <emphasis role="bold"><literal>&#x201C;ibm,associativ&#xAC;ity-reference-points&#x201D;</literal></emphasis> would 
-      contain a single entry. However, providing two or more entries that reference 
-      the same associativity domains provides equivalent information and is a legal 
+      <para><emphasis role="bold">Note</emphasis>: Platforms are encouraged to report
+      boundaries of actual significance. Thus if a platform has only a single
+      significant boundary to report, the preferred form of the
+      <emphasis role="bold"><literal>&#x201C;ibm,associativ&#xAC;ity-reference-points&#x201D;</literal></emphasis> would
+      contain a single entry. However, providing two or more entries that reference
+      the same associativity domains provides equivalent information and is a legal
       representation.</para>
     </section>
   </section>
-  
+
   <section xml:id="sec_numa_dr_cross_cec_io">
     <title>Dynamic Reconfiguration with Cross CEC I/O Drawers</title>
-    <para>Should the configuration change in such a way that the associativity 
-    between an OS image&#x2019;s resources changes, the platform notifies the OS 
+    <para>Should the configuration change in such a way that the associativity
+    between an OS image&#x2019;s resources changes, the platform notifies the OS
     via an event scan log. See <xref linkend="LoPAR.Error"/>. </para>
 
     <variablelist>
      	<varlistentry>
-        <term><emphasis role="bold">R1-<xref linkend="sec_numa_dr_cross_cec_io" 
+        <term><emphasis role="bold">R1-<xref linkend="sec_numa_dr_cross_cec_io"
         xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
           <listitem>
-            <para><emphasis role="bold">For the NUMA or Associativity 
-            Information option:</emphasis> If the platform configuration changes in such a 
-            way that the associativity between an OS image&#x2019;s resources might have 
-            changed, the platform must notify the OS via an event scan or check exception 
+            <para><emphasis role="bold">For the NUMA or Associativity
+            Information option:</emphasis> If the platform configuration changes in such a
+            way that the associativity between an OS image&#x2019;s resources might have
+            changed, the platform must notify the OS via an event scan or check exception
             log.</para>
           </listitem>
      	</varlistentry>
@@ -299,124 +299,130 @@ xml:lang="en">
   </section>
 
   <section xml:id="sec_numa_max_domains">
-    <title>Maximum Associativity Domains</title>
-    <para>Since the number of associativity domains that a platform may exhibit 
-    is not apparent from the associativity properties presented at boot time, the 
-    platform provides the <emphasis role="bold"><literal>&#x201C;ibm,max-associativity-domains&#x201D;</literal></emphasis> 
-    property in the <emphasis role="bold"><literal>/rtas</literal></emphasis> node of the device tree (see 
+    <title>Maximum and Current Associativity Domains</title>
+    <para>Since the number of associativity domains that a platform may exhibit
+    is not apparent from the associativity properties presented at boot time, the
+    platform provides the
+    <emphasis role="bold"><literal>&#x201C;ibm,max-associativity-domains&#x201D;</literal></emphasis>
+    and the
+    <emphasis role="bold"><literal>&#x201C;ibm,current-associativity-domains&#x201D;</literal></emphasis>
+    properties in the <emphasis role="bold"><literal>/rtas</literal></emphasis> node of the device tree (see
     <xref linkend="LoPAR.DeviceTree"/>).</para>
 
     <variablelist>
      	<varlistentry>
-        <term><emphasis role="bold">R1-<xref linkend="sec_numa_max_domains" 
+        <term><emphasis role="bold">R1-<xref linkend="sec_numa_max_domains"
         xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
           <listitem>
-            <para><emphasis role="bold">For the NUMA or Associativity 
-            Information option:</emphasis> The platform must provide the 
-            <emphasis role="bold"><literal>&#x201C;ibm,max-associativity-domains&#x201D;</literal></emphasis> property in 
+            <para><emphasis role="bold">For the NUMA or Associativity
+            Information option:</emphasis> The platform must provide the
+            <emphasis role="bold"><literal>&#x201C;ibm,max-associativity-domains&#x201D;</literal></emphasis>
+            and the
+            <emphasis role="bold"><literal>&#x201C;ibm,current-associativity-domains&#x201D;</literal></emphasis>
+            properties in 
             the <emphasis role="bold"><literal>/rtas</literal></emphasis> node of the device tree.</para>
           </listitem>
      	</varlistentry>
     </variablelist>
   </section>
-  
+
   <section xml:id="dbdoclet.50569346_88496">
     <title>Platform Resource Reassignment Notification Option (PRRN)</title>
-    <para>LoPAR platforms that implement the LPAR option are allowed to 
-    transparently reassign the platform resources that are used by a partition. For 
-    instance, if a processor or memory unit is predicted to fail, the platform may 
-    transparently move the processing to an equivalent unused processor or the 
-    memory state to an equivalent unused memory unit. However, reassigning 
-    resources across NUMA boundaries may alter the performance of the partition. 
-    When such reassignment is necessary, the PRRN option provides mechanisms that 
-    inform the supporting OS of changes to the affinity among its platform 
-    resources. It is expected that handling such notifications will involve 
-    significant OS processing, therefore, changing affinity should be avoided, and 
-    when it is necessary to change the affinity of several of the resources owned 
-    by a partition, a single notification after all such changes have occurred is 
+    <para>LoPAR platforms that implement the LPAR option are allowed to
+    transparently reassign the platform resources that are used by a partition. For
+    instance, if a processor or memory unit is predicted to fail, the platform may
+    transparently move the processing to an equivalent unused processor or the
+    memory state to an equivalent unused memory unit. However, reassigning
+    resources across NUMA boundaries may alter the performance of the partition.
+    When such reassignment is necessary, the PRRN option provides mechanisms that
+    inform the supporting OS of changes to the affinity among its platform
+    resources. It is expected that handling such notifications will involve
+    significant OS processing, therefore, changing affinity should be avoided, and
+    when it is necessary to change the affinity of several of the resources owned
+    by a partition, a single notification after all such changes have occurred is
     preferred.</para>
-    <para>The OS and platform firmware negotiate their mutual support of the 
-    PRRN option via the <emphasis role="bold"><literal>ibm,client-architecture-support</literal></emphasis> 
-    interface (See <xref linkend="LoPAR.DeviceTree"/>). Should a partition be 
-    migrated from a platform that did not support the PRRN option, the target 
-    platform does not notify the partition&#x2019;s OS of any PRRN events and, when 
-    possible avoids changing the affinity among the partition&#x2019;s resources. 
-    Partitions that are about to be migrated complete/abort any in-process affinity 
-    change processing prior to the migration, and if the target platform does not 
-    support the PRRN option the partition will simply see no more PRRN 
+    <para>The OS and platform firmware negotiate their mutual support of the
+    PRRN option via the <emphasis role="bold"><literal>ibm,client-architecture-support</literal></emphasis>
+    interface (See <xref linkend="LoPAR.DeviceTree"/>). Should a partition be
+    migrated from a platform that did not support the PRRN option, the target
+    platform does not notify the partition&#x2019;s OS of any PRRN events and, when
+    possible avoids changing the affinity among the partition&#x2019;s resources.
+    Partitions that are about to be migrated complete/abort any in-process affinity
+    change processing prior to the migration, and if the target platform does not
+    support the PRRN option the partition will simply see no more PRRN
     events.</para>
-    <para>A PRRN event is signaled via the RTAS <emphasis>event-scan</emphasis> 
-    mechanism, which returns a Hot Plug Event message &#x201C;fixed 
-    part&#x201D; (See <xref linkend="LoPAR.Error"/>) indicating &#x201C;Platform 
-    Resource Reassignment&#x201D;. In response to the Hot Plug Event message, the 
-    OS may call <emphasis>ibm,update-nodes</emphasis> to determine which resources 
-    were reassigned, and then <emphasis>ibm,update-properties</emphasis> to obtain 
+    <para>A PRRN event is signaled via the RTAS <emphasis>event-scan</emphasis>
+    mechanism, which returns a Hot Plug Event message &#x201C;fixed
+    part&#x201D; (See <xref linkend="LoPAR.Error"/>) indicating &#x201C;Platform
+    Resource Reassignment&#x201D;. In response to the Hot Plug Event message, the
+    OS may call <emphasis>ibm,update-nodes</emphasis> to determine which resources
+    were reassigned, and then <emphasis>ibm,update-properties</emphasis> to obtain
     the new affinity information about those resources.</para>
-    <para>The PRRN <emphasis>event-scan</emphasis> RTAS message contains only 
-    the &#x201C;fixed part&#x201D; with the &#x201C;Type&#x201D; field set to the 
-    value 160 and no Extended Event Log. The four (4) byte Extended Event Log 
-    Length field is repurposed, since no Extended Event Log message is included, to 
-    pass the &#x201C;scope&#x201D; parameter that causes the 
-    <emphasis role="bold"><literal>ibm,update-nodes</literal></emphasis> to return the nodes affected by the specific 
+    <para>The PRRN <emphasis>event-scan</emphasis> RTAS message contains only
+    the &#x201C;fixed part&#x201D; with the &#x201C;Type&#x201D; field set to the
+    value 160 and no Extended Event Log. The four (4) byte Extended Event Log
+    Length field is repurposed, since no Extended Event Log message is included, to
+    pass the &#x201C;scope&#x201D; parameter that causes the
+    <emphasis role="bold"><literal>ibm,update-nodes</literal></emphasis> to return the nodes affected by the specific
     resource reassignment.</para>
     <para><emphasis role="bold">Requirements:</emphasis></para>
 
     <variablelist>
      	<varlistentry>
-        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569346_88496" 
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569346_88496"
         xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
           <listitem>
-            <para><emphasis role="bold">For the PRRN Option:</emphasis> 
-            The platform must support the negotiation of the Associativity Information 
-            Option Control Platform Resource Reassignment Notification (Affinity Change) 
-            flag via the <emphasis role="bold"><literal>ibm,client-architecture-support</literal></emphasis> 
+            <para><emphasis role="bold">For the PRRN Option:</emphasis>
+            The platform must support the negotiation of the Associativity Information
+            Option Control Platform Resource Reassignment Notification (Affinity Change)
+            flag via the <emphasis role="bold"><literal>ibm,client-architecture-support</literal></emphasis>
             interface.</para>
           </listitem>
      	</varlistentry>
-     	
+
      	<varlistentry>
-        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569346_88496" 
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569346_88496"
         xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
           <listitem>
-            <para><emphasis role="bold">For the PRRN Option:</emphasis> 
-            If the client code did not claim support for the PRRN option via the 
-            <emphasis role="bold"><literal>ibm,client-architecture-support</literal></emphasis> interface the platform must not 
-            present PRRN events per section <xref 
+            <para><emphasis role="bold">For the PRRN Option:</emphasis>
+            If the client code did not claim support for the PRRN option via the
+            <emphasis role="bold"><literal>ibm,client-architecture-support</literal></emphasis> interface the platform must not
+            present PRRN events per section <xref
             linkend="dbdoclet.50569346_88496"/>.</para>
           </listitem>
      	</varlistentry>
-     	
+
      	<varlistentry>
-        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569346_88496" 
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569346_88496"
         xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
           <listitem>
-            <para><emphasis role="bold">For the combination of the PRRN 
-            and Partition Suspension Options:</emphasis> To avoid firmware function 
-            conflicts the client code must complete or abort any PRRN processing prior to 
+            <para><emphasis role="bold">For the combination of the PRRN
+            and Partition Suspension Options:</emphasis> To avoid firmware function
+            conflicts the client code must complete or abort any PRRN processing prior to
             exercising the Partition Suspension option.</para>
           </listitem>
      	</varlistentry>
-     	
+
      	<varlistentry>
-        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569346_88496" 
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569346_88496"
         xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
           <listitem>
-            <para><emphasis role="bold">For the PRRN Option:</emphasis> 
-            The platform must inform the client code of platform resource reassignments via 
-            the <emphasis>event-scan</emphasis> RTAS mechanism with a &#x201C;fixed 
-            part&#x201D; only event return message as presented in <xref 
+            <para><emphasis role="bold">For the PRRN Option:</emphasis>
+            The platform must inform the client code of platform resource reassignments via
+            the <emphasis>event-scan</emphasis> RTAS mechanism with a &#x201C;fixed
+            part&#x201D; only event return message as presented in <xref
             linkend="dbdoclet.50569346_37599"/></para>
           </listitem>
      	</varlistentry>
-     	
+
      	<varlistentry>
-        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569346_88496" 
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569346_88496"
         xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
           <listitem>
-            <para><emphasis role="bold">For the PRRN Option:</emphasis> 
-            The platform must support the Platform Resource Reassignment scope (negative of 
-            the value contained in bits 32:64 of the RTAS Event Return Format (Fixed Part) 
-            for PRRN events) input parameter to input the 
+            <para><emphasis role="bold">For the PRRN Option:</emphasis>
+            The platform must support the Platform Resource Reassignment scope (negative of
+            the value contained in bits 32:64 of the RTAS Event Return Format (Fixed Part)
+            for PRRN events) input parameter to input the
             <emphasis role="bold"><literal>ibm,update-nodes</literal></emphasis> RTAS call.</para>
           </listitem>
      	</varlistentry>
@@ -513,7 +519,7 @@ xml:lang="en">
             </entry>
             <entry>
               <para> The scope parameter to be input the <emphasis>ibm,update-nodes</emphasis> RTAS call
-              to retrieve the nodes that were changed by selected &#x201C;Hot Plug&#x201D; 
+              to retrieve the nodes that were changed by selected &#x201C;Hot Plug&#x201D;
               events. </para>
             </entry>
           </row>

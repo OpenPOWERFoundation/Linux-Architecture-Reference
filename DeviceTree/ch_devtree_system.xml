@@ -4626,6 +4626,22 @@
   			  </varlistentry>
 
           <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;ibm,current-associativity-domains&#8221;</literal></emphasis></term>
+              <listitem>
+                <para><emphasis>property name</emphasis> to define the current number of associativity domains
+                for this platform.</para>
+                <para><emphasis>prop-encoded-array</emphasis>: An associativity list such that all values
+                are the number of unique values that the current platform supports in that location.
+                The associativity list consisting of a number of entries integer (N) encoded as with
+                <emphasis role="bold"><literal>encode-int</literal></emphasis>
+                followed by N integers encoded as with
+                <emphasis role="bold"><literal>encode-int</literal></emphasis>
+                each representing
+                current number of unique asso- ciativity domains the platform supports at that level.</para>
+              </listitem>
+  			  </varlistentry>
+
+          <varlistentry>
             <term><emphasis role="bold"><literal>&#8220;ibm,request-partition-shutdown&#8221;</literal></emphasis></term>
               <listitem>
                 <para>
