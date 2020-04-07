@@ -2638,7 +2638,7 @@ hcall ( const unit64 H_VIOCTL, /* Query/Set behaviors for the virtual IOA */
                     </entry>
                     <entry>
                       <para>
-                        <xref linkend="sec_vnic_server_status_subfunction_semantics" />
+                        <xref linkend="sec_vnic_server_status" />
                       </para>
                     </entry>
                   </row>
@@ -2654,7 +2654,7 @@ hcall ( const unit64 H_VIOCTL, /* Query/Set behaviors for the virtual IOA */
                     </entry>
                     <entry>
                       <para>
-                        <xref linkend="sec_get_session_token_subfunction_semantics" />
+                        <xref linkend="sec_get_session_token" />
                       </para>
                     </entry>
                   </row>
@@ -2670,7 +2670,7 @@ hcall ( const unit64 H_VIOCTL, /* Query/Set behaviors for the virtual IOA */
                     </entry>
                     <entry>
                       <para>
-                        <xref linkend="sec_session_error_detected_subfunction_semantics" />
+                        <xref linkend="sec_session_error_detected" />
                       </para>
                     </entry>
                   </row>
@@ -2686,7 +2686,25 @@ hcall ( const unit64 H_VIOCTL, /* Query/Set behaviors for the virtual IOA */
                     </entry>
                     <entry>
                       <para>
-                        <xref linkend="sec_get_vnic_server_info_subfunction_semantics" />
+                        <xref linkend="sec_get_vnic_server_info" />
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>0x1C</para>
+                    </entry>
+                    <entry>
+                      <para>ILLAN_MAC_SCAN</para>
+                    </entry>
+                    <entry>
+                      <para>For any ILLAN adapter with the
+                        <emphasis role="bold"><literal>&#8220;ibm,trunk-adapter&#8221;</literal></emphasis>
+                        property</para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <xref linkend="sec_illan_mac_scan" />
                       </para>
                     </entry>
                   </row>
@@ -3406,7 +3424,7 @@ hcall ( const unit64 H_VIOCTL, /* Query/Set behaviors for the virtual IOA */
           </itemizedlist>
         </section>
 
-        <section xml:id="sec_vnic_server_status_subfunction_semantics">
+        <section xml:id="sec_vnic_server_status">
           <title>VNIC_SERVER_STATUS Subfunction Semantics</title>
 
           <para>This subfunction is used to report the status of the physical
@@ -3444,7 +3462,7 @@ hcall ( const unit64 H_VIOCTL, /* Query/Set behaviors for the virtual IOA */
           </itemizedlist>
         </section>
 
-        <section xml:id="sec_get_session_token_subfunction_semantics">
+        <section xml:id="sec_get_session_token">
           <title>GET_SESSION_TOKEN Subfunction Semantics</title>
 
           <para>This subfunction is used to obtain a session token from a VNIC client adapter.
@@ -3468,7 +3486,7 @@ hcall ( const unit64 H_VIOCTL, /* Query/Set behaviors for the virtual IOA */
           </itemizedlist>
         </section>
 
-        <section xml:id="sec_session_error_detected_subfunction_semantics">
+        <section xml:id="sec_session_error_detected">
           <title>SESSION_ERROR_DETECTED Subfunction Semantics</title>
 
           <para>This subfunction is used to report that the currently active
@@ -3514,7 +3532,7 @@ hcall ( const unit64 H_VIOCTL, /* Query/Set behaviors for the virtual IOA */
           </itemizedlist>
         </section>
 
-        <section xml:id="sec_get_vnic_server_info_subfunction_semantics">
+        <section xml:id="sec_get_vnic_server_info">
           <title>GET_VNIC_SERVER_INFO Subfunction Semantics</title>
 
           <para>This subfunction is used to fetch information about a VNIC server
@@ -3689,6 +3707,402 @@ hcall ( const unit64 H_VIOCTL, /* Query/Set behaviors for the virtual IOA */
 
             <listitem>
               <para>Return H_Success.</para>
+            </listitem>
+          </itemizedlist>
+        </section>
+
+        <section xml:id="sec_illan_mac_scan">
+          <title>ILLAN_MAC_SCAN Subfunction Semantics</title>
+
+          <itemizedlist>
+            <listitem>
+              <para>parm-1 is an eight byte output descriptor. The high order
+                byte of an output descriptor is control, the next three bytes are
+                a length field of the buffer in bytes, and the low order four bytes
+                are a TCE mapped I/O address of the start of a buffer in I/O address
+                space. The high order control byte must be set to zero. The TCE mapped
+                I/O address is mapped via the first window pane of the
+                <emphasis role="bold"><literal>&#8220;ibm,my-dma-window&#8221;</literal></emphasis>
+                property.</para>
+            </listitem>
+
+            <listitem>
+              <para>Parm-2 and parm-3 should be set to the opaque continuation tokens
+                CT1 and CT2, respectively.  These values are returned by the hypervisor
+                through the ILLAN_MAC_SCAN Buffer header when a scan cannot be completed
+                within a single vioctl call.  See
+                <xref linkend="illan_mac_scan_buffer_format_table" />
+                for more information about the values CT1 and CT2. Parm-2 and parm-3
+                should be set to zero when starting a new ILLAN_MAC_SCAN call sequence.</para>
+            </listitem>
+
+            <listitem>
+              <para>Validate that the unit-address corresponds to an active ILLAN
+                trunk adapter, else return H_Parameter.</para>
+            </listitem>
+
+            <listitem>
+              <para>Validate parm-2 and parm-3 are both set to zero, or contain
+                valid continuation tokens, else return H_Parameter.</para>
+            </listitem>
+
+            <listitem>
+              <para>Validate that the I/O address range supplied by parm-1 is large
+                enough to hold the header information for the ILLAN_MAC_SCAN Buffer
+                detailed in
+                <xref linkend="illan_mac_scan_buffer_format_table" />,
+                else return H_Parameter.</para>
+            </listitem>
+
+            <listitem>
+              <para>Validate that the I/O address supplied by parm-1 is 8-byte aligned,
+                else return H_Parameter.</para>
+            </listitem>
+
+            <listitem>
+              <para>If any data transfers to the I/O address range supplied by parm-1
+                fail, return H_Permission.</para>
+            </listitem>
+
+            <listitem>
+              <para>Iterate over all VLAN ids associated with the specified trunk
+                adapter.  For each associated VLAN id:
+
+                <itemizedlist>
+                  <listitem>
+                    <para>Iterate over all ILLAN adapters, barring any adapters
+                      with the
+                      <emphasis role="bold"><literal>&#8220;ibm,trunk-adapter&#8221;</literal></emphasis>
+                      property, belonging to the current VLAN id.</para>
+                  </listitem>
+
+                  <listitem>
+                    <para>For each non-trunk ILLAN adapter belonging to the current
+                      VLAN id, add a 64-bit value containing the current 12-bit VLAN id
+                      and the 48-bit MAC address of the ILLAN adapter to the next vacant
+                      entry in the MAC/VID Buffer.  Each MAC/VID pair in the buffer
+                      is formatted as shown in
+                      <xref linkend="mac_vid_pair_entry_format_table" />
+                      Note that when handling H_IN_PROGRESS return codes, the caller
+                      should either copy information from the buffer, immediately
+                      process the information in the buffer, or modify the output
+                      descriptor to utilize a new, non-overlapping buffer I/O address
+                      range after each call. Otherwise, the buffer data will be overwritten
+                      on consecutive calls.
+
+                      <table frame="all" pgwide="1" xml:id="mac_vid_pair_entry_format_table">
+                        <?dbhtml table-width="50%" ?><?dbfo table-width="50%" ?>
+                        <title>MAC/VID Pair Entry Format</title>
+                        <tgroup cols="3">
+                          <colspec colname="c1" colwidth="50*" />
+                          <colspec colname="c2" colwidth="25*" align="center" />
+                          <colspec colname="c3" colwidth="25*" align="center" />
+                          <thead>
+                            <row>
+                              <entry align="center">
+                                <para><emphasis role="bold">Field</emphasis></para>
+                              </entry>
+                              <entry>
+                                <para><emphasis role="bold">Bit Offset</emphasis></para>
+                              </entry>
+                              <entry>
+                                <para><emphasis role="bold">Bit Length</emphasis></para>
+                              </entry>
+                            </row>
+                          </thead>
+                          <tbody>
+                            <row>
+                              <entry>
+                                <para>RESERVED</para>
+                              </entry>
+                              <entry>
+                                <para>0</para>
+                              </entry>
+                              <entry>
+                                <para>4</para>
+                              </entry>
+                            </row>
+                            <row>
+                              <entry>
+                                <para>802.1qVLAND ID</para>
+                              </entry>
+                              <entry>
+                                <para>4</para>
+                              </entry>
+                              <entry>
+                                <para>12</para>
+                              </entry>
+                            </row>
+                            <row>
+                              <entry>
+                                <para>Adapter MAC Address</para>
+                              </entry>
+                              <entry>
+                                <para>16</para>
+                              </entry>
+                              <entry>
+                                <para>48</para>
+                              </entry>
+                            </row>
+                          </tbody>
+                        </tgroup>
+                      </table>
+                    </para>
+                  </listitem>
+
+                  <listitem>
+                    <para>If at any point during iteration the vioctl call exceeds
+                      the maximum allotted time interval, or if the MAC/VID buffer
+                      is filled to capacity, do the following:
+
+                      <itemizedlist>
+                        <listitem>
+                          <para>Store 'CT1' and 'CT2' in the buffer header so the
+                            operation can be continued on the next call</para>
+                        </listitem>
+
+                        <listitem>
+                          <para>Set 'Num Entries' in the buffer header to the number
+                            of valid MAC/VID pairs in the output buffer</para>
+                        </listitem>
+
+                        <listitem>
+                          <para>Set 'Reconfiguration Occurred' based on the rules
+                            described in the <emphasis>Dynamic Reconfiguration</emphasis> description item below</para>
+                        </listitem>
+
+                        <listitem>
+                          <para>Return H_IN_PROGRESS.
+
+                            <table frame="all" pgwide="1" xml:id="illan_mac_scan_buffer_format_table">
+                              <title>ILLAN_MAC_SCAN Buffer Format</title>
+                              <tgroup cols="5">
+                                <colspec colname="c1" colwidth="20*" align="center" />
+                                <colspec colname="c2" colwidth="20*" align="center" />
+                                <colspec colname="c3" colwidth="10*" align="center" />
+                                <colspec colname="c4" colwidth="10*" align="center" />
+                                <colspec colname="c5" colwidth="40*" />
+                                <thead>
+                                  <row>
+                                    <entry>
+                                      <para></para>
+                                    </entry>
+                                    <entry>
+                                      <para><emphasis role="bold">Field</emphasis></para>
+                                    </entry>
+                                    <entry>
+                                      <para><emphasis role="bold">Byte Offset</emphasis></para>
+                                    </entry>
+                                    <entry>
+                                      <para><emphasis role="bold">Byte Length</emphasis></para>
+                                    </entry>
+                                    <entry align="center">
+                                      <para><emphasis role="bold">Description</emphasis></para>
+                                    </entry>
+                                  </row>
+                                </thead>
+                                <tbody>
+                                  <row>
+                                    <entry valign="middle" morerows="4">
+                                      <para><emphasis role="bold">Header</emphasis></para>
+                                    </entry>
+                                    <entry>
+                                      <para>CT1</para>
+                                    </entry>
+                                    <entry>
+                                      <para>0</para>
+                                    </entry>
+                                    <entry>
+                                      <para>8</para>
+                                    </entry>
+                                    <entry>
+                                      <para>Continuation token 1 – this value should be used as
+                                        parm-2 for sequential calls to ILLAN_MAC_SCAN when
+                                        handling H_IN_PROGRESS return codes</para>
+                                    </entry>
+                                  </row>
+                                  <row>
+                                    <entry>
+                                      <para>CT2</para>
+                                    </entry>
+                                    <entry>
+                                      <para>8</para>
+                                    </entry>
+                                    <entry>
+                                      <para>8</para>
+                                    </entry>
+                                    <entry>
+                                      <para>Continuation token 2 – this value should be used
+                                        as parm-3 for sequential calls to ILLAN_MAC_SCAN when
+                                        handling H_IN_PROGRESS return codes.</para>
+                                    </entry>
+                                  </row>
+                                  <row>
+                                    <entry>
+                                      <para>Reserved</para>
+                                    </entry>
+                                    <entry>
+                                      <para>16</para>
+                                    </entry>
+                                    <entry>
+                                      <para>15</para>
+                                    </entry>
+                                    <entry>
+                                      <para>This field is reserved and should be set to zero.</para>
+                                    </entry>
+                                  </row>
+                                  <row>
+                                    <entry>
+                                      <para>Reconfiguration Occurred</para>
+                                    </entry>
+                                    <entry>
+                                      <para>31</para>
+                                    </entry>
+                                    <entry>
+                                      <para>1</para>
+                                    </entry>
+                                    <entry>
+                                      <itemizedlist spacing="compact">
+                                        <listitem>
+                                          <para>0: The data in this buffer is guaranteed to be
+                                            consistent with the virtual adapter configuration at
+                                            the point of return</para>
+                                        </listitem>
+                                        <listitem>
+                                          <para>1: The data in this buffer may contain data
+                                            inconsistencies due to reconfiguration of
+                                            ILLAN adapters between consecutive calls
+                                            to ILLAN_MAC_SCAN.  See
+                                            <emphasis>Dynamic Reconfigurations</emphasis> description below.</para>
+                                        </listitem>
+                                      </itemizedlist>
+                                    </entry>
+                                  </row>
+                                  <row>
+                                    <entry>
+                                      <para>Num Entries</para>
+                                    </entry>
+                                    <entry>
+                                      <para>32</para>
+                                    </entry>
+                                    <entry>
+                                      <para>8</para>
+                                    </entry>
+                                    <entry>
+                                      <para>The number of valid 64-bit MAC/VID pairs in this buffer</para>
+                                    </entry>
+                                  </row>
+                                  <row>
+                                    <entry>
+                                      <para><emphasis role="bold">Data</emphasis></para>
+                                    </entry>
+                                    <entry>
+                                      <para>MAC/VID Buffer Start</para>
+                                    </entry>
+                                    <entry>
+                                      <para>40</para>
+                                    </entry>
+                                    <entry>
+                                      <para>Variable</para>
+                                    </entry>
+                                    <entry>
+                                      <para>A variably-sized, contiguous array of MAC/VID pairs
+                                        formatted according to
+                                        <xref linkend="mac_vid_pair_entry_format_table" />.
+                                        The number of valid entries in this array is
+                                        specified by the “Num Entries” field.</para>
+                                    </entry>
+                                  </row>
+                                </tbody>
+                              </tgroup>
+                            </table>
+                          </para>
+                        </listitem>
+                      </itemizedlist>
+                    </para>
+                  </listitem>
+                </itemizedlist>
+              </para>
+            </listitem>
+
+            <listitem>
+              <para>If all MAC addresses were successfully scanned for all VLAN ids on
+                the trunk adapter, do the following:
+                <itemizedlist>
+                  <listitem>
+                    <para>Set 'CT1' and 'CT2' to zero in the buffer header</para>
+                  </listitem>
+
+                  <listitem>
+                    <para>Set 'Num Entries' in the buffer header to the number of
+                      valid MAC/VID pairs in the output buffer</para>
+                  </listitem>
+
+                  <listitem>
+                    <para>Set 'Reconfiguration Occurred' based on the rules described
+                      in the Dynamic Reconfiguration section below</para>
+                  </listitem>
+
+                  <listitem>
+                    <para>Return H_SUCCESS.</para>
+                  </listitem>
+                </itemizedlist>
+              </para>
+            </listitem>
+
+            <listitem>
+              <para>Note that the buffer headers and data are only valid if this
+                vioctl returns H_IN_PROGRESS or H_SUCCESS.</para>
+            </listitem>
+
+            <listitem>
+              <para>Note that any unused buffer space outside of the range determined
+                by the 'Num Entries' field in the ILLAN_MAC_SCAN buffer header is
+                undefined by this architecture.</para>
+            </listitem>
+
+            <listitem>
+              <para><emphasis><emphasis role="bold">Dynamic Reconfigurations:</emphasis></emphasis>
+                If the 'Reconfiguration Occurred' field in the ILLAN_MAC_SCAN buffer
+                header is TRUE (1), the data in all MAC/VID buffers in a call sequence
+                may contain inconsistencies due to dynamic reconfiguration events for
+                the trunk adapter itself or any ILLAN adapters associated with the
+                trunk adapter. In this case, all data collected from the call sequence
+                should be utilized with caution, or re-queried.  Possible inconsistencies
+                arising from dynamic reconfiguration include the following:
+                <itemizedlist>
+                  <listitem>
+                    <para>MAC addresses in the buffer may correspond to ILLAN adapters
+                      that have been removed from the switch, due to partition suspension,
+                      hibernation, adapter disablement, and DLPAR operations</para>
+                  </listitem>
+
+                  <listitem>
+                    <para>MAC addresses corresponding to ILLAN adapters that were
+                      added to the virtual switch due to partition resumption,
+                      adapter enablement, and DLPAR operations may not be included
+                      in the buffer</para>
+                  </listitem>
+
+                  <listitem>
+                    <para>ILLAN adapters may have their VLAN memberships reconfigured,
+                      in which case certain VID/MAC pairs in the buffer may no longer
+                      be valid, and some valid VID/MAC pairs for ILLAN adapters may
+                      not be included in the buffer at all.</para>
+                  </listitem>
+
+                  <listitem>
+                    <para>ILLAN adapters may have their MAC address reconfigured.
+                      Both the old and new MAC addresses for the adapter may be included
+                      in the buffer, or the old and new MAC addresses for the adapter
+                      may not be included in the buffer at all.</para>
+                  </listitem>
+                </itemizedlist>
+                Note that even if the value of the 'Reconfiguration Occurred' field is
+                FALSE (0), ILLAN adapter reconfigurations may have occurred immediately
+                after the vioctl completed, and the information in the buffer could be
+                outdated.
+              </para>
             </listitem>
           </itemizedlist>
         </section>
