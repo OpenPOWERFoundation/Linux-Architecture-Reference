@@ -3238,7 +3238,7 @@
                   <para>On input to ibm,client-architecture-support this field
                   shall be zero.</para>
                   <para>In the
-                  <emphasis role="bold"><literal>ibm,architecture-vec-5</literal></emphasis> property of the
+                  <emphasis role="bold"><literal>&#8220;ibm,architecture-vec-5&#8221;</literal></emphasis> property of the
                   <emphasis role="bold"><literal>/chosen</literal></emphasis> node, this field represents the
                   implementation dependent number of simultaneous migration
                   options supported as: 2**N.
@@ -3363,7 +3363,16 @@
                   <para>3</para>
                 </entry>
                 <entry>
-                  <para>Reserved for Expansion</para>
+                  <para>Request timebase synchronization. On input to
+                    ibm,client-architecture-support, a non-zero value indicates the
+                    OS is requesting timebase synchronization with the logical
+                    partition specified in bytes 28-29.</para>
+                  <para>In the
+                    <emphasis role="bold"><literal>&#8220;ibm,architecture-vec-5&#8221;</literal></emphasis>
+                    property of the <emphasis role="bold"><literal>/chosen</literal></emphasis> node,
+                    a non-zero value indicates the platform successfully synchronized
+                    the timebase with the logical partition specified in bytes 28-29. A
+                    n invalid logical partition specified in bytes 28-29 will result in a zero value.</para>
                 </entry>
               </row>
               <row>
@@ -3510,11 +3519,11 @@
                 </entry>
               </row>
               <row>
-                <entry morerows="9">
+                <entry morerows="11">
                   <para>Base</para>
                   <para>&#160;</para>
                 </entry>
-                <entry morerows="9">
+                <entry morerows="11">
                   <para>5</para>
                   <para>LoPAR or OF Options<superscript><xref linkend="note.opt5" xrefstyle="select: nopage" /></superscript></para>
                   <para>&#160;</para>
@@ -3615,7 +3624,27 @@
               </row>
               <row>
                 <entry>
-                  <para>23-256</para>
+                  <para>23-27</para>
+                </entry>
+                <entry nameend="c5" namest="c4">
+                  <para>Reserved for Expansion</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>28-29</para>
+                </entry>
+                <entry>
+                  <para>0-15</para>
+                </entry>
+                <entry>
+                  <para>On input to ibm,client-architecture-support, this field
+                    indicates the logical partition ID for timebase synchronization. </para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>30-256</para>
                 </entry>
                 <entry nameend="c5" namest="c4">
                   <para>Reserved for Expansion</para>
