@@ -9975,7 +9975,32 @@ hcall ( const uint64 H_CHANGE_LOGICAL_LAN_MAC, /* Change the MAC address */
             <tbody valign="middle">
               <row>
                 <entry>
-                  <para>0-47</para>
+                  <para>0-45</para>
+                </entry>
+                <entry>
+                  <para>Reserved</para>
+                </entry>
+                <entry>
+                  <para>&#160;</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>46</para>
+                </entry>
+                <entry>
+                  <para>Checksum Offload Non-zero Checksum Field Support</para>
+                </entry>
+                <entry>
+                  <para>This bit is implemented when PHYP supports sending TCP
+                  packets with a non-zero TCP checksum field when bit 6 of the
+                  buffer descriptor (the "No Checksum" bit) is set.  This bit
+                  indicates R1–17.3.6.2.2–3 is not required.</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>47</para>
                 </entry>
                 <entry>
                   <para>Reserved</para>
@@ -11401,7 +11426,8 @@ hcall ( const uint64 H_ILLAN_ATTRIBUTES,/* Returns in R4 the resulting ILLAN */
                 <para><emphasis role="bold">For the ILLAN Checksum Offload Support option:</emphasis> When
                 the caller of H_SEND_LOGICAL_LAN has set the No Checksum bit in the
                 Control field to a 1, then they must also have set the checksum field in
-                the packet to 0.</para>
+                the packet to 0, unless bit 46 in the ILLAN Attributes (the "Checksum Offload Non-zero
+                Checksum Field Support" bit) is set.</para>
               </listitem>
            	</varlistentry>
           </variablelist>
