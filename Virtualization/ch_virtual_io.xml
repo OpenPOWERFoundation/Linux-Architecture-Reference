@@ -2708,6 +2708,38 @@ hcall ( const unit64 H_VIOCTL, /* Query/Set behaviors for the virtual IOA */
                       </para>
                     </entry>
                   </row>
+                  <row>
+                    <entry>
+                      <para>0x1D</para>
+                    </entry>
+                    <entry>
+                      <para>ENABLE_PREPARE_FOR<?linebreak?>_SUSPEND</para>
+                    </entry>
+                    <entry>
+                      <para>For all vscsi-server and vfc-server</para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <xref linkend="sec_enable_prepare_for_suspend" />
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>0x1E</para>
+                    </entry>
+                    <entry>
+                      <para>READY_FOR_SUSPEND</para>
+                    </entry>
+                    <entry>
+                      <para>For all vscsi-server and vfc-server</para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <xref linkend="sec_ready_for_suspend" />
+                      </para>
+                    </entry>
+                  </row>
                 </tbody>
               </tgroup>
             </table>
@@ -4106,6 +4138,91 @@ hcall ( const unit64 H_VIOCTL, /* Query/Set behaviors for the virtual IOA */
             </listitem>
           </itemizedlist>
         </section>
+
+        <section xml:id="sec_enable_prepare_for_suspend">
+          <title>ENABLE_PREPARE_FOR_SUSPEND Subfunction Semantics</title>
+
+          <para>This subfunction is used to enable the “Prepare For Suspend”
+            transport event on a VSCSI or VFC server adapter for which this
+            function is called.  If enabled and when a client partition is
+            about to be migrated,  the “Prepare For Suspend” transport event
+            will be enqueued on the server's command queue, if active.
+            The server should then quiesce all I/O to the backing store and
+            respond when ready by calling the H_VIOCTL READY_FOR_SUSPEND subfunction.
+            This subfunction should be called after each H_REG_CRQ as H_REG_CRQ will
+            disable the support.  When enabled, a “Resume” transport event will be
+            enqueued on the server's command queue, if active, when the client
+            partition resumes regardless of whether it successfully suspended.
+            <itemizedlist>
+              <listitem>
+                <para>Parm-1 is an eight byte timeout value in milliseconds. The
+                  timeout value specifies the maximum amount of time in milliseconds
+                  the Hypervisor should wait after enqueueing the “Prepare for Suspend”
+                  transport event on the server's command queue until receiving the
+                  H_VIOCTL READY_FOR_SUSPEND subfunction from the server. The
+                  time- out value should take into account the maximum amount of
+                  time to queisce I/O operations prior to migration of the client
+                  partition.</para>
+              </listitem>
+              <listitem>
+                <para>Validate that the unit-address corresponds to a VSCSI or VFC
+                  server adapter, else return H_Parameter.</para>
+              </listitem>
+              <listitem>
+                <para>Validate parm-1 is less than or equal to 30,000 milliseconds,
+                  else return H_Parameter.</para>
+              </listitem>
+              <listitem>
+                <para>Validate parm-2, and parm-3 are set to zero, else return H_Parameter.</para>
+              </listitem>
+              <listitem>
+                <para>Verify the server adapter is not configured for “Any client can connect”,
+                  else return H_Constrained</para>
+              </listitem>
+              <listitem>
+                <para>If this Subfunction parameter value not supported by Hypervisor,
+                  return H_Not_Found.</para>
+              </listitem>
+              <listitem>
+                <para>If “Prepare For Suspend” is successfully enabled, H_Success will
+                  be returned and an opaque Hypervisor version placed in R4</para>
+              </listitem>
+            </itemizedlist>
+          </para>
+        </section>
+
+        <section xml:id="sec_ready_for_suspend">
+          <title>READY_FOR_SUSPEND Subfunction Semantics</title>
+
+          <para>This subfunction is used to respond to the “Prepare For Suspend” transport
+            event on a VSCSI or VFC server adapter for which this function is called. If
+            enabled via the H_VIOCTL ENABLE_PREPARE_FOR_SUSPEND subfunction, the server
+            should call this H_VIOCTL READY_FOR_SUSPEND subfunction after receiving the
+            “Prepare For Sus- pend” transport event and quiescing I/O operations to the
+            backing store. If the server is unable to call this subfunction within the
+            timeout specified in the H_VIOCTL ENABLE_PREPARE_FOR_SUSPEND subfunction,
+            the migration op- eration on the client partition will be aborted.
+            <itemizedlist>
+              <listitem>
+                <para>Validate that the unit-address corresponds to a VSCSI or VFC
+                  server adapter, else return H_Parameter.</para>
+              </listitem>
+              <listitem>
+                <para>Validate parm-1, parm-2, and parm-3 are set to zero, else
+                  return H_Parameter.</para>
+              </listitem>
+              <listitem>
+                <para>Validate that the server has previously called the H_VIOCTL
+                  ENABLE_PREPARE_FOR_SUSPEND subfunction after the most recent
+                  H_REG_CRQ, else return H_Constrained.</para>
+              </listitem>
+              <listitem>
+                <para>If this Subfunction parameter value not supported by Hypervisor,
+                  return H_Not_Found.</para>
+              </listitem>
+            </itemizedlist>
+          </para>
+        </section>
       </section>
     </section>
 
@@ -4463,7 +4580,33 @@ hcall ( const unit64 H_VIOCTL, /* Query/Set behaviors for the virtual IOA */
                 </row>
                 <row>
                   <entry>
-                    <para>0x07 - 0xFF</para>
+                    <para>0x07 - 0x08</para>
+                  </entry>
+                  <entry>
+                    <para>Reserved</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>0x09</para>
+                  </entry>
+                  <entry>
+                    <para>Prepare for Client Adapter Suspend<?linebreak?>
+                    See <xref linkend="sec_enable_prepare_for_suspend"/></para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>0x0A</para>
+                  </entry>
+                  <entry>
+                    <para>Client Adapter Resume<?linebreak?>
+                    See <xref linkend="sec_ready_for_suspend"/></para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>0x0B - 0xFF</para>
                   </entry>
                   <entry>
                     <para>Reserved</para>
