@@ -2566,6 +2566,21 @@ ELSE
                 <xref linkend="LoPAR.Virtualization"/>.</para>
             </entry>
           </row>
+          <row>
+            <entry>
+              <para>Coherent Platform Facility</para>
+            </entry>
+            <entry>
+              <para>O</para>
+            </entry>
+            <entry>
+              <para>O</para>
+            </entry>
+            <entry>
+              <para>Allows partitions to resize their HPT.  See
+                <xref linkend="LoPAR.Virtualization"/>.</para>
+            </entry>
+          </row>
         </tbody>
       </tgroup>
     </table>

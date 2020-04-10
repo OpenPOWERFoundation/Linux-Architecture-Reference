@@ -641,6 +641,26 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
           <row>
             <entry>
               <para>
+                <xref linkend="sec_resize_hpt_prepare" xrefstyle="select: title nopage" /> / <xref linkend="sec_resize_hpt_prepare" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Prepares for resizing the partition's HPT</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_resize_hpt_commit" xrefstyle="select: title nopage" /> / <xref linkend="sec_resize_hpt_commit" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Changes the partition's HPT to a new size</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
                 <xref linkend="dbdoclet.50569344_38645" xrefstyle="select: title nopage" /> / <xref linkend="dbdoclet.50569344_38645" xrefstyle="select: labelnumber nopage" />
               </para>
             </entry>
@@ -1598,21 +1618,81 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
           <row>
             <entry>
               <para>
-                <xref linkend="sec_resize_hpt_prepare" xrefstyle="select: title nopage" /> / <xref linkend="sec_resize_hpt_prepare" xrefstyle="select: labelnumber nopage" />
+                <xref linkend="sec_attach_ca_process" xrefstyle="select: title nopage" /> / <xref linkend="sec_attach_ca_process" xrefstyle="select: labelnumber nopage" />
               </para>
             </entry>
             <entry>
-              <para>Prepares for resizing the partition's HPT</para>
+              <para>Attach a process to a coherent platform function.</para>
             </entry>
           </row>
           <row>
             <entry>
               <para>
-                <xref linkend="sec_resize_hpt_commit" xrefstyle="select: title nopage" /> / <xref linkend="sec_resize_hpt_commit" xrefstyle="select: labelnumber nopage" />
+                <xref linkend="sec_detach_ca_process" xrefstyle="select: title nopage" /> / <xref linkend="sec_detach_ca_process" xrefstyle="select: labelnumber nopage" />
               </para>
             </entry>
             <entry>
-              <para>Changes the partition's HPT to a new size</para>
+              <para>Detach a process to a coherent platform function.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_control_ca_function" xrefstyle="select: title nopage" /> / <xref linkend="sec_control_ca_function" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Control a coherent platform function.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_collect_ca_int_info" xrefstyle="select: title nopage" /> / <xref linkend="sec_collect_ca_int_info" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Collect interrupt information for a coherent platform function.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_control_ca_faults" xrefstyle="select: title nopage" /> / <xref linkend="sec_control_ca_faults" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Control faults for a coherent platform function.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_download_ca_function" xrefstyle="select: title nopage" /> / <xref linkend="sec_download_ca_function" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Download an application to a coherent platform function.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_download_ca_facility" xrefstyle="select: title nopage" /> / <xref linkend="sec_download_ca_facility" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Download an application to a coherent platform facility.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_control_ca_facility" xrefstyle="select: title nopage" /> / <xref linkend="sec_control_ca_facility" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Control a coherent platform facility.</para>
             </entry>
           </row>
         </tbody>
@@ -3958,19 +4038,97 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
             </row>
             <row>
               <entry>
-                <para>Reserved</para>
+                <para>
+                  <xref linkend="sec_attach_ca_process" xrefstyle="select: title nopage" /> / <xref linkend="sec_attach_ca_process" xrefstyle="select: labelnumber nopage" />
+                </para>
               </entry>
               <entry>
-                <para>0x344-0x354</para>
+                <para>0x344</para>
               </entry>
               <entry>
-                <para>&#160;</para>
+                <para>Normal</para>
               </entry>
               <entry>
-                <para>&#160;</para>
+                <para>If one or more Coherent Platform Facilities Options are implemented</para>
               </entry>
               <entry>
-                <para>&#160;</para>
+                <para>hcall-ca</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_detach_ca_process" xrefstyle="select: title nopage" /> / <xref linkend="sec_detach_ca_process" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x348</para>
+              </entry>
+              <entry>
+                <para>Normal</para>
+              </entry>
+              <entry>
+                <para>If one or more Coherent Platform Facilities Options are implemented</para>
+              </entry>
+              <entry>
+                <para>hcall-ca</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_control_ca_function" xrefstyle="select: title nopage" /> / <xref linkend="sec_control_ca_function" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x34C</para>
+              </entry>
+              <entry>
+                <para>Normal</para>
+              </entry>
+              <entry>
+                <para>If one or more Coherent Platform Facilities Options are implemented</para>
+              </entry>
+              <entry>
+                <para>hcall-ca</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_collect_ca_int_info" xrefstyle="select: title nopage" /> / <xref linkend="sec_collect_ca_int_info" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x350</para>
+              </entry>
+              <entry>
+                <para>Normal</para>
+              </entry>
+              <entry>
+                <para>If one or more Coherent Platform Facilities Options are implemented</para>
+              </entry>
+              <entry>
+                <para>hcall-ca</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_control_ca_faults" xrefstyle="select: title nopage" /> / <xref linkend="sec_control_ca_faults" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x354</para>
+              </entry>
+              <entry>
+                <para>Normal</para>
+              </entry>
+              <entry>
+                <para>If one or more Coherent Platform Facilities Options are implemented</para>
+              </entry>
+              <entry>
+                <para>hcall-ca</para>
               </entry>
             </row>
             <row>
@@ -3994,10 +4152,29 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
             </row>
             <row>
               <entry>
+                <para>
+                  <xref linkend="sec_download_ca_function" xrefstyle="select: title nopage" /> / <xref linkend="sec_download_ca_function" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x35C</para>
+              </entry>
+              <entry>
+                <para>Normal</para>
+              </entry>
+              <entry>
+                <para>If one or more Coherent Platform Facilities Options are implemented</para>
+              </entry>
+              <entry>
+                <para>hcall-ca</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
                 <para>Reserved</para>
               </entry>
               <entry>
-                <para>0x35C-0x368</para>
+                <para>0x360</para>
               </entry>
               <entry>
                 <para>&#160;</para>
@@ -4007,6 +4184,44 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
               </entry>
               <entry>
                 <para>&#160;</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_download_ca_facility" xrefstyle="select: title nopage" /> / <xref linkend="sec_download_ca_facility" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x364</para>
+              </entry>
+              <entry>
+                <para>Normal</para>
+              </entry>
+              <entry>
+                <para>If one or more Coherent Platform Facilities Options are implemented</para>
+              </entry>
+              <entry>
+                <para>hcall-ca</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_control_ca_facility" xrefstyle="select: title nopage" /> / <xref linkend="sec_control_ca_facility" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x368</para>
+              </entry>
+              <entry>
+                <para>Normal</para>
+              </entry>
+              <entry>
+                <para>If one or more Coherent Platform Facilities Options are implemented</para>
+              </entry>
+              <entry>
+                <para>hcall-ca</para>
               </entry>
             </row>
             <row>
@@ -7749,7 +7964,7 @@ hcall ( const int64 H_BLOCK_REMOVE, /* Function Code */
           <para>With the size of the HPT fixed at boot, a partition allowing memory
             reconfiguration must size the HPT according to the partition's maximum
             possible memory size. If the partition has a very large potential maximum
-            memory size, but is un- likely to reach that in practice, this can lead to
+            memory size, but is unlikely to reach that in practice, this can lead to
             significant wastage of resources in the oversized hash table. By allowing
             a partition to change its HPT size at runtime, it can start with an HPT
             sized just for its initial memory, and change it if necessary when more
@@ -7758,7 +7973,7 @@ hcall ( const int64 H_BLOCK_REMOVE, /* Function Code */
           <para>If the platform supports the Hash Page Table Resize Option, then it supports
           the two hcalls defined in this section, which allow an OS to request that its
           HPT should be resized. The resize operation is performed in two phases, the
-          “pre- pare” phase and the “commit” phase. The prepare phase may take place
+          “prepare” phase and the “commit” phase. The prepare phase may take place
           concurrently with normal guest operation. The commit phase requires that the
           guest perform no concurrent updates or accesses to the HPT (which in practice
           requires no non-real mode memory accesses).</para>
@@ -7785,12 +8000,12 @@ hcall ( const int64 H_BLOCK_REMOVE, /* Function Code */
           </para>
 
           <para>In order to prevent a partition from tying up platform resources
-            indefinitely with a Pending HPT, the platform is per- mitted to discard a
+            indefinitely with a Pending HPT, the platform is permitted to discard a
             Pending HPT at any time. Operating systems should be prepared to deal
             with a failure of either hcall because of this.</para>
 
           <para>The platform is permitted to start a partition with its HPT sized
-            for the current memory allocation, rather than the max- imum memory for
+            for the current memory allocation, rather than the maximum memory for
             the partition, provided that if the OS indicates via the
             ibm,client-architecture-support call that it does not support HPT resizing,
             the platform must then resize the HPT according to the partition's maximum
@@ -7950,7 +8165,7 @@ hcall ( const int64 H_RESIZE_HPT_COMMIT, /* Function Code */
                 <listitem>
                   <para>Check that the flags parameter is zero and the shift
                     parameter matches the size of the Pending HPT; if not, then
-                    re- turn H_CLOSED.</para>
+                    return H_CLOSED.</para>
                 </listitem>
                 <listitem>
                   <para>Check that the Pending HPT is fully prepared; if not,
@@ -19386,7 +19601,7 @@ hcall ( const uint64 H_GET_EM_PARMS /* Returns in R4 – R9 the Platform Energy 
 
             <itemizedlist>
               <listitem>
-                <para>0b000: Non - floor modes:</para>
+                <para>0b000: Non-floor modes:</para>
 
                 <itemizedlist>
                   <listitem>
@@ -22016,6 +22231,2997 @@ hcall ( const uint64 H_BULK_READ_HBA, uint64 flags, int64 lpx1, int64 lpx2,
           </itemizedlist>
         </simplesect>
       </section>
+    </section>
+  </section>
+
+  <section xml:id="sec_coherent_platform_facilities">
+    <title>Coherent Platform Facilities</title>
+    <para>This section documents the hypervisor interface to optional coherent
+      platform facilities. If the platform supports a coherent platform facility, the
+      <emphasis role="bold"><literal>&#8220;ibm,hypertas-functions&#8221;</literal></emphasis>
+      property of the
+      <emphasis role="bold"><literal>/rtas</literal></emphasis>
+      node contains the function set specification “hcall-ca” and the following
+      hcall()s are supported.
+</para>
+
+    <section xml:id="sec_attach_ca_process">
+      <title>H_ATTACH_CA_PROCESS</title>
+      <para>The architectural intent of this hcall is to attach a process element to a
+        coherent platform function. The process element describes the environment in
+        which a coherent platform function will operate for a given workload.
+      </para>
+
+      <simplesect>
+        <title>Syntax:</title>
+        <programlisting><![CDATA[int64                 /* H_Success:   The process info is attached to the coherent */
+                      /*              platform function and the work can now be */
+                      /*              submitted to the coherent platform function. */
+                      /* H_Parameter: An incorrect parameter was supplied. */
+                      /* H_Resource:  The coherent platform function does not have */
+                      /*              enough additional resource to attach the */
+                      /*              process. Retry the operation after process */
+                      /*              elements have been detached or terminated. */
+                      /* H_Hardware:  A hardware event prevented the attach */
+                      /*              operation. */
+                      /* H_Busy or H_LongBusy: If the hcall requires more */
+                      /*              execution time, Busy will be returned and */
+                      /*              the OS is required to call back until Busy */
+                      /*              is no longer returned. */
+                      /* H_Function:  The function is not supported. */
+                      /* H_State:     The coherent platform function is not in a */
+                      /*              valid state to perform the attach process. */
+                      /* H_Authority: The partition does not have authority to */
+                      /*              perform this hcall; the coherent platform */
+                      /*              facilities may need to be licensed. */
+                      /* R4 contains the continue-token for the next call on H_Busy */
+                      /*   or a 8-byte process-token (described in Process Token */
+                      /*   Format) used to identify this process on the */
+                      /*   H_CONTROL_CA_FUNCTION and H_DETACH_CA_PROCESS calls on */
+                      /*   H_Success. */
+                      /* If “ibm,process-mmio” is defined and set to 1 for the */
+                      /*   coherent platform function, R5 contains the process MMIO */
+                      /*   space address on H_Success. */
+                      /* If “ibm,process-mmio” is defined and set to 1 for the */
+                      /*   coherent platform function, R6 contains the process MMIO */
+                      /*   space length on H_Success. */
+hcall ( const uint64 H_ATTACH_CA_PROCESS, /* Attach a process */
+        uint64 unit-address,               /* Address as specified in the “reg” of */
+                                           /*   coherent-platform-function node */
+        uint64 process-element-struct,     /* Real address of Process Element */
+                                           /*   Structure */
+        uint64 continue-token);            /* Value of 0 first call, value returned */
+                                           /*   in R4 on H_Busy */
+
+// Version 1
+Process Element Structure
+{
+    uint64 version;                                 // Must be set to 1.
+    uint64 csrpValid : 1;                           // bit  0
+    uint64 problemState : 1;                        // bit  1
+    uint64 secondarySegmentTableSearchEnabled : 1;  // bit  2
+    uint64 tagsActive : 1;                          // bit  3
+    uint64 userState : 1;                           // bit  4
+    uint64 translationEnabled : 1;                  // bit  5
+    uint64 sixtyFourBit : 1;                        // bit  6
+    uint64 isPrivilegedProcess : 1;                 // bit  7
+    uint64 reservedFlags : 56;                      // bits 8:63
+    uint8 reserved0[12];
+    uint32 pslVirtualIsn;
+    uint8 applicationVirtualIsnBitmap[256];
+    uint8 reserved1[144];
+    uint32 threadId;
+    uint32 processId;
+    uint32 csrpUpper;
+    uint32 csrpLower : 20;                          // bits 0:19
+    uint32 csrpLimit : 12;                          // bits 20:31
+    uint32 aurpB : 2;                               // bits 0:1
+    uint32 aurpKs : 1;                              // bit  2
+    uint32 aurpKp : 1;                              // bit  3
+    uint32 aurpN : 1;                               // bit  4
+    uint32 aurpL : 1;                               // bit  5
+    uint32 aurpC : 1;                               // bit  6
+    uint32 aurpTA : 1;                              // bit  7
+    uint32 aurpLP : 2;                              // bits 8:9
+    uint32 aurpReserved0 : 22;                      // bits 10:31
+    uint32 aurpReserved1: 18;                       // bits 0:17
+    uint32 aurpVaUpper : 14;                        // bits 18:31
+    uint64 aurpVaLower : 57;                        // bits 0:56
+    uint64 aurpReserved2 : 6;                       // bits 57:62
+    uint64 aurpValid : 1;                           // bit  63
+    uint32 sstpB : 2;                               // bits 0:1
+    uint32 sstpKs : 1;                              // bit  2
+    uint32 sstpKp : 1;                              // bit  3
+    uint32 sstpN : 1;                               // bit  4
+    uint32 sstpL : 1;                               // bit  5
+    uint32 sstpC : 1;                               // bit  6
+    uint32 sstpTA : 1;                              // bit  7
+    uint32 sstpLP : 2;                              // bits 8:9
+    uint32 sstpReserved0 : 10;                      // bits 10:19
+    uint32 sstpSegTableSize : 12;                   // bits 20:31
+    uint32 sstpReserved1 : 18;                      // bits 0:17
+    uint32 sstpVaUpper : 14;                        // bits 18:31
+    uint64 sstpVaLower : 56;                        // bits 0:55
+    uint64 sstpReserved2 : 7;                       // bits 56:62
+    uint64 sstpValid : 1;                           // bit  63
+    uint64 amr;
+    uint8 reserved3[4];
+    uint64 workElementDescriptor;
+    uint8 reserved4[12];]]></programlisting>
+
+        <table frame="all" pgwide="1" xml:id="table_process_token_format">
+          <?dbhtml table-width="80%" ?><?dbfo table-width="80%" ?>
+          <title>Process Token Format</title>
+          <tgroup cols="2">
+            <colspec colname="c1" colwidth="50*" align="center" />
+            <colspec colname="c2" colwidth="50*" align="center" />
+            <thead valign="middle">
+              <row>
+                <entry>
+                  <para>
+                    <emphasis role="bold">Bytes 0-3</emphasis>
+                  </para>
+                </entry>
+                <entry>
+                  <para>
+                    <emphasis role="bold">Bytes 4-7</emphasis>
+                  </para>
+                </entry>
+              </row>
+            </thead>
+            <tbody valign="middle">
+              <row>
+                <entry>
+                  <para>Platform firmware use (opaque to OS)</para>
+                </entry>
+                <entry>
+                  <para>CAIA process element index (128 byte offset into Scheduled Process Area)</para>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+
+      </simplesect>
+
+      <simplesect>
+        <title>Parameters:</title>
+        <itemizedlist>
+          <listitem>
+            <para>uint64 unit-address: Unit Address per the device tree
+              <emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis>
+              property, element 0, of the coherent platform function</para>
+          </listitem>
+
+          <listitem>
+            <para>uint64 process-element-struct: Logical real address of the process
+              element structure. This memory must remain pinned and unchanged throughout
+              the duration of the H_ATTACH_CA_PROCESS call. All fields in the structure
+              have big-endian byte ordering and MSB 0 bit ordering.</para>
+          </listitem>
+
+          <listitem>
+            <para>uint64 continue-token: Used to continue a process attach if H_Busy is
+              returned. Set to zero on first call. If H_Busy is returned then call
+              again but use the value returned in R4 from the previous call as the
+              value of continue-token.</para>
+          </listitem>
+        </itemizedlist>
+      </simplesect>
+
+      <simplesect>
+        <title>Semantics:</title>
+        <itemizedlist>
+          <listitem>
+            <para>Verify that coherent platform facilities are licensed to be used,
+              else return H_Authority.</para>
+          </listitem>
+
+          <listitem>
+            <para>Verify that the unit-address parameter is valid else return H_Parameter.</para>
+          </listitem>
+
+          <listitem>
+            <para>Verify the process-element-struct parameter:
+              <itemizedlist>
+                <listitem>
+                  <para>Verify that the process-element-struct is 8 byte aligned and
+                    does not cross a 4096 byte boundary, else return H_Parameter.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Verify that the Process Element structure version is supported,
+                    else return H_Parameter.</para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>Verify that if the isPrivilegedProcess bit is set in the process element,
+              that the coherent platform function is allowed (via
+              <emphasis role="bold"><literal>&#8220;ibm,privileged-function&#8221;</literal></emphasis>
+              F property), else return H_Authority.</para>
+          </listitem>
+
+          <listitem>
+            <para>Verify that if the aurpValid bit is set to 1, that the coherent
+              platform function supports AUR (via
+              <emphasis role="bold"><literal>&#8220;ibm,supports-aur&#8221;</literal></emphasis>
+              OF property), else return H_Parameter.</para>
+          </listitem>
+
+          <listitem>
+            <para>Verify that if the csrpValid bit is set to 1, that the coherent platform
+              function supports CSRP (via
+              <emphasis role="bold"><literal>&#8220;ibm,supports-csrp&#8221;</literal></emphasis>
+              OF property), else return H_Parameter.</para>
+          </listitem>
+
+          <listitem>
+            <para>Verify there is adequate space to attach the process for the coherent
+              platform function else return H_Resource.</para>
+          </listitem>
+
+          <listitem>
+            <para>Verify that the coherent platform function is in a state that allows
+              attaching of new processes and if necessary has been downloaded via
+              H_DOWNLOAD_CA_FUNCTION, else return H_State.</para>
+          </listitem>
+
+          <listitem>
+            <para>Verify that the sum of the pslVirtualIsn and application
+              virtual ISN values are greater than or equal to the
+              <emphasis role="bold"><literal>&#8220;ibm,min-ints-per-process&#8221;</literal></emphasis>
+              property for the coherent-platform-function and less than or equal to the
+              <emphasis role="bold"><literal>&#8220;ibm,max-ints-per-process&#8221;</literal></emphasis>
+              property for the coherent-platform-function and the attaching of this
+              process does not violate the
+              <emphasis role="bold"><literal>&#8220;ibm,max-ints&#8221;</literal></emphasis>
+              property for the coherent-platform-function, else return H_Parameter.</para>
+          </listitem>
+
+          <listitem>
+            <para>Verify that the pslVirtualIsn is not already in use by another coherent
+              platform function under the coherent platform facility, if so return
+              H_Resource.</para>
+          </listitem>
+
+          <listitem>
+            <para>Validate that the application virtual ISN values are valid and not
+              in use by another coherent platform function under the coherent platform
+              facility, and do not collide with the specified pslVirtualIsn, if so
+              return H_Resource.
+              <itemizedlist>
+                <listitem>
+                  <para>Application virtual ISN values are calculated by adding the
+                    base virtual ISN value found in the interrupt-ranges property of
+                    the parent coherent platform facility node to the relative offset
+                    (zero-based) of a bit in the bitmap that is set to 1. These
+                    values are programmed into corresponding the CAIA process element
+                    structure.</para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>Verify that all the virtual interrupts can be mapped into the CAIA
+              process element, else return H_Resource. It may be possible to attempt
+              to attach the process after detaching existing processes.</para>
+          </listitem>
+
+          <listitem>
+            <para>Verify that the virtual interrupts provided will fit into the process
+              element entry, if not return H_Parameter.</para>
+          </listitem>
+
+          <listitem>
+            <para>Disable the virtual interrupts provided in the process-element-struct.
+              The partition must use <emphasis>ibm,set-xive</emphasis> (with priority less than 0xFF) to
+              enable the virtual interrupt source after H_ATTACH_CA_PROCESS completes
+              successfully.</para>
+          </listitem>
+
+          <listitem>
+            <para>Select a process element to use for the coherent platform function
+              and performs the procedure to attach a process as defined by the CAIA.
+              During this procedure, H_Busy or H_LongBusy will be returned if hcall
+              time limits are exceeded.</para>
+          </listitem>
+
+          <listitem>
+            <para>Once the process element is attached as defined by the CAIA, return
+              H_Success, R4 contains the process token and if
+              <emphasis role="bold"><literal>&#8220;ibm,process-mmio&#8221;</literal></emphasis>
+              is set to 1, R5 is the MMIO address, R6 is the MMIO length.</para>
+          </listitem>
+        </itemizedlist>
+        <note>
+          <para>Following a reset of the coherent platform facility or coherent platform
+            function, platform firmware guarantees that the upper 4 byte portion of
+            the returned process token will be different than it was for any process
+            token returned since the previous reset.</para>
+        </note>
+      </simplesect>
+    </section>
+
+    <section xml:id="sec_detach_ca_process">
+      <title>H_DETACH_CA_PROCESS</title>
+      <para>The architectural intent of this hcall is to detach a process element
+        from a coherent platform function. This hcall will remove the workload or p
+        rocess element that was attached using H_ATTACH_CA_FUNCTION.</para>
+
+      <simplesect>
+        <title>Syntax:</title>
+        <programlisting><![CDATA[int64                 /* H_Success:   The process was detached from the coherent */
+                      /*              platform function. */
+                      /* H_Parameter: An incorrect parameter was supplied. */
+                      /* H_Hardware:  A hardware event prevented the detach */
+                      /*              operation. */
+                      /* H_Busy or H_LongBusy: If the hcall requires more */
+                      /*              execution time, Busy will be returned and */
+                      /*              the OS is required to call back until Busy */
+                      /*              is no longer returned. */
+                      /* H_State:     The coherent platform function is not in a */
+                      /*              valid state to collect interrupt info. */
+                      /* H_Resource:  The function has page table mappings for MMIO. */
+                      /* H_Authority: The partition does not have authority to */
+                      /*              perform this hcall; the coherent platform */
+                      /*              facilities may need to be licensed. */
+                      /* R4 contains the continue-token for the next call on Busy */
+                      /*    return code. */
+hcall ( const uint64 H_DETACH_CA_PROCESS,
+        uint64 unit-address,
+        uint64 process-token,
+        uint64 continue-token);]]></programlisting>
+      </simplesect>
+
+      <simplesect>
+        <title>Parameters:</title>
+        <itemizedlist>
+          <listitem>
+            <para>uint64 unit-address: Unit Address per the device tree
+              <emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis>
+              property of the coherent platform function</para>
+          </listitem>
+
+          <listitem>
+            <para>uint64 process-token: process identifier token for the attached
+              process returned in R4 on H_Success return from H_ATTACH_CA_PROCESS call.</para>
+          </listitem>
+
+          <listitem>
+            <para>uint64 continue-token: Used to continue a process detach if H_Busy
+              is returned. Set to zero on first call. If H_Busy is returned then
+              call again but use the value returned in R4 from the previous call
+              as the value of continue-token.</para>
+          </listitem>
+        </itemizedlist>
+      </simplesect>
+
+      <simplesect>
+        <title>Semantics:</title>
+        <itemizedlist>
+          <listitem>
+            <para>Verify that coherent platform facilities are licensed to be used,
+              else return H_Authority.</para>
+          </listitem>
+
+          <listitem>
+            <para>Verify that the unit-address parameter is valid else return
+              H_Parameter.</para>
+          </listitem>
+
+          <listitem>
+            <para>Verify that the process-token is currently an attached process to
+              the coherent platform function, else return H_Parameter.</para>
+          </listitem>
+
+          <listitem>
+            <para>Verify that the coherent platform function is in an error state that
+              allows detaching processes, else return H_State.</para>
+          </listitem>
+
+          <listitem>
+            <para>If
+              <emphasis role="bold"><literal>&#8220;ibm,process-mmio&#8221;</literal></emphasis>
+              is set to 1, verify that there are no existing
+              mappings in the page table for the process
+            MMIO space, else return H_Resource.</para>
+          </listitem>
+
+          <listitem>
+            <para>If the process is not completed or suspended, the process is
+              terminated using the process terminate procedure in the CAIA. During
+              this process the platform can return H_Busy or H_LongBusy and the OS
+              is responsible for calling back until a non-busy return code is returned.</para>
+          </listitem>
+
+          <listitem>
+            <para>Remove the process from the coherent platform function process
+              element list according to the process remove procedure defined in the
+              CAIA. During this process the platform can return H_Busy or H_LongBusy
+              and the OS is responsible for calling back until a non-busy return code
+              is returned.</para>
+          </listitem>
+
+          <listitem>
+            <para>Invalidation of the SLB and TLB for the process being detached is
+              performed. During this process the platform can return H_Busy or
+              H_LongBusy and the OS is responsible for calling back until a non-busy
+              return code is returned.</para>
+          </listitem>
+
+          <listitem>
+            <para>If the hardware encounters an error while detaching the process,
+              H_Hardware is returned.</para>
+          </listitem>
+
+          <listitem>
+            <para>H_Success is returned.</para>
+          </listitem>
+        </itemizedlist>
+      </simplesect>
+    </section>
+
+    <section xml:id="sec_control_ca_function">
+      <title>H_CONTROL_CA_FUNCTION</title>
+      <para>This H_CONTROL_CA_FUNCTION hypervisor call allows the partition to
+        manipulate or query certain coherent platform function behaviors.</para>
+
+      <simplesect>
+        <title>Syntax:</title>
+        <programlisting><![CDATA[int64                 /* H_Success:   The operation is completed for the coherent */
+                      /*              platform facility */
+                      /* H_Authority: The operating system does not have authority */
+                      /*              to control the coherent platform facility or */
+                      /*              the coherent platform facilities are not */
+                      /*              licensed to be used. */
+                      /* H_Parameter: An incorrect parameter was supplied. */
+                      /* H_Hardware:  A hardware event prevented the control */
+                      /*              operation. */
+                      /* H_State:     The state was invalid for the operation. */
+                      /* H_Busy or H_LongBusy: If the hcall requires more */
+                      /*              execution time, Busy will be returned and */
+                      /*              the OS is required to call back until Busy */
+                      /*              is no longer returned. */
+                      /* H_Not_Found: The operation supplied was not valid. */
+                      /* H_Not_Available: The operation cannot be performed because */
+                      /*              the AFU has not been downloaded. */
+                      /* H_SG_LIST:   A scatter/gather list entry was invalid. */
+                      /* H_Resource:  The function has page table mappings for MMIO. */
+                      /* H_Function:  The function is not supported. */
+                      /* R4 contains the continue-token for the next call on Busy */
+                      /*    return code. */
+                      /* R4 contains operation-specific data if applicable on */
+                      /*    Success return code. */
+hcall ( const uint64 H_CONTROL_CA_FUNCTION,
+        uint64 unit-address,
+        uint64 operation,
+        uint64 parameter1,
+        uint64 parameter2,
+        uint64 parameter3,
+        uint64 parameter4,
+        uint64 continue-token);]]></programlisting>
+      </simplesect>
+
+      <simplesect>
+        <title>Parameters:</title>
+        <itemizedlist>
+          <listitem>
+            <para>uint64 unit-address: Unit Address per the device tree
+              <emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis>
+              property
+              of the coherent platform facility</para>
+          </listitem>
+
+          <listitem>
+            <para>uint64 operation: operation to perform to the coherent platform
+              facility. Valid values are:
+              <itemizedlist>
+                <listitem>
+                  <para>Reset: operation = 1, perform a reset to the coherent platform
+                    function, this is used when the partition needs to reset the coherent
+                    platform function to a clean state. All attached processes and state
+                    are cleared by firmware after this reset.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Suspend Process: operation = 2, suspend a process from being
+                    executed</para>
+                </listitem>
+
+                <listitem>
+                  <para>Resume Process: operation = 3, resume a process to be executed</para>
+                </listitem>
+
+                <listitem>
+                  <para>Read Error State: operation = 4, read the error state of the
+                    coherent platform function</para>
+                </listitem>
+
+                <listitem>
+                  <para>Get Error Buffer: operation = 5, collect the AFU error buffer
+                    for the coherent platform function.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Get Function Configuration Record: operation = 6, collect
+                    configuration record for the coherent platform function</para>
+                </listitem>
+
+                <listitem>
+                  <para>Get Function Download Status: operation = 7, query to return
+                    download status of a programmable coherent platform function.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Terminate Process: operation = 8, terminate the process
+                    before completion</para>
+                </listitem>
+
+                <listitem>
+                  <para>Collect VPD: operation = 9, collect VPD for the coherent
+                    platform function.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Get Function Error Interrupts: operation = 11, read the
+                    function-wide error data based on an interrupt from
+                    <emphasis role="bold"><literal>&#8220;ibm,function-error-interrupt&#8221;</literal></emphasis></para>
+                </listitem>
+
+                <listitem>
+                  <para>Acknowledge Function Error Interrupts: operation = 12,
+                    acknowledge function-wide error data based on an interrupt from
+                    <emphasis role="bold"><literal>&#8220;ibm,function-error-interrupt&#8221;</literal></emphasis></para>
+                </listitem>
+
+                <listitem>
+                  <para>Get Error Log: operation = 13, retrieve the Platform Log ID
+                    (PLID) of an error log containing error data for the coherent
+                    platform function. This is used after a Temporary Unavailable or
+                    Permanently Unavailable Error State.</para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>uint64 parameter1: parameter 1 for operations, meaning changes based on the operation.</para>
+          </listitem>
+
+          <listitem>
+            <para>uint64 parameter2: parameter 2 for operations, meaning changes based on the operation.</para>
+          </listitem>
+
+          <listitem>
+            <para>uint64 parameter3: parameter 3 for operations, meaning changes based on the operation.</para>
+          </listitem>
+
+          <listitem>
+            <para>uint64 parameter4: parameter 4 for operations, meaning changes based on the operation.</para>
+          </listitem>
+
+          <listitem>
+            <para>uint64 continue-token: Used to continue an operation if H_Busy is returned.
+              Set to zero on first call. If H_Busy is returned then call again but use the value
+              returned in R4 from the previous call as the value of continue-token.
+
+              <informaltable frame="all" pgwide="1">
+                <tgroup cols="2">
+                  <colspec colname="c1" colwidth="20*" align="center" />
+                  <colspec colname="c2" colwidth="80*" />
+                  <thead valign="middle">
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold">Operation</emphasis>
+                        </para>
+                      </entry>
+                      <entry align="center">
+                        <para>
+                          <emphasis role="bold">Parameters</emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                  </thead>
+                  <tbody valign="middle">
+                    <row>
+                      <entry>
+                        <para>Reset</para>
+                      </entry>
+                      <entry>
+                        <para>None</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Suspect Process</para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <itemizedlist spacing="compact">
+                            <listitem>
+                              <para>Parameter1 = process-token as returned from
+                                H_ATTACH_CA_PROCESS when process was attached.</para>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Resume Process</para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <itemizedlist spacing="compact">
+                            <listitem>
+                              <para>Parameter1 = process-token as returned from
+                                H_ATTACH_CA_PROCESS when process was attached.</para>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Read Error State</para>
+                      </entry>
+                      <entry>
+                        <para>None</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Get Error Buffer</para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <itemizedlist spacing="compact">
+                            <listitem>
+                              <para>Parameter1 = byte offset into error buffer to retrieve,
+                                valid values are between 0 and (ibm,error-buffer-size – 1)</para>
+                            </listitem>
+                            <listitem>
+                              <para>Parameter2 = 4K aligned real address of error buffer,
+                                to be filled in</para>
+                            </listitem>
+                            <listitem>
+                              <para>Parameter3 = length of error buffer, valid values are
+                                4K or less</para>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Get Functional Configuration Record</para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <itemizedlist spacing="compact">
+                            <listitem>
+                              <para>Parameter1 = # of configuration record to retrieve,
+                                valid values are between 0 and (ibm,#config-records – 1)</para>
+                            </listitem>
+                            <listitem>
+                              <para>Parameter2 = byte offset into configuration record
+                                to retrieve, valid values are between 0 and
+                                (ibm,config-record-size – 1)</para>
+                            </listitem>
+                            <listitem>
+                              <para>Parameter3 = 4K aligned real address of configuration
+                                record buffer, to be filled in</para>
+                            </listitem>
+                            <listitem>
+                              <para>Parameter4 = length of configuration buffer, valid values are 4K or less</para>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Get Function Download Status</para>
+                      </entry>
+                      <entry>
+                        <para>None</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Terminate Process</para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <itemizedlist spacing="compact">
+                            <listitem>
+                              <para>Parameter1 = process-token as returned from
+                                H_ATTACH_CA_PROCESS when process was attached.</para>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Collect VPD</para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <itemizedlist spacing="compact">
+                            <listitem>
+                              <para>Parameter1 = # of VPD record to retrieve, valid
+                                values are between 0 and (ibm,#config-records – 1)</para>
+                            </listitem>
+                            <listitem>
+                              <para>Parameter2 = 4K naturally aligned real buffer
+                                containing scatter/gather list entries. All fields in the scatter/gather list have big-endian byte ordering.</para>
+                            </listitem>
+                            <listitem>
+                              <para>Parameter3 = number of entries in the scatter/gather
+                                list, valid values are between 0 and 256</para>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Get Function Error Interrupts</para>
+                      </entry>
+                      <entry>
+                        <para>None</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Acknowledge Function Error Interrupts</para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <itemizedlist spacing="compact">
+                            <listitem>
+                              <para>Parameter1 = value to write to the function-wide
+                                error interrupt register</para>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Get Error Log</para>
+                      </entry>
+                      <entry>
+                        <para>None</para>
+                      </entry>
+                    </row>
+                  </tbody>
+                </tgroup>
+              </informaltable>
+            </para>
+          </listitem>
+        </itemizedlist>
+      </simplesect>
+
+      <simplesect>
+        <title>Semantics:</title>
+        <itemizedlist>
+          <listitem>
+            <para>Verify that coherent platform facilities are licensed to be used,
+              else return H_Authority.</para>
+          </listitem>
+
+          <listitem>
+            <para>Verify that the unit-address parameter is valid else return H_Parameter.</para>
+          </listitem>
+
+          <listitem>
+            <para>If operation is Reset:
+              <itemizedlist>
+                <listitem>
+                  <para>If coherent platform function is in Temporarily Unavailable or
+                    Permanently Unavailable error state or is already performing a reset,
+                    return H_State.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If partition is not allowed to perform a Reset
+                    (<emphasis role="bold"><literal>&#8220;ibm,privileged-function&#8221;</literal></emphasis>
+                    property is 0 or not present), return H_Authority.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If coherent platform function has
+                    <emphasis role="bold"><literal>&#8220;ibm,process-mmio&#8221;</literal></emphasis>
+                    property set to 1 and partition has any page table mappings existing
+                    for the function, return H_Resource.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If coherent platform function is in Normal error state, set to
+                    Disabled error state.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Terminate and remove all process elements that were attached
+                    via H_ATTACH_CA_PROCESS. If the termination takes longer than is
+                    allowed for an hcall, R4 is set to the continue-token and H_Busy
+                    or H_LongBusy are returned.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If allowed, perform a reset (disable AFU, PSL suspend, PSL
+                    purge, TLB invalidate, SLB invalidate) of the coherent platform
+                    function using CAIA procedures. If the reset takes longer than
+                    is allowed for an hcall, R4 is set to the continue-token and H_Busy
+                    or H_LongBusy are returned.</para>
+                </listitem>
+
+                <listitem>
+                  <para>After the reset, if the coherent-platform-function has the
+                    <emphasis role="bold"><literal>&#8220;ibm,programmable&#8221;</literal></emphasis>
+                    property set to 1, a download is required via H_DOWNLOAD_CA_FUNCTION.
+                    The Get Function Download Status operation can be used to query
+                    the download state.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the coherent-platform-function does not have the
+                    <emphasis role="bold"><literal>&#8220;ibm,programmable&#8221;</literal></emphasis>
+                    property or it is set to 0, the AFU is enabled.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the reset fails while communicating with the hardware,
+                    return H_Hardware.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Reset the error log data for the Get Error Log operation.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Set coherent platform function Error State to Normal and
+                    return H_Success</para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>If operation is Suspend Process:
+              <itemizedlist>
+                <listitem>
+                  <para>If the coherent platform function is not in a Normal Error State,
+                    return H_State.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the coherent platform function does not support suspending
+                    processes, return H_Function.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the process associated with the process token cannot be found,
+                    return H_Parameter.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the process is not able to be suspended or is already suspended,
+                    return H_State.</para>
+                </listitem>
+
+                <listitem>
+                  <para>The process associated with the process-token is suspended via
+                    the procedure defined in the CAIA. If the suspend takes longer
+                    than is allowed for an hcall, R4 is set to the continue-token and
+                    H_Busy or H_LongBusy are returned.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the Suspend Process procedure encounters a hardware failure,
+                    return H_Hardware.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Return H_Success.</para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>If operation is Resume Process:
+              <itemizedlist>
+                <listitem>
+                  <para>If the coherent platform function is not in a Normal Error State,
+                    return H_State.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the coherent platform function does not support resuming
+                    processes, return H_Function.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the process associated with the process token cannot be found,
+                    return H_Parameter.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the process not suspended or resume isn't possible, return
+                    H_State.</para>
+                </listitem>
+
+                <listitem>
+                  <para>The process associated with the process-token is resumed via
+                    the procedure defined in the CAIA. If the resume takes longer than
+                    is allowed for an hcall, R4 is set to the continue-token and H_Busy
+                    or H_LongBusy are returned.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If a hardware error occurs during the Resume Process operation,
+                    return H_Hardware.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Return H_Success.</para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>If operation is Read Error State:
+              <itemizedlist>
+                <listitem>
+                  <para>Platform firmware checks the error state of the coherent platform
+                    function. If already in an error state, H_Success is returned and
+                    R4 contains the error state.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Platform firmware checks for errors on the coherent platform
+                    function. If errors exist, error recovery is entered and H_Success
+                    is returned and R4 contains the error state.</para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>If operation is Get Error Buffer:
+              <itemizedlist>
+                <listitem>
+                  <para>If parameter2 does not describe a valid 4K aligned real address,
+                    return H_Parameter.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If parameter3 is greater than 4K, return H_Parameter.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If parameter1 plus parameter3 is greater than or equal to
+                    <emphasis role="bold"><literal>&#8220;ibm,error-buffer-size&#8221;</literal></emphasis>,
+                    return H_Parameter.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the coherent platform function is in a Temporarily Unavailable
+                    or Permanently Unavailable state, return H_State.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Platform firmware collects the error data buffer from the AFU
+                    descriptor associated with the coherent platform function and places
+                    it in the partition buffer described by parameter2 and parameter3.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the Get Error Buffer operation exceeds the time allowed for
+                    an hcall, R4 is set to the continue-token and H_Busy or H_LongBusy
+                    is returned.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the error buffer cannot be read from the hardware due to a
+                    hardware problem, return H_Hardware.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Return H_Success.</para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>If operation is Get Function Configuration Record:
+              <itemizedlist>
+                <listitem>
+                  <para>If parameter1 does not describe a valid configuration record number,
+                    return H_Parameter.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If parameter3 does not describe a valid 4K aligned real address,
+                    return H_Parameter.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If parameter4 is greater than 4K, return H_Parameter.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If parameter2 plus parameter4 is greater than or equal to
+                    “ibm,config-record-size”,
+                    return H_Parameter.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the coherent platform function is not in a Normal Error State,
+                    return H_State.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If platform firmware cannot retrieve the configuration record
+                    from the coherent platform function, return H_Function.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If platform firmware cannot retrieve the configuration record
+                    due to the coherent platform function not in a downloaded state, r
+                    eturn H_NOT_AVAILABLE.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Platform firmware collects the configuration record from the
+                    coherent platform function and places it in the partition buffer
+                    described by parameter3 and parameter4. The data is stored as a
+                    byte stream; the first byte in the buffer corresponds to byte 0 of
+                    the configuration record.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the Get Function Configuration Record operation exceeds the
+                    time allowed for an hcall, R4 is set to the continue-token and
+                    H_Busy or H_LongBusy is returned.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the configuration record cannot be read from the hardware,
+                    due to a hardware problem, return H_Hardware.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Return H_Success.</para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>If operation is Get Function Download Status:
+              <itemizedlist>
+                <listitem>
+                  <para>If coherent platform function does not support download,
+                    return H_Function.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the partition does not have the authority to get download status
+                    (<emphasis role="bold"><literal>&#8220;ibm,privilegedfunction&#8221;</literal></emphasis>
+                    property is 0 or not present), return H_Authority.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the coherent platform function is not in a Normal or
+                    Disabled Error State, return H_State.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Platform firmware returns the download status in R4, where
+                    0 = no-download-found and 1 = download-found.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Return H_Success.</para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>If operation is Terminate Process:
+              <itemizedlist>
+                <listitem>
+                  <para>If the coherent platform function is not in a Normal Error State,
+                    return H_State.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the coherent platform function does not support terminating
+                    processes, return H_Function.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the process associated with the process token cannot be found,
+                    return H_Parameter.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the process has already completed, return H_State.</para>
+                </listitem>
+
+                <listitem>
+                  <para>The process associated with the process-token is terminated
+                    via the procedure defined in the CAIA. If the attempt to terminate
+                    the process takes longer than is allowed for an hcall, R4 is set
+                    to the continue-token and H_Busy or H_LongBusy are returned.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If a hardware error occurs during the Terminate Process operation,
+                    return H_Hardware.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Return H_Success.</para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>If the operation is Collect VPD:
+              <itemizedlist>
+                <listitem>
+                  <para>If parameter1 does not describe a valid VPD record number,
+                    return H_Parameter.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If parameter2 does not describe a valid 4K aligned real address,
+                    return H_Parameter.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If parameter3 is greater than 256, return H_Parameter.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If a scatter/gather list entry specifies an invalid address, or
+                    specifies a buffer that crosses a page boundary, return H_SG_LIST.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the coherent platform function is not in a Normal Error State,
+                    return H_State.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If platform firmware cannot retrieve the VPD from the coherent
+                    platform function, return H_Function.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If platform firmware cannot retrieve the VPD due to the coherent
+                    platform function not in a downloaded state, return H_NOT_AVAILABLE.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Platform firmware collects the VPD from the coherent platform
+                    function and places it in the partition buffer described by parameter2
+                    and parameter3. The data will be truncated as necessary to fit in the
+                    provided buffer. The data is stored as a bytestream; the first byte
+                    in the buffer corresponds to byte 0 of the VPD.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the Collect VPD operation exceeds the time allowed for an hcall,
+                    R4 is set to the continue-token and H_Busy or H_LongBusy is returned.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If a hardware error occurs during the Collect VPD operation, r
+                    eturn H_Hardware.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Return H_Success, and R4 is set to the length of the available
+                    VPD, which may be different than the amount of data actually stored
+                    in the partition buffer. It may also be different than the value
+                    reported in the
+                    <emphasis role="bold"><literal>&#8220;ibm,vpd-size&#8221;</literal></emphasis>
+                    property, though it will not be greater than that. A length of
+                    0 means no VPD has been provided for the coherent platform function.</para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>If the operation is Get Function Error Interrupts:
+              <itemizedlist>
+                <listitem>
+                  <para>If the coherent platform function is not in a Normal Error or
+                    Disabled State, return H_State.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the coherent platform function does not support Get Function
+                    Error Interrupts, return H_Function.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the Function Error Interrupts cannot be retrieved from the
+                    hardware, return H_Hardware.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Platform firmware returns the value of Function Error Interrupts
+                    read from hardware in R4.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Return H_Success.</para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>If the operation is Acknowledge Function Error Interrupts:
+              <itemizedlist>
+                <listitem>
+                  <para>If the coherent platform function is not in a Normal or Disabled
+                    Error State, return H_State.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the coherent platform function does not support Acknowledge
+                    Function Error Interrupts, return H_Function. </para>
+                </listitem>
+
+                <listitem>
+                  <para>Acknowledge Function Error Interrupts using the value in
+                    parameter1.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the Acknowledge Function Error Interrupts cannot be sent
+                    to the hardware, return H_Hardware.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Return H_Success.</para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>If operation is Get Error Log:
+              <itemizedlist>
+                <listitem>
+                  <para>If the coherent platform function is not in Disabled or
+                    Permanently Unavailable Error State, return H_State.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If applicable, platform firmware writes the Platform Log ID
+                    (PLID) in R4 for the error log that is associated with the cause
+                    of the Temporarily Unavailable or Permanently Unavailable Error State.
+                    This data is used to correlate errors between the platform owned
+                    resource and the coherent platform function. If there is no
+                    associated error log to reference, platform firmware writes zero to R4.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Return H_Success.</para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>If operation is unknown, return H_Not_Found.</para>
+          </listitem>
+        </itemizedlist>
+      </simplesect>
+    </section>
+
+    <section xml:id="sec_collect_ca_int_info">
+      <title>H_COLLECT_CA_INT_INFO</title>
+      <para>The architectural intent of this hcall is to collect interrupt info about
+        a coherent platform function after an interrupt occurred.</para>
+
+      <simplesect>
+        <title>Syntax:</title>
+        <programlisting><![CDATA[int64                 /* H_Success:   The interrupt info is returned in return */
+                      /*              registers. */
+                      /* H_Parameter: An incorrect parameter was supplied. */
+                      /* H_Hardware:  A hardware event prevented the collection of */
+                      /*              the interrupt info. */
+                      /* H_State:     The coherent platform function is not in a */
+                      /*              valid state to collect interrupt info. */
+                      /* H_Authority: The partition does not have authority to */
+                      /*              perform this hcall; the coherent platform */
+                      /*              facilities may need to be licensed. */
+hcall ( const uint64 H_COLLECT_CA_INT_INFO,
+        uint64 unit-address,
+        uint64 process-token);]]></programlisting>
+      </simplesect>
+
+      <simplesect>
+        <title>Parameters:</title>
+        <itemizedlist>
+          <listitem>
+            <para>uint64 unit-address: Unit Address per the device tree
+              <emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis> property
+              of the coherent platform facility</para>
+          </listitem>
+
+          <listitem>
+            <para>uint64 process-token: process identifier token for the attached
+              process returned in R4 on H_Success return from H_ATTACH_CA_PROCESS call.</para>
+          </listitem>
+        </itemizedlist>
+      </simplesect>
+
+      <simplesect>
+        <title>Return Values:</title>
+        <itemizedlist>
+          <listitem>
+            <para>R4 contains the PSL_DSISR_An register value defined in the CAIA on
+              H_Success.</para>
+          </listitem>
+
+          <listitem>
+            <para>R5 contains the PSL_DAR_An register value defined in the CAIA on
+              H_Success.</para>
+          </listitem>
+
+          <listitem>
+            <para>R6 contains the PSL_DSR_An register value defined in the CAIA on
+              H_Success.</para>
+          </listitem>
+
+          <listitem>
+            <para>R7 contains the PSL_PID_An in the upper 32 bits and PSL_TID_An
+              register in the lower 32 bits.</para>
+          </listitem>
+
+          <listitem>
+            <para>R8 contains the AFU_ERR_An register value defined in the CAIA on
+              H_Success.</para>
+          </listitem>
+
+          <listitem>
+            <para>R9 contains the PSL_ErrStat_An register value defined in the
+              CAIA on H_Success.</para>
+          </listitem>
+
+          <listitem>
+            <para>R10 contains a handle for the process element that incurred
+              the fault on H_Success.</para>
+          </listitem>
+        </itemizedlist>
+      </simplesect>
+
+      <simplesect>
+        <title>Semantics:</title>
+        <itemizedlist>
+          <listitem>
+            <para>Verify that coherent platform facilities are licensed to be used,
+              else return H_Authority.</para>
+          </listitem>
+
+          <listitem>
+            <para>Verify that the unit-address parameter is valid else return H_Parameter.</para>
+          </listitem>
+
+          <listitem>
+            <para>Verify that the process-token parameter is valid else return
+              H_Parameter.</para>
+          </listitem>
+
+          <listitem>
+            <para>Verify that the coherent platform function is in the proper state
+              to read interrupt information else return H_State.</para>
+          </listitem>
+
+          <listitem>
+            <para>Platform firmware reads the values of PSL_DSISR_An, PSL_DAR_An,
+              PSL_DSR_An, PSL_DSR_An, PSL_PID_An, PSL_TID_An, AFU_ERR_An and
+              PSL_ErrStat_An as defined by the CAIA and populates the return registers.
+              AFU_ERR_An value is only valid if PSL_DSISR[AE] is 1 or PSL_SERR_An[AE]
+              is 1. PSL_ErrStat_An value is only valid if PSL_DSISR[PE] is 1. If any
+              of the reads fail from the hardware H_Hardware is returned and none of
+              the return registers should be considered valid.</para>
+          </listitem>
+
+          <listitem>
+            <para>H_Success is returned.</para>
+          </listitem>
+        </itemizedlist>
+      </simplesect>
+    </section>
+
+    <section xml:id="sec_control_ca_faults">
+      <title>H_CONTROL_CA_FAULTS</title>
+      <para>The architectural intent of this hcall is to control the operation of a
+        coherent platform function after a fault occurs.</para>
+
+      <simplesect>
+        <title>Syntax:</title>
+        <programlisting><![CDATA[int64                 /* H_Success:   Faults were successfully controlled for the */
+                      /*              function. */
+                      /* H_Parameter: An incorrect parameter was supplied. */
+                      /* H_Hardware:  A hardware event prevented the control of */
+                      /*              faults. */
+                      /* H_State:     The function was in an invalid state. */
+                      /* H_Authority: The partition does not have authority to */
+                      /*              perform this hcall; the coherent platform */
+                      /*              facilities may need to be licensed. */
+                      /* H_Function:  The function is not supported. */
+                      /* H_Not_Found: The operation supplied was not valid. */
+hcall ( const uint64 H_CONTROL_CA_FAULTS,
+        uint64 unit-address,
+        uint64 operation,
+        uint64 operation,
+        uint64 parameter1,
+        uint64 parameter2,
+        uint64 parameter3,
+        uint64 parameter4);]]></programlisting>
+      </simplesect>
+
+      <simplesect>
+        <title>Parameters:</title>
+        <itemizedlist>
+          <listitem>
+            <para>uint64 unit-address: Unit Address per the device tree
+              <emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis> property
+              of the coherent platform facility</para>
+          </listitem>
+
+          <listitem>
+            <para>uint64 operation: operation to perform to the coherent platform
+              facility. Valid values are:
+              <itemizedlist>
+                <listitem>
+                  <para>Respond to page fault - PSL: operation = 1.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Respond to page fault - AFU: operation = 2.</para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>uint64 parameter1: parameter 1 for operations, meaning changes based on the operation.</para>
+          </listitem>
+
+          <listitem>
+            <para>uint64 parameter2: parameter 2 for operations, meaning changes based on the operation.</para>
+          </listitem>
+
+          <listitem>
+            <para>uint64 parameter3: parameter 3 for operations, meaning changes based on the operation.</para>
+          </listitem>
+
+          <listitem>
+            <para>uint64 parameter4: parameter 4 for operations, meaning changes based on the operation.</para>
+          </listitem>
+        </itemizedlist>
+
+        <informaltable frame="all" pgwide="1">
+          <tgroup cols="2">
+            <colspec colname="c1" colwidth="20*" align="center" />
+            <colspec colname="c2" colwidth="80*" />
+            <thead valign="middle">
+              <row>
+                <entry>
+                  <para>
+                    <emphasis role="bold">Operation</emphasis>
+                  </para>
+                </entry>
+                <entry align="center">
+                  <para>
+                    <emphasis role="bold">Parameters</emphasis>
+                  </para>
+                </entry>
+              </row>
+            </thead>
+            <tbody valign="middle">
+              <row>
+                <entry>
+                  <para>Respond to page fault - PSL</para>
+                </entry>
+                <entry>
+                  <para>
+                    <itemizedlist spacing="compact">
+                      <listitem>
+                        <para>Parameter1 = process-token as returned from H_ATTACH_CA_PROCESS</para>
+                      </listitem>
+                      <listitem>
+                        <para>Parameter2 = control-mask
+                          <itemizedlist spacing="compact">
+                            <listitem>
+                              <para>bits 0-59: reserved</para>
+                            </listitem>
+                            <listitem>
+                              <para>bit 60: acknowledge non-translation fault interrupt</para>
+                            </listitem>
+                            <listitem>
+                              <para>bit 61: continue execution, current translation
+                                fault is not resolved and must be retried at a later time</para>
+                            </listitem>
+                            <listitem>
+                              <para>bit 62: restart function and indicate address error</para>
+                            </listitem>
+                            <listitem>
+                              <para>bit 63: restart the transaction that caused the
+                                translation fault</para>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                      </listitem>
+                      <listitem>
+                        <para>Parameter3 = reset-mask
+                          <itemizedlist spacing="compact">
+                            <listitem>
+                              <para>bit 0-62: reserved</para>
+                            </listitem>
+                            <listitem>
+                              <para>bit 63: reset fault bits for a PSL level process
+                                error (PSL_DSISR_An[PE] is set)</para>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                      </listitem>
+                    </itemizedlist>
+                  </para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>Respond to page fault - AFU</para>
+                </entry>
+                <entry>
+                  <para>
+                    <itemizedlist spacing="compact">
+                      <listitem>
+                        <para>Parameter1 = process-token</para>
+                      </listitem>
+                      <listitem>
+                        <para>Parameter2 = process element handle returned from
+                          H_COLLECT_CA_INT_INFO.</para>
+                      </listitem>
+                      <listitem>
+                        <para>Parameter3 = effective address</para>
+                      </listitem>
+                      <listitem>
+                        <para>Parameter4 = resolution, valid values are:
+                          <itemizedlist spacing="compact">
+                            <listitem>
+                              <para>0x0 -- Page Fault Resolved</para>
+                            </listitem>
+                            <listitem>
+                              <para>0x1 -- Addressing Error</para>
+                            </listitem>
+                            <listitem>
+                              <para>0x2 -- Protection Fault on a Read operation</para>
+                            </listitem>
+                            <listitem>
+                              <para>0x3 -- Protection Fault on a Write operation</para>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                      </listitem>
+                    </itemizedlist>
+                  </para>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </informaltable>
+
+      </simplesect>
+      <simplesect>
+        <title>Semantics:</title>
+        <itemizedlist>
+          <listitem>
+            <para>Verify that coherent platform facilities are licensed to be used,
+              else return H_Authority.</para>
+          </listitem>
+
+          <listitem>
+            <para>Verify that the unit-address parameter is valid else return H_Parameter.</para>
+          </listitem>
+
+          <listitem>
+            <para>If operation is Respond to page fault - PSL:
+              <itemizedlist>
+                <listitem>
+                  <para>Verify that the process-token parameter is valid else return
+                    H_Parameter.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Verify that the coherent platform function is in a valid state
+                    else return H_State.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Using the control-mask set the corresponding bits in
+                    PSL_TFC_An as defined by CAIA. Only bits that are set are written.
+                    If no bits are set, no changes are performed. If the setting of
+                    the bits in the hardware encounters an error, return H_Hardware.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If bit 63 of the reset-mask is set, clear the PSL_ErrStat_An
+                    bits by reading the register and writing back the value read. If
+                    this operation encounters an error with the hardware, return
+                    H_Hardware.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Perform a read from PSL_TFC_An and place corresponding values
+                    in R4. If the read fails, return H_Hardware.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Return H_Success with the following in R4:
+                    <itemizedlist>
+                      <listitem>
+                        <para>bits 0-60: reserved</para>
+                      </listitem>
+
+                      <listitem>
+                        <para>bit 61: function waiting to continue </para>
+                      </listitem>
+
+                      <listitem>
+                        <para>bit 62: address error pending</para>
+                      </listitem>
+
+                      <listitem>
+                        <para>bit 63: command reissue pending</para>
+                      </listitem>
+                    </itemizedlist>
+                  </para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>If operation is Respond to page fault - PSL:
+              <itemizedlist>
+                <listitem>
+                  <para>Verify that the process-token parameter is valid else return
+                    H_Parameter.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Verify that the resolution parameter is valid else return
+                    H_Parameter.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Verify that the coherent platform function is in a valid state
+                    else return H_State.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Verify that the coherent platform function supports paged
+                    resolution response (via
+                    <emphasis role="bold"><literal>&#8220;ibm,supports-prr&#8221;</literal></emphasis>
+                     OF property), else return H_Function.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Write the effective address and resolution to the corresponding
+                    fields in the PRR registers of the AFU. If this operation encounters
+                    an error with the hardware, return H_Hardware.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Return H_Success.</para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+          <listitem>
+            <para>If operation is unknown, return H_Not_Found.</para>
+          </listitem>
+        </itemizedlist>
+      </simplesect>
+    </section>
+
+    <section xml:id="sec_download_ca_function">
+      <title>H_DOWNLOAD_CA_FUNCTION</title>
+      <para>The architectural intent of this hcall is to provide platform support for
+        downloading an application image to the coherent platform function. The
+        partition provides download data to the platform via an image scatter/gather
+        list. The scatter/gather list can architecturally describe up to 1 megabyte
+        of data (256 entries of 4096 bytes each). The OS must subdivide the application
+        image into chunks that are each 1 megabyte or less in size, and call H
+        _DOWNLOAD_CA_FUNCTION for each of those chunks.</para>
+
+      <simplesect>
+        <title>Syntax:</title>
+        <programlisting><![CDATA[int64                 /* H_Success:   This download operation completed */
+                      /*              successfully, and the entire image has now */
+                      /*              been downloaded and verified. */
+                      /* H_Parameter: An incorrect parameter was supplied. */
+                      /* H_Hardware:  A hardware event prevented the operation. */
+                      /* H_Function:  The function is not supported. */
+                      /* H_State:     The coherent platform facility is not in a */
+                      /*              valid state. */
+                      /* H_Resource:  The coherent platform facility cannot be */
+                      /*              downloaded due to a resource restriction. */
+                      /* H_Authority: The partition does not have authority to */
+                      /*              download or the coherent platform facilities */
+                      /*              are not licensed to be used. */
+                      /* H_CONTINUE : Platform firmware has completed consuming the */
+                      /*              current image scatter/gather list, partition */
+                      /*              may now supply new scatter/gather list. */
+                      /* H_SG_LIST:   An entry in the scatter/gather list was */
+                      /*              invalid. */
+                      /* H_BAD_DATA:  Image verification failed. */
+                      /* H_Busy or H_LongBusy: Platform firmware requires more time */
+                      /*              to complete operation. */
+                      /* H_UNSUPPORTED: Downloaded function is not compatible. */
+hcall ( const uint64 H_DOWNLOAD_CA_FUNCTION,
+        uint64 unit-address,
+        uint64 operation,
+        uint64 scatter-gather-list-address,
+        uint64 num-scatter-gather-list-entries,
+        uint64 continue-token);]]></programlisting>
+      </simplesect>
+
+      <simplesect>
+        <title>Parameters:</title>
+        <itemizedlist>
+          <listitem>
+            <para>uint64 unit-address: Unit Address per the device tree
+              <emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis> property
+              of the coherent platform facility</para>
+          </listitem>
+
+          <listitem>
+            <para>uint64 scatter-gather-list-address: 4K naturally aligned real buffer
+              containing scatter/gather list entries. All fields in
+              the scatter/gather list and all fields in the image header have
+              big-endian byte ordering.</para>
+          </listitem>
+
+          <listitem>
+            <para>uint64 num-scatter-gather-list-entries: number of entries
+              in the scatter/gather list</para>
+          </listitem>
+
+          <listitem>
+            <para>uint64 continue-token: Used to continue an operation if H_Busy or
+              H_CONTINUE is returned. Set to zero on first call. If H_Busy or
+              H_CONTINUE is returned then call again but use the value returned in
+              R4 from the previous call as the value of continue-token.
+
+              <table frame="all" pgwide="1" xml:id="table_image_scatter_gather_list_entry_format">
+                <?dbhtml table-width="80%" ?><?dbfo table-width="80%" ?>
+                <title>Image Scatter/Gather List Entry Format</title>
+                <tgroup cols="2">
+                  <colspec colname="c1" colwidth="50*" />
+                  <colspec colname="c2" colwidth="50*" />
+                  <tbody valign="middle">
+                    <row>
+                      <entry>
+                        <para>8 byte logical real address of buffer</para>
+                      </entry>
+                      <entry>
+                        <para>8 byte buffer length in bytes (max length is 4096 bytes)</para>
+                      </entry>
+                    </row>
+                  </tbody>
+                </tgroup>
+              </table>
+
+              <table frame="all" pgwide="1" xml:id="table_image_scatter_gather_list_format">
+                <?dbhtml table-width="80%" ?><?dbfo table-width="80%" ?>
+                <title>Image Scatter/Gather List Format</title>
+                <tgroup cols="2">
+                  <colspec colname="c1" colwidth="50*" />
+                  <colspec colname="c2" colwidth="50*" />
+                  <tbody valign="middle">
+                    <row>
+                      <entry>
+                        <para>Logical real address of buffer 0</para>
+                      </entry>
+                      <entry>
+                        <para>Buffer 0 length in bytes)</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Logical real address of buffer 1</para>
+                      </entry>
+                      <entry>
+                        <para>Buffer 1 length in bytes)</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>...</para>
+                      </entry>
+                      <entry>
+                        <para>...</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Logical real address of buffer N-1</para>
+                      </entry>
+                      <entry>
+                        <para>Buffer N-1 length in bytes)</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Logical real address of buffer N</para>
+                      </entry>
+                      <entry>
+                        <para>Buffer N length in bytes)</para>
+                      </entry>
+                    </row>
+                  </tbody>
+                </tgroup>
+              </table>
+
+              <table frame="all" pgwide="1" xml:id="table_application_image_header_version1">
+                <?dbhtml table-width="80%" ?><?dbfo table-width="80%" ?>
+                <title>Application Image Header, Version 1</title>
+                <tgroup cols="4">
+                  <colspec colname="c1" colwidth="25*" />
+                  <colspec colname="c2" colwidth="10*" align="center" />
+                  <colspec colname="c3" colwidth="10*" align="center" />
+                  <colspec colname="c4" colwidth="55*" />
+                  <thead valign="middle">
+                    <row>
+                      <entry align="center">
+                        <para>
+                          <emphasis role="bold">Name</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <emphasis role="bold">Offset</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <emphasis role="bold">Length</emphasis>
+                        </para>
+                      </entry>
+                      <entry align="center">
+                        <para>
+                          <emphasis role="bold">Description</emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                  </thead>
+                  <tbody valign="middle">
+                    <row>
+                      <entry>
+                        <para>Version</para>
+                      </entry>
+                      <entry>
+                        <para>0</para>
+                      </entry>
+                      <entry>
+                        <para>2</para>
+                      </entry>
+                      <entry>
+                        <para>Version of the AFU image header, value = 1</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Function Number</para>
+                      </entry>
+                      <entry>
+                        <para>2</para>
+                      </entry>
+                      <entry>
+                        <para>2</para>
+                      </entry>
+                      <entry>
+                        <para>Physical function number that the application uses</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Application ID</para>
+                      </entry>
+                      <entry>
+                        <para>4</para>
+                      </entry>
+                      <entry>
+                        <para>2</para>
+                      </entry>
+                      <entry>
+                        <para>Application identifier</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Reserved</para>
+                      </entry>
+                      <entry>
+                        <para>6</para>
+                      </entry>
+                      <entry>
+                        <para>2</para>
+                      </entry>
+                      <entry>
+                        <para>Set to zero.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Vendor ID</para>
+                      </entry>
+                      <entry>
+                        <para>8</para>
+                      </entry>
+                      <entry>
+                        <para>2</para>
+                      </entry>
+                      <entry>
+                        <para>PCI Vendor ID of the adapter owning the coherent
+                          platform function</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Device ID</para>
+                      </entry>
+                      <entry>
+                        <para>10</para>
+                      </entry>
+                      <entry>
+                        <para>2</para>
+                      </entry>
+                      <entry>
+                        <para>PCI Device ID of the adapter owning the coherent
+                          platform function</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Subsystem Vendor ID</para>
+                      </entry>
+                      <entry>
+                        <para>12</para>
+                      </entry>
+                      <entry>
+                        <para>2</para>
+                      </entry>
+                      <entry>
+                        <para>PCI Subsystem Vendor ID of the adapter owning the coherent
+                          platform function</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Subsystem ID</para>
+                      </entry>
+                      <entry>
+                        <para>14</para>
+                      </entry>
+                      <entry>
+                        <para>2</para>
+                      </entry>
+                      <entry>
+                        <para>PCI Subsystem ID of the adapter owning the coherent
+                          platform function</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Image Offset</para>
+                      </entry>
+                      <entry>
+                        <para>16</para>
+                      </entry>
+                      <entry>
+                        <para>8</para>
+                      </entry>
+                      <entry>
+                        <para>Offset to the application image bitstream</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Image Length</para>
+                      </entry>
+                      <entry>
+                        <para>24</para>
+                      </entry>
+                      <entry>
+                        <para>8</para>
+                      </entry>
+                      <entry>
+                        <para>Length of the application image bitstream</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Verification Type</para>
+                      </entry>
+                      <entry>
+                        <para>32</para>
+                      </entry>
+                      <entry>
+                        <para>2</para>
+                      </entry>
+                      <entry>
+                        <para>Type of verification required for image:
+                          <itemizedlist spacing="compact">
+                            <listitem>
+                              <para>1 = Bounds Check</para>
+                            </listitem>
+                            <listitem>
+                              <para>All other values reserved</para>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Reserved</para>
+                      </entry>
+                      <entry>
+                        <para>34</para>
+                      </entry>
+                      <entry>
+                        <para>6</para>
+                      </entry>
+                      <entry>
+                        <para>Set to zero</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>CAIA Version</para>
+                      </entry>
+                      <entry>
+                        <para>40</para>
+                      </entry>
+                      <entry>
+                        <para>2</para>
+                      </entry>
+                      <entry>
+                        <para>Minimum CAIA Version required by this application image</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>PSL Revision</para>
+                      </entry>
+                      <entry>
+                        <para>42</para>
+                      </entry>
+                      <entry>
+                        <para>2</para>
+                      </entry>
+                      <entry>
+                        <para>Minimum PSL Revision required by this application image</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Reserved</para>
+                      </entry>
+                      <entry>
+                        <para>44</para>
+                      </entry>
+                      <entry>
+                        <para>84</para>
+                      </entry>
+                      <entry>
+                        <para>Set to zero</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry namest='c1' nameend='c4'>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para><emphasis>Image Bitstream</emphasis></para>
+                      </entry>
+                      <entry>
+                        <para><emphasis>X</emphasis></para>
+                      </entry>
+                      <entry>
+                        <para><emphasis>Y</emphasis></para>
+                      </entry>
+                      <entry>
+                        <para><emphasis>Application image bitstream, where X = Image
+                          Offset and Y = Image Length</emphasis></para>
+                      </entry>
+                    </row>
+                  </tbody>
+                </tgroup>
+              </table>
+
+            </para>
+          </listitem>
+        </itemizedlist>
+      </simplesect>
+
+      <simplesect>
+        <title>Return Values:</title>
+        <itemizedlist>
+          <listitem>
+            <para>R4 on H_Busy or H_LongBusy or H_CONTINUE contains the continue-token
+              to be used on the next call</para>
+          </listitem>
+        </itemizedlist>
+      </simplesect>
+
+      <simplesect>
+        <title>Semantics:</title>
+        <itemizedlist>
+          <listitem>
+            <para>Verify that coherent platform facilities are licensed to be used,
+              else return H_Authority.</para>
+          </listitem>
+
+          <listitem>
+            <para>Verify that the unit-address parameter is valid else return H_Parameter.</para>
+          </listitem>
+
+          <listitem>
+            <para>If the coherent-platform-facility cannot be downloaded at this
+              time due to a resource constraint, H_Resource is returned.</para>
+          </listitem>
+
+          <listitem>
+            <para>If the coherent platform facility does not support download,
+              return H_Function.</para>
+          </listitem>
+
+          <listitem>
+            <para>If the coherent platform function is already downloaded, or if a
+              download is in progress, return H_State.</para>
+          </listitem>
+
+          <listitem>
+            <para>If the partition does not have the authority to perform download
+              (<emphasis role="bold"><literal>&#8220;ibm,privileged-function&#8221;</literal></emphasis>
+              property is 0 or not present), return H_Authority.</para>
+          </listitem>
+
+          <listitem>
+            <para>If the coherent platform facility is in a Temporary Unavailable
+              Error State or has attached processes, return H_State.</para>
+          </listitem>
+
+          <listitem>
+            <para>If the scatter-gather-list-address does not describe a 4K byte
+              naturally aligned buffer, return H_Parameter.</para>
+          </listitem>
+
+          <listitem>
+            <para>If the Application Image Header version is not supported by platform
+              firmware, return H_BAD_DATA.</para>
+          </listitem>
+
+          <listitem>
+            <para>If necessary, platform firmware disables the coherent platform facility
+              from operation.</para>
+          </listitem>
+
+          <listitem>
+            <para>For each entry in the scatter/gather list described by
+              scatter-gather-list-address:
+              <itemizedlist>
+                <listitem>
+                  <para>Platform firmware validates address and length in the scatter/gather
+                    list entry. The buffer described should not cross a 4K page boundary.
+                    If invalid, returns H_SG_LIST.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Platform firmware copies data from the scatter/gather list entry
+                    to the platform firmware buffer.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Platform firmware verifies the image bitstream data chunk in the
+                    platform buffer. If platform firmware determines the image bitstream
+                    data chunk is not valid, return H_BAD_DATA. During this operation,
+                    H_Busy or H_LongBusy can be returned due to hcall maximum time
+                    limits, the partition should call back, until a non-busy return
+                    code is returned.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Platform firmware performs the download for the
+                  coherent platform facility, using the image bitstream data chunk.
+                  During this operation, H_Busy or H_LongBusy can be returned due to
+                  hcall maximum time limits, the partition should call again, until a
+                  non-busy return code is returned.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the coherent platform facility does not accept the download
+                    of the image bitstream data chunk or an error occurs while
+                    communicating with the hardware, H_Hardware is returned.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If hcall time limit is exceeded, but more data is left to
+                    copy in the current scatter/gather list, H_Busy or H_LongBusy is
+                    returned. The partition should call back with the current
+                    scatter/gather list.</para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>Once every entry in the current scatter/gather list is copied,
+              platform firmware returns H_CONTINUE. The partition then calls back
+              with a new scatter/gather list for the next chunk of image data and the
+              previous steps are repeated for each new list. This is repeated as long
+              as H_CONTINUE is returned.</para>
+          </listitem>
+
+          <listitem>
+            <para>The CAIA AFU descriptor is read for the downloaded AFU, if any
+              fields in the AFU descriptor are not compatible with the PSL,
+              H_UNSUPPORTED is returned.</para>
+          </listitem>
+
+          <listitem>
+            <para>If the Download operation completes successfully, if necessary,
+              platform firmware re-enables coherent platform function for operation.</para>
+          </listitem>
+
+          <listitem>
+            <para>H_Success is returned.</para>
+          </listitem>
+        </itemizedlist>
+
+        <note>
+          <para>Any error in the above steps will cause the download to be aborted.
+            The partition must retry H_DOWNLOAD_CA_FUNCTION, starting with the
+            Application Image header in order to complete the download.</para>
+        </note>
+        <note>
+          <para>After H_DOWNLOAD_CA_FUNCTION is performed, the partition should call
+            <emphasis>ibm,update-nodes</emphasis> and <emphasis>ibm,update-properties</emphasis>
+            to receive the current configuration for the coherent platform facility.</para>
+        </note>
+        <note>
+          <para>When H_DOWNLOAD_CA_FUNCTION is first called, some AFU or adapter resources
+            may be reserved for use during the download sequence, which may span
+            multiple H_DOWNLOAD_CA_FUNCTION calls, until the image download is
+            complete as indicated by a return of H_SUCCESS. When H_CONTINUE is returned,
+            indicating that more data is needed for the complete AFU image, the OS must call
+            H_DOWNLOAD_CA_FUNCTION again within 1 milliseconds, or the download sequence will
+            be abandoned and the OS may need to reset the AFU and restart the
+            download sequence from the beginning.</para>
+        </note>
+      </simplesect>
+    </section>
+
+    <section xml:id="sec_download_ca_facility">
+      <title>H_DOWNLOAD_CA_FACILITY</title>
+
+      <para>The architectural intent of this hcall is to provide platform support for
+        downloading a base adapter image to the coherent platform facility, and for
+        validating the entire image after the download. The partition provides download
+        data to the platform via an image scatter/gather list. The scatter/gather list
+        can architecturally describe up to 1 megabyte of data (256 entries of 4096
+        bytes each). The OS must subdivide the base adapter image into chunks that are
+        each 1 megabyte or less in size, and call H_DOWNLOAD_CA_FACILITY for each of
+        those chunks.</para>
+      <para>Base adapter image download requires two separate operations. The first is
+        the download operation, which processes the entire image, possibly returning
+        H_CONTINUE a number of times, and completing when H_Success is returned. The
+        second is the validate operation, which again processes the entire image with
+        a number of H_CONTINUE returns until it completes with H_Success. The base
+        adapter image is not usable until both operations have completed successfully.</para>
+
+      <simplesect>
+        <title>Syntax:</title>
+        <programlisting><![CDATA[int64                 /* H_Success:   For the download operation, the entire image */
+                      /*              has now been downloaded and is ready for the */
+                      /*              validate operation. For the validate */
+                      /*              operation, the entire image has been validated */
+                      /*              and will take effect the next time the adapter */
+                      /*              loads the image */
+                      /* H_Parameter: An incorrect parameter was supplied. */
+                      /* H_Hardware:  A hardware event prevented the operation. */
+                      /* H_Function:  The function is not supported. */
+                      /* H_State:     The coherent platform facility is not in a */
+                      /*              valid state. */
+                      /* H_Resource:  The coherent platform facility cannot be */
+                      /*              downloaded due to a resource restriction. */
+                      /* H_Authority: The partition does not have authority to */
+                      /*              download or the coherent platform facilities */
+                      /*              are not licensed to be used. */
+                      /* H_CONTINUE : Platform firmware has completed consuming the */
+                      /*              current image scatter/gather list, partition */
+                      /*              may now supply new scatter/gather list. */
+                      /* H_SG_LIST:   An entry in the scatter/gather list was */
+                      /*              invalid. */
+                      /* H_BAD_DATA:  Image verification failed. */
+                      /* H_Busy or H_LongBusy: Platform firmware requires more time */
+                      /*              to complete operation. */
+                      /* H_UNSUPPORTED: Downloaded function is not compatible. */
+hcall ( const uint64 H_DOWNLOAD_CA_FACILITY,
+        uint64 unit-address,
+        uint64 operation,
+        uint64 scatter-gather-list-address,
+        uint64 num-scatter-gather-list-entries,
+        uint64 continue-token);]]></programlisting>
+      </simplesect>
+
+      <simplesect>
+        <title>Parameters:</title>
+        <itemizedlist>
+          <listitem>
+            <para>uint64 unit-address: Unit Address per the device tree
+              <emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis> property
+              of the coherent platform facility</para>
+          </listitem>
+
+          <listitem>
+            <para>uint64 operation: operation to perform to the coherent platform
+              facility. Valid values are:
+              <itemizedlist>
+                <listitem>
+                  <para>Download: operation = 1, the base image in the coherent platform
+                    facility is first erased, and then programmed using the image supplied
+                    in the scatter/gather list.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Validate: operation = 2, the base image in the coherent platform
+                    facility is compared with the image supplied in the scatter/gather list.</para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>uint64 scatter-gather-list-address: 4K naturally aligned real buffer
+              containing scatter/gather list entries. The format of the scatter/gather
+              list is the same as for the H_DOWNLOAD_CA_FUNCTION hcall. All fields in
+              the scatter/gather list and all fields in the image header have
+              big-endian byte ordering.</para>
+          </listitem>
+
+          <listitem>
+            <para>uint64 num-scatter-gather-list-entries: number of block list entries
+              in the scatter/gather list</para>
+          </listitem>
+
+          <listitem>
+            <para>uint64 continue-token: Used to continue an operation if H_Busy or
+              H_CONTINUE is returned. Set to zero on first call. If H_Busy or
+              H_CONTINUE is returned then call again but use the value returned in
+              R4 from the previous call as the value of continue-token.
+              <table frame="all" pgwide="1" xml:id="table_base_adapter_image_header_version1">
+                <?dbhtml table-width="80%" ?><?dbfo table-width="80%" ?>
+                <title>Base Adapter Image Header, Version 1</title>
+                <tgroup cols="4">
+                  <colspec colname="c1" colwidth="25*" />
+                  <colspec colname="c2" colwidth="10*" align="center" />
+                  <colspec colname="c3" colwidth="10*" align="center" />
+                  <colspec colname="c4" colwidth="55*" />
+                  <thead valign="middle">
+                    <row>
+                      <entry align="center">
+                        <para>
+                          <emphasis role="bold">Name</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <emphasis role="bold">Offset</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <emphasis role="bold">Length</emphasis>
+                        </para>
+                      </entry>
+                      <entry align="center">
+                        <para>
+                          <emphasis role="bold">Description</emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                  </thead>
+                  <tbody valign="middle">
+                    <row>
+                      <entry>
+                        <para>Version</para>
+                      </entry>
+                      <entry>
+                        <para>0</para>
+                      </entry>
+                      <entry>
+                        <para>2</para>
+                      </entry>
+                      <entry>
+                        <para>Version of the base adapter image header, value = 1</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Reserved</para>
+                      </entry>
+                      <entry>
+                        <para>2</para>
+                      </entry>
+                      <entry>
+                        <para>6</para>
+                      </entry>
+                      <entry>
+                        <para>Set to zero.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Vendor ID</para>
+                      </entry>
+                      <entry>
+                        <para>8</para>
+                      </entry>
+                      <entry>
+                        <para>2</para>
+                      </entry>
+                      <entry>
+                        <para>PCI Vendor ID of the coherent platform facility</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Device ID</para>
+                      </entry>
+                      <entry>
+                        <para>10</para>
+                      </entry>
+                      <entry>
+                        <para>2</para>
+                      </entry>
+                      <entry>
+                        <para>PCI Device ID of the coherent platform facility</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Subsystem Vendor ID</para>
+                      </entry>
+                      <entry>
+                        <para>12</para>
+                      </entry>
+                      <entry>
+                        <para>2</para>
+                      </entry>
+                      <entry>
+                        <para>PCI Subsystem Vendor ID of the coherent platform facility</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Subsystem ID</para>
+                      </entry>
+                      <entry>
+                        <para>14</para>
+                      </entry>
+                      <entry>
+                        <para>2</para>
+                      </entry>
+                      <entry>
+                        <para>PCI Subsystem ID of the coherent platform facility</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Image Offset</para>
+                      </entry>
+                      <entry>
+                        <para>16</para>
+                      </entry>
+                      <entry>
+                        <para>8</para>
+                      </entry>
+                      <entry>
+                        <para>Offset to the base adapter image bitstream</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Image Length</para>
+                      </entry>
+                      <entry>
+                        <para>24</para>
+                      </entry>
+                      <entry>
+                        <para>8</para>
+                      </entry>
+                      <entry>
+                        <para>Length of the base adapter image bitstream</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Reserved</para>
+                      </entry>
+                      <entry>
+                        <para>32</para>
+                      </entry>
+                      <entry>
+                        <para>96</para>
+                      </entry>
+                      <entry>
+                        <para>Set to zero</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry namest='c1' nameend='c4'>
+                        <para>&#160;</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para><emphasis>Image Bitstream</emphasis></para>
+                      </entry>
+                      <entry>
+                        <para><emphasis>X</emphasis></para>
+                      </entry>
+                      <entry>
+                        <para><emphasis>Y</emphasis></para>
+                      </entry>
+                      <entry>
+                        <para><emphasis>Base adapter image bitstream, where X = Image
+                          Offset and Y = Image Length</emphasis></para>
+                      </entry>
+                    </row>
+                  </tbody>
+                </tgroup>
+              </table>
+            </para>
+          </listitem>
+        </itemizedlist>
+      </simplesect>
+
+      <simplesect>
+        <title>Return Values:</title>
+        <itemizedlist>
+          <listitem>
+            <para>R4 on H_Busy or H_LongBusy or H_CONTINUE contains the continue-token
+              to be used on the next call</para>
+          </listitem>
+        </itemizedlist>
+      </simplesect>
+
+      <simplesect>
+        <title>Semantics:</title>
+        <itemizedlist>
+          <listitem>
+            <para>Verify that coherent platform facilities are licensed to be used,
+              else return H_Authority.</para>
+          </listitem>
+
+          <listitem>
+            <para>Verify that the unit-address parameter is valid else return H_Parameter.</para>
+          </listitem>
+
+          <listitem>
+            <para>If the coherent-platform-facility cannot be downloaded at this
+              time due to a resource constraint, H_Resource is returned.</para>
+          </listitem>
+
+          <listitem>
+            <para>If the coherent platform facility does not support download,
+              return H_Function.</para>
+          </listitem>
+
+          <listitem>
+            <para>If a download is in progress for the coherent
+            platform facility, return H_State.</para>
+          </listitem>
+
+          <listitem>
+            <para>If the partition does not have the authority to perform download
+              (<emphasis role="bold"><literal>&#8220;ibm,privileged-function&#8221;</literal></emphasis>
+              property is 0 or not present), return H_Authority.</para>
+          </listitem>
+
+          <listitem>
+            <para>If the coherent platform facility is in a Temporary Unavailable E
+              rror State, return H_State.</para>
+          </listitem>
+
+          <listitem>
+            <para>If the scatter-gather-list-address does not describe a 4K byte
+              naturally aligned buffer, return H_Parameter.</para>
+          </listitem>
+
+          <listitem>
+            <para>If the Base Adapter Image Header version is not supported by platform
+              firmware, return H_BAD_DATA.</para>
+          </listitem>
+
+          <listitem>
+            <para>If necessary, platform firmware disables the coherent platform facility
+              from operation.</para>
+          </listitem>
+
+          <listitem>
+            <para>For each entry in the scatter/gather list described by
+              scatter-gather-list-address:
+              <itemizedlist>
+                <listitem>
+                  <para>Platform firmware validates address and length in the scatter/gather
+                    list entry. The buffer described should not cross a 4K page boundary.
+                    If invalid, returns H_SG_LIST.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Platform firmware copies data from the scatter/gather list entry
+                    to the platform firmware buffer.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Platform firmware verifies the image bitstream data chunk in the
+                    platform buffer. If platform firmware determines the image bitstream
+                    data chunk is not valid, return H_BAD_DATA. During this operation,
+                    H_Busy or H_LongBusy can be returned due to hcall maximum time
+                    limits, the partition should call back, until a non-busy return
+                    code is returned.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Platform firmware performs the download or validate operation for the
+                  coherent platform facility, using the image bitstream data chunk.
+                  During this operation, H_Busy or H_LongBusy can be returned due to
+                  hcall maximum time limits, the partition should call again, until a
+                  non-busy return code is returned.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the coherent platform facility does not accept the download
+                    of the image bitstream data chunk or an error occurs while
+                    communicating with the hardware, H_Hardware is returned.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If hcall time limit is exceeded, but more data is left to
+                    copy in the current scatter/gather list, H_Busy or H_LongBusy is
+                    returned. The partition should call back with the current
+                    scatter/gather list.</para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>Once every entry in the current scatter/gather list is copied,
+              platform firmware returns H_CONTINUE. The partition then calls back
+              with a new scatter/gather list for the next chunk of image data and the
+              previous steps are repeated for each new list. This is repeated as long
+              as H_CONTINUE is returned.</para>
+          </listitem>
+
+          <listitem>
+            <para>If the validate operation completes successfully, platform
+              firmware re-enables coherent platform facility for operation if necessary.</para>
+          </listitem>
+          <listitem>
+            <para>H_Success is returned.</para>
+          </listitem>
+        </itemizedlist>
+
+        <note>
+          <para>Any error in the above steps will cause the download to be aborted.
+            To complete the download, the partition must retry both H_DOWNLOAD_CA_FACILITY
+            operations, including the Base Adapter Image header for each operation.</para>
+        </note>
+        <note>
+          <para>After H_DOWNLOAD_CA_FACILITY is performed, the partition should call
+            <emphasis>ibm,update-nodes</emphasis> and <emphasis>ibm,update-properties</emphasis>
+            to receive the current configuration for the functions under this
+            coherent platform facility.</para>
+        </note>
+        <note>
+          <para>When H_DOWNLOAD_CA_FACILITY is first called, some adapter resources
+            may be reserved for use during the download sequence, which may span
+            multiple H_DOWNLOAD_CA_FACILITY calls, until the image download is
+            complete as indicated by a return of H_SUCCESS. When H_CONTINUE is returned,
+            indicating that more data is needed for the complete image, the OS must call
+            H_DOWNLOAD_CA_FACILITY again within 3 seconds, or the download sequence may
+            be abandoned and the OS may need to reset the facility and restart the
+            download sequence from the beginning.</para>
+        </note>
+      </simplesect>
+    </section>
+
+    <section xml:id="sec_control_ca_facility">
+      <title>H_CONTROL_CA_FACILITY</title>
+      <para>This H_CONTROL_CA_FACILITY hypervisor call allows the partition to manipulate
+        or query certain coherent platform facility behaviors.</para>
+
+      <simplesect>
+        <title>Syntax:</title>
+        <programlisting><![CDATA[int64                 /* H_Success:   The operation is completed for the coherent */
+                      /*              platform facility */
+                      /* H_Authority: The operating system does not have authority */
+                      /*              to control the coherent platform facility or */
+                      /*              the coherent platform facilities are not */
+                      /*              licensed to be used. */
+                      /* H_Parameter: An incorrect parameter was supplied. */
+                      /* H_Hardware:  A hardware event prevented the control */
+                      /*              operation. */
+                      /* H_State:     The state was invalid for the operation. */
+                      /* H_Busy or H_LongBusy: If the hcall requires more */
+                      /*              execution time, Busy will be returned and */
+                      /*              the OS is required to call back until Busy */
+                      /*              is no longer returned. */
+                      /* H_Not_Found: The operation supplied was not valid. */
+                      /* H_SG_LIST:   A scatter/gather list entry was invalid. */
+                      /* H_Function:  The function is not supported. */
+                      /* R4 contains the continue-token for the next call on Busy */
+                      /*    return code. */
+                      /* R4 contains operation-specific data if applicable on */
+                      /*    Success return code. */
+hcall ( const uint64 H_CONTROL_CA_FACILITY,
+        uint64 unit-address,
+        uint64 operation,
+        uint64 parameter1,
+        uint64 parameter2,
+        uint64 parameter3,
+        uint64 parameter4,
+        uint64 continue-token);]]></programlisting>
+      </simplesect>
+
+      <simplesect>
+        <title>Parameters:</title>
+        <itemizedlist>
+          <listitem>
+            <para>uint64 unit-address: Unit Address per the device tree
+              <emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis> property
+              of the coherent platform facility</para>
+          </listitem>
+
+          <listitem>
+            <para>uint64 operation: operation to perform to the coherent platform
+              facility. Valid values are:
+              <itemizedlist>
+                <listitem>
+                  <para>Reset: operation = 1, initiate a reset to the coherent platform
+                    facility, this is used when the partition needs to reset the
+                    coherent platform facility and all of its child coherent platform
+                    functions to a clean state. All attached processes and state are
+                    cleared by firmware after this reset. If a new base adapter image
+                    has been downloaded, that image will be activated.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Collect VPD: operation = 2, collect VPD for the coherent
+                    platform facility.</para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>uint64 parameter1: parameter 1 for operations, meaning changes based on the operation.</para>
+          </listitem>
+
+          <listitem>
+            <para>uint64 parameter2: parameter 2 for operations, meaning changes based on the operation.</para>
+          </listitem>
+
+          <listitem>
+            <para>uint64 parameter3: parameter 3 for operations, meaning changes based on the operation.</para>
+          </listitem>
+
+          <listitem>
+            <para>uint64 parameter4: parameter 4 for operations, meaning changes based on the operation.</para>
+          </listitem>
+
+          <listitem>
+            <para>uint64 continue-token: Used to continue an operation if H_Busy is returned.
+              Set to zero on first call. If H_Busy is returned then call again but use the value
+              returned in R4 from the previous call as the value of continue-token.
+
+              <informaltable frame="all" pgwide="1">
+                <tgroup cols="2">
+                  <colspec colname="c1" colwidth="20*" align="center" />
+                  <colspec colname="c2" colwidth="80*" />
+                  <thead valign="middle">
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold">Operation</emphasis>
+                        </para>
+                      </entry>
+                      <entry align="center">
+                        <para>
+                          <emphasis role="bold">Parameters</emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                  </thead>
+                  <tbody valign="middle">
+                    <row>
+                      <entry>
+                        <para>Reset</para>
+                      </entry>
+                      <entry>
+                        <para>None</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Collect VPD</para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <itemizedlist spacing="compact">
+                            <listitem>
+                              <para>Parameter1 = 4K naturally aligned real buffer containing
+                                scatter/gather list entries. All fields in the scatter/gather
+                                list have big-endian byte ordering.</para>
+                            </listitem>
+                            <listitem>
+                              <para>Parameter2 = number of entries in the scatter/gather
+                                list, valid values are between 0 and 256</para>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                      </entry>
+                    </row>
+                  </tbody>
+                </tgroup>
+              </informaltable>
+            </para>
+          </listitem>
+        </itemizedlist>
+      </simplesect>
+
+      <simplesect>
+        <title>Semantics:</title>
+        <itemizedlist>
+          <listitem>
+            <para>Verify that coherent platform facilities are licensed to be used, else
+              return H_Authority.</para>
+          </listitem>
+
+          <listitem>
+            <para>Verify that the unit-address parameter is valid else return H_Parameter.</para>
+          </listitem>
+
+          <listitem>
+            <para>If operation is Reset:
+              <itemizedlist>
+                <listitem>
+                  <para>If coherent platform facility is in Temporarily Unavailable error
+                    state or is already performing a reset, return H_State.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If partition is not allowed to perform a Reset
+                    (<emphasis role="bold"><literal>&#8220;ibm,privileged-facility&#8221;</literal></emphasis>
+                    property is 0 or not present), return H_Authority.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Set Temporarily Unavailable error state for the coherent
+                    platform facility and all child coherent platform functions.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Initiate reset of the coherent platform facility.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the Reset operation exceeds the time allowed for an hcall,
+                    R4 is set to the continue-token and H_Busy or H_LongBusy is returned.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Return H_Success</para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>If operation is Collect VPD:
+              <itemizedlist>
+                <listitem>
+                  <para>If parameter1 does not describe a valid 4K aligned real address, return H_Parameter.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If parameter2 is greater than 256, return H_Parameter.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If a scatter/gather list entry specifies an invalid address,
+                    or specifies a buffer that crosses a page boundary, return H_SG_LIST.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the coherent platform facility is not in a Normal Error State,
+                    return H_State.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If platform firmware cannot retrieve the VPD from the coherent
+                    platform facility, return H_Function.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Platform firmware collects the VPD from the coherent platform
+                    facility and places it in the partition buffer described by
+                    parameter1 and parameter2. The data will be truncated as necessary
+                    to fit in the provided buffer. The data is stored as a bytestream;
+                    the first byte in the buffer corresponds to byte 0 of the VPD.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the Collect VPD operation exceeds the time allowed for an hcall,
+                    R4 is set to the continue-token and H_Busy or H_LongBusy is returned.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If a hardware error occurs during the Collect VPD operation,
+                    return H_Hardware.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Return H_Success, and R4 is set to the length of the available VPD,
+                    which may be different than the amount of data actually stored in the
+                    partition buffer. It may also be different than the value reported in the
+                    <emphasis role="bold"><literal>&#8220;ibm,vpd-size&#8221;</literal></emphasis>
+                    property, though it will not be greater than that. A length of 0
+                    means no VPD has been provided for the coherent platform facility.</para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>If operation is unknown, return H_Not_Found.</para>
+          </listitem>
+        </itemizedlist>
+      </simplesect>
     </section>
   </section>
 </chapter>

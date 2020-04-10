@@ -336,6 +336,7 @@
   <!-- Document specific appendices -->
   <xi:include href="app_service_indicators.xml"/>
   <xi:include href="app_fault_v_errorlog.xml"/>
+  <xi:include href="app_capi_error_handling.xml"/>
   <xi:include href="app_bibliography.xml"/>
   <xi:include href="app_glossary.xml"/>
 
