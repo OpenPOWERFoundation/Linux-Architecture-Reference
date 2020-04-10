@@ -4160,7 +4160,7 @@ hcall ( const unit64 H_VIOCTL, /* Query/Set behaviors for the virtual IOA */
                   the Hypervisor should wait after enqueueing the “Prepare for Suspend”
                   transport event on the server's command queue until receiving the
                   H_VIOCTL READY_FOR_SUSPEND subfunction from the server. The
-                  time- out value should take into account the maximum amount of
+                  timeout value should take into account the maximum amount of
                   time to queisce I/O operations prior to migration of the client
                   partition.</para>
               </listitem>
@@ -4198,10 +4198,10 @@ hcall ( const unit64 H_VIOCTL, /* Query/Set behaviors for the virtual IOA */
             event on a VSCSI or VFC server adapter for which this function is called. If
             enabled via the H_VIOCTL ENABLE_PREPARE_FOR_SUSPEND subfunction, the server
             should call this H_VIOCTL READY_FOR_SUSPEND subfunction after receiving the
-            “Prepare For Sus- pend” transport event and quiescing I/O operations to the
+            “Prepare For Suspend” transport event and quiescing I/O operations to the
             backing store. If the server is unable to call this subfunction within the
             timeout specified in the H_VIOCTL ENABLE_PREPARE_FOR_SUSPEND subfunction,
-            the migration op- eration on the client partition will be aborted.
+            the migration operation on the client partition will be aborted.
             <itemizedlist>
               <listitem>
                 <para>Validate that the unit-address corresponds to a VSCSI or VFC

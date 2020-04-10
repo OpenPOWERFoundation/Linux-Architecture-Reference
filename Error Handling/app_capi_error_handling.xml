@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2016 OpenPOWER Foundation
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<appendix xmlns="http://docbook.org/ns/docbook"
+xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="app_coherent_platform_facility_error_handling_recovery">
+  <title>Coherent Platform Facility Error Handling and Recovery</title>
+
+  <para>During the course of operation, a coherent platform function can encounter errors.
+    Some possible reason for errors are:</para>
+
+  <itemizedlist>
+    <listitem>
+      <para>Hardware recoverable and unrecoverable errors</para>
+    </listitem>
+    <listitem>
+      <para>Transient and over-threshold correctable errors</para>
+    </listitem>
+  </itemizedlist>
+
+  <para>This architecture is not meant to contain an exhaustive list of errors,
+    implementations can vary.</para>
+
+  <section xml:id="app_capi_error_states">
+    <title>Error States</title>
+
+    <informaltable frame="all" pgwide="1">
+      <tgroup cols="3">
+        <colspec colname="c1" colwidth="25*" align="center" />
+        <colspec colname="c2" colwidth="10*" align="center" />
+        <colspec colname="c2" colwidth="65*" />
+        <thead valign="middle">
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">State</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">Value</emphasis>
+              </para>
+            </entry>
+            <entry align="center">
+              <para>
+                <emphasis role="bold">Description</emphasis>
+              </para>
+            </entry>
+          </row>
+        </thead>
+        <tbody valign="middle">
+          <row>
+            <entry>
+              <para>Normal</para>
+            </entry>
+            <entry>
+              <para>1</para>
+            </entry>
+            <entry>
+              <para>Coherent platform function is operating normally. This is the
+                default state.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Disabled</para>
+            </entry>
+            <entry>
+              <para>2</para>
+            </entry>
+            <entry>
+              <para>Coherent platform function is operating, but all process
+                execution is disabled.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Temporarily Unavailable</para>
+            </entry>
+            <entry>
+              <para>3</para>
+            </entry>
+            <entry>
+              <para>Platform has initiated error recovery and the coherent
+                platform function is temporarily not available.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Permanently Unavailable</para>
+            </entry>
+            <entry>
+              <para>4</para>
+            </entry>
+            <entry>
+              <para>Platform has encountered a fatal error with the coherent platform
+                function. Recovery is impossible, without partition reboot, DLPAR
+                re-assignment, system reboot or hardware replacement.</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </informaltable>
+  </section>
+
+  <section xml:id="app_coherent_platform_function_state_transitions">
+    <title>Coherent Platform Function State Transitions</title>
+
+    <informaltable frame="all" pgwide="1" >
+      <tgroup cols="5">
+        <colspec colname="c1" colwidth="20*" align="center" />
+        <colspec colname="c2" colwidth="20*" align="center" />
+        <colspec colname="c3" colwidth="20*" align="center" />
+        <colspec colname="c4" colwidth="20*" align="center" />
+        <colspec colname="c5" colwidth="20*" align="center" />
+        <thead valign="middle">
+          <row>
+            <entry morerows="1">
+              <para><emphasis role="bold">Initial State</emphasis></para>
+            </entry>
+            <entry namest='c2' nameend='c5'>
+              <para>Final State</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para><emphasis role="bold">1</emphasis><?linebreak?>
+                <emphasis role="bold">Normal</emphasis></para>
+            </entry>
+            <entry>
+              <para><emphasis role="bold">2</emphasis><?linebreak?>
+                <emphasis role="bold">Disabled</emphasis></para>
+            </entry>
+            <entry>
+              <para><emphasis role="bold">3</emphasis><?linebreak?>
+                <emphasis role="bold">Temporarily Unavailable</emphasis></para>
+            </entry>
+            <entry>
+              <para><emphasis role="bold">4</emphasis><?linebreak?>
+                <emphasis role="bold">Permanently Unavailable</emphasis></para>
+            </entry>
+          </row>
+        </thead>
+        <tbody valign="middle">
+          <row>
+            <entry>
+              <para>1<?linebreak?>Normal</para>
+            </entry>
+            <entry>
+              <?dbhtml bgcolor="#87878a" ?><?dbfo bgcolor="#87878a" ?>
+              <para>&#160;</para>
+            </entry>
+            <entry>
+              <para>Platform initiated action</para>
+            </entry>
+            <entry>
+              <para>Platform initiated action during recovery /
+                H_CONTROL_<?linebreak?>CA_FUNCTION Read Error State</para>
+            </entry>
+            <entry>
+              <para>Platform detected permanent error</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>2<?linebreak?>Disabled</para>
+            </entry>
+            <entry>
+              <para>H_CONTROL_<?linebreak?>CA_FUNCTION / Reset or Partition Reboot /
+                DLPAR re-assignment</para>
+            </entry>
+            <entry>
+              <?dbhtml bgcolor="#87878a" ?><?dbfo bgcolor="#87878a" ?>
+              <para>&#160;</para>
+            </entry>
+            <entry>
+              <para>Platform initiated action</para>
+            </entry>
+            <entry>
+              <para>Platform detected permanent error</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>3<?linebreak?>Temporarily Unavailable</para>
+            </entry>
+            <entry>
+              <?dbhtml bgcolor="#dec69e" ?><?dbfo bgcolor="#dec69e" ?>
+              <para>Not a valid transition, must go through state 2</para>
+            </entry>
+            <entry>
+              <para>Platform initiated action after recovery</para>
+            </entry>
+            <entry>
+              <?dbhtml bgcolor="#87878a" ?><?dbfo bgcolor="#87878a" ?>
+              <para>&#160;</para>
+            </entry>
+            <entry>
+              <para>Platform detected permanent error</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>4<?linebreak?>Permanently Unavailable</para>
+            </entry>
+            <entry>
+              <para>Partition reboot or DLPAR reassignment</para>
+            </entry>
+            <entry>
+              <?dbhtml bgcolor="#dec69e" ?><?dbfo bgcolor="#dec69e" ?>
+              <para>Not a valid transition</para>
+            </entry>
+            <entry>
+              <para>H_CONTROL_<?linebreak?>CA_FACILITY / Reset</para>
+            </entry>
+            <entry>
+              <?dbhtml bgcolor="#87878a" ?><?dbfo bgcolor="#87878a" ?>
+              <para>&#160;</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </informaltable>
+  </section>
+
+  <section xml:id="app_general_error_recovery_procedure">
+    <title>General Error Recovery Procedure</title>
+
+    <para>The following flow is a description of the general error recovery steps
+      required to reset operation of the coherent platform function. This recovery
+      is initiated by platform firmware or after an error is detected by the OS.</para>
+
+    <orderedlist>
+      <listitem>
+        <para>If necessary, platform firmware freezes OS MMIO access for coherent
+          platform function, error information is col- lected and cached in platform
+          firmware for later retrieval by OS.</para>
+      </listitem>
+      <listitem>
+        <para>Platform firmware terminates and removes all processes and disables
+          coherent platform function if possible.</para>
+      </listitem>
+      <listitem>
+        <para>The error state for the coherent platform function changes to
+          Temporarily Unavailable.</para>
+      </listitem>
+      <listitem>
+        <para>Platform firmware resets and reconfigures hardware associated with
+          coherent platform function.</para>
+      </listitem>
+      <listitem>
+        <para>Platform firmware unfreezes OS MMIO access and sets coherent
+          platform function to Disabled.</para>
+      </listitem>
+      <listitem>
+        <para>OS calls H_CONTROL_CA_FUNCTION with operation of “Read Error State”
+          until it observes state of Disabled.</para>
+      </listitem>
+      <listitem>
+        <para>Optionally, OS collects any coherent platform function error data via
+          H_CONTROL_CA_FUNCTION with operation of “Get Error Buffer” and “Get Error
+          Log”.</para>
+      </listitem>
+      <listitem>
+        <para>OS calls H_CONTROL_CA_FUNCTION with operation of “Get Download Status”
+          in order to determine if a download is required for the coherent platform
+          function, if so, OS performs the download. After the download the coherent
+          platform function is still in Disabled error state.</para>
+      </listitem>
+      <listitem>
+        <para>OS calls <emphasis>ibm,update-nodes</emphasis> and
+          <emphasis>ibm,update-properties</emphasis> for the affected
+          coherent platform facility in order to receive current configuration values.</para>
+      </listitem>
+      <listitem>
+        <para>OS uses H_CONTROL_CA_FUNCTION with operation of “Reset” to change the
+          coherent platform function error state back to Normal.</para>
+      </listitem>
+    </orderedlist>
+  </section>
+
+  <section xml:id="app_os_application_detected_error">
+    <title>OS Application Detected Error</title>
+
+    <para>Application detects an error, using implementation dependent methods.</para>
+
+    <orderedlist>
+      <listitem>
+        <para>Application detects an error and determines a reset is necessary.</para>
+      </listitem>
+      <listitem>
+        <para>Application asks the OS to perform a reset to the AFU.</para>
+      </listitem>
+      <listitem>
+        <para>OS calls H_CONTROL_CA_FUNCTION with operation of “Reset”.</para>
+      </listitem>
+      <listitem>
+        <para>Platform firmware performs a reset to the coherent platform function.
+          See H_CONTROL_CA_FUNCTION with “Reset” operation for details.</para>
+      </listitem>
+      <listitem>
+        <para>OS receives return code from H_CONTROL_CA_FUNCTION indicating if the
+          reset was successful.</para>
+      </listitem>
+      <listitem>
+        <para>If necessary, the OS can performs a download of the coherent platform
+          function via H_DOWNLOAD_CA_FUNCTION.</para>
+      </listitem>
+      <listitem>
+        <para>OS then re-attachs process contexts as necessary and the application
+          resumes normal operation.</para>
+      </listitem>
+      <listitem>
+        <para>If Reset operation does not clear error, OS should signal serviceable
+          error to HMC and discontinue use of coherent platform function.</para>
+      </listitem>
+    </orderedlist>
+  </section>
+
+  <section xml:id="app_os_application_download">
+    <title>Application Download</title>
+
+    <para>There are some instances in which the OS would like to re-download a c
+      oherent platform function in operation. This could be due to unexpected
+      behavior or bad state.</para>
+
+    <orderedlist>
+      <listitem>
+        <para>OS resets the coherent platform function by calling
+          H_CONTROL_CA_FUNCTION with operation of “Reset”. The reset
+          clears the download state.</para>
+      </listitem>
+      <listitem>
+        <para>OS performs download to coherent platform function using
+          H_DOWNLOAD_CA_FUNCTION and after a successful download.</para>
+      </listitem>
+      <listitem>
+        <para>OS calls <emphasis>ibm,update-nodes</emphasis> and
+          <emphasis>ibm,update-properties</emphasis> for the affected
+          coherent platform facility in order to receive current configuration values.</para>
+      </listitem>
+      <listitem>
+        <para>OS can attach processes and proceed with operation.</para>
+      </listitem>
+    </orderedlist>
+  </section>
+</appendix>

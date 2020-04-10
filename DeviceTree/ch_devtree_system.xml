@@ -562,7 +562,7 @@
         <para>If the boot sequence is interrupted by the multiboot key sequence,
         then the firmware shall present a
         <emphasis>multiboot menu</emphasis> that provides at least the functions
-        listed below. The form of the menu (e.g. graphical or text- oriented) and
+        listed below. The form of the menu (e.g. graphical or text-oriented) and
         the selection mechanism (e.g. numbered choices, arrow keys, or mouse) are
         platform-dependent.</para>
         <para>Multiboot Required Functions:</para>
@@ -1257,6 +1257,22 @@
                       </entry>
                       <entry>
                         <para>Logical Port</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>COPLATFAC</para>
+                      </entry>
+                      <entry>
+                        <para>Coherent Platform Facility</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>COPLATFUN</para>
+                      </entry>
+                      <entry>
+                        <para>Coherent Platform Function</para>
                       </entry>
                     </row>
                   </tbody>
@@ -4666,7 +4682,7 @@
                 followed by N integers encoded as with
                 <emphasis role="bold"><literal>encode-int</literal></emphasis>
                 each representing
-                current number of unique asso- ciativity domains the platform supports at that level.</para>
+                current number of unique associativity domains the platform supports at that level.</para>
               </listitem>
   			  </varlistentry>
 
@@ -8812,6 +8828,947 @@
 
     </section>
 
+    <section xml:id="sec_ibm_coherent_platform_facility_node">
+      <title><literal>/ibm,coherent-platform-facility node</literal></title>
+
+      <para>The <emphasis role="bold">ibm,coherent-platform-facility</emphasis> nodes
+        represent the coherent platform facilities. Standard property names associated
+        with the <emphasis role="bold">ibm,coherent-platform-facility</emphasis> node
+        have special values as specified below.
+      </para>
+
+      <para>Three-cell addresses encoded with encode-phys shall be formatted as follows:
+        <programlisting><![CDATA[Bit#                33222222 22221111 11111100 00000000
+                    10987654 32109876 54321098 76543210
+phys.hicell:        00000000 00000000 00000000 tttttttt
+phys.midcell:       hhhhhhhh hhhhhhhh hhhhhhhh hhhhhhhh
+phys.locell:        llllllll llllllll llllllll llllllll
+
+where:
+        t       =   is the type of address, enumerated as:
+                    0x00 = Unit Addressing
+                    0x01 = PSL Privilege 2 Area Address
+                    0x02 = AFU Problem State Area Address
+                    0x03 = Memory Mapped Address
+        hh..hh  =   is a 32-bit unsigned number
+        ll..ll  =   is a 32-bit unsigned number]]></programlisting>
+      </para>
+
+      <para>When the hh...hh and ll...ll fields are concatenated to form a larger
+        number, hh...hh is the most significant portion and ll...ll is the least
+        significant portion.</para>
+
+      <variablelist>
+        <varlistentry>
+          <term><emphasis role="bold"><literal>&#8220;#address-cells&#8221;</literal></emphasis></term>
+            <listitem>
+              <para>Standard <emphasis>property name</emphasis>, encoded as with
+               <emphasis role="bold"><literal>encode-int</literal></emphasis>,
+               that specifies the number of cells required to represent a child’s
+               bus address. The value of
+               <emphasis role="bold"><literal>&#8220;#address-cells&#8221;</literal></emphasis>
+               for the child's bus address shall be 3.
+              </para>
+            </listitem>
+			  </varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold"><literal>&#8220;#size-cells&#8221;</literal></emphasis></term>
+            <listitem>
+              <para>Standard <emphasis>property name</emphasis>, encoded as with
+               <emphasis role="bold"><literal>encode-int</literal></emphasis>,
+               that specifies the number of size cells required to represent a child’s
+               bus address. Shall have the value of 2 indicating that a child node may
+               take physical address space.
+              </para>
+            </listitem>
+			  </varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold"><literal>&#8220;compatible&#8221;</literal></emphasis></term>
+            <listitem>
+              <para>Standard <emphasis>property name</emphasis> per
+              <xref linkend="dbdoclet.50569387_45524"/>
+               specifying the programming models that are compatible with this coherent
+               platform facility. The last value of this property shall be
+               <emphasis role="bold"><literal>&#8220;ibm,coherent-platform-facility&#8221;</literal></emphasis>.
+              </para>
+            </listitem>
+			  </varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold"><literal>&#8220;name&#8221;</literal></emphasis></term>
+            <listitem>
+              <para>Standard <emphasis>property name</emphasis> per
+                <xref linkend="dbdoclet.50569387_45524"/>
+                to define the name of the package. This property is encoded with
+                <emphasis role="bold"><literal>encode-string</literal></emphasis>
+                and the value shall be:
+                <emphasis role="bold"><literal>&#8220;ibm,coherent-platform-facility&#8221;</literal></emphasis>.
+              </para>
+            </listitem>
+			  </varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold"><literal>&#8220;model&#8221;</literal></emphasis></term>
+            <listitem>
+              <para>Standard <emphasis>property name</emphasis> per
+                <xref linkend="dbdoclet.50569387_45524"/>
+                to define a manufacturer’s model number. This value defines the programming
+                version of the facility and has the value of the coherent platform
+                facility PSL version.
+              </para>
+            </listitem>
+			  </varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis></term>
+            <listitem>
+              <para>Standard
+              <emphasis>property name</emphasis> that defines the coherent platform
+              facility handle.</para>
+
+              <para>
+              <emphasis>prop-encoded-array</emphasis>: List of
+              (<emphasis>phys-addr, size</emphasis>) specifications.
+
+              <itemizedlist mark="none">
+                <listitem>
+                  <para><emphasis>phys-addr</emphasis> is encoded as with
+                  <emphasis role="bold"><literal>encode-phys</literal></emphasis> and
+                  <emphasis>size</emphasis> is encoded with
+                  <emphasis role="bold"><literal>encode-int</literal></emphasis>.</para>
+                </listitem>
+              </itemizedlist>
+
+              The first value of the property shall be the handle for use with
+              the coherent platform facility, where
+              <emphasis>phys-addr</emphasis>
+              denotes the unit-address. It shall have a size value of 0. This
+              value is always present.</para>
+            </listitem>
+			  </varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold"><literal>&#8220;ranges&#8221;</literal></emphasis></term>
+            <listitem>
+              <para>Standard
+              <emphasis>property name</emphasis> to define the mapping of the parent
+              address space to child address spaces.</para>
+
+              <para>
+              <emphasis>prop-encoded-array</emphasis>: List of
+              (<emphasis>child-phys, parent-phys,size</emphasis>) specifications.</para>
+
+              <itemizedlist mark="none">
+                <listitem>
+                  <para><emphasis>child-phys</emphasis> is an addresss, encoded as with
+                  <emphasis role="bold"><literal>encode-phys</literal></emphasis>, and
+                  is the child address and shall have a type field indicating Memory Mapped
+                  Address.</para>
+                </listitem>
+                <listitem>
+                  <para><emphasis>parent-phys</emphasis> is encoded as with
+                  <emphasis role="bold"><literal>encode-phys</literal></emphasis> and
+                  is the parent address.</para>
+                </listitem>
+                <listitem>
+                  <para><emphasis>size</emphasis> is encoded with
+                  <emphasis role="bold"><literal>encode-int</literal></emphasis>.</para>
+                </listitem>
+              </itemizedlist>
+            </listitem>
+			  </varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold"><literal>&#8220;ibm,loc-code&#8221;</literal></emphasis></term>
+            <listitem>
+              <para>Property name Property name specifying the unique and persistent
+                location code associated with this coherent platform facility p
+                resented as an encoded array as with
+                <emphasis role="bold"><literal>encode-string</literal></emphasis>.
+                The value shall be of the form specified in Ux-Px-Cx.
+              </para>
+            </listitem>
+			  </varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold"><literal>&#8220;interrupt-ranges&#8221;</literal></emphasis></term>
+            <listitem>
+              <para>Standard <emphasis>property name</emphasis> specifying the
+              interrupt-source number(s) and range(s) associated with this coherent
+              platform facility. The property is presented as an encoded array of
+              two cells per entry, each cell encoded as with
+              <emphasis role="bold"><literal>encode-int</literal></emphasis>,
+              with the first cell of an entry containing the first interrupt source
+              number (ISN <subscript>1</subscript>) of a range and the second cell of an entry containing
+              an unsigned integer, specifying the count (N) of ISNs in the range,
+              such that ISN1<subscript>1</subscript>+(N-1) specifies the value of the last
+              ISN<subscript>N</subscript> in the range.</para>
+
+              <para>The interrupt source numbers are assigned and utilized by the children of this node,
+                <emphasis role="bold"><literal>ibm,coherent-platform-function</literal></emphasis>.</para>
+            </listitem>
+			  </varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold"><literal>&#8220;device_type&#8221;</literal></emphasis></term>
+            <listitem>
+              <para>Standard
+              <emphasis>property name</emphasis> string encoded as with
+              <emphasis role="bold"><literal>encode-string</literal></emphasis> that defines the device type of the
+              node. For the coherent platform facility, the device type the value shall
+              be the string <emphasis role="bold"><literal>&#8220;capi&#8221;</literal></emphasis>.</para>
+            </listitem>
+			  </varlistentry>
+      </variablelist>
+
+      <para>Optionally the
+        <emphasis role="bold"><literal>/ibm,coherent-platform-facility</literal></emphasis>
+        node may contain the following properties.</para>
+
+      <variablelist>
+        <varlistentry>
+          <term><emphasis role="bold"><literal>&#8220;ibm,my-drc-index&#8221;</literal></emphasis></term>
+            <listitem>
+              <para>
+              <emphasis>property name</emphasis> denotes an integer index (value of the
+              entry in the
+              <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis> property) for the
+              connector between the node and the node&#8217;s parent.  The presence of
+              this indicates that the resource is dynamically reconfigurable.</para>
+              <para>
+              <emphasis>prop-encoded-array</emphasis>: An array of integers encoded as
+              with
+              <emphasis role="bold"><literal>encode-int</literal></emphasis>.</para>
+            </listitem>
+			  </varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis></term>
+            <listitem>
+              <para>
+              <emphasis>property name</emphasis> denotes an integer index to be used to
+              communicate to the firmware what connector is to be operated upon for the
+              various RTAS calls used for DR.</para>
+              <para>
+              <emphasis>prop-encoded-array</emphasis>: An integer encoded as with
+              <emphasis role="bold"><literal>encode-int</literal></emphasis> specifying
+              the number of items in the following list, followed by a list of integers also
+              encoded as with
+              <emphasis role="bold"><literal>encode-int</literal></emphasis>.</para>
+            </listitem>
+			  </varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis></term>
+            <listitem>
+              <para>
+              <emphasis>property name</emphasis> describes the external labeling of the
+              DR connectors.</para>
+              <para><emphasis>prop-encoded-array</emphasis>: An integer encoded as with
+              <emphasis role="bold"><literal>encode-int</literal></emphasis> specifying
+              the number of items in the following list, followed by a list of strings each
+              encoded as with
+              <emphasis role="bold"><literal>encode-string</literal></emphasis>.</para>
+
+              <para>The values shall be the location code for each child node.</para>
+            </listitem>
+			  </varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis></term>
+            <listitem>
+              <para>
+              <emphasis>property name</emphasis>, describes the type of each connector
+              associated with the node, in a human-readable form.</para>
+              <para>
+              <emphasis>prop-encoded-array</emphasis>: An integer encoded as with
+              <emphasis role="bold"><literal>encode-int</literal></emphasis>
+              specifying the number of items in the following list, followed by a list of strings each
+              encoded as with
+              <emphasis role="bold"><literal>encode-string</literal></emphasis>.</para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis></term>
+            <listitem>
+              <para>
+              <emphasis>property name</emphasis> gives the power domain number for each
+              connector associated with the node.</para>
+              <para>
+              <emphasis>prop-encoded-array</emphasis>: An integer encoded as with
+              <emphasis role="bold"><literal>encode-int</literal></emphasis>
+              specifying the number of items in the following list, followed by a list of integers also
+              encoded as with
+              <emphasis role="bold"><literal>encode-int</literal></emphasis>.</para>
+              <para>A value other than -1 indicates that the coherent platform facility
+                power is controlled by the
+                <emphasis>set-power-level</emphasis> RTAS call. A value of -1 indicates that no
+                <emphasis>set-power-level</emphasis> RTAS call is required.</para>
+            </listitem>
+			  </varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold"><literal>&#8220;ibm,phandle&#8221;</literal></emphasis></term>
+            <listitem>
+              <para>Package handle for the <emphasis>coherent-platform-facility</emphasis>.</para>
+            </listitem>
+			  </varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold"><literal>&#8220;ibm,cai-version&#8221;</literal></emphasis></term>
+            <listitem>
+              <para>Property name, encoded with
+                <emphasis role="bold"><literal>encode-int</literal></emphasis>,
+                that describes the CAIA version of the coherent platform facility.</para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold"><literal>&#8220;ibm,psl-revision&#8221;</literal></emphasis></term>
+            <listitem>
+              <para>Property name, encoded with
+                <emphasis role="bold"><literal>encode-int</literal></emphasis>,
+                that describes the PSL revision of the coherent platform facility.</para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold"><literal>&#8220;ibm,vpd-size&#8221;</literal></emphasis></term>
+            <listitem>
+              <para>The size in bytes, encoded as with
+                <emphasis role="bold"><literal>encode-int</literal></emphasis>,
+                or the VPD for the <emphasis>ibm,coherent-platform-facility</emphasis>.
+                This value is used to size the buffer in H_CONTROL_CA_FACILITY with
+                operation Collect VPD.</para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold"><literal>&#8220;status&#8221;</literal></emphasis></term>
+            <listitem>
+              <para>Standard
+              <emphasis>property name</emphasis> to indicate the operational status
+              of this device.</para>
+              <para>
+              <emphasis>prop-encoded-array</emphasis>: Text string, encoded with
+              <emphasis role="bold"><literal>encode-string</literal></emphasis>.</para>
+              <para>If this property is present, the value is a string indicated the
+                status of the device, as follows:</para>
+              <variablelist>
+                <varlistentry>
+                  <term>"okay"</term>
+                  <listitem>
+                    <para>The device is believed to be operational.</para>
+                  </listitem>
+                </varlistentry>
+                <varlistentry>
+                  <term>"disabled"</term>
+                  <listitem>
+                    <para>The device represented by this node is not operation, but it
+                      might become operational in the future (e.g., an external switch
+                      is turned off, or something isn’t plugged in.)</para>
+                  </listitem>
+                </varlistentry>
+                <varlistentry>
+                  <term>"fail"</term>
+                  <listitem>
+                    <para>The device represented by this node is not operational
+                      because a fault has been detected, and it is unlikely that the
+                      device will become operational without repair. No additional
+                      failure details are available.</para>
+                  </listitem>
+                </varlistentry>
+                <varlistentry>
+                  <term>"fail-xxx"</term>
+                  <listitem>
+                    <para>The device represented by this node is not operational
+                      because a fault has been detected, and it is unlikely that
+                      the device will become operational without repair. “xxx” is
+                      additional human-readable information about the particular
+                      fault condition that was detected.</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <para>The absence of this property means that the operational status is
+                unknown or okay.</para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold"><literal>&#8220;ibm,privileged-facility&#8221;</literal></emphasis></term>
+            <listitem>
+              <para>Property name, encoded as with
+                <emphasis role="bold"><literal>encode-int</literal></emphasis>,
+                that specifies if the <emphasis>ibm,coherent-platform-facility</emphasis>
+                is privileged.  The absence of this property or a property of 0
+                indicates the facility is not privileged.</para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold"><literal>&#8220;vendor-id&#8221;</literal></emphasis></term>
+            <listitem>
+              <para>Vendor ID from PCI header for the
+                <emphasis>ibm,coherent-platform-facility</emphasis></para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold"><literal>&#8220;device-id&#8221;</literal></emphasis></term>
+            <listitem>
+              <para>Device ID from PCI header for the
+                <emphasis>ibm,coherent-platform-facility</emphasis></para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold"><literal>&#8220;revision-id&#8221;</literal></emphasis></term>
+            <listitem>
+              <para>Revision ID from PCI header for the
+                <emphasis>ibm,coherent-platform-facility</emphasis></para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold"><literal>&#8220;class-code&#8221;</literal></emphasis></term>
+            <listitem>
+              <para>Class Code from PCI header for the
+                <emphasis>ibm,coherent-platform-facility</emphasis></para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold"><literal>&#8220;subsystem-vendor-id&#8221;</literal></emphasis></term>
+            <listitem>
+              <para>Subsystem Vendor ID from PCI header for the
+                <emphasis>ibm,coherent-platform-facility</emphasis></para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold"><literal>&#8220;subsystem-id&#8221;</literal></emphasis></term>
+            <listitem>
+              <para>Subsystem ID from PCI header for the
+                <emphasis>ibm,coherent-platform-facility</emphasis></para>
+            </listitem>
+        </varlistentry>
+      </variablelist>
+
+      <section xml:id="sec_children_of_the_ibm_coherent_platform_facility_node">
+        <title>Children of the /ibm,coherent-platform-facility node</title>
+
+        <para>The
+          <emphasis role="bold">ibm,coherent-platform-function</emphasis>
+          nodes are the children of the
+          <emphasis role="bold">/ibm,coherent-platform-facility</emphasis>
+          node represent the individual platform facility functions. Standard property
+          names associated with the children of the
+          <emphasis role="bold">/ibm,coherent-platform-facility</emphasis>
+          node have special values as specified below. Note the children of the
+          <emphasis role="bold">/ibm,coherent-platform-facility</emphasis>
+          node shall contain the following standard properties with their standard
+          definitions:</para>
+
+          <variablelist>
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;compatible&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para>Standard <emphasis>property name</emphasis> per
+                  <xref linkend="dbdoclet.50569387_45524"/>
+                   specifying the programming models that are compatible with this coherent
+                   platform function. A value may be present such as “capiVVVV,DDDD.SSSS.ssss”,
+                   where VVVV is “vendor-id”, DDDD is “device-id”, SSSS is “subsystem-vendor-id”
+                   and ssss is “subsystem-id”. The last value of this property shall be
+                   <emphasis role="bold"><literal>&#8220;ibm,coherent-platform-function&#8221;</literal></emphasis>.
+                  </para>
+                </listitem>
+    			  </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;name&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para>Standard <emphasis>property name</emphasis> per
+                    <xref linkend="dbdoclet.50569387_45524"/>
+                    to define the name of the package. This property is encoded with
+                    <emphasis role="bold"><literal>encode-string</literal></emphasis>
+                    and the value shall be:
+                    <emphasis role="bold"><literal>&#8220;ibm,coherent-platform-function&#8221;</literal></emphasis>.
+                  </para>
+                </listitem>
+    			  </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para>Standard
+                  <emphasis>property name</emphasis> that defines the coherent platform
+                  function device handle and mmio address regions.</para>
+
+                  <para>
+                    <emphasis>prop-encoded-array</emphasis>: List of
+                    (<emphasis>phys-addr, size</emphasis>) specifications.
+
+                    <itemizedlist mark="none">
+                      <listitem>
+                        <para><emphasis>phys-addr</emphasis> is encoded as with
+                          <emphasis role="bold"><literal>encode-phys</literal></emphasis>,
+                          indicating an address relative to value of the associated
+                          <emphasis>assigned-address</emphasis> value.</para>
+                      </listitem>
+                      <listitem>
+                        <para><emphasis>Size</emphasis> is encoded with
+                        <emphasis role="bold"><literal>encode-int</literal></emphasis>.</para>
+                      </listitem>
+                    </itemizedlist>
+
+                  The first value of the property shall be the handle for use in
+                  hypervisor calls to the coherent platform function. It shall have a
+                  type of Unit Address and size value of 0. This value is always present.</para>
+
+                  <para>Optionally additional values may be present that specify if
+                    the coherent-platform-function has access to PSL Privilege 2 Area
+                    or AFU Problem State Area indicated by the type field in the
+                    <emphasis>phys-addr</emphasis>.</para>
+
+                  <para>To calculate the address of memory-mapped area the
+                    <emphasis>assigned-address phys.mid,phys.lo</emphasis>
+                    field is added to the reg
+                    <emphasis>phys.mid,phys.lo</emphasis> field for the matching area
+                    to give the calculated address.</para>
+                </listitem>
+    			  </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;assigned-addresses&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para>Property name that defines the coherent platform
+                  function assigned mmio address regions.</para>
+
+                  <para>
+                    <emphasis>prop-encoded-array</emphasis>: List of
+                    (<emphasis>phys-addr, size</emphasis>) specifications.
+
+                    <itemizedlist mark="none">
+                      <listitem>
+                        <para><emphasis>phys-addr</emphasis> is encoded as with
+                          <emphasis role="bold"><literal>encode-phys</literal></emphasis>
+                          and denotes the assigned addresses for each register set.</para>
+                      </listitem>
+                      <listitem>
+                        <para><emphasis>size</emphasis> is encoded with
+                        <emphasis role="bold"><literal>encode-int</literal></emphasis>.</para>
+                      </listitem>
+                    </itemizedlist>
+                  </para>
+               </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;ibm,loc-code&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para>Property name specifying the unique and persistent location
+                    code associated with this coherent platform function presented
+                    as an encoded array as with
+                    <emphasis role="bold"><literal>encode-string</literal></emphasis>.
+                    The value shall be of the form specified in Ux-Px-Cx-Sy-Sz,
+                    where y is a logical platform function unit number and z is the
+                    virtual function unit number.
+                  </para>
+                </listitem>
+    			  </varlistentry>
+          </variablelist>
+
+          <para>Optionally a child node of the
+            <emphasis role="bold"><literal>/ibm,coherent-platform-facility</literal></emphasis>
+            node with the
+            <emphasis role="bold"><literal>&#8220;name&#8221;</literal></emphasis> of
+            <emphasis role="bold"><literal>&#8220;ibm,coherent-platform-function&#8221;</literal></emphasis>
+            may contain as appropriate the following unique properties:</para>
+
+          <variablelist>
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;device_type&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para>Standard
+                  <emphasis>property name</emphasis> string encoded as with
+                  <emphasis role="bold"><literal>encode-string</literal></emphasis> that defines the device type of the
+                  node. For the coherent platform device type the value shall
+                  be the string <emphasis role="bold"><literal>&#8220;ibm,coherent-accel&#8221;</literal></emphasis>.</para>
+                </listitem>
+    			  </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;ibm,my-drc-index&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para>
+                  <emphasis>property name</emphasis> denotes an integer index (value of the
+                  entry in the
+                  <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis> property) for the
+                  connector between the node and the node&#8217;s parent.  The presence of
+                  this indicates that the resource is dynamically reconfigurable.</para>
+                  <para>
+                  <emphasis>prop-encoded-array</emphasis>: An array of integers encoded as
+                  with
+                  <emphasis role="bold"><literal>encode-int</literal></emphasis>.</para>
+                </listitem>
+    			  </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;ibm,#processes&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para>Property name, encoded as with
+                  <emphasis role="bold"><literal>encode-int</literal></emphasis>, that
+                  defines the number of operating system processes that can be concurrently
+                  attached to the coherent accelerator function via the H_ATTACH_CA_PROCESS
+                  hcall.</para>
+                </listitem>
+    			  </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;ibm,scratchpad-size&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para>
+                  <emphasis>Property name</emphasis> that specifies the size of the
+                  scratch pad area supported by the coherent platform function in terms
+                  of cells. The absence of this parameter or a value of 0 indicates the
+                  coherent platform function does not support a scratch pad area.</para>
+                  <para>
+                  <emphasis>prop-encoded-array</emphasis>: Consisting of two integers
+                  (<emphasis>value-hi</emphasis>, <emphasis>value-lo</emphasis>)
+                  each encoded as with
+                  <emphasis role="bold"><literal>encode-int</literal></emphasis>,
+                  such that their combined value is (<emphasis>value-hi</emphasis> ||
+                  <emphasis>value-lo</emphasis>).</para>
+                </listitem>
+    			  </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;ibm,programmable&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para><emphasis>Property name</emphasis>, encoded as with
+                  <emphasis role="bold"><literal>encode-int</literal></emphasis>, that
+                  specifies if the coherent platform function can be programmed
+                  (via H_DOWNLOAD_CA_FUNCTION) with a value of 1. The absence of this
+                  parameter or a value of 0 indicates the coherent platform function
+                  does not support programming.</para>
+                </listitem>
+    			  </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;ibm,phandle&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para>Package handle for the <emphasis>coherent-platform-function</emphasis>.</para>
+                </listitem>
+    			  </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;ibm,max-ints-per-process&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para><emphasis>Property name</emphasis>, encoded as with
+                  <emphasis role="bold"><literal>encode-int</literal></emphasis>, that
+                  specifies the maximum number of interrupts from the
+                  <emphasis role="bold"><literal>&#8220;interrupt-ranges&#8221;</literal></emphasis>
+                  property of the <emphasis>ibm,coherent-platform-facility</emphasis>
+                  that can be assigned per process with the H_ATTACH_CA_PROCESS hcall.</para>
+                </listitem>
+    			  </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;ibm,min-ints-per-process&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para><emphasis>Property name</emphasis>, encoded as with
+                  <emphasis role="bold"><literal>encode-int</literal></emphasis>, that
+                  specifies the minimum number of interrupts from the
+                  <emphasis role="bold"><literal>&#8220;interrupt-ranges&#8221;</literal></emphasis>
+                  property of the <emphasis>ibm,coherent-platform-facility</emphasis>
+                  that must be assigned per process with the H_ATTACH_CA_PROCESS hcall.</para>
+                </listitem>
+    			  </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;ibm,max-ints&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para><emphasis>Property name</emphasis>, encoded as with
+                  <emphasis role="bold"><literal>encode-int</literal></emphasis>, that
+                  specifies the maximum number of interrupts from the
+                  <emphasis role="bold"><literal>&#8220;interrupt-ranges&#8221;</literal></emphasis>
+                  property of the <emphasis>ibm,coherent-platform-facility</emphasis>
+                  that can be assigned for all processes attached on the
+                  <emphasis>coherent-platform-function</emphasis>.</para>
+                </listitem>
+    			  </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;ibm,vpd-size&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para>The size in bytes, encoded as with
+                    <emphasis role="bold"><literal>encode-int</literal></emphasis>,
+                    for the VPD for the <emphasis>ibm,coherent-platform-function</emphasis>.
+                    This value is used to size the buffer in H_CONTROL_CA_FUNCTION with
+                    operation Collect VPD.</para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;ibm,error-buffer-size&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para>
+                  <emphasis>Property name</emphasis> that specifies the error buffer size
+                  for the <emphasis>ibm,coherent-platform-function</emphasis>. This
+                  value is used in H_CONTROL_CA_FUNCTION with operation Get Error Buffer.</para>
+                  <para>
+                  <emphasis>prop-encoded-array</emphasis>: Consisting of two integers
+                  (<emphasis>value-hi</emphasis>, <emphasis>value-lo</emphasis>)
+                  each encoded as with
+                  <emphasis role="bold"><literal>encode-int</literal></emphasis>,
+                  such that their combined value is (<emphasis>value-hi</emphasis> ||
+                  <emphasis>value-lo</emphasis>).</para>
+                </listitem>
+    			  </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;ibm,config-record-type&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para><emphasis>Property name</emphasis>, encoded as with
+                    <emphasis role="bold"><literal>encode-int</literal></emphasis>,
+                    that specifies the type of the configuration record for the
+                    <emphasis>ibm,coherent-platform-function</emphasis>.
+                    This value is used to identify the format of the Function Configuration
+                    Record and is defined by the CAIA.</para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;ibm,config-record-size&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para>
+                  <emphasis>Property name</emphasis> that specifies the size of each configuration
+                  record for the <emphasis>ibm,coherent-platform-function</emphasis>. This
+                  value is used in H_CONTROL_CA_FUNCTION with operation Get Function
+                  Configuration Record</para>
+                  <para>
+                  <emphasis>prop-encoded-array</emphasis>: Consisting of two integers
+                  (<emphasis>value-hi</emphasis>, <emphasis>value-lo</emphasis>)
+                  each encoded as with
+                  <emphasis role="bold"><literal>encode-int</literal></emphasis>,
+                  such that their combined value is (<emphasis>value-hi</emphasis> ||
+                  <emphasis>value-lo</emphasis>).</para>
+                </listitem>
+    			  </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;ibm,#config-records&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para><emphasis>Property name</emphasis>, encoded as with
+                    <emphasis role="bold"><literal>encode-int</literal></emphasis>,
+                    that specifies the number of the configuration records for the
+                    <emphasis>ibm,coherent-platform-function</emphasis>.
+                    This value is used in H_CONTROL_CA_FUNCTION with operation Get
+                    Function Configuration Record.</para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;ibm,function-number&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para><emphasis>Property name</emphasis>, encoded as with
+                    <emphasis role="bold"><literal>encode-int</literal></emphasis>,
+                    that specifies the function number for the
+                    <emphasis>ibm,coherent-platform-function</emphasis>.
+                    This value is used to call H_DOWNLOAD_CA_FUNCTION and download
+                    images to the function.</para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;ibm,privileged-function&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para><emphasis>Property name</emphasis>, encoded as with
+                    <emphasis role="bold"><literal>encode-int</literal></emphasis>,
+                    that specifies if the
+                    <emphasis>ibm,coherent-platform-function</emphasis> is privileged.
+                    The absence of this property or a property of 0 indicates the
+                    function is not privileged.</para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;vendor-id&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para>Vendor ID from PCI header for the
+                    <emphasis>ibm,coherent-platform-function</emphasis></para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;device-id&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para>Device ID from PCI header for the
+                    <emphasis>ibm,coherent-platform-function</emphasis></para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;revision-id&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para>Revision ID from PCI header for the
+                    <emphasis>ibm,coherent-platform-function</emphasis></para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;class-code&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para>Class Code from PCI header for the
+                    <emphasis>ibm,coherent-platform-function</emphasis></para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;subsystem-vendor-id&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para>Subsystem Vendor ID from PCI header for the
+                    <emphasis>ibm,coherent-platform-function</emphasis></para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;subsystem-id&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para>Subsystem ID from PCI header for the
+                    <emphasis>ibm,coherent-platform-function</emphasis></para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;ibm,process-mmio&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para><emphasis>Property name</emphasis>, encoded as with
+                    <emphasis role="bold"><literal>encode-int</literal></emphasis>,
+                    that if set to 1, defines that the coherent platform function
+                    utilizes per-process MMIO spaces. The H_ATTACH_CA_PROCESS hcall
+                    returns MMIO address/range information. If this property is 0 or
+                    not present, per-process MMIO is not supported.</para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;ibm,process-mmio-size&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para>The size in bytes of the per-process MMIO space available for
+                    each attached process. This is the same value that will be returned
+                    in R6 for H_ATTACH_CA_FUNCTION. If the
+                    <emphasis role="bold"><literal>ibm,process-mmio</literal></emphasis>
+                    property is 0 or not present, this property will be 0 or not present.</para>
+                  <para>
+                  <emphasis>prop-encoded-array</emphasis>: Consisting of two integers
+                  (<emphasis>value-hi</emphasis>, <emphasis>value-lo</emphasis>)
+                  each encoded as with
+                  <emphasis role="bold"><literal>encode-int</literal></emphasis>,
+                  such that their combined value is (<emphasis>value-hi</emphasis> ||
+                  <emphasis>value-lo</emphasis>).</para>
+                </listitem>
+    			  </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;ibm,programming-model&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para><emphasis>property name</emphasis>, encoded as with
+                    <emphasis role="bold"><literal>encode-string</literal></emphasis>,
+                    describes the programming model currently in effect for the coherent
+                    platform function.</para>
+
+                    <para>The value shall be one of the following:</para>
+
+                    <itemizedlist spacing="compact">
+                      <listitem>
+                        <para>"none"</para>
+                      </listitem>
+                      <listitem>
+                        <para>"dedicated-process"</para>
+                      </listitem>
+                      <listitem>
+                        <para>"shared-afu-directed"</para>
+                      </listitem>
+                      <listitem>
+                        <para>"shared-time-sliced"</para>
+                      </listitem>
+                    </itemizedlist>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;ibm,programming-models&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para><emphasis>property name</emphasis>, describes the programming
+                  models supported by the coherent platform function.</para>
+                  <para>
+                    <emphasis>prop-encoded-array</emphasis>: An integer encoded as with
+                    <emphasis role="bold"><literal>encode-int</literal></emphasis> specifying
+                    the number of items in the following list, followed by a list of
+                    strings each encoded as with
+                    <emphasis role="bold"><literal>encode-string</literal></emphasis>.
+                    Each of the values shall be one of the possible values specified
+                    for the
+                    <emphasis role="bold"><literal>&#8220;ibm,programming-model&#8221;</literal></emphasis> property.
+                  </para>
+                </listitem>
+    			  </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;ibm,supports-aur&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para><emphasis>Property name</emphasis>, encoded as with
+                    <emphasis role="bold"><literal>encode-int</literal></emphasis>,
+                    that if set to 1, defines that the coherent platform function
+                    supports an acceleration utilization record (AUR). If this
+                    property is 0 or not present, the coherent platform function
+                    does not support an AUR.</para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;ibm,supports-csrp&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para><emphasis>Property name</emphasis>, encoded as with
+                    <emphasis role="bold"><literal>encode-int</literal></emphasis>,
+                    that if set to 1, defines that the coherent platform function
+                    supports a context / save restore (CSRP). If this property is 0
+                    or not present, the coherent platform function does not support a CSRP.</para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;ibm,supports-prr&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para><emphasis>Property name</emphasis>, encoded as with
+                    <emphasis role="bold"><literal>encode-int</literal></emphasis>,
+                    that if set to 1, defines that the coherent platform function
+                    supports paged resolution responses (PRR). If this property is 0
+                    or not present, the coherent platform function does not support
+                    PRR.</para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><emphasis role="bold"><literal>&#8220;ibm,function-error-interrupt&#8221;</literal></emphasis></term>
+                <listitem>
+                  <para><emphasis>Property name</emphasis>, encoded as with
+                    <emphasis role="bold"><literal>encode-int</literal></emphasis>,
+                    that defines the interrupt source number of the
+                    <emphasis>ibm,coherent-platform-function </emphasis>
+                    error interrupt. An interrupt on this source indicates an error
+                    that is scoped to the entire
+                    <emphasis>ibm,coherent-platform-function</emphasis>.</para>
+                </listitem>
+            </varlistentry>
+          </variablelist>
+
+      </section>
+    </section>
   </section>
 
   <section xml:id="dbdoclet.50569368_56107">

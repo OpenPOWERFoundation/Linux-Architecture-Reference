@@ -7,7 +7,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
   able to use the new configuration, all without having to turn the platform
   power off or restart the OS. This section will define the requirements for
   systems that support DR operations.</para>
-  
+
   <section xml:id="dbdoclet.50569342_51213">
     <title>DR Architecture Structure</title>
     <para>
@@ -34,13 +34,13 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
     other DR entities is to do the physical hot plug (power up/down, control of
     service indicators, etc.) via the HMC and to bring the entity into usage by
     an OS via logical DR operations (Logical Resource DR -- LRDR). The PCI Hot
-    Plug DR option can be found in 
+    Plug DR option can be found in
     <xref linkend="dbdoclet.50569342_47470" />. The Logical Resource Dynamic
-    Reconfiguration option can be found in 
+    Reconfiguration option can be found in
     <xref linkend="dbdoclet.50569342_75053" />. It is expected that as time
     goes on, the base DR option may be expanded upon by addition of other DR
     options.</para>
-    
+
     <figure xml:id="dbdoclet.50569342_22277">
       <title>DR Architecture Structure</title>
       <mediaobject>
@@ -55,7 +55,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
       </mediaobject>
     </figure>
   </section>
-  
+
   <section xml:id="dbdoclet.50569342_32129">
     <title>Definitions Used in DR</title>
 
@@ -88,7 +88,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               Specific DR options include, for example, the PCI Hot Plug DR
               option, processor card DR option, etc. These specific DR options
               each include the requirement that all the base DR option
-              requirements be met. See 
+              requirements be met. See
               <xref linkend="dbdoclet.50569342_51213" /> for more information
               about the structure of the DR architecture pieces.</para>
             </entry>
@@ -188,7 +188,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               an IOA. The term &#8220;IOA&#8221; without the usage of the
               qualifier &#8220;physical&#8221; or &#8220;virtual&#8221; will be
               used to designate a physical IOA. Virtual IOAs are defined
-              further in 
+              further in
               <xref linkend="dbdoclet.50569348_71217" />. Resources which must
               have the capability of being separate (from other devices)
               include: MMIO Load/Store address spaces, configuration address
@@ -282,7 +282,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
             </entry>
             <entry>
               <para>A DR entity which does not have to be physically plugged or
-              unplugged during a DR operation on that entity. See 
+              unplugged during a DR operation on that entity. See
               <xref linkend="LoPAR.DeviceTree" /> for a list of the supported
               Logical DR types.</para>
             </entry>
@@ -293,7 +293,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
             </entry>
             <entry>
               <para>The name of the option for support of DR of logical
-              entities. See 
+              entities. See
               <xref linkend="dbdoclet.50569342_75053" />.</para>
             </entry>
           </row>
@@ -316,7 +316,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
             </entry>
             <entry>
               <para>A DR entity which may need to be physically plugged or
-              unplugged during a DR operation on that entity. See 
+              unplugged during a DR operation on that entity. See
               <xref linkend="LoPAR.DeviceTree" /> for a list of the supported
               physical DR types.</para>
             </entry>
@@ -350,7 +350,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
     <para>The DR architecture places a few limitations on the implementations.
     Current architectural limitations include:</para>
 
-    <itemizedlist>		      
+    <itemizedlist>
       <listitem>
         <para>DR operations will be user initiated at the software level before
         any physical plugging or unplugging of hardware is performed. This
@@ -362,7 +362,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
         plugging/unplugging without the user first informing the software (for
         example, P1394 and USB).</para>
       </listitem>
-      
+
       <listitem>
         <para>Critical system resources cannot be removed via a DR operation.
         Which system resources are critical will not be defined by this
@@ -370,27 +370,27 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
         implementation and/or architecture. Loss of a critical resource would stop
         the system from operating.</para>
       </listitem>
-      
+
       <listitem>
         <para>Many of the RTAS calls will need to work properly, independent of
         what is powered-off (for example, NVRAM access must work during DR
         operations). This is partially encompassed by the last bullet. For more
-        information, see 
+        information, see
         <xref linkend="dbdoclet.50569342_98936" />.</para>
       </listitem>
-      
+
       <listitem>
         <para>Any special requirements relative to redundant power supplies or
         cooling are not addressed here.</para>
       </listitem>
-      
+
       <listitem>
         <para>Moving of a DR entity from one location to another in a platform is
         supported through a &#8220;remove and add&#8221; methodology rather than a
         specific architecture which defines the constructs necessary to allow
         moving of pieces of the platform around.</para>
       </listitem>
-    </itemizedlist>		      
+    </itemizedlist>
 
     <para><emphasis  role="bold">Note:</emphasis> The current AIX implementation does a &#8220;remove and
     add&#8221; sequence even when the overall DR operation is a replacement.
@@ -405,7 +405,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
     between states is initiated by a program action (RTAS functions) provided
     the conditions for the transition are met.</para>
     <para>
-    <emphasis role="bold">Note:</emphasis> Relative to 
+    <emphasis role="bold">Note:</emphasis> Relative to
     <xref linkend="dbdoclet.50569342_17600" />, physical DRC types are brought
     in to the &#8220;owned by the OS&#8221; states either: (1) by the Device
     Tree at boot time, or (2) by a DLPAR operation, which brings in the logical
@@ -416,7 +416,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
     OS is done by assigning the logical SLOT DRC above the physical PCI slot,
     thus giving the following state transitions: state 1, to state 2, to state
     3, to state 4, at which time the OS sees the physical slot, sees an IOA in
-    the physical slot (via 
+    the physical slot (via
     <emphasis>get-sensor-state</emphasis> (dr-entity-sense) of the physical DRC
     returning &#8220;present&#8221;), and then proceeds with the state
     transitions of: state 5, to state 6, to state 7, to state 8. The reverse of
@@ -438,15 +438,15 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
     <para><emphasis role="bold">Notes:</emphasis>
       <orderedlist>
          <listitem>
-           <para>In State 5, if empty status is returned from the 
+           <para>In State 5, if empty status is returned from the
            get-sensor-state dr-entity-sense call, then do not attempt to power-on</para>
          </listitem>
          <listitem>
-           <para>Transitions from State 8 to 6 or from State 6 to 5 may fail 
+           <para>Transitions from State 8 to 6 or from State 6 to 5 may fail
            (<emphasis>set-indicator isolation-state</emphasis> isolate, and <emphasis>get-sensor-state</emphasis>
-           dr-entity-sense) if the hardware cannot be accessed to control 
+           dr-entity-sense) if the hardware cannot be accessed to control
            these operations. In this case, the OS may ignore
-           those errors if the operation is a DLPAR to remove the 
+           those errors if the operation is a DLPAR to remove the
            hardware. See also the <emphasis role="bold"><literal>&#8220;ibm,ignore-hp-po-fails-for-dlpar&#8221;</literal></emphasis>
            property in <xref linkend="LoPAR.DeviceTree" />.</para>
          </listitem>
@@ -455,10 +455,10 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
   </section>
   <section>
     <title>Base DR Option</title>
-      
+
     <section xml:id="dbdoclet.50569342_98936">
       <title>For All DR Options - Platform Requirements</title>
-      
+
       <para>This section contains the extra requirements placed on
       the platform for all of the various DR configurations.</para>
       <para>At this time, there are no provisions made in the DR architecture
@@ -474,19 +474,19 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
         possible enhancement for systems that are produced for telephone
         company applications.</para>
       </footnote>.</para>
-      <para>As mentioned in 
+      <para>As mentioned in
       <xref linkend="dbdoclet.50569342_51213" />, the requirements in this
       section are not stand-alone requirements; the platform will also need to
       implement one or more of the specific DR options.</para>
 
       <variablelist>
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_98936" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_98936"
           xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
             <listitem>
-              <para><emphasis role="bold">For all DR options:</emphasis> If the 
-              <emphasis role="bold"><literal>&#8220;ibm,configure-connector&#8221;</literal></emphasis> 
-              property exists in the 
+              <para><emphasis role="bold">For all DR options:</emphasis> If the
+              <emphasis role="bold"><literal>&#8220;ibm,configure-connector&#8221;</literal></emphasis>
+              property exists in the
               <emphasis role="bold"><literal>/rtas</literal></emphasis> node of the OF device tree, then the platform
               must meet all of the requirements for the Base DR option (that is, all of
               the requirements labeled &#8220;For all DR options&#8221;), and must also
@@ -494,19 +494,19 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               options.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry xml:id="dbdoclet.50569342_22348">
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_98936" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_98936"
           xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For all DR options:</emphasis> The platform and
               OS must adhere to the design and usage restrictions on RTAS routines
-              defined in 
+              defined in
               <xref linkend="dbdoclet.50569342_25194" />, and any RTAS calls not
-              specified in 
-              <xref linkend="dbdoclet.50569342_25194" /> must comply with 
-              <xref linkend="dbdoclet.50569342_25194" /> Note 
-              <xref linkend="dbdoclet.50569342_82266" /> and 
+              specified in
+              <xref linkend="dbdoclet.50569342_25194" /> must comply with
+              <xref linkend="dbdoclet.50569342_25194" /> Note
+              <xref linkend="dbdoclet.50569342_82266" /> and
               <xref linkend="dbdoclet.50569342_52602" />.</para>
 
               <table frame="all" pgwide="1" xml:id="dbdoclet.50569342_25194">
@@ -528,7 +528,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                       </entry>
                       <entry>
                         <para>
-                          <emphasis role="bold">Reference to 
+                          <emphasis role="bold">Reference to
                           <xref linkend="dbdoclet.50569342_25194"  xrefstyle="select: labelnumber" /> Note
                           Numbers</emphasis>
                         </para>
@@ -547,7 +547,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                       </entry>
                       <entry>
                         <para>
-                          <emphasis role="bold">Reference to 
+                          <emphasis role="bold">Reference to
                           <xref linkend="dbdoclet.50569342_25194" xrefstyle="select: labelnumber" /> Note
                           Numbers</emphasis>
                         </para>
@@ -833,7 +833,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                 <emphasis role="bold"><xref linkend="dbdoclet.50569342_25194" xrefstyle="select: labelnumber" /> Notes:</emphasis>
                 <!--anchor xml:id="dbdoclet.50569342_35380" /-->
 
-                <orderedlist>		      
+                <orderedlist>
                   <listitem xml:id="dbdoclet.50569342_82266">
                     <para>These RTAS calls
                     function as specified in this architecture, regardless of the power state
@@ -864,7 +864,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
                   <listitem>
                     <para>The results of the OS changing the power or isolation state of a
-                    Dynamic Reconfigure connector while there is an uncompleted 
+                    Dynamic Reconfigure connector while there is an uncompleted
                     <emphasis>ibm,configure-connector</emphasis> operation in progress against
                     that connector are indeterminate.</para>
                   </listitem>
@@ -879,27 +879,27 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                     <para>The results of the OS issuing these RTAS calls to hardware which
                     is isolated and/or powered off are indeterminate.</para>
                   </listitem>
-                </orderedlist>		      
+                </orderedlist>
               </para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_98936" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_98936"
           xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For all DR options:</emphasis> If there is Forth code associated
               with a DR entity, it must not modify the OF device tree properties or
-              methods unless modifications can be hidden by the 
+              methods unless modifications can be hidden by the
               <emphasis>ibm,configure-connector</emphasis> RTAS call (that is, where
               this RTAS routine recognizes the entity and creates the appropriate OF
               device tree characteristics that would have been created by the Forth
               code).</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_98936" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_98936"
           xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For all DR options:</emphasis> The hardware must protect against
@@ -907,9 +907,9 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               while power is on at the DR connector.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_98936" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_98936"
           xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For all DR options:</emphasis> During a DR operation (including
@@ -920,9 +920,9 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               which the DR entity is being inserted or removed.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_98936" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_98936"
           xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For all DR options:</emphasis> During a DR operation (including
@@ -933,9 +933,9 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               transitions.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry xml:id="dbdoclet.50569342_48304">
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_98936" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_98936"
           xrefstyle="select: labelnumber nopage"/>-7.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For all DR options:</emphasis> If there are any
@@ -946,24 +946,24 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               off.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry xml:id="dbdoclet.50569342_36468">
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_98936" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_98936"
           xrefstyle="select: labelnumber nopage"/>-8.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For all DR options:</emphasis> A separate visual
               indicator must be provided for each physical DR connector which can be
               used for insertion of a DR Entity or which contains a DR entity that can
-              be removed, and the indicator must be individually controllable via the 
+              be removed, and the indicator must be individually controllable via the
               <emphasis>set-indicator</emphasis> RTAS call, and must have the capability
-              to be set to the states as indicated in 
-              <xref linkend="dbdoclet.50569342_34333" /> and 
+              to be set to the states as indicated in
+              <xref linkend="dbdoclet.50569342_34333" /> and
               <xref linkend="dbdoclet.50569342_42695" />.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry xml:id="dbdoclet.50569342_50603">
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_98936" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_98936"
           xrefstyle="select: labelnumber nopage"/>-9.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For all DR options:</emphasis>
@@ -974,9 +974,9 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               connector.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_98936" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_98936"
           xrefstyle="select: labelnumber nopage"/>-10.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For all DR options:</emphasis> If a DR entity requires power to
@@ -985,27 +985,27 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               indicate the power state of the DR entity</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_98936" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_98936"
           xrefstyle="select: labelnumber nopage"/>-11.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For all DR options:</emphasis> The platform must provide any
               necessary power sequencing between voltages within a power domain during
-              DR operations (for example, during the 
+              DR operations (for example, during the
               <emphasis>set-power-level</emphasis> RTAS call).</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_98936" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_98936"
           xrefstyle="select: labelnumber nopage"/>-12.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For all DR options:</emphasis> If a platform supports DR, then
               all DR entities must support the full on to off and the off to full on
               power transitions.</para>
               <para>
-              <emphasis role="bold">Architecture Note:</emphasis> Requirement 
+              <emphasis role="bold">Architecture Note:</emphasis> Requirement
               <xref linkend="dbdoclet.50569342_22348" /> is necessary so that the OS can
               count on the availability of certain RTAS facilities and so that the OS
               does not use other RTAS facilities when they are not available. This may
@@ -1015,9 +1015,9 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                 <emphasis role="bold">Hardware Implementation Notes:</emphasis>
               </para>
 
-              <itemizedlist>		      
+              <itemizedlist>
                 <listitem>
-                  <para>Requirement 
+                  <para>Requirement
                   <xref linkend="dbdoclet.50569342_22348" /> requires careful planning of
                   hardware design and platform structure to assure that no resources
                   critical to RTAS are put into power domains that are powered down as part
@@ -1027,13 +1027,13 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                   something is powered off before actually accessing the powered-off
                   hardware.</para>
                 </listitem>
-                
+
                 <listitem>
-                  <para>Requirement 
+                  <para>Requirement
                   <xref linkend="dbdoclet.50569342_36468" /> indicates that there cannot be
                   any sharing of indicators between DR connectors.</para>
                 </listitem>
-                
+
                 <listitem>
                   <para>In some large systems (for example, systems with many racks of
                   equipment) it may not be possible or convenient to view the individual DR
@@ -1048,7 +1048,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                   but it is permissible for the indicator to have firmware
                   dependencies.</para>
                 </listitem>
-              </itemizedlist>		      
+              </itemizedlist>
             </listitem>
        	</varlistentry>
       </variablelist>
@@ -1071,48 +1071,48 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
         <variablelist>
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_82208" 
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_82208"
             xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
               <listitem>
                 <para><emphasis role="bold">For all DR options:</emphasis> When the firmware passes control
                 to the OS, the DR hardware must be initialized such that all of the DR
-                connectors which would return &#8220;DR entity present&#8221; to a 
+                connectors which would return &#8220;DR entity present&#8221; to a
                 <emphasis>get-sensor-state</emphasis> dr-entity-sense) are fully powered
                 and operational and any DR visual indicators are set to the appropriate
-                state (on or off) as indicated by 
+                state (on or off) as indicated by
                 <xref linkend="dbdoclet.50569342_42695" />.</para>
               </listitem>
          	</varlistentry>
-         	
+
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_82208" 
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_82208"
             xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
               <listitem>
                 <para><emphasis role="bold">For all DR options:</emphasis> After the firmware has passed
                 control to the OS, the state of the DR visual indicators must not change
                 except under the following conditions:</para>
 
-                <itemizedlist>		      
+                <itemizedlist>
                   <listitem>
-                    <para>As directed to do so by the 
+                    <para>As directed to do so by the
                     <emphasis>set-indicator</emphasis> RTAS call.</para>
                   </listitem>
-                  
+
                   <listitem>
                     <para>Under the condition of a power-fault, in which case the hardware
                     may change the state of the visual indicator to the &#8220;off&#8221;
                     state if it turns the power off to the slot.</para>
                   </listitem>
-                </itemizedlist>		      
+                </itemizedlist>
               </listitem>
          	</varlistentry>
-         	
+
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_82208" 
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_82208"
             xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
               <listitem>
                 <para><emphasis role="bold">For all DR options:</emphasis> The platforms which have
-                hierarchical power domains must provide the 
+                hierarchical power domains must provide the
                 <emphasis role="bold"><literal>&#8220;power-domains-tree&#8221;</literal></emphasis> property in the OF
                 device tree.</para>
               </listitem>
@@ -1120,80 +1120,80 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
         </variablelist>
 
       </section>
-      
+
       <section xml:id="dbdoclet.50569342_17435">
         <title><emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis> Property</title>
         <para>This property is added for the DR option to specify for each DR
         connector an index to be passed between the OS and RTAS to identify the
         DR connector to be operated upon. This property is in the parent node of
-        the DR connector to which the property applies. See 
+        the DR connector to which the property applies. See
         <xref linkend="LoPAR.DeviceTree" /> for the definition of this
         property.  See <xref linkend="sec_ibmdrcinfo_property" /> for additional information.</para>
 
         <variablelist>
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_17435" 
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_17435"
             xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
               <listitem>
                 <para><emphasis role="bold">For all DR options:</emphasis> For each OF device tree node
-                which supports DR operations on its children, the OF must provide an 
+                which supports DR operations on its children, the OF must provide an
                 <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis> property for that
                 node.</para>
               </listitem>
          	</varlistentry>
         </variablelist>
       </section>
-      
+
       <section xml:id="dbdoclet.50569342_31379">
         <title><emphasis role="bold"><literal>&#8220;ibm,my-drc-index&#8221;</literal></emphasis> Property</title>
         <para>This property is added for the DR option to specify for each node
         which has a DR connector between it and its parent, the value of the
-        entry in the 
+        entry in the
         <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis> property for that
-        connector. This property is used for correlation purposes. See 
+        connector. This property is used for correlation purposes. See
         <xref linkend="LoPAR.DeviceTree" /> for the definition of this
         property.</para>
 
         <variablelist>
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_31379" 
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_31379"
             xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
               <listitem>
                 <para><emphasis role="bold">For all DR options:</emphasis> For each OF device tree node
-                which has a DR connector between it and its parent, the OF must provide an 
+                which has a DR connector between it and its parent, the OF must provide an
                 <emphasis role="bold"><literal>&#8220;ibm,my-drc-index&#8221;</literal></emphasis> property for that
                 node.</para>
               </listitem>
          	</varlistentry>
         </variablelist>
       </section>
-      
+
       <section xml:id="dbdoclet.50569342_22748">
         <title><emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis> Property</title>
         <para>This property is added for the DR option to specify for each DR
-        connector a user-readable location code for the connector. See 
+        connector a user-readable location code for the connector. See
         <xref linkend="LoPAR.DeviceTree" /> for the definition of this
         property.  See <xref linkend="sec_ibmdrcinfo_property" /> for additional information.</para>
 
         <variablelist>
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_22748" 
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_22748"
             xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
               <listitem>
                 <para><emphasis role="bold">For all DR options:</emphasis> For each OF device tree node
-                which supports DR operations on its children, the OF must provide an 
+                which supports DR operations on its children, the OF must provide an
                 <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis> property for that
                 node.</para>
               </listitem>
          	</varlistentry>
-         	
+
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_22748" 
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_22748"
             xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
               <listitem>
-                <para><emphasis role="bold">For all DR options:</emphasis> The content of the 
+                <para><emphasis role="bold">For all DR options:</emphasis> The content of the
                 <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis> property must be of the
-                format defined in 
+                format defined in
                 <xref linkend="dbdoclet.50569342_62318" />.</para>
               </listitem>
          	</varlistentry>
@@ -1274,55 +1274,71 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                   more digits and no leading zeroes</para>
                 </entry>
               </row>
+              <row>
+                <entry>
+                  <para>COPLATFAC</para>
+                </entry>
+                <entry>
+                  <para>location code</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>COPLATFUN</para>
+                </entry>
+                <entry>
+                  <para>location code</para>
+                </entry>
+              </row>
             </tbody>
           </tgroup>
         </table>
       </section>
-      
+
       <section xml:id="dbdoclet.50569342_86369">
         <title><emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis> Property</title>
         <para>This property is added for the DR option to specify for each DR
-        connector the power domain in which the connector resides. See 
+        connector the power domain in which the connector resides. See
         <xref linkend="LoPAR.DeviceTree" /> for the definition of this
         property.  See <xref linkend="sec_ibmdrcinfo_property" /> for additional information.</para>
 
         <variablelist>
          	<varlistentry xml:id="dbdoclet.50569342_45966">
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_86369" 
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_86369"
             xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
               <listitem>
                 <para><emphasis role="bold">For all DR options:</emphasis>
                 For each OF device tree node which supports DR operations on its children, the OF
-                must provide an 
+                must provide an
                 <emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis> property for that
                 node.</para>
                 <para><emphasis role="bold">Software Implementation Notes:</emphasis>
 
-                  <itemizedlist>		      
+                  <itemizedlist>
                     <listitem>
-                      <para>Software will not call the 
+                      <para>Software will not call the
                       <emphasis>set-power-level</emphasis> RTAS call with an invalid power
                       domain number, and for purposes of this call, a power domain number of -1
                       (a live insert connector) is considered invalid.</para>
                     </listitem>
-                    
+
                     <listitem>
                       <para>For the case where the power domain is -1 (the live insert case),
                       this does not imply that the connector does not need isolating before the
                       DR operation, only that it does not need to be powered off.</para>
                     </listitem>
-                  </itemizedlist>		      
+                  </itemizedlist>
                 </para>
               </listitem>
          	</varlistentry>
         </variablelist>
 
       </section>
-      
+
       <section xml:id="dbdoclet.50569342_27002">
         <title><emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis> Property</title>
         <para>This property is added for the DR option to specify for each DR
-        connector a user-readable connector type for the connector. See 
+        connector a user-readable connector type for the connector. See
         <xref linkend="LoPAR.DeviceTree" /> for the definition of this
         property.  See <xref linkend="sec_ibmdrcinfo_property" /> for additional information.</para>
         <para>
@@ -1337,91 +1353,91 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
         <variablelist>
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_27002" 
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_27002"
             xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
               <listitem>
                 <para><emphasis role="bold">For all DR options:</emphasis> For each OF device tree node
-                which supports DR operations on its children, the OF must provide an 
+                which supports DR operations on its children, the OF must provide an
                 <emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis> property for that
                 node.</para>
               </listitem>
          	</varlistentry>
         </variablelist>
       </section>
-      
+
       <section xml:id="dbdoclet.50569342_79298">
         <title><emphasis role="bold"><literal>&#8220;ibm,phandle&#8221;</literal></emphasis> Property</title>
         <para>This property is added for the DR option to specify the phandle for
-        each OF device tree node returned by ibm,configure-connector. See 
+        each OF device tree node returned by ibm,configure-connector. See
         <xref linkend="LoPAR.DeviceTree" /> for the definition of this
         property.</para>
 
         <variablelist>
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_79298" 
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_79298"
             xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
               <listitem>
                 <para><emphasis role="bold">For all DR options:</emphasis> The
-                <emphasis>ibm,configure-connector</emphasis> RTAS call will include the 
+                <emphasis>ibm,configure-connector</emphasis> RTAS call will include the
                 <emphasis role="bold"><literal>&#8220;ibm,phandle&#8221;</literal></emphasis> property in each OF device
                 tree node that it returns. This phandle must be unique and consistent
                 with any phandle visible to an OF client program or any other information
-                returned by 
+                returned by
                 <emphasis>ibm,configure-connector</emphasis>.</para>
               </listitem>
          	</varlistentry>
         </variablelist>
       </section>
-      
+
       <section xml:id="sec_ibmdrcinfo_property">
         <title><emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis> Property</title>
-        
-        <para>This property is added to consolidate the information provided by the 
-        <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis>, 
-        <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis>, 
-        <emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis> and 
-        <emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis> properties.  
+
+        <para>This property is added to consolidate the information provided by the
+        <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis>,
+        <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis>,
+        <emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis> and
+        <emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis> properties.
         When present, it replaces those properties.</para>
-        
+
         <variablelist>
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="sec_ibmdrcinfo_property" 
+            <term><emphasis role="bold">R1-<xref linkend="sec_ibmdrcinfo_property"
             xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
               <listitem>
-                <para>For each OF device tree node which supports DR operations on its children, OF must 
-                provide an <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis> 
+                <para>For each OF device tree node which supports DR operations on its children, OF must
+                provide an <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis>
                 property for that node.</para>
               </listitem>
          	</varlistentry>
-         	
+
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="sec_ibmdrcinfo_property" 
+            <term><emphasis role="bold">R1-<xref linkend="sec_ibmdrcinfo_property"
             xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
               <listitem>
-                <para>The <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis> property shall only 
-                be present if the Operating System indicates support for this new property definition, 
-                otherwise, the <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis>, 
-                <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis>, 
-                <emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis> and 
+                <para>The <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis> property shall only
+                be present if the Operating System indicates support for this new property definition,
+                otherwise, the <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis>,
+                <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis>,
+                <emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis> and
                 <emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis> will be present.</para>
               </listitem>
          	</varlistentry>
-         	
+
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="sec_ibmdrcinfo_property" 
+            <term><emphasis role="bold">R1-<xref linkend="sec_ibmdrcinfo_property"
             xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
               <listitem>
-                <para>Following live partition migration the Operating System must be prepared to support 
-                either the <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis> property or the 
-                <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis>, 
-                <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis>, 
-                <emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis> and 
-                <emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis>  
+                <para>Following live partition migration the Operating System must be prepared to support
+                either the <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis> property or the
+                <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis>,
+                <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis>,
+                <emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis> and
+                <emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis>
                 set of properties. The property or properties presented will based on the capability of the target partition.</para>
               </listitem>
          	</varlistentry>
         </variablelist>
-        
+
       </section>
     </section>
 
@@ -1437,14 +1453,14 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
         <variablelist>
          	<varlistentry xml:id="dbdoclet.50569342_40266">
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_40601" 
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_40601"
             xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
               <listitem>
                 <para><emphasis role="bold">For all DR options:</emphasis>
                 If there is Forth
                 code associated with a DR entity and that Forth code would normally
                 modify the OF device tree properties or methods, then if that entity is
-                to be supported as a DR entity on a particular platform, the 
+                to be supported as a DR entity on a particular platform, the
                 <emphasis>ibm,configure-connector</emphasis> RTAS call on that platform
                 must recognize that entity and create the appropriate OF device tree
                 characteristics that would have been created by the Forth code.</para>
@@ -1453,15 +1469,15 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
         </variablelist>
 
       </section>
-      
+
       <section xml:id="sec_set_power_level">
         <title><emphasis>set-power-level</emphasis></title>
-        <para>This RTAS call is defined in 
+        <para>This RTAS call is defined in
         <xref linkend="LoPAR.RTAS" />. Several additional requirements are placed
         on this call when the platform implements DR along with PM.</para>
         <para>This RTAS call is used in DR to power up or power down a DR
         connector, if necessary (that is, if there is a non-zero power domain
-        listed for the DR connector in the 
+        listed for the DR connector in the
         <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis> or
         <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis> property). The
         input is the power domain and the output is the power level that is
@@ -1469,46 +1485,46 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
         current power levels are of interest: &#8220;full on&#8221; and
         &#8220;off.&#8221;</para>
         <para>For sequencing requirements between this RTAS routine and others,
-        see Requirements 
-        <xref linkend="dbdoclet.50569342_25655" /> and 
+        see Requirements
+        <xref linkend="dbdoclet.50569342_25655" /> and
         <xref linkend="dbdoclet.50569342_75542" />.</para>
 
         <variablelist>
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="sec_set_power_level" 
+            <term><emphasis role="bold">R1-<xref linkend="sec_set_power_level"
             xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
               <listitem>
-                <para><emphasis role="bold">For all DR options:</emphasis> the 
+                <para><emphasis role="bold">For all DR options:</emphasis> the
                 <emphasis>set-power-level</emphasis> RTAS call must be implemented as
-                specified in 
+                specified in
                 <xref linkend="LoPAR.RTAS" /> and the further requirements of this DR
                 option.</para>
               </listitem>
          	</varlistentry>
-         	
+
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="sec_set_power_level" 
+            <term><emphasis role="bold">R1-<xref linkend="sec_set_power_level"
             xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
               <listitem>
-                <para><emphasis role="bold">For all DR options:</emphasis> The 
+                <para><emphasis role="bold">For all DR options:</emphasis> The
                 <emphasis>set-power-level</emphasis> RTAS call must initiate the operation
                 and return &#8220;busy&#8221; status for each call until the operation is
                 actually complete.</para>
               </listitem>
          	</varlistentry>
-         	
+
          	<varlistentry xml:id="dbdoclet.50569342_35664">
-            <term><emphasis role="bold">R1-<xref linkend="sec_set_power_level" 
+            <term><emphasis role="bold">R1-<xref linkend="sec_set_power_level"
             xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
               <listitem>
                 <para><emphasis role="bold">For all DR options:</emphasis>
                 If a DR operation
                 involves the user inserting a DR entity, then if the firmware can
                 determine that the inserted entity would cause a system disturbance, then
-                the 
+                the
                 <emphasis>set-power-level</emphasis> RTAS call must not power up the
                 entity and must return an error status which is unique to that particular
-                type of error, as indicated in 
+                type of error, as indicated in
                 <xref linkend="dbdoclet.50569342_91238" />.</para>
               </listitem>
          	</varlistentry>
@@ -1569,7 +1585,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
         </table>
         <para><emphasis role="bold">Hardware Implementation Notes:</emphasis>
 
-          <itemizedlist>		      
+          <itemizedlist>
             <listitem>
               <para>For any DR operation, the firmware could optionally not allow
               powering up of a DR entity, if the powering up would cause a platform
@@ -1578,51 +1594,51 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               capability by a method which is not architected by the DR
               architecture).</para>
             </listitem>
-            
+
             <listitem>
               <para>If PM is not implemented in the platform, then only the
               &#8220;full on&#8221; and &#8220;off&#8221; states need to be implemented
               for DR and only those two states will be used.</para>
             </listitem>
-          </itemizedlist>		      
+          </itemizedlist>
         </para>
         <para>
-        <emphasis role="bold">Software Implementation Note:</emphasis> The operation of the 
+        <emphasis role="bold">Software Implementation Note:</emphasis> The operation of the
         <emphasis>set-power-level</emphasis> call is not complete at the time of
         the return from the call if the &#8220;busy&#8221; status is returned. If
         it is necessary to know when the operation is complete, the routine
         should be called with the same parameters until a non-busy status is
         returned.</para>
       </section>
-      
+
       <section xml:id="dbdoclet.50569342_85040">
         <title><emphasis>get-sensor-state</emphasis></title>
-        <para>This RTAS call is defined in 
+        <para>This RTAS call is defined in
         <xref linkend="dbdoclet.50569342_85040" />. This RTAS call will be used
         in DR to determine if there is something connected to the DR
         connector.</para>
-        <para>The 
-        <emphasis role="bold"><literal>&#8220;rtas-sensors&#8221;</literal></emphasis> and 
-        <emphasis role="bold"><literal>&#8220;ibm,sensor-&lt;token&gt;&#8221;</literal></emphasis> 
+        <para>The
+        <emphasis role="bold"><literal>&#8220;rtas-sensors&#8221;</literal></emphasis> and
+        <emphasis role="bold"><literal>&#8220;ibm,sensor-&lt;token&gt;&#8221;</literal></emphasis>
         OF properties are not applicable to DR
-        sensors defined in 
+        sensors defined in
         <xref linkend="dbdoclet.50569342_92542" />.</para>
 
         <variablelist>
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_85040" 
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_85040"
             xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
               <listitem>
-                <para><emphasis role="bold">For all DR options:</emphasis> RTAS must implement the 
+                <para><emphasis role="bold">For all DR options:</emphasis> RTAS must implement the
                 <emphasis>get-sensor-state</emphasis> RTAS call.</para>
               </listitem>
          	</varlistentry>
-         	
+
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_85040" 
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_85040"
             xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
               <listitem>
-                <para><emphasis role="bold">For all DR options:</emphasis> The sensor values specified in 
+                <para><emphasis role="bold">For all DR options:</emphasis> The sensor values specified in
                 <xref linkend="dbdoclet.50569342_92542" /> must be implemented as
                 specified in that table.</para>
 
@@ -1673,7 +1689,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                           <para>Returned for physical DR entities if the connector is
                           available (empty) for an add operation. The DR connector must
                           be allocated to the OS to return this value, otherwise a status
-                          of -3, no such sensor implemented, will be returned from the 
+                          of -3, no such sensor implemented, will be returned from the
                           <emphasis>get-sensor-state</emphasis> RTAS call.</para>
                         </entry>
                       </row>
@@ -1688,7 +1704,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                           actually has a DR entity plugged into it. For DR connectors of
                           physical DR entities, the DR connector must be allocated to the
                           OS to return this value, otherwise a status of -3, no such
-                          sensor implemented, will be returned from the 
+                          sensor implemented, will be returned from the
                           <emphasis>get-sensor-state</emphasis> RTAS call. For DR
                           connectors of logical DR entities, the DR connector must be
                           allocated to the OS to return this value, otherwise a sensor
@@ -1702,7 +1718,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                         <entry>
                           <para>Returned for logical DR entities when the DR entity is
                           not currently available to the OS, but may possibly be made
-                          available to the OS by calling 
+                          available to the OS by calling
                           <emphasis>set-indicator</emphasis> with the allocation-state
                           indicator, setting that indicator to usable.</para>
                         </entry>
@@ -1714,7 +1730,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                         <entry>
                           <para>Returned for logical DR entities when the DR entity is
                           available for exchange in a sparing type operation, in which
-                          case the OS can claim that resource by doing a 
+                          case the OS can claim that resource by doing a
                           <emphasis>set-indicator</emphasis> RTAS call with
                           allocation-state set to exchange.</para>
                         </entry>
@@ -1726,7 +1742,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                         <entry>
                           <para>Returned for logical DR entities when the DR entity can
                           be recovered by the platform and used by the partition
-                          performing a 
+                          performing a
                           <emphasis>set-indicator</emphasis> RTAS call with
                           allocation-state set to recover.</para>
                         </entry>
@@ -1736,19 +1752,19 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                 </table>
               </listitem>
          	</varlistentry>
-         	
+
          	<varlistentry xml:id="dbdoclet.50569342_64410" >
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_85040" 
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_85040"
             xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
               <listitem>
                 <para><emphasis role="bold">For all DR options except the PCI Hot Plug and LRDR
                 options:</emphasis>
-                If the 
+                If the
                 <emphasis>get-sensor-state</emphasis> call with the dr-entity-sense sensor
                 requires the DR entity to be powered up and/or unisolated to sense the
-                presence of the DR entity, then the 
+                presence of the DR entity, then the
                 <emphasis>get-sensor-state</emphasis> call must return the error code of
-                -9000 or -9001, as defined in 
+                -9000 or -9001, as defined in
                 <xref linkend="dbdoclet.50569342_44990" />, if the DR entity is powered
                 down or is isolated when the call is made.</para>
 
@@ -1805,25 +1821,25 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                 entity unusable).</para>
               </listitem>
          	</varlistentry>
-         	
+
          	<varlistentry xml:id="dbdoclet.50569342_43470">
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_85040" 
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_85040"
             xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
               <listitem>
                 <para><emphasis role="bold">For all DR options:</emphasis>
                 The value used
                 for the sensor-index input to the
-                <emphasis>get-sensor-state</emphasis> RTAS call for the sensors in 
+                <emphasis>get-sensor-state</emphasis> RTAS call for the sensors in
                 <xref linkend="dbdoclet.50569342_92542" /> must be the index for the
-                connector, as passed in the 
+                connector, as passed in the
                 <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis> or
                 <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis> property.</para>
                 <para>
                 <emphasis role="bold">Hardware and Software Implementation Note:</emphasis> The status
-                introduced in Requirement 
-                <xref linkend="dbdoclet.50569342_64410" /> is not valid for 
+                introduced in Requirement
+                <xref linkend="dbdoclet.50569342_64410" /> is not valid for
                 <emphasis>get-sensor-state</emphasis> calls when trying to sense insertion
-                status for PCI slots (see Requirement 
+                status for PCI slots (see Requirement
                 <xref linkend="dbdoclet.50569342_94933" />).</para>
                 <para>
                 <emphasis role="bold">Architecture Note:</emphasis> DR entity available for recovery
@@ -1839,10 +1855,10 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
         </variablelist>
 
       </section>
-      
+
       <section xml:id="dbdoclet.50569342_61130">
         <title><emphasis>set-indicator</emphasis></title>
-        <para>This RTAS call is defined as shown in 
+        <para>This RTAS call is defined as shown in
         <xref linkend="LoPAR.RTAS" />. This RTAS call is used in DR to transition
         between isolation states, allocation states, and control DR indicators.
         In some cases, a state transition fails due to various conditions,
@@ -1852,26 +1868,26 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
         unisolate the connection between a DR entity and the platform. If
         physical isolation is indeed required for the DR entity, this RTAS call
         determines the necessity for isolation, not the calling program.</para>
-        <para>The 
-        <emphasis>set-indicator</emphasis> allocation-state and 
+        <para>The
+        <emphasis>set-indicator</emphasis> allocation-state and
         <emphasis>set-indicator</emphasis> isolation-state are linked. Before
-        calling 
+        calling
         <emphasis>set-indicator</emphasis> with isolation-state set to unisolate,
         the DR entity being unisolated will first need to be allocated to the OS.
-        If the 
+        If the
         <emphasis>get-sensor-state</emphasis> call would return a value of DR
         entity unusable or if it would return an error like -3 for the DR entity,
-        then the 
+        then the
         <emphasis>set-indicator</emphasis> isolation-state to unisolate would fail
         for that DR entity.</para>
         <para>For sequencing requirements between this RTAS routine and others,
-        see Requirements 
-        <xref linkend="dbdoclet.50569342_25655" /> and 
+        see Requirements
+        <xref linkend="dbdoclet.50569342_25655" /> and
         <xref linkend="dbdoclet.50569342_75542" />.</para>
-        <para>A single 
+        <para>A single
         <emphasis>set-indicator</emphasis> operation for indicator type 9001 may
         require an extended period of time for execution. Following the
-        initiation of the hardware operation, if the 
+        initiation of the hardware operation, if the
         <emphasis>set-indicator</emphasis> call returns prior to successful
         completion of the operation, the call will return either a status code of
         -2 or 990x. A status code of -2 indicates that RTAS may be capable of
@@ -1886,20 +1902,20 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
         <para>
         <xref linkend="dbdoclet.50569342_34333" /> indicates which DR indicators
         are used with which DR connector types.</para>
-        <para>The 
-        <emphasis role="bold"><literal>&#8220;rtas-indicators&#8221;</literal></emphasis> and 
-        <emphasis role="bold"><literal>&#8220;ibm,indicator-&lt;token&gt;&#8221;</literal></emphasis> 
+        <para>The
+        <emphasis role="bold"><literal>&#8220;rtas-indicators&#8221;</literal></emphasis> and
+        <emphasis role="bold"><literal>&#8220;ibm,indicator-&lt;token&gt;&#8221;</literal></emphasis>
         OF properties are not applicable to DR
-        indicators defined in 
+        indicators defined in
         <xref linkend="dbdoclet.50569342_34333" />.</para>
 
         <variablelist>
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_61130" 
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_61130"
             xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
               <listitem>
                 <para><emphasis role="bold">For all DR options:</emphasis> The indicator state values
-                specified in 
+                specified in
                 <xref linkend="dbdoclet.50569342_34333" /> must be implemented as
                 specified in that table.</para>
 
@@ -1964,14 +1980,14 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                           firmware, and in the case of a physical DR entity like a PCI
                           IOA, logically disconnects the DR entity from the platform (for
                           example, from the PCI bus). Unisolate refers to the DR action
-                          to logically connect the entity. Before 
+                          to logically connect the entity. Before
                           <emphasis>set-indicator</emphasis> isolation-state to unisolate,
                           the DR entity being unisolated must first be allocated to the
-                          OS. If the 
+                          OS. If the
                           <emphasis>get-sensor-state</emphasis> call with the
                           dr-entity-sense token would return a value of DR entity
                           unusable or if it would return an error like -3 for the DR
-                          entity, then the 
+                          entity, then the
                           <emphasis>set-indicator</emphasis> isolation-state to unisolate
                           must fail for that DR entity.</para>
                         </entry>
@@ -1997,8 +2013,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                           <para>This indicator must be implemented for DR connectors for
                           physical DR entities. If the DR indicators exist for the DR
                           connector, then they are used to indicate the state of the DR
-                          connector to the user. Usage of these states are as defined in 
-                          <xref linkend="dbdoclet.50569342_42695" /> and 
+                          connector to the user. Usage of these states are as defined in
+                          <xref linkend="dbdoclet.50569342_42695" /> and
                           <xref linkend="LoPAR.Error" />.</para>
                         </entry>
                       </row>
@@ -2024,7 +2040,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                           to the OS. The initial allocation state of a connector is
                           established based upon the initial allocation of resources to
                           the OS image. Subsequently, an OS may request a change of
-                          allocation state by use of the 
+                          allocation state by use of the
                           <emphasis>set-indicator</emphasis> with allocation-state token.
                           If the transition to the usable state is not possible the -3
                           (no such indicator implemented) status is returned.</para>
@@ -2035,95 +2051,95 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                 </table>
               </listitem>
          	</varlistentry>
-         	
+
          	<varlistentry xml:id="dbdoclet.50569342_16260">
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_61130" 
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_61130"
             xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
               <listitem>
                 <para><emphasis role="bold">For all DR options:</emphasis>
-                The value used for the indicator-index input to the 
-                <emphasis>set-indicator</emphasis> RTAS call for the indicators in 
+                The value used for the indicator-index input to the
+                <emphasis>set-indicator</emphasis> RTAS call for the indicators in
                 <xref linkend="dbdoclet.50569342_34333" /> must be the index for the
-                connector, as passed in the 
+                connector, as passed in the
                 <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis> or
                 <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis> property.</para>
               </listitem>
          	</varlistentry>
-         	
+
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_61130" 
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_61130"
             xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
               <listitem>
-                <para><emphasis role="bold">For all DR options:</emphasis> The 
+                <para><emphasis role="bold">For all DR options:</emphasis> The
                 <emphasis>set-indicator</emphasis> call must return a -2 status, or
                 optionally for indicator type 9001 the 990x status, for each call until
-                the operation is complete; where the 990x status is defined in 
+                the operation is complete; where the 990x status is defined in
                 <xref linkend="LoPAR.Error" />.</para>
               </listitem>
          	</varlistentry>
-         	
+
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_61130" 
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_61130"
             xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
               <listitem>
                 <para><emphasis role="bold">For all DR options:</emphasis> If this is a DR operation that
                 involves the user inserting a DR entity, then if the firmware can
                 determine that the inserted entity would cause a system disturbance, then
-                the 
+                the
                 <emphasis>set-indicator</emphasis> RTAS call must not unisolate the entity
                 and must return an error status which is unique to the particular
                 error.</para>
               </listitem>
          	</varlistentry>
-         	
+
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_61130" 
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_61130"
             xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
               <listitem>
-                <para><emphasis role="bold">For all DR options:</emphasis> If the 
+                <para><emphasis role="bold">For all DR options:</emphasis> If the
                 <emphasis>set-indicator</emphasis> index refers to a connector that would
-                return a &#8220;DR entity unusable&#8221; status (2) to the 
-                <emphasis>get-sensor</emphasis> dr-entity-sense token, the 
+                return a &#8220;DR entity unusable&#8221; status (2) to the
+                <emphasis>get-sensor</emphasis> dr-entity-sense token, the
                 <emphasis>set-indicator</emphasis> RTAS return code must be &#8220;No such
-                indicator implemented&#8221; (-3), except in response to a successful 
+                indicator implemented&#8221; (-3), except in response to a successful
                 <emphasis>set-indicator</emphasis> allocation state usable.</para>
               </listitem>
          	</varlistentry>
-         	
+
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_61130" 
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_61130"
             xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
               <listitem>
                 <para><emphasis role="bold">For all DR options combined with the LPAR option:</emphasis> The
-                RTAS 
+                RTAS
                 <emphasis>set-indicator</emphasis> specifying unusable allocation-state of
                 a DR connector must unmap the resource from the partition&#8217;s Page
                 Frame Table(s) and, as appropriate, its Translation Control Entry
                 tables.</para>
               </listitem>
          	</varlistentry>
-         	
+
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_61130" 
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_61130"
             xrefstyle="select: labelnumber nopage"/>-7.</emphasis></term>
               <listitem>
                 <para><emphasis role="bold">For all DR options combined with the LPAR option:</emphasis> The
-                successful completion of the RTAS 
+                successful completion of the RTAS
                 <emphasis>set-indicator</emphasis> specifying usable allocation-state of a
                 DR connector must allow subsequent mapping of the resource as appropriate
                 within the partition&#8217;s Page Frame Table(s) and/or its Translation
                 Control Entry tables.</para>
                 <para>
-                <emphasis role="bold">Software Implementation Note:</emphasis> The operation of the 
+                <emphasis role="bold">Software Implementation Note:</emphasis> The operation of the
                 <emphasis>set-indicator</emphasis> call is not complete at the time of the
                 return from the call if the &#8220;busy&#8221; status is returned. If it
                 is necessary to know when the operation is complete, the routine should
                 be called with the same parameters until a non-busy status is
                 returned.</para>
                 <para>
-                <emphasis role="bold">Hardware and Software Implementation Note:</emphasis> The 
+                <emphasis role="bold">Hardware and Software Implementation Note:</emphasis> The
                 <emphasis>set-indicator</emphasis> (isolation-state) call is used to clear
-                RTAS internal tables regarding this device. The 
+                RTAS internal tables regarding this device. The
                 <emphasis>ibm,configure-connector</emphasis> RTAS routine will need to be
                 called before using the entities below this connector, even if power was
                 never removed from an entity while it was in the isolated state.</para>
@@ -2131,42 +2147,42 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
          	</varlistentry>
         </variablelist>
       </section>
-      
+
       <section xml:id="dbdoclet.50569342_39636">
         <title><emphasis>ibm,configure-connector</emphasis> RTAS Call</title>
-        <para>The RTAS function 
+        <para>The RTAS function
         <emphasis>ibm,configure-connector</emphasis> is a new RTAS call introduced
         by DR and is used to configure a DR entity after it has been added by
-        either an add or replace operation. It is expected that the 
+        either an add or replace operation. It is expected that the
         <emphasis>ibm,configure-connector</emphasis> RTAS routine will have to be
         called several times to complete the configuration of a dynamic
         reconfiguration connector, due to the time required to complete the
         entire configuration process. The work area contains the intermediate
         state that RTAS needs to retain between calls. The work area consists of
         4096 byte pages of real storage on 4096 byte boundaries which can be
-        increased by one page on each call. The OS may interleave calls to 
+        increased by one page on each call. The OS may interleave calls to
         <emphasis>ibm,configure-connector</emphasis> for different dynamic
         reconfiguration connectors, however, a separate work area will be
         associated with each dynamic reconfiguration connector which is actively
         being configured. Other standard RTAS locking rules apply.</para>
-        <para>The properties generated by the 
+        <para>The properties generated by the
         <emphasis>ibm,configure-connector</emphasis> call are dependent on the
         type of DR entities. For a list of properties generated, see the RTAS
         Requirements section for each specific DR option. For example, for a list
-        of properties generated for PCI Hot Plug, see 
+        of properties generated for PCI Hot Plug, see
         <xref linkend="dbdoclet.50569342_67543" />.</para>
         <para>For sequencing requirements between this RTAS routine and others,
-        see Requirement 
+        see Requirement
         <xref linkend="dbdoclet.50569342_25655" />.</para>
 
         <variablelist>
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_39636" 
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_39636"
             xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
               <listitem>
-                <para><emphasis role="bold">For all DR options:</emphasis> The RTAS function 
+                <para><emphasis role="bold">For all DR options:</emphasis> The RTAS function
                 <emphasis>ibm,configure-connector</emphasis> must be implemented and must
-                implement the argument call buffer defined by 
+                implement the argument call buffer defined by
                 <xref linkend="dbdoclet.50569342_50675" />.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569342_50675">
@@ -2205,7 +2221,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                           </para>
                         </entry>
                         <entry>
-                          <para>Token for 
+                          <para>Token for
                           <emphasis>ibm,configure-connector</emphasis></para>
                         </entry>
                       </row>
@@ -2281,14 +2297,14 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                 </table>
               </listitem>
          	</varlistentry>
-         	
+
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_39636" 
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_39636"
             xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
               <listitem>
                 <para><emphasis role="bold">For all DR options:</emphasis> On the first call of a dynamic
                 reconfiguration sequence, the one page work area must be initialized by
-                the OS as in 
+                the OS as in
                 <xref linkend="dbdoclet.50569342_44663" />.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569342_44663">
@@ -2317,7 +2333,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                           <para>0</para>
                         </entry>
                         <entry>
-                          <para>entry from the 
+                          <para>entry from the
                           <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis> or
                           <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis> property for
                           the connector to configure</para>
@@ -2335,15 +2351,15 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                   </tgroup>
                 </table>
                 <para>
-                <emphasis role="bold">Architecture Note:</emphasis> The entry offset in 
+                <emphasis role="bold">Architecture Note:</emphasis> The entry offset in
                 <xref linkend="dbdoclet.50569342_44663" /> is either four bytes or eight
                 bytes depending on whether RTAS was instantiated in 32-bit or 64-bit
                 mode, respectively.</para>
               </listitem>
          	</varlistentry>
-         	
+
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_39636" 
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_39636"
             xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
               <listitem>
                 <para><emphasis role="bold">For all DR options:</emphasis> On all subsequent calls of the
@@ -2351,12 +2367,12 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                 last return from RTAS.</para>
               </listitem>
          	</varlistentry>
-         	
+
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_39636" 
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_39636"
             xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
               <listitem>
-                <para><emphasis role="bold">For all DR options:</emphasis> The 
+                <para><emphasis role="bold">For all DR options:</emphasis> The
                 <emphasis>ibm,configure-connector</emphasis> RTAS call must update any
                 necessary RTAS configuration state based upon the configuration changes
                 effected through the specified DR connector.</para>
@@ -2373,23 +2389,23 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
         reported devices remain unconfigured and unusable. RTAS internal data
         structures (outside of the work area) are not updated until the call
         which returns &#8220;configuration complete&#8221; status. A subsequent
-        sequence of calls to 
-        <emphasis>ibm,configure-connector</emphasis> with the same entry from the 
+        sequence of calls to
+        <emphasis>ibm,configure-connector</emphasis> with the same entry from the
         <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis> or
         <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis> property will restart
         the configuration of devices which were not completely configured.</para>
-        <para>If the index from 
+        <para>If the index from
         <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis> or
         <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis> refers to a connector
-        that would return an &#8220;DR entity unusable&#8221; status (2) to the 
-        <emphasis>get-sensor</emphasis> RTAS call with dr-entity-sense token, the 
+        that would return an &#8220;DR entity unusable&#8221; status (2) to the
+        <emphasis>get-sensor</emphasis> RTAS call with dr-entity-sense token, the
         <emphasis>ibm,configure-connector</emphasis> RTAS call for that index
         immediately returns &#8220;-9003: Cannot configure - Logical DR connector
         unusable&#8221; on the first call without any configuration action taken
         on the DR connector.</para>
         <para>A dynamic reconfiguration connector may attach several sibling OF
         device tree architected devices. Each such device may be the parent of
-        one or more device sub-trees. The 
+        one or more device sub-trees. The
         <emphasis>ibm,configure-connector</emphasis> RTAS routine configures and
         reports the entire sub-tree of devices rooted in previously unconfigured
         architected devices found below the connector whose index is specified in
@@ -2397,14 +2413,14 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
         an empty or unowned dynamic reconfiguration connector; where unowned
         refers to a DR connector that would return a DR entity unusable, a DR
         entity available for exchange, or a DR entity available for entity
-        available for recovery value, for a 
+        available for recovery value, for a
         <emphasis>get-sensor</emphasis> dr-entity-sense sensor. Configuration
         proceeds in a depth first order.</para>
-        <para>If the 
+        <para>If the
         <emphasis>ibm,configure-connector</emphasis> RTAS routine returns with the
         &#8220;call again&#8221; or 990x status, configuration is proceeding but
         had to be suspended to maintain the short execution time requirement of
-        RTAS routines. No results are available. The OS should call the 
+        RTAS routines. No results are available. The OS should call the
         <emphasis>ibm,configure-connector</emphasis> RTAS routine passing back the
         work area unmodified at a later time to continue the configuration
         process.</para>
@@ -2418,23 +2434,23 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
         appropriate system documentation relative to the DR Entity that they are
         trying to insert into the system.</para>
         <para>The &#8220;need more memory&#8221; status code, is similar in
-        semantics to the &#8220;call again&#8221; status. However, on the next 
+        semantics to the &#8220;call again&#8221; status. However, on the next
         <emphasis>ibm,configure-connector</emphasis> call, the OS will supply, via
-        the 
+        the
         <emphasis>Memory extent</emphasis> parameter, the address of another page
         of memory for RTAS to add to the work area in order for configuration to
-        continue. On all other calls to 
-        <emphasis>ibm,configure-connector</emphasis> the contents of the 
+        continue. On all other calls to
+        <emphasis>ibm,configure-connector</emphasis> the contents of the
         <emphasis>Memory extent</emphasis> parameter should be 0. It is the
         responsibility of the OS to recover all work area memory after a sequence
-        of 
+        of
         <emphasis>ibm,configure-connector</emphasis> calls is completed.</para>
         <para>
         <emphasis role="bold">Software Implementation Note:</emphasis> The OS may allocate the
         work area from contiguous virtual space and pass individual discontiguous
-        real pages to 
+        real pages to
         <emphasis>ibm,configure-connector</emphasis> as needed.</para>
-        <para>If the 
+        <para>If the
         <emphasis>ibm,configure-connector</emphasis> RTAS routine returns either
         the &#8220;next sibling&#8221; or &#8220;next child&#8221; status codes,
         configuration has detected an architected OF device tree device, and is
@@ -2453,13 +2469,13 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
         entry offset 4 contains an offset within the first page of the work area
         to the value of the property.</para>
         <para>
-        <emphasis role="bold">Architecture Note:</emphasis> The 
+        <emphasis role="bold">Architecture Note:</emphasis> The
         <emphasis>ibm,configure-connector</emphasis> RTAS routine returns those
         applicable properties that can be determined without interpreting any
         FCode ROM which is associated with the IOA. Additionally, it is
         permissible for this RTAS call to be aware of various specific IOAs and
         emulate the action of any FCode associated with the IOA.</para>
-        <para>If the 
+        <para>If the
         <emphasis>ibm,configure-connector</emphasis> RTAS routine returns the
         &#8220;previous parent&#8221; status code, it has come to the end of the
         string of siblings, and will back up the tree one level following its
@@ -2468,7 +2484,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
         <para>
           <emphasis role="bold">Software Implementation Notes:</emphasis>
 
-          <orderedlist>		      
+          <orderedlist>
             <listitem>
               <para>Any attempts to configure an already configured connector or one
               in progress of being configured will produce unpredictable
@@ -2477,15 +2493,15 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
             <listitem>
               <para>The software will put the DR entity in the full on power state
-              before issuing the 
+              before issuing the
               <emphasis>ibm,configure-connector</emphasis> RTAS call to configure the DR
               entity.</para>
             </listitem>
-          </orderedlist>		      
+          </orderedlist>
         </para>
       </section>
     </section>
-    
+
     <section xml:id="dbdoclet.50569342_16693">
       <title>For All DR Options - OS Requirements</title>
       <para />
@@ -2495,16 +2511,16 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
         <para>DR Visual indicator usage will be as indicated in the following
         requirement, in order to provide for a consistent user interface across
         platforms. Information on implementation dependent aspects of the DR
-        indicators can be found in 
+        indicators can be found in
         <xref linkend="LoPAR.Error" />.</para>
 
         <variablelist>
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_83771" 
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_83771"
             xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
               <listitem>
                 <para><emphasis role="bold">For all DR options:</emphasis> The visual indicators must be
-                used as defined in 
+                used as defined in
                 <xref linkend="dbdoclet.50569342_42695" />.</para>
               </listitem>
          	</varlistentry>
@@ -2538,9 +2554,9 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                 <entry>
                   <para>The DR connector is inactive and entity may be removed or
                   added without system disruption. For DR entities that require
-                  power off at the connector, then the caller of 
+                  power off at the connector, then the caller of
                   <emphasis>set-indicator</emphasis> must turn power off prior to
-                  setting the indicator to this state. See also 
+                  setting the indicator to this state. See also
                   <xref linkend="LoPAR.Error" />.</para>
                 </entry>
               </row>
@@ -2552,7 +2568,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                   <para>This indicator state is used to allow the user to
                   identify the physical location of the DR connector. This state
                   may map to the same visual state (for example, blink rate) as
-                  the Action state, or may map to a different state. See also 
+                  the Action state, or may map to a different state. See also
                   <xref linkend="LoPAR.Error" />.</para>
                 </entry>
               </row>
@@ -2564,7 +2580,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                   <para>Used to indicate to the user the DR connector on which
                   the user is to perform the current DR operation. This state may
                   map to the same visual state (for example, blink rate) as the
-                  Identify state, or may map to a different state. See also 
+                  Identify state, or may map to a different state. See also
                   <xref linkend="LoPAR.Error" />.</para>
                 </entry>
               </row>
@@ -2574,7 +2590,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                 </entry>
                 <entry>
                   <para>The DR connector is active and entity removal may disrupt
-                  system operation. See also 
+                  system operation. See also
                   <xref linkend="LoPAR.Error" />.</para>
                 </entry>
               </row>
@@ -2582,24 +2598,24 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
           </tgroup>
         </table>
       </section>
-      
+
       <section xml:id="sec_other_req">
         <title>Other Requirements</title>
 
         <variablelist>
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="sec_other_req" 
+            <term><emphasis role="bold">R1-<xref linkend="sec_other_req"
             xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
               <listitem>
                 <para><emphasis role="bold">For all DR options:</emphasis> The OS must detect hierarchical
-                power domains (as specified in the 
+                power domains (as specified in the
                 <emphasis role="bold"><literal>&#8220;power-domains-tree&#8221;</literal></emphasis> property) and must
                 handle those properly during a DR operation.</para>
               </listitem>
          	</varlistentry>
-         	
+
          	<varlistentry xml:id="dbdoclet.50569342_25655">
-            <term><emphasis role="bold">R1-<xref linkend="sec_other_req" 
+            <term><emphasis role="bold">R1-<xref linkend="sec_other_req"
             xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
               <listitem>
                 <para><emphasis role="bold">For all DR options:</emphasis>
@@ -2608,9 +2624,9 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                 following order:</para>
 
 
-                <orderedlist numeration="loweralpha">		      
+                <orderedlist numeration="loweralpha">
                   <listitem>
-                    <para>If the power domain is not 0, then call 
+                    <para>If the power domain is not 0, then call
                     <emphasis>set-power-level</emphasis></para>
                   </listitem>
 
@@ -2622,12 +2638,12 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                   <listitem>
                     <para><emphasis>ibm,configure-connector</emphasis></para>
                   </listitem>
-                </orderedlist>		      
+                </orderedlist>
               </listitem>
          	</varlistentry>
-         	
+
          	<varlistentry xml:id="dbdoclet.50569342_75542">
-            <term><emphasis role="bold">R1-<xref linkend="sec_other_req" 
+            <term><emphasis role="bold">R1-<xref linkend="sec_other_req"
             xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
               <listitem>
                 <para><emphasis role="bold">For all DR options:</emphasis>
@@ -2635,26 +2651,26 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                 entity offline, the OS must issue the following RTAS calls in the
                 following order:</para>
 
-                <orderedlist numeration="loweralpha">		      
+                <orderedlist numeration="loweralpha">
                   <listitem>
                     <para><emphasis>set-indicator</emphasis> with the isolation-state token and a
                     state value of isolate)</para>
                   </listitem>
 
                   <listitem>
-                    <para>If the power domain is not 0, then call 
+                    <para>If the power domain is not 0, then call
                     <emphasis>set-power-level</emphasis></para>
                   </listitem>
-                </orderedlist>		      
+                </orderedlist>
               </listitem>
          	</varlistentry>
-         	
+
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="sec_other_req" 
+            <term><emphasis role="bold">R1-<xref linkend="sec_other_req"
             xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
               <listitem>
                 <para>When bringing a DR entity online that
-                utilizes TCEs (see 
+                utilizes TCEs (see
                 <xref linkend="LoPAR.Platform" />), the OS must initialize the DR
                 entity's TCEs.</para>
               </listitem>
@@ -2664,14 +2680,14 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
       </section>
     </section>
   </section>
-  
+
   <section xml:id="dbdoclet.50569342_47470">
     <title>PCI Hot Plug DR Option</title>
     <para>This section will develop the requirements over and beyond the base
     DR option requirements, that are unique to being able to perform DR
     operations on PCI plug-in cards that do not share power domains with other
     PCI plug-in cards.</para>
-    
+
     <section xml:id="dbdoclet.50569342_71112">
       <title>PCI Hot Plug DR - Platform Requirements</title>
       <para>A method will be provided to isolate the plug-in card (power and
@@ -2687,7 +2703,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
       <variablelist>
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_71112" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_71112"
           xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For the PCI Hot Plug DR option:</emphasis> All platform
@@ -2695,27 +2711,27 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               <xref linkend="dbdoclet.50569342_98936" />).</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_71112" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_71112"
           xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For the PCI Hot Plug DR option:</emphasis> All PCI requirements
               must be met (for example, timing rules, power slew rates, etc.) as
-              specified in the appropriate PCI specifications, and in the 
+              specified in the appropriate PCI specifications, and in the
               <xref linkend="dbdoclet.50569387_87046" />.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry xml:id="dbdoclet.50569342_67003">
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_71112" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_71112"
           xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For the PCI Hot Plug DR option:</emphasis>
               The hardware must
               provide two indicators per PCI Hot Plug slot, and all the following must
               be true:
-              <orderedlist numeration="loweralpha">		      
+              <orderedlist numeration="loweralpha">
                 <listitem>
                     <para>One indicator must be green and the platform must use the
                     indicator to indicate the power state of the PCI Hot Plug slot, turning
@@ -2726,16 +2742,16 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                 <listitem>
                     <para>The other indicator must be amber and must be controllable by
                     RTAS, separately from all other indicators, and must be used as a slot
-                    Identify indicator, as defined in 
+                    Identify indicator, as defined in
                     <xref linkend="LoPAR.Error" />.</para>
                 </listitem>
-              </orderedlist>		      
+              </orderedlist>
               </para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry xml:id="dbdoclet.50569342_31404">
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_71112" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_71112"
           xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For the PCI Hot Plug DR option:</emphasis>
@@ -2745,9 +2761,9 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               in the platform.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry xml:id="dbdoclet.50569342_94933">
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_71112" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_71112"
           xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For the PCI Hot Plug DR option:</emphasis>
@@ -2758,9 +2774,9 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               the plug-in card.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry xml:id="dbdoclet.50569342_17671">
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_71112" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_71112"
           xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For the PCI Hot Plug DR option:</emphasis>
@@ -2773,9 +2789,9 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               removal.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry xml:id="dbdoclet.50569342_33017">
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_71112" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_71112"
           xrefstyle="select: labelnumber nopage"/>-7.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For the PCI Hot Plug option:</emphasis>
@@ -2785,15 +2801,15 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               would result in improper operation of the system.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_71112" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_71112"
           xrefstyle="select: labelnumber nopage"/>-8.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For the PCI Hot Plug option:</emphasis> For each PCI Hot Plug
               slot which will accept only 32-bit (data width) plug-in cards, the
               platform must:
-                <orderedlist numeration="loweralpha">		      
+                <orderedlist numeration="loweralpha">
                   <listitem>
                     <para>Accommodate plug-in cards requiring up to 64 MB of PCI Memory
                     Space and 64 KB of PCI I/O space</para>
@@ -2804,19 +2820,19 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                     map simultaneously and at all times at least 128 MB of PCI Memory space
                     for the slot.</para>
                   </listitem>
-                </orderedlist>		      
+                </orderedlist>
               </para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_71112" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_71112"
           xrefstyle="select: labelnumber nopage"/>-9.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For the PCI Hot Plug option:</emphasis> Each PCI Hot Plug slot
               which will accept 64-bit (data width) plug-in cards, the platform
               must:
-                <orderedlist numeration="loweralpha">		      
+                <orderedlist numeration="loweralpha">
                   <listitem>
                     <para>Accommodate plug-in cards requiring up to 128 MB of PCI Memory
                     Space and 64 KB of PCI I/O space</para>
@@ -2827,24 +2843,24 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                     map simultaneously and at all times at least 256 MB of PCI Memory space
                     for the slot.</para>
                   </listitem>
-                </orderedlist>		      
+                </orderedlist>
               </para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_71112" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_71112"
           xrefstyle="select: labelnumber nopage"/>-10.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For the PCI Hot Plug option with PCI Express:</emphasis> The
               power and isolation controls must be implemented by use of the PCI
-              Standard Hot-Plug Controller (see 
+              Standard Hot-Plug Controller (see
               <emphasis> <xref linkend="dbdoclet.50569387_87046" /> </emphasis>).</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_71112" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_71112"
           xrefstyle="select: labelnumber nopage"/>-11.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For the PCI Hot Plug option with PCI Express:</emphasis> If a
@@ -2853,7 +2869,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               <para>
                 <emphasis role="bold">Hardware implementation Notes:</emphasis>
 
-                <orderedlist>		      
+                <orderedlist>
                   <listitem>
                     <para>Surge current protection on the planar is one way to provide the
                     required protection against damage to components if an entity is removed
@@ -2876,25 +2892,25 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
                   <listitem>
                     <para>It is recommended that the control of the indicators required by
-                    Requirement 
+                    Requirement
                     <xref linkend="dbdoclet.50569342_67003" /> be via the PCI Standard Hot
-                    Plug Controller (see 
+                    Plug Controller (see
                     <emphasis> <xref linkend="dbdoclet.50569387_87046" /> </emphasis>).</para>
                   </listitem>
-                </orderedlist>		      
+                </orderedlist>
               </para>
             </listitem>
        	</varlistentry>
       </variablelist>
 
     </section>
-    
+
     <section xml:id="dbdoclet.50569342_72553">
       <title>PCI Hot Plug DR - Boot Time Firmware Requirements</title>
 
       <variablelist>
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_72553" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_72553"
           xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For the PCI Hot Plug DR option:</emphasis> All OF requirements
@@ -2902,21 +2918,21 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               <xref linkend="dbdoclet.50569342_82208" />).</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_72553" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_72553"
           xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For the PCI Hot Plug DR option:</emphasis> The OF must only
-              generate the 
+              generate the
               <emphasis role="bold"><literal>&#8220;clock-frequency&#8221;</literal></emphasis> OF property for PCI
               bridge nodes which cannot change bus clock frequency during a PCI Hot
               Plug operation.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_72553" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_72553"
           xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For the PCI Hot Plug DR option:</emphasis> The OF must set the
@@ -2943,7 +2959,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
       <variablelist>
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_67543" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_67543"
           xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For the PCI Hot Plug DR option:</emphasis> All RTAS requirements
@@ -2951,12 +2967,12 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               <xref linkend="dbdoclet.50569342_40601" />).</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_67543" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_67543"
           xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
             <listitem>
-              <para><emphasis role="bold">For the PCI Hot Plug DR option:</emphasis> The 
+              <para><emphasis role="bold">For the PCI Hot Plug DR option:</emphasis> The
               <emphasis>set-indicator</emphasis> RTAS call with a indicator type of
               isolation-state and a state value of unisolate (1) must not return a
               &#8220;success&#8221; status until any IOA on a plug-in card inserted
@@ -2964,12 +2980,12 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               return a &#8220;success&#8221; status if the PCI slot is empty.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_67543" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_67543"
           xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
             <listitem>
-              <para><emphasis role="bold">For the PCI Hot Plug DR option:</emphasis> The 
+              <para><emphasis role="bold">For the PCI Hot Plug DR option:</emphasis> The
               <emphasis>ibm,configure-connector</emphasis> RTAS call must initialize the
               PCI configuration registers and platform to the same values as at boot
               time.</para>
@@ -2984,7 +3000,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               replace the configuration information into the new IOA.</para>
               <para>PCI I/O sub-systems architecturally consist of two classes of
               devices, bus bridges (Processor Host Bridges (PHBs), PCI to PCI Bridges,
-              and PCI Express switches and bridges) and IOAs. The support that 
+              and PCI Express switches and bridges) and IOAs. The support that
               <emphasis>ibm,configure-connector</emphasis> provides for these two
               classes is different.</para>
               <para>For Bus Bridges, firmware will totally configure the bridge so that
@@ -2995,7 +3011,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               reported are the same as provided by the boot time firmware.</para>
               <para>For PCI plug-in cards, the support is significantly less; it is
               essentially the functionality specified in section 2.5 FCode Evaluation
-              Semantics of the 
+              Semantics of the
               <xref linkend="dbdoclet.50569387_22451" />. However, the configuration
               proceeds as if all devices do not have an expansion ROM since the RTAS
               code does not attempt to determine if an FCode ROM is present nor
@@ -3010,26 +3026,26 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               <emphasis>ibm,configure-connector</emphasis> will not generate it.</para>
               <para>
               <xref linkend="dbdoclet.50569342_38602" /> shows what PCI OF properties
-              can be expected to be returned from the 
+              can be expected to be returned from the
               <emphasis>ibm,configure-connector</emphasis> call for PCI Hot Plug
-              operations and 
+              operations and
               <xref linkend="dbdoclet.50569342_98892" /> shows some which can be
               expected to not be returned.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_67543" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_67543"
           xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
             <listitem>
-              <para><emphasis role="bold">For the PCI Hot Plug DR option:</emphasis> The 
+              <para><emphasis role="bold">For the PCI Hot Plug DR option:</emphasis> The
               <emphasis>ibm,configure-connector</emphasis> RTAS call when used for PCI
-              IOAs must return the properties named in 
+              IOAs must return the properties named in
               <xref linkend="dbdoclet.50569342_38602" /> except as indicated in the
               Present?/Source column.</para>
 
               <table frame="all" pgwide="1" xml:id="dbdoclet.50569342_38602">
-                <title>PCI Property Names which will be Generated by 
+                <title>PCI Property Names which will be Generated by
                 <emphasis>ibm,configure-connector</emphasis></title>
                 <tgroup cols="2">
                   <colspec colname="c1" colwidth="30*"  align="center" />
@@ -3277,7 +3293,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                       </entry>
                       <entry>
                         <para>Always present for sub-systems and for PCI IOAs which
-                        follow the PCI VPD proposed standard. See 
+                        follow the PCI VPD proposed standard. See
                         <!-- FIXME: Requirement R1-12.4.2-1-->
                         <xref linkend="LoPAR.Platform" /> and note to see the effect of
                         using different PCI versions.</para>
@@ -3290,7 +3306,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                         </para>
                       </entry>
                       <entry>
-                        <para>For bridges, always present with a value of 
+                        <para>For bridges, always present with a value of
                         <emphasis role="bold"><literal>&#8220;PCI&#8221;</literal></emphasis> otherwise not
                         present.</para>
                       </entry>
@@ -3311,14 +3327,14 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               </table>
               <para>
               <xref linkend="dbdoclet.50569342_98892" /> is a non-exhaustive list of
-              common properties that may not be generated by RTAS 
+              common properties that may not be generated by RTAS
               <emphasis role="bold"><literal>ibm,configure connector</literal></emphasis> for a PCI IOA. Also, the
-              concept of a phandle does not apply to nodes reported by 
+              concept of a phandle does not apply to nodes reported by
               <emphasis role="bold"><literal>ibm,configure-connector</literal></emphasis>.</para>
 
               <table frame="all" pgwide="1" xml:id="dbdoclet.50569342_98892">
                 <title>Non-exhaustive list of PCI properties that may not be
-                generated by 
+                generated by
                 <emphasis>ibm,configure connector</emphasis></title>
                 <?dbhtml table-width="80%" ?><?dbfo table-width="80%" ?>
                 <tgroup cols="2">
@@ -3465,22 +3481,22 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                 </tgroup>
               </table>
               <para>
-              <emphasis>Architecture Note</emphasis>: Without 
+              <emphasis>Architecture Note</emphasis>: Without
               <emphasis role="bold"><literal>&#8220;device_type&#8221;</literal></emphasis> and other properties, the
               OS cannot append an IOA added via DR to the boot list for use during the
               next boot.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_67543" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_67543"
           xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
             <listitem>
-              <para><emphasis role="bold">For the PCI Hot Plug option:</emphasis> When 
+              <para><emphasis role="bold">For the PCI Hot Plug option:</emphasis> When
               <emphasis>ibm,configure-connector</emphasis> RTAS call returns to the
               caller, if the device driver(s) for any IOA(s) configured as part of the
               call are EEH unaware (that is may produce data integrity exposures due to
-              an EEH stopped state) or if they may be EEH unaware, then the 
+              an EEH stopped state) or if they may be EEH unaware, then the
               <emphasis>ibm,configure-connector</emphasis> call must disable EEH prior
               to returning to the caller.</para>
               <para>
@@ -3489,13 +3505,13 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               state, only recognize the all-1's condition and not use data from
               operations that may have occurred since the last all-1's checkpoint. In
               addition, the device driver under such failure circumstances needs to
-              turn off interrupts (using the 
+              turn off interrupts (using the
               <emphasis>ibm,set-int-off</emphasis> RTAS call) in order to make sure that
               any (unserviceable) interrupts from the IOA do not affect the system.
               Note that this is the same device driver support needed to protect
               against an IOA dying or against a no-DEVSEL type error (which may or may
               not be the result of an IOA that has died). Note that if all-1&#8217;s
-              data may be valid, the 
+              data may be valid, the
               <emphasis>ibm,read-slot-reset-state2</emphasis> RTAS call should be used
               to discover the true EEH state of the device.</para>
             </listitem>
@@ -3508,7 +3524,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
       <variablelist>
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_pci_hotplug" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_pci_hotplug"
           xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For the PCI Hot Plug DR option:</emphasis> All OS requirements
@@ -3529,7 +3545,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
     image(s). The Logical Resource Dynamic Reconfiguration option provides the
     means for providing capacity on demand to the running OS and provides the
     capability for the platform to make available spare parts (for example,
-    CPUs) to replace failing ones (called 
+    CPUs) to replace failing ones (called
     <emphasis>sparing</emphasis> operations). Combined with the LPAR option,
     platforms can move resources between partitions without rebooting the
     partitions&#8217; OS images.</para>
@@ -3548,11 +3564,11 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
     fewer than that currently installed. In other cases, such as memory regions
     in a LPARed system, the number may be limited to the amount of memory that
     can be supported without resizing the cpu page frame table. The OS may use
-    the 
+    the
     <emphasis>get-sensor-state</emphasis> RTAS call with the dr-entity-sense
     token to determine if a given drc-index refers to a connector that is
     currently usable for DR operations. If the connector is not currently
-    usable the return state is &#8220;DR entity unusable&#8221; (2). A 
+    usable the return state is &#8220;DR entity unusable&#8221; (2). A
     <emphasis>set-indicator</emphasis> (isolation state) RTAS call to an
     unusable connector or (dr-indicator) to any logical resource connector
     results in a &#8220;No such indicator implemented&#8221; return
@@ -3562,14 +3578,14 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
     In this model, a DR entity state is changed from unusable to usable only by
     firmware in response to HMC requests to explicitly move the allocation of
     the resource between partitions. In the second model, certain resources may
-    &#8220;float&#8221; between cooperating partitions, a partition issues a 
+    &#8220;float&#8221; between cooperating partitions, a partition issues a
     <emphasis>set-indicator</emphasis> (allocation state usable) RTAS call and
     if the resource is free, the firmware assigns the resource to the
-    requesting partition and returns the success status. 
+    requesting partition and returns the success status.
     <emphasis>Set-indicator</emphasis> returns the code
     &#8220;no-such-indicator&#8221; if either the resource is not free, or the
     platform is operating in the first model. To return a resource to the
-    platform firmware, the OS issues a 
+    platform firmware, the OS issues a
     <emphasis>set-indicator</emphasis> (allocation state unusable) RTAS call for
     the resource&#8217;s DR connector.</para>
 
@@ -3580,7 +3596,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
       <variablelist>
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_platform_req_lrdr" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_platform_req_lrdr"
           xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For the LRDR option:</emphasis> The hardware must provide the
@@ -3602,9 +3618,9 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               an OS, independent of whether or not LRDR is implemented.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry xml:id="dbdoclet.50569342_52827">
-          <term><emphasis role="bold">R1-<xref linkend="sec_platform_req_lrdr" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_platform_req_lrdr"
           xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For the LRDR option:</emphasis>
@@ -3613,7 +3629,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               (for example, as part of an ibm,configure-connector operation), must be
               functionally transparent to the software, except that PCI plug-in cards
               that are plugged into a PCI Hot Plug DR connector do not need to be
-              powered on before the 
+              powered on before the
               <emphasis>ibm,configure-connector</emphasis> call for a logical SLOT DR
               connector returns to the caller.</para>
               <para>
@@ -3621,7 +3637,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               into a DR connector will not be configured as part of an
               ibm,configure-connector operation on a logical DR connector of type SLOT
               above the plug-in card (see section 17.6.3.3 ibm,configure-connector).
-              However, Requirement 
+              However, Requirement
               <xref linkend="dbdoclet.50569342_52827" /> does require a PCI IOA which is
               not plugged in to a PCI Hot Plug DR connector (for example, soldered on
               the planar) be powered up and configured as a result of an
@@ -3667,7 +3683,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                 </para>
               </entry>
               <entry>
-                <para>As defined in 
+                <para>As defined in
                 <xref linkend="dbdoclet.50569342_17435" />.</para>
               </entry>
             </row>
@@ -3678,7 +3694,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                 </para>
               </entry>
               <entry>
-                <para>As defined in 
+                <para>As defined in
                 <xref linkend="dbdoclet.50569342_31379" />.</para>
               </entry>
             </row>
@@ -3689,9 +3705,9 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                 </para>
               </entry>
               <entry>
-                <para>As defined in 
+                <para>As defined in
                 <xref linkend="dbdoclet.50569342_22748" />.<?linebreak?>
-                <emphasis role="bold">Note:</emphasis> 
+                <emphasis role="bold">Note:</emphasis>
                 This name
                 allows for correlation between the OS and HMC user
                 interfaces.</para>
@@ -3705,7 +3721,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               </entry>
               <entry>
                 <para>Logical Resource connectors are defined to be &#8220;hot
-                pluggable&#8221; having a domain value of -1 per definition in 
+                pluggable&#8221; having a domain value of -1 per definition in
                 <xref linkend="dbdoclet.50569342_86369" />.</para>
               </entry>
             </row>
@@ -3718,7 +3734,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               <entry>
                 <para>Shall be one of the values &#8220;CPU&#8221;,
                 &#8220;MEM&#8221;, &#8220;PHB&#8221;, or &#8220;SLOT&#8221; as
-                defined in 
+                defined in
                 <xref linkend="LoPAR.DeviceTree" />.</para>
               </entry>
             </row>
@@ -3729,7 +3745,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                 </para>
               </entry>
               <entry>
-                <para>As defined in 
+                <para>As defined in
                 <xref linkend="sec_ibmdrcinfo_property" />.</para>
               </entry>
             </row>
@@ -3739,7 +3755,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
       <variablelist>
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_dr_prop" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_dr_prop"
           xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For the LRDR option:</emphasis> All platform requirements of the
@@ -3747,44 +3763,44 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               <xref linkend="dbdoclet.50569342_98936" />).</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_dr_prop" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_dr_prop"
           xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
             <listitem>
-              <para><emphasis role="bold">For the LRDR option:</emphasis> The 
+              <para><emphasis role="bold">For the LRDR option:</emphasis> The
               <emphasis role="bold"><literal>/cpus</literal></emphasis> OF device tree node must include
               either the <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis>
-              property or the following four properties: 
-              <emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis>, 
-              <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis>, 
-              <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis> and 
-              <emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis>.  
-              The drc-type must be type CPU, and the drc-power-domain must have the value -1. The 
+              property or the following four properties:
+              <emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis>,
+              <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis>,
+              <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis> and
+              <emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis>.
+              The drc-type must be type CPU, and the drc-power-domain must have the value -1. The
               property or properties must contain entries for each potentially supported dynamically reconfigurable processor.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_dr_prop" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_dr_prop"
           xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For the LRDR option:</emphasis> The root node of the OF device
-              tree must include 
-              ither the <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis> 
-              property or the following four properties: 
-              <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis>, 
-              <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis>,  
-              <emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis> and 
-              <emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis>.  
+              tree must include
+              ither the <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis>
+              property or the following four properties:
+              <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis>,
+              <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis>,
+              <emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis> and
+              <emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis>.
               The drc-type must be type MEM and the drc-power-domain must have the value -1.
-              The property or properties must contain entries for each potentially supported dynamically 
+              The property or properties must contain entries for each potentially supported dynamically
               reconfigurable memory region.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_dr_prop" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_dr_prop"
           xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For the LRDR option:</emphasis> The root node of the OF device
@@ -3793,62 +3809,62 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               (reg value 0).</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_dr_prop" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_dr_prop"
           xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For the LRDR option:</emphasis> The root node of the OF device
-              tree must include 
-              either the <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis> 
-              property or the following four properties: 
-              <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis>, 
-              <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis>,  
-              <emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis> and 
-              <emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis>.  
-              The drc-type must be type PHB, and the drc-power-domain must have the value -1. 
-              The property or properties must contain entries for each potentially supported dynamically 
+              tree must include
+              either the <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis>
+              property or the following four properties:
+              <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis>,
+              <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis>,
+              <emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis> and
+              <emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis>.
+              The drc-type must be type PHB, and the drc-power-domain must have the value -1.
+              The property or properties must contain entries for each potentially supported dynamically
               reconfigurable PHB.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_dr_prop" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_dr_prop"
           xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
             <listitem>
-              <para><emphasis role="bold">For the LRDR option:</emphasis> The 
+              <para><emphasis role="bold">For the LRDR option:</emphasis> The
               <emphasis role="bold"><literal>/pci</literal></emphasis> OF device tree node representing a PHB must
-              include 
-              either the <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis> 
-              property or the following four properties: 
-              <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis>, 
-              <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis>,  
-              <emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis> and 
-              <emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis>.  
-              The drc-type must be type SLOT, and the drc-power-domain must have the value -1.  
-              The property or properties must contain entries for each potentially supported dynamically 
+              include
+              either the <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis>
+              property or the following four properties:
+              <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis>,
+              <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis>,
+              <emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis> and
+              <emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis>.
+              The drc-type must be type SLOT, and the drc-power-domain must have the value -1.
+              The property or properties must contain entries for each potentially supported dynamically
               reconfigurable PCI SLOT.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_dr_prop" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_dr_prop"
           xrefstyle="select: labelnumber nopage"/>-7.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For the LRDR option:</emphasis> platforms must implement the
-              allocation-state indicator 9003, as defined in 
+              allocation-state indicator 9003, as defined in
               <xref linkend="dbdoclet.50569342_34333" />.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_dr_prop" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_dr_prop"
           xrefstyle="select: labelnumber nopage"/>-8.</emphasis></term>
             <listitem>
-              <para><emphasis role="bold">For the LRDR option:</emphasis> For memory LRDR, the 
+              <para><emphasis role="bold">For the LRDR option:</emphasis> For memory LRDR, the
               <emphasis role="bold"><literal>&#8220;ibm,lrdr-capacity&#8221;</literal></emphasis> property must be
-              included in the 
-              <emphasis role="bold"><literal>/rtas</literal></emphasis> node of the partition device tree (see 
+              included in the
+              <emphasis role="bold"><literal>/rtas</literal></emphasis> node of the partition device tree (see
               <xref linkend="LoPAR.DeviceTree" />).</para>
             </listitem>
        	</varlistentry>
@@ -3858,16 +3874,16 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
     <section>
       <title>Architectural Intent -- Logical DR Sequences:</title>
       <para>This architecture is designed to support the logical DR sequences
-      specified in the following sections. See also 
+      specified in the following sections. See also
       <xref linkend="dbdoclet.50569342_69828" />.</para>
 
       <section>
         <title>Acquire Logical Resource from Resource Pool</title>
 
-        <orderedlist>		      
+        <orderedlist>
           <listitem>
             <para>The OS responds to some stimuli (command, workload manager, HMC,
-            etc.) to acquire the resource, perhaps using the 
+            etc.) to acquire the resource, perhaps using the
             <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis> value as a reference if a
             human interface is involved.</para>
           </listitem>
@@ -3875,22 +3891,22 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
           <listitem>
             <para><!--anchor xml:id="dbdoclet.50569342_28284" /-->The OS determines
             if the resource is usable:</para>
- 
-            <orderedlist>		      
+
+            <orderedlist>
               <listitem>
-                <para>OS uses 
+                <para>OS uses
                 <emphasis>get-sensor-state</emphasis> (dr-entity-sense) to determine the
                 state of the DR connector</para>
               </listitem>
 
               <listitem>
-                <para>If the state is &#8220;unusable&#8221; the OS issues 
+                <para>If the state is &#8220;unusable&#8221; the OS issues
                 <emphasis>set-indicator</emphasis> (allocation-state, usable) to attempt
                 to allocate the resource. Similarly, if the state is &#8220;available for
-                exchange&#8221; the OS issues 
+                exchange&#8221; the OS issues
                 <emphasis>set-indicator</emphasis> (allocation-state, exchange) to attempt
                 to allocate the resource, and if the state is &#8220;available for
-                recovery&#8221; the OS issues 
+                recovery&#8221; the OS issues
                 <emphasis>set-indicator</emphasis> (allocation-state, recover) to attempt
                 to allocate the resource.</para>
               </listitem>
@@ -3900,15 +3916,15 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                 requester. If successful, this is the point where the resource is
                 allocated to the OS.</para>
               </listitem>
-            </orderedlist>		      
+            </orderedlist>
           </listitem>
 
           <listitem>
             <para>Continue with DR operation.</para>
 
-            <orderedlist>		      
+            <orderedlist>
               <listitem>
-                <para>The OS unisolates the resource via 
+                <para>The OS unisolates the resource via
                 <emphasis>set-indicator</emphasis> (isolation-state, unisolate). This is
                 the point where the OS takes ownership of the resource from the platform
                 firmware and the firmware removes the resource from its resource
@@ -3916,67 +3932,67 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               </listitem>
 
               <listitem>
-                <para>The OS configures the resource using 
+                <para>The OS configures the resource using
                 <emphasis>ibm,configure-connector</emphasis> RTAS.</para>
               </listitem>
 
               <listitem>
                 <para>The OS incorporates the resource into its resource pool.</para>
 
-                <orderedlist>		      
+                <orderedlist>
                   <listitem>
-                    <para>If the resource is a processor, the OS must use the 
+                    <para>If the resource is a processor, the OS must use the
                     <emphasis>start-cpu</emphasis> RTAS call to move the processor from the
-                    stopped state (at the end of the 
+                    stopped state (at the end of the
                     <emphasis>ibm,configure-connector</emphasis>) to the running
                     state.</para>
                   </listitem>
-                </orderedlist>		      
+                </orderedlist>
               </listitem>
 
               <listitem>
                 <para>The OS returns status of operation to the requester.</para>
               </listitem>
-            </orderedlist>		      
+            </orderedlist>
           </listitem>
 
           <listitem>
             <para>The OS notifies requesting entity of the OS state relative to
             the resource acquisition.</para>
           </listitem>
-        </orderedlist>		      
+        </orderedlist>
       </section>
 
       <section>
         <title>Release Logical Resource</title>
 
-        <orderedlist>		      
+        <orderedlist>
           <listitem>
             <para>Some entity (System administrator commanding from the HMC, a
-            workload manager, etc.) requests the OS to release the resource using the            
+            workload manager, etc.) requests the OS to release the resource using the
             <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis> value as a
             reference.</para>
 
-            <orderedlist>		      
+            <orderedlist>
               <listitem>
                 <para>The OS attempts to stop using logical resource.</para>
 
-                <orderedlist>		      
+                <orderedlist>
                   <listitem>
-                    <para>If the resource is a processor, the OS calls the 
+                    <para>If the resource is a processor, the OS calls the
                     <emphasis>stop-self</emphasis> RTAS call then waits for the processor to
-                    enter the stopped state using the RTAS 
+                    enter the stopped state using the RTAS
                     <emphasis>query-cpu-stopped-state</emphasis> call.</para>
                   </listitem>
 
                   <listitem>
-                    <para>The OS isolates the resource via 
+                    <para>The OS isolates the resource via
                     <emphasis>set-indicator</emphasis> (isolation-state, isolate).</para>
                   </listitem>
 
                   <listitem>
                     <para>Unless the isolated resource was the partition&#8217;s last
-                    processor, the OS deallocates the resource via 
+                    processor, the OS deallocates the resource via
                     <emphasis>set-indicator</emphasis> (allocation-state, unusable). This is
                     the point where the platform firmware takes ownership of the resource
                     from the OS. That is, the OS removes the resource from its resource pool
@@ -3988,11 +4004,11 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               <listitem>
                 <para>The OS returns status of operation to the requester.</para>
               </listitem>
-            </orderedlist>		      
+            </orderedlist>
           </listitem>
 
           <listitem>
-            <para>The OS unallocates the resource by 
+            <para>The OS unallocates the resource by
             <emphasis>set-indicator</emphasis> (allocation-state, unusable).</para>
           </listitem>
 
@@ -4005,7 +4021,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
           <listitem>
             <para>Any needed hardware removal is handled by HMC/SPC.</para>
           </listitem>
-        </orderedlist>		      
+        </orderedlist>
       </section>
     </section>
 
@@ -4022,7 +4038,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
         <section xml:id="sec_cpu_isolation">
           <title>Isolation of CPUs</title>
-          <para>The isolation of a CPU, in all cases, is preceded by the 
+          <para>The isolation of a CPU, in all cases, is preceded by the
           <emphasis>stop-self</emphasis> RTAS function for all processor threads,
           and the OS insures that all the CPU&#8217;s threads are in the RTAS
           stopped state prior to isolating the CPU. Isolation of a processor that
@@ -4033,22 +4049,22 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
           <variablelist>
            	<varlistentry>
-              <term><emphasis role="bold">R1-<xref linkend="sec_cpu_isolation" 
+              <term><emphasis role="bold">R1-<xref linkend="sec_cpu_isolation"
               xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
                 <listitem>
-                  <para><emphasis role="bold">For the LRDR option:</emphasis> Prior to issuing the RTAS 
+                  <para><emphasis role="bold">For the LRDR option:</emphasis> Prior to issuing the RTAS
                   <emphasis>set-indicator</emphasis> specifying isolate isolation-state of a
                   CPU DR connector type, all the CPU threads must be in the RTAS stopped
                   state.</para>
                 </listitem>
            	</varlistentry>
-           	
+
            	<varlistentry>
-              <term><emphasis role="bold">R1-<xref linkend="sec_cpu_isolation" 
+              <term><emphasis role="bold">R1-<xref linkend="sec_cpu_isolation"
               xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
                 <listitem>
                   <para><emphasis role="bold">For the LRDR option:</emphasis> Stopping of the last processor
-                  thread of a LPAR partition with the 
+                  thread of a LPAR partition with the
                   <emphasis>stop-self</emphasis> RTAS function, must kill the partition,
                   with ownership of all partition resources reverting to the platform
                   firmware.</para>
@@ -4073,25 +4089,25 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
           option is combined with the LPAR option, the hypervisor ensures that the
           addresses of the MEM region being isolated are unmapped from both the PFT
           and TCE tables before successfully completing the isolation of the MEM
-          region. If any valid mappings are found, the RTAS 
+          region. If any valid mappings are found, the RTAS
           <emphasis>set-indicator</emphasis> (isolation-state) does not change the
-          isolation-state and returns with a 
+          isolation-state and returns with a
           <emphasis>Status</emphasis>-9001 (Valid outstanding translation).</para>
 
           <variablelist>
            	<varlistentry>
-              <term><emphasis role="bold">R1-<xref linkend="sec_mem_isolation" 
+              <term><emphasis role="bold">R1-<xref linkend="sec_mem_isolation"
               xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
                 <listitem>
-                  <para><emphasis role="bold">For the LRDR option:</emphasis> The caller of the RTAS 
+                  <para><emphasis role="bold">For the LRDR option:</emphasis> The caller of the RTAS
                   <emphasis>set-indicator</emphasis> specifying isolate isolation-state of a
                   MEM DR connector type must not be within the region being
                   isolated.</para>
                 </listitem>
            	</varlistentry>
-           	
+
            	<varlistentry xml:id="dbdoclet.50569342_16782">
-              <term><emphasis role="bold">R1-<xref linkend="sec_mem_isolation" 
+              <term><emphasis role="bold">R1-<xref linkend="sec_mem_isolation"
               xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
                 <listitem>
                   <para><emphasis role="bold">For the LRDR option combined with the LPAR option:</emphasis>
@@ -4099,7 +4115,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                   MEM DR connector type must check that the region is unmapped from both
                   the partition&#8217;s Page Frame Table(s) and any Translation Control
                   Entries that would reference the memory, else the RTAS routine must
-                  return with a status of 
+                  return with a status of
                   <emphasis>Status</emphasis>-9001 (Valid outstanding translation) and the
                   isolation-state is not changed.</para>
                 </listitem>
@@ -4108,13 +4124,13 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
           <para>
           <emphasis role="bold">Implementation Note:</emphasis> The algorithm chosen for
-          implementing Requirement 
+          implementing Requirement
           <xref linkend="dbdoclet.50569342_16782" /> depends upon the expected
           frequency of isolation events. For RAS reasons, they should be seldom.
           For load balancing, they may be far more frequent. These methods are
           briefly described here:</para>
 
-          <itemizedlist>		      
+          <itemizedlist>
             <listitem>
               <para>First pull the corresponding logical address from the
               partition&#8217;s valid space so setting new translations to the logical
@@ -4124,15 +4140,15 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               particular logical address range. The PFT/TCE table search may be long,
               however, it is only done at isolation time.</para>
             </listitem>
-            
+
             <listitem>
               <para>The use count method must be maintained for each add and remove
               of an address translation with the corresponding accessing of a use count
               based upon the physical real address of the memory block.</para>
             </listitem>
-          </itemizedlist>		      
+          </itemizedlist>
         </section>
-        
+
         <section xml:id="dbdoclet.50569342_11827">
           <title>Isolation of PHBs and Slots</title>
           <para>An isolation of a PHB naturally disconnects the OS image from any
@@ -4141,48 +4157,48 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
           complexity of gracefully managing multi-level isolation, isolation is
           restricted to only &#8220;leaf&#8221; DR connectors, that is connectors
           that have no unisolated or usable DR connectors below them. That is, for
-          logical DR connectors below the connector being isolated, a 
+          logical DR connectors below the connector being isolated, a
           <emphasis>get-sensor-state</emphasis> dr-entity-sense needs to return an
           unusable (2) and for physical DR connectors below the connector being
           isolated, the DR entity needs to be isolated first via
           <emphasis>set-indicator</emphasis> (isolation-state, isolate). The OS is
           responsible for removing all virtual address mappings to the address
-          range associated with a logical I/O SLOT before making the RTAS 
+          range associated with a logical I/O SLOT before making the RTAS
           <emphasis>set-indicator</emphasis> (isolation-state) call that isolates
           the SLOT. When the LRDR option is combined with the LPAR option, the
           hypervisor ensures that the addresses associated with the logical SLOT
           being isolated are unmapped from both the PFT and TCE tables before
           successfully completing the isolation of the SLOT connector. If any valid
-          mappings are found, the RTAS 
+          mappings are found, the RTAS
           <emphasis>set-indicator</emphasis> (isolation-state) does not change the
-          isolation-state and returns with a 
+          isolation-state and returns with a
           <emphasis>Status</emphasis>-9001 (Valid outstanding translation).</para>
 
           <variablelist>
            	<varlistentry>
-              <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_11827" 
+              <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_11827"
               xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
                 <listitem>
-                  <para><emphasis role="bold">For all LRDR options:</emphasis> If a request to 
+                  <para><emphasis role="bold">For all LRDR options:</emphasis> If a request to
                   <emphasis>set-indicator</emphasis> (isolation-state, isolate) would result
                   in the isolation of one or more other DR connectors which are currently
-                  unisolated or usable, then the 
+                  unisolated or usable, then the
                   <emphasis>set-indicator</emphasis> RTAS must fail with a return code of
                   &#8220;Multi-level isolation error&#8221; (-9000).</para>
                 </listitem>
            	</varlistentry>
-           	
+
            	<varlistentry>
-              <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_11827" 
+              <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569342_11827"
               xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
                 <listitem>
                   <para><emphasis role="bold">For the LRDR option combined with the LPAR
-                  option:</emphasis> The RTAS 
+                  option:</emphasis> The RTAS
                   <emphasis>set-indicator</emphasis> specifying isolate isolation-state of a
                   SLOT DR connector type must check that the IOA address range associated
                   with the slot is unmapped from both the partition&#8217;s Page Frame
                   Table(s) and any Translation Control Entries that would reference those
-                  locations, else the RTAS routine must return with a 
+                  locations, else the RTAS routine must return with a
                   <emphasis>Status</emphasis>-9001 (Valid outstanding translation) and the
                   isolation-state is not changed.</para>
                 </listitem>
@@ -4190,6 +4206,52 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
           </variablelist>
         </section>
       </section>
+    </section>
+
+    <section xml:id="sec_isolation_of_coherent_platform_facilities">
+      <title>Isolation of Coherent Platform Facilities</title>
+
+      <para>Isolation of a Coherent Platform Facility (COPLATFAC) disconnects the OS
+        image from any of the DR connectors downstream (Coherent Platform Functions or
+        COPLATFUN) of the Coherent Platform Facility. To avoid the complex- ity of
+        gracefully managing multi-level isolation, isolation is restricted to only
+        “leaf” DR connectors, that is connectors that have no unisolated or usable DR
+        connectors below them. All COPLATFUN connectors must return unusable state (2)
+        during get-sensor-state before a COPLATFAC can be isolated, this is done through
+        set-indicator (isolation-state, isolate). The OS is responsible for removing all
+        memory mappings and detaching all processes potentially in use by co- herent
+        platform functions. If valid mappings or processes are found, the set-indicator
+        does not change the isolation state and returns with a Status -9001 (Valid
+        outstanding translation).</para>
+
+        <variablelist>
+          <varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_isolation_of_coherent_platform_facilities"
+            xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For all LRDR options:</emphasis> If a
+                request to <emphasis>set-indicator</emphasis> (isolation-state, isolate)
+                would result in the isolation of one or more other DR connectors
+                which are currently unisolated or usable, then the
+                <emphasis>set-indicator</emphasis> RTAS must fail with a return code of
+                “Multi-level isolation error” (-9000).</para>
+              </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_isolation_of_coherent_platform_facilities"
+            xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For the LRDR option combined with the LPAR
+                option:</emphasis> The RTAS <emphasis>set-indicator</emphasis> specifying
+                isolate isolation-state of a COPLATFUN DR connector type must check that
+                all processes associated with the function are detached, else the RTAS
+                routine must return with a Status -9001 (Valid outstanding translation)
+                and the isolation-state is not changed.</para>
+              </listitem>
+          </varlistentry>
+        </variablelist>
+
     </section>
 
     <section xml:id="sec_set_indicator">
@@ -4201,10 +4263,10 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
       <variablelist>
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_set_indicator" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_set_indicator"
           xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
             <listitem>
-              <para><emphasis role="bold">For all LRDR options:</emphasis> The calling of 
+              <para><emphasis role="bold">For all LRDR options:</emphasis> The calling of
               <emphasis>set-indicator</emphasis> with a token value of 9002
               (dr-indicator) and an index representing a logical connector must fail
               with a return code of &#8220;No such indicator implemented&#8221;
@@ -4216,18 +4278,18 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
     <section xml:id="sec_ibm_configure_connnector">
       <title><emphasis>ibm,configure-connector</emphasis></title>
-      <para>The 
+      <para>The
       <emphasis>ibm,configure-connector</emphasis> RTAS call is used to return
       to the OS the device tree nodes and properties associated with the newly
       un-isolated logical resources and configure them for use.</para>
-      <para>The 
+      <para>The
       <emphasis>ibm,configure-connector</emphasis> RTAS call used against a
       logical DR connector can encounter other logical DR connectors or
       physical DR connectors below it in the tree. If a logical connector is
-      encountered below a logical connector that is being configured, the 
+      encountered below a logical connector that is being configured, the
       <emphasis>ibm,configure-connector</emphasis> RTAS call will not configure
       the sub-tree, if it is not owned by the OS (where owned refers to a DR
-      connector that would return a DR entity usable, for a 
+      connector that would return a DR entity usable, for a
       <emphasis>get-sensor</emphasis> dr-entity-sense sensor). If a physical
       connector is encountered, then the sub-tree below the physical connector
       may or may not be configured, depending on the implementation.</para>
@@ -4244,38 +4306,38 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
       <variablelist>
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_ibm_configure_connnector" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_ibm_configure_connnector"
           xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
             <listitem>
-              <para><emphasis role="bold">For all LRDR options:</emphasis> If a request to 
+              <para><emphasis role="bold">For all LRDR options:</emphasis> If a request to
               <emphasis>ibm,configure-connector</emphasis> specifies a connector that is
-              isolated, 
+              isolated,
               <emphasis>ibm,configure-connector</emphasis> must immediately return
               configuration complete.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_ibm_configure_connnector" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_ibm_configure_connnector"
           xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For all LRDR options:</emphasis> If the connector index refers
               to a connector that would return a &#8220;DR entity unusable&#8221;
               status (2), &#8220;DR entity available for exchange&#8221; status (3), or
-              &#8220;DR entity available for recovery&#8221; status (4) to the 
-              <emphasis>get-sensor</emphasis> dr-entity-sense token, the 
+              &#8220;DR entity available for recovery&#8221; status (4) to the
+              <emphasis>get-sensor</emphasis> dr-entity-sense token, the
               <emphasis>ibm,configure-connector</emphasis> RTAS call must return
               &#8220;-9003: Cannot configure - Logical DR connector unusable, available
               for exchange, or available for recovery&#8221; on the first call without
               any configuration action taken on the DR connector.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_ibm_configure_connnector" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_ibm_configure_connnector"
           xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
             <listitem>
-              <para><emphasis role="bold">For all LRDR options:</emphasis> If a request to 
+              <para><emphasis role="bold">For all LRDR options:</emphasis> If a request to
               <emphasis>ibm,configure-connector</emphasis> specifies a connector of type
               CPU,
                the returned sub-tree must consist of the specific
@@ -4286,41 +4348,41 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               <para>
               <emphasis role="bold">Implementation Note:</emphasis> Future platforms that support
               concurrent maintenance of caches, will require that high level cache
-              nodes (L2, L3 etc.) are added by 
+              nodes (L2, L3 etc.) are added by
               <emphasis>ibm,configure-connector</emphasis> such that their properties
               can change as new/repaired hardware is added to the platform. Therefore,
               it is the OS's responsibility when isolating a CPU to purge any
               information it may have regarding an orphaned high level cache node. The
-              OS may use the 
+              OS may use the
               <emphasis role="bold"><literal>&#8220;ibm,phandle&#8221;</literal></emphasis> property to selectively
               remove caches when a processor is removed. The platform considers any
               high level cache that is newly referenced (reference count for this
               partition goes from 0 to 1) to have been previously unreported.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_ibm_configure_connnector" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_ibm_configure_connnector"
           xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
             <listitem>
-              <para><emphasis role="bold">For all LRDR options:</emphasis> If a request to 
+              <para><emphasis role="bold">For all LRDR options:</emphasis> If a request to
               <emphasis role="bold"><literal>ibm,configure-connector</literal></emphasis> specifies a connector of type
               MEM,
-               the returned sub-tree must consist of the specific 
+               the returned sub-tree must consist of the specific
               <emphasis role="bold"><literal>ibm,memory-region</literal></emphasis> node containing the properties as
               would be contained in that node had it been available at boot
               time.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_ibm_configure_connnector" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_ibm_configure_connnector"
           xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
             <listitem>
-              <para><emphasis role="bold">For all LRDR options:</emphasis> If a request to 
+              <para><emphasis role="bold">For all LRDR options:</emphasis> If a request to
               <emphasis>ibm,configure-connector</emphasis> specifies a connector of type
               PHB or SLOT, then all of the following must be true:
-                <orderedlist numeration="loweralpha">		      
+                <orderedlist numeration="loweralpha">
                   <listitem>
                     <para>The returned values must represent the sub-tree for the specific
                     I/O sub-system represented by the connector, except for entities below
@@ -4335,43 +4397,56 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                     they been available at boot time, including (if they exist) built-in PCI
                     IOAs.</para>
                   </listitem>
-                </orderedlist>		      
+                </orderedlist>
               </para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_ibm_configure_connnector" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_ibm_configure_connnector"
           xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
             <listitem>
-              <para><emphasis role="bold">For all LRDR options:</emphasis> If a request to 
+              <para><emphasis role="bold">For all LRDR options:</emphasis> If a request to
               <emphasis>ibm,configure-connector</emphasis> specifies a connector of type
               SLOT,
                the returned values must represent the sub-tree for
               the specific I/O sub-system represented by the SLOT connector, and the
-              sub-tree must consist of the specific 
+              sub-tree must consist of the specific
               <emphasis role="bold"><literal>/pci</literal></emphasis> node and its children all containing the
               properties as would be contained in those nodes had they been available
               at boot time, except for the PCI IOA nodes assigned to the OS image that
               contain the same properties as they would following a PCI hot plug
-              operation (see 
+              operation (see
               <xref linkend="dbdoclet.50569342_67543" />).</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_ibm_configure_connnector" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_ibm_configure_connnector"
           xrefstyle="select: labelnumber nopage"/>-7.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For all LRDR options:</emphasis> If a platform implementation
               powers-up and configures physical DR entities in the sub-tree under a
-              logical DR connector, then a request to 
+              logical DR connector, then a request to
               <emphasis>ibm,configure-connector</emphasis> of the logical DR connector
-              must use the return status of 990x from the 
+              must use the return status of 990x from the
               <emphasis>ibm,configure-connector</emphasis> call, as necessary, during
               the DR entity power-up sequence(s) and must control any power-up and
               sequencing requirements, as would be done by the platform during platform
               power-up.</para>
+            </listitem>
+       	</varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_ibm_configure_connnector"
+          xrefstyle="select: labelnumber nopage"/>-8.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For all LRDR options:</emphasis> If a request to
+              <emphasis>ibm,configure-connector</emphasis> specifies a connector of
+              type CO- PLATFAC or COPLATFUN, the returned values must represent the
+              sub-tree for the specific coherent plat- form sub-system represented by
+              the COPLATFAC or COPLATFUN connector. All properties are updated with
+              the most recent data from the coherent platform resource.</para>
             </listitem>
        	</varlistentry>
       </variablelist>

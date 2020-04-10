@@ -91,7 +91,7 @@
                 </thead>
                 <tbody>
                   <row>
-                    <entry morerows="7">
+                    <entry morerows="7" valign="middle">
                       <para>In</para>
                     </entry>
                     <entry>
@@ -177,7 +177,7 @@
                     </entry>
                   </row>
                   <row>
-                    <entry morerows="1">
+                    <entry morerows="1" valign="middle">
                       <para>Out</para>
                     </entry>
                     <entry>
@@ -512,7 +512,7 @@
                   </thead>
                   <tbody>
                     <row>
-                      <entry morerows="5">
+                      <entry morerows="5" valign="middle">
                         <para>In</para>
                       </entry>
                       <entry>
@@ -1038,7 +1038,7 @@
                   </thead>
                   <tbody>
                     <row>
-                      <entry morerows="6">
+                      <entry morerows="6" valign="middle">
                         <para>In</para>
                       </entry>
                       <entry>
@@ -1120,7 +1120,7 @@
                       </entry>
                     </row>
                     <row>
-                      <entry morerows="2">
+                      <entry morerows="2" valign="middle">
                         <para>Out</para>
                       </entry>
                       <entry>
@@ -1411,7 +1411,7 @@
                   </thead>
                   <tbody>
                     <row>
-                      <entry morerows="5">
+                      <entry morerows="5" valign="middle">
                         <para>In</para>
                       </entry>
                       <entry>
@@ -1485,7 +1485,7 @@
                       </entry>
                     </row>
                     <row>
-                      <entry morerows="1">
+                      <entry morerows="1" valign="middle">
                         <para>Out</para>
                       </entry>
                       <entry>
@@ -1662,7 +1662,7 @@
                   </thead>
                   <tbody>
                     <row>
-                      <entry morerows="7">
+                      <entry morerows="7" valign="middle">
                         <para>In</para>
                       </entry>
                       <entry>
@@ -1752,7 +1752,7 @@
                       </entry>
                     </row>
                     <row>
-                      <entry morerows="1">
+                      <entry morerows="1" valign="middle">
                         <para>Out</para>
                       </entry>
                       <entry>
@@ -1937,7 +1937,7 @@
                   </thead>
                   <tbody>
                     <row>
-                      <entry morerows="2">
+                      <entry morerows="2" valign="middle">
                         <para>In</para>
                       </entry>
                       <entry>
@@ -2269,7 +2269,7 @@
                       </entry>
                     </row>
                     <row>
-                      <entry morerows="6">
+                      <entry morerows="6" valign="middle">
                         <para>&#160;</para>
                       </entry>
                       <entry>
@@ -2620,7 +2620,7 @@
                   </thead>
                   <tbody>
                     <row>
-                      <entry morerows="4">
+                      <entry morerows="4" valign="middle">
                         <para>In</para>
                       </entry>
                       <entry>
@@ -2721,7 +2721,7 @@
                 <title>Initial Format of Work Area for
                 <emphasis>ibm,update-nodes</emphasis></title>
                 <tgroup cols="1">
-                  <colspec colname="c1" colwidth="100*" />
+                  <colspec colname="c1" colwidth="100*" align="center" />
                   <thead>
                     <row>
                       <entry>
@@ -2763,7 +2763,7 @@
                 <title>Format of Work Area for
                 <emphasis>ibm,update-nodes</emphasis></title>
                 <tgroup cols="1">
-                  <colspec colname="c1" colwidth="100*" />
+                  <colspec colname="c1" colwidth="100*" align="center" />
                   <tbody>
                     <row>
                       <entry>
@@ -2935,7 +2935,7 @@
                 <title>Format of Work Area for Subsequent Calls to
                 <emphasis>ibm,update-nodes</emphasis></title>
                 <tgroup cols="1">
-                  <colspec colname="c1" colwidth="100*" />
+                  <colspec colname="c1" colwidth="100*" align="center" />
                   <thead>
                     <row>
                       <entry>
@@ -2980,259 +2980,43 @@
               <xref linkend="dbdoclet.50569332_80965" /> for the value of the specified
               <emphasis role="bold"><literal>&#8220;Scope&#8221;</literal></emphasis> argument.</para>
 
-              <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_80965">
-                <title>Nodes That May be Reported by
-                <emphasis>ibm,update-nodes</emphasis> for a Given Value of the &#8220;
-                <emphasis>Scope</emphasis>&#8221; Argument</title>
-                <tgroup cols="3">
-                  <colspec colname="c1" colwidth="33*" />
-                  <colspec colname="c2" colwidth="33*" />
-                  <colspec colname="c3" colwidth="33*" />
-                  <thead>
-                    <row>
-                      <entry>
-                        <para>Scope Value</para>
-                      </entry>
-                      <entry>
-                        <para>Reportable node types (value of
-                        <emphasis role="bold"><literal>&#8220;name&#8221;</literal></emphasis> or
-                        <emphasis role="bold"><literal>&#8220;device_type&#8221;</literal></emphasis> property)</para>
-                      </entry>
-                      <entry>
-                        <para>Supported Opcodes</para>
-                      </entry>
-                    </row>
-                  </thead>
+            </listitem>
+       	</varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_84414"
+          xrefstyle="select: labelnumber nopage"/>-20.</emphasis></term>
+            <listitem>
+              <para>The work area on the first call to
+              <emphasis>ibm,update-nodes</emphasis> RTAS for a given value of
+              <emphasis>"Scope"</emphasis> must be formatted as specified in
+              <xref linkend="table_initial_format_of_work_area_for_ibm_update_nodes"/>
+              else RTAS may return -3 "Parameter Error".</para>
+
+              <table frame="all" pgwide="1" xml:id="table_initial_format_of_work_area_for_ibm_update_nodes">
+                <title>Initial Format of Work Area for
+                <emphasis>ibm,update-nodes</emphasis> with Device Reconfiguration Scope</title>
+                <tgroup cols="1">
+                  <colspec colname="c1" colwidth="100*" align="center"/>
                   <tbody>
                     <row>
-                      <entry morerows="7">
-                        <para>Negative values: Platform Resource Reassignment events as
-                        from
-                        <emphasis>event-scan</emphasis> RTAS</para>
-                      </entry>
                       <entry>
-                        <para>cpu</para>
-                      </entry>
-                      <entry>
-                        <para>0x02</para>
+                        <para>0x00000000 (State Variable indicates Initial call for specified <emphasis>Scope</emphasis>)</para>
                       </entry>
                     </row>
                     <row>
                       <entry>
-                        <para>memory</para>
-                      </entry>
-                      <entry>
-                        <para>0x02</para>
+                        <para>Unit Address of target device for reconfiguration</para>
                       </entry>
                     </row>
                     <row>
                       <entry>
-                        <para>ibm,dynamic-reconfiguration-memory</para>
-                      </entry>
-                      <entry>
-                        <para>0x02</para>
+                        <para>4 bytes of 0x00 (reserved)</para>
                       </entry>
                     </row>
                     <row>
                       <entry>
-                        <para>
-                          <emphasis>ibm,plaform-facilities</emphasis>
-                        </para>
-                      </entry>
-                      <entry>
-                        <para>0x01-0x03</para>
-                      </entry>
-                    </row>
-                    <row>
-                      <entry>
-                        <para>
-                          <emphasis>ibm,random-v#</emphasis>
-                        </para>
-                      </entry>
-                      <entry>
-                        <para>0x01-0x03</para>
-                      </entry>
-                    </row>
-                    <row>
-                      <entry>
-                        <para>
-                          <emphasis>ibm,compression-v#</emphasis>
-                        </para>
-                      </entry>
-                      <entry>
-                        <para>0x01-0x03</para>
-                      </entry>
-                    </row>
-                    <row>
-                      <entry>
-                        <para>
-                          <emphasis>ibm,encryption-v#</emphasis>
-                        </para>
-                      </entry>
-                      <entry>
-                        <para>0x01-0x03</para>
-                      </entry>
-                    </row>
-                    <row>
-                      <entry>
-                        <para>
-                          <emphasis>ibm,memory-utilization_instrumentation-v#</emphasis>
-                        </para>
-                      </entry>
-                      <entry>
-                        <para>0x01-0x03</para>
-                      </entry>
-                    </row>
-                    <row>
-                      <entry morerows="13">
-                        <para>1 Partition Migration / Hibernation</para>
-                      </entry>
-                      <entry>
-                        <para>
-                          <emphasis>root</emphasis>
-                        </para>
-                      </entry>
-                      <entry>
-                        <para>0x02</para>
-                      </entry>
-                    </row>
-                    <row>
-                      <entry>
-                        <para>
-                          <emphasis>openprom</emphasis>
-                        </para>
-                      </entry>
-                      <entry>
-                        <para>0x02</para>
-                      </entry>
-                    </row>
-                    <row>
-                      <entry>
-                        <para>
-                          <emphasis>rtas</emphasis>
-                        </para>
-                      </entry>
-                      <entry>
-                        <para>0x02</para>
-                      </entry>
-                    </row>
-                    <row>
-                      <entry>
-                        <para>
-                          <emphasis>vdevice</emphasis>
-                        </para>
-                      </entry>
-                      <entry>
-                        <para>0x02</para>
-                      </entry>
-                    </row>
-                    <row>
-                      <entry>
-                        <para>
-                          <emphasis>cpu</emphasis>
-                        </para>
-                      </entry>
-                      <entry>
-                        <para>0x02</para>
-                      </entry>
-                    </row>
-                    <row>
-                      <entry>
-                        <para>
-                          <emphasis>cache</emphasis>
-                        </para>
-                      </entry>
-                      <entry>
-                        <para>0x01-0x03</para>
-                      </entry>
-                    </row>
-                    <row>
-                      <entry>
-                        <para>
-                          <emphasis>options</emphasis>
-                        </para>
-                      </entry>
-                      <entry>
-                        <para>0x02</para>
-                      </entry>
-                    </row>
-                    <row>
-                      <entry>
-                        <para>
-                          <emphasis>memory</emphasis>
-                        </para>
-                      </entry>
-                      <entry>
-                        <para>0x02</para>
-                      </entry>
-                    </row>
-                    <row>
-                      <entry>
-                        <para>ibm,dynamic-reconfiguration-memory</para>
-                      </entry>
-                      <entry>
-                        <para>&lt;all&gt;</para>
-                      </entry>
-                    </row>
-                    <row>
-                      <entry>
-                        <para>ibm,platform-facilities</para>
-                      </entry>
-                      <entry>
-                        <para>0x01-0x03</para>
-                      </entry>
-                    </row>
-                    <row>
-                      <entry>
-                        <para>
-                          <emphasis>ibm,random-v#</emphasis>
-                        </para>
-                      </entry>
-                      <entry>
-                        <para>0x01-0x03</para>
-                      </entry>
-                    </row>
-                    <row>
-                      <entry>
-                        <para>
-                          <emphasis>ibm,compression-v#</emphasis>
-                        </para>
-                      </entry>
-                      <entry>
-                        <para>0x01-0x03</para>
-                      </entry>
-                    </row>
-                    <row>
-                      <entry>
-                        <para>
-                          <emphasis>ibm,encryption-v#</emphasis>
-                        </para>
-                      </entry>
-                      <entry>
-                        <para>0x01-0x03</para>
-                      </entry>
-                    </row>
-                    <row>
-                      <entry>
-                        <para>
-                          <emphasis>ibm,memory-utilization_instrumentation-v#</emphasis>
-                        </para>
-                      </entry>
-                      <entry>
-                        <para>0x01-0x03</para>
-                      </entry>
-                    </row>
-                    <row>
-                      <entry>
-                        <para>2 Activate Firmware</para>
-                      </entry>
-                      <entry>
-                        <para>
-                          <emphasis>rtas</emphasis>
-                        </para>
-                      </entry>
-                      <entry>
-                        <para>0x02</para>
+                        <para>Don't Care. . .</para>
                       </entry>
                     </row>
                   </tbody>
@@ -3240,7 +3024,290 @@
               </table>
             </listitem>
        	</varlistentry>
+
       </variablelist>
+
+      <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_80965">
+        <title>Nodes That May be Reported by
+        <emphasis>ibm,update-nodes</emphasis> for a Given Value of the
+        &#8220;<emphasis>Scope</emphasis>&#8221; Argument</title>
+        <tgroup cols="3">
+          <colspec colname="c1" colwidth="33*" />
+          <colspec colname="c2" colwidth="33*" />
+          <colspec colname="c3" colwidth="33*" />
+          <thead>
+            <row>
+              <entry>
+                <para>Scope Value</para>
+              </entry>
+              <entry>
+                <para>Reportable node types (value of
+                <emphasis role="bold"><literal>&#8220;name&#8221;</literal></emphasis> or
+                <emphasis role="bold"><literal>&#8220;device_type&#8221;</literal></emphasis> property)</para>
+              </entry>
+              <entry>
+                <para>Supported Opcodes</para>
+              </entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry morerows="7" valign="middle">
+                <para>Negative values: Platform Resource Reassignment events as
+                from
+                <emphasis>event-scan</emphasis> RTAS</para>
+              </entry>
+              <entry>
+                <para><emphasis role="bold">cpu</emphasis></para>
+              </entry>
+              <entry>
+                <para>0x02</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis role="bold">memory</emphasis></para>
+              </entry>
+              <entry>
+                <para>0x02</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis role="bold">ibm,dynamic-reconfiguration-memory</emphasis></para>
+              </entry>
+              <entry>
+                <para>0x02</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <emphasis role="bold">ibm,plaform-facilities</emphasis>
+                </para>
+              </entry>
+              <entry>
+                <para>0x01-0x03</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <emphasis role="bold">ibm,random-v#</emphasis>
+                </para>
+              </entry>
+              <entry>
+                <para>0x01-0x03</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <emphasis role="bold">ibm,compression-v#</emphasis>
+                </para>
+              </entry>
+              <entry>
+                <para>0x01-0x03</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <emphasis role="bold">ibm,encryption-v#</emphasis>
+                </para>
+              </entry>
+              <entry>
+                <para>0x01-0x03</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <emphasis role="bold">ibm,memory-utilization_instrumentation-v#</emphasis>
+                </para>
+              </entry>
+              <entry>
+                <para>0x01-0x03</para>
+              </entry>
+            </row>
+            <row>
+              <entry morerows="13" valign="middle">
+                <para>1 Partition Migration / Hibernation</para>
+              </entry>
+              <entry>
+                <para>
+                  <emphasis role="bold">root</emphasis>
+                </para>
+              </entry>
+              <entry>
+                <para>0x02</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <emphasis role="bold">openprom</emphasis>
+                </para>
+              </entry>
+              <entry>
+                <para>0x02</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <emphasis role="bold">rtas</emphasis>
+                </para>
+              </entry>
+              <entry>
+                <para>0x02</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <emphasis role="bold">vdevice</emphasis>
+                </para>
+              </entry>
+              <entry>
+                <para>0x02</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <emphasis role="bold">cpu</emphasis>
+                </para>
+              </entry>
+              <entry>
+                <para>0x02</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <emphasis role="bold">cache</emphasis>
+                </para>
+              </entry>
+              <entry>
+                <para>0x01-0x03</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <emphasis role="bold">options</emphasis>
+                </para>
+              </entry>
+              <entry>
+                <para>0x02</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <emphasis role="bold">memory</emphasis>
+                </para>
+              </entry>
+              <entry>
+                <para>0x02</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis  role="bold">ibm,dynamic-reconfiguration-memory</emphasis></para>
+              </entry>
+              <entry>
+                <para>&lt;all&gt;</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para><emphasis  role="bold">ibm,platform-facilities</emphasis></para>
+              </entry>
+              <entry>
+                <para>0x01-0x03</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <emphasis role="bold">ibm,random-v#</emphasis>
+                </para>
+              </entry>
+              <entry>
+                <para>0x01-0x03</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <emphasis role="bold">ibm,compression-v#</emphasis>
+                </para>
+              </entry>
+              <entry>
+                <para>0x01-0x03</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <emphasis role="bold">ibm,encryption-v#</emphasis>
+                </para>
+              </entry>
+              <entry>
+                <para>0x01-0x03</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <emphasis role="bold">ibm,memory-utilization_instrumentation-v#</emphasis>
+                </para>
+              </entry>
+              <entry>
+                <para>0x01-0x03</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>2 Activate Firmware</para>
+              </entry>
+              <entry>
+                <para>
+                  <emphasis role="bold">rtas</emphasis>
+                </para>
+              </entry>
+              <entry>
+                <para>0x02</para>
+              </entry>
+            </row>
+            <row>
+              <entry morerows="1" valign="middle">
+                <para>3 Device Reconfiguration</para>
+              </entry>
+              <entry>
+                <para>
+                  <emphasis role="bold">ibm,coherent-platform-facility</emphasis>
+                </para>
+              </entry>
+              <entry>
+                <para>0x02</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <emphasis role="bold">ibm,coherent-platform-function</emphasis>
+                </para>
+              </entry>
+              <entry>
+                <para>0x02</para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
 
     </section>
 
@@ -3326,7 +3393,7 @@
                   </thead>
                   <tbody>
                     <row>
-                      <entry morerows="4">
+                      <entry morerows="4" valign="middle">
                         <para>In</para>
                       </entry>
                       <entry>
@@ -3381,7 +3448,7 @@
                       </entry>
                     </row>
                     <row>
-                      <entry>
+                      <entry valign="middle">
                         <para>Out</para>
                       </entry>
                       <entry>
@@ -3689,7 +3756,7 @@
                   </thead>
                   <tbody>
                     <row>
-                      <entry morerows="6">
+                      <entry morerows="6" valign="middle">
                         <para>All negative values: Resource Reassignment events as from
                         event-scan RTAS</para>
                       </entry>
@@ -3758,10 +3825,10 @@
                       </entry>
                     </row>
                     <row>
-                      <entry morerows="31">
+                      <entry morerows="31" valign="middle">
                         <para>1 Partition Migration / Hibernation</para>
                       </entry>
-                      <entry morerows="18">
+                      <entry morerows="18" valign="middle">
                         <para>
                           <emphasis role="bold"><literal>root</literal></emphasis>
                         </para>
@@ -3914,7 +3981,7 @@
                       </entry>
                     </row>
                     <row>
-                      <entry morerows="9">
+                      <entry morerows="9" valign="middle">
                         <para>
                           <emphasis role="bold"><literal>rtas</literal></emphasis>
                         </para>
@@ -3994,7 +4061,7 @@
                       </entry>
                     </row>
                     <row>
-                      <entry morerows="1">
+                      <entry morerows="1" valign="middle">
                         <para>
                           <emphasis role="bold"><literal>vdevice</literal></emphasis>
                         </para>
@@ -4024,11 +4091,11 @@
                       </entry>
                     </row>
                     <row>
-                      <entry morerows="31">
+                      <entry morerows="31" valign="middle">
                         <para>1 Partition Migration / Hibernation</para>
                         <para>&#160;</para>
                       </entry>
-                      <entry morerows="20">
+                      <entry morerows="20" valign="middle">
                         <para>
                           <emphasis role="bold"><literal>cpu</literal></emphasis>
                         </para>
@@ -4180,7 +4247,7 @@
                       </entry>
                     </row>
                     <row>
-                      <entry morerows="4">
+                      <entry morerows="4" valign="middle">
                         <para>
                           <emphasis role="bold"><literal>cache</literal></emphasis>
                         </para>
@@ -4244,7 +4311,7 @@
                       </entry>
                     </row>
                     <row>
-                      <entry morerows="2">
+                      <entry morerows="2" valign="middle">
                         <para>
                           <emphasis role="bold"><literal>ibm,dynamic-reconfiguration-memory</literal></emphasis>
                         </para>
@@ -4279,7 +4346,7 @@
                       </entry>
                     </row>
                     <row>
-                      <entry morerows="3">
+                      <entry morerows="3" valign="middle">
                         <para>1 Partition Migration / Hibernation</para>
                         <para>&#160;</para>
                       </entry>
@@ -4357,6 +4424,264 @@
                         of that RTAS function call does not change.</para>
                       </entry>
                     </row>
+                    <row>
+                      <entry morerows="34" valign="middle">
+                        <para>3 Device Reconfiguration</para>
+                      </entry>
+                      <entry morerows="10" valign="middle">
+                        <para>
+                          <emphasis role="bold"><literal>ibm,coherent-platform-facility</literal></emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;compatible&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;status&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,caia-version&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,psl-revision&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,vpd-size&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;vendor-id&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;device-id&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;subsystem-id&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;subsystem-vendor-id&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;revision-id&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;class-code&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry morerows="23" valign="middle">
+                        <para>
+                          <emphasis role="bold"><literal>ibm,coherent-platform-function</literal></emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;compatible&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,max-ints-per-process&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,min-ints-per-process&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,#processes&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,config-record-type&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,config-record-size&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,#config-records&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,error-buffer-size&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,vpd-size&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,scratchpad-size&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;vendor-id&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;device-id&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;subsystem-id&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;subsystem-vendor-id&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;revision-id&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;class-code&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,process-mmio&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,supports-aur&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,supports-csrp&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,supports-prr&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,process-mmio-size&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,programming-model&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;ibm,programming-models&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                    </row>
                   </tbody>
                 </tgroup>
               </table>
@@ -4406,7 +4731,7 @@
                       </entry>
                     </row>
                     <row>
-                      <entry morerows="5">
+                      <entry morerows="5" valign="middle">
                         <para>In</para>
                       </entry>
                       <entry>
@@ -5193,7 +5518,7 @@
                     </thead>
                     <tbody>
                       <row>
-                        <entry morerows="5">
+                        <entry morerows="5" valign="middle">
                           <para>In</para>
                         </entry>
                         <entry>
@@ -5264,7 +5589,7 @@
                         </entry>
                       </row>
                       <row>
-                        <entry morerows="5">
+                        <entry morerows="5" valign="middle">
                           <para>Out</para>
                         </entry>
                         <entry>
@@ -5423,7 +5748,7 @@
                     </thead>
                     <tbody>
                       <row>
-                        <entry morerows="7">
+                        <entry morerows="7" valign="middle">
                           <para>In</para>
                         </entry>
                         <entry>
@@ -5513,7 +5838,7 @@
                         </entry>
                       </row>
                       <row>
-                        <entry morerows="3">
+                        <entry morerows="3" valign="middle">
                           <para>Out</para>
                         </entry>
                         <entry>
@@ -5650,7 +5975,7 @@
                     </thead>
                     <tbody>
                       <row>
-                        <entry morerows="3">
+                        <entry morerows="3" valign="middle">
                           <para>In</para>
                         </entry>
                         <entry>
@@ -5920,7 +6245,7 @@
                       </thead>
                       <tbody>
                         <row>
-                          <entry morerows="5">
+                          <entry morerows="5" valign="middle">
                             <para>In</para>
                           </entry>
                           <entry>
