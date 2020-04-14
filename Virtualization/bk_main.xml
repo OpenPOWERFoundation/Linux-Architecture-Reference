@@ -334,6 +334,7 @@
   <xi:include href="ch_virtual_tty.xml"/>
   <xi:include href="ch_virtual_scsi.xml"/>
   <xi:include href="ch_virtual_nic.xml"/>
+  <xi:include href="ch_virtual_tpm.xml"/>
   <xi:include href="ch_vmc_comm.xml"/>
 
   <!-- Document specific appendices -->
