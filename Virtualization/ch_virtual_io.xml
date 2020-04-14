@@ -19604,4 +19604,361 @@ hcall ( const uint64 H_VASI_STATE, /* Return the state of the VASI service */
       </table>
     </section>
   </section>
+
+  <section xml:id="sec_virtual_trusted_platform_module">
+    <title>Virtual Trusted Platform Module (VTPM)</title>
+
+    <para>This section defines the Virtual Trusted Platform Module (VTPM) option.
+      Firmware can provide the service of a VTPM device to a partition using the
+      mechanisms of the Reliable Command/Response Transport and Logical Remote DMA
+      of the Synchronous VIO Infrastructure. A VTPM device primarily allows VTPM
+      aware system firmware and operating systems to perform a trusted boot.</para>
+
+    <para>The VTPM architecture is built upon the architecture specified in the
+      following sections:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para><xref linkend="dbdoclet.50569348_21877" /></para>
+      </listitem>
+
+      <listitem>
+        <para><xref linkend="dbdoclet.50569348_94955" /></para>
+      </listitem>
+
+      <listitem>
+        <para><xref linkend="dbdoclet.50569348_51946" /></para>
+      </listitem>
+
+      <!--listitem>
+        <para><xref linkend="sec_partition_adjunct_option" /></para>
+      </listitem-->
+    </itemizedlist>
+
+    <section xml:id="sec_vtpm_general">
+      <title>VTPM General</title>
+
+      <para>This informative section provides an outline of the architectural intent
+        of the use of the VTPM.</para>
+
+      <para>The platform, through the partition definition can define multiple VTPMs,
+        and ensures that only a single VTPM is associated with a partition.</para>
+
+      <para>The client partition may be assigned various virtual adapters, each with
+        a corresponding node in the device tree. The node's
+        <emphasis role="bold"><literal>&#8220;device_type&#8221;</literal></emphasis> and
+        <emphasis role="bold"><literal>&#8220;compatible&#8221;</literal></emphasis>
+        properties may be used to distinguish between adapter types and thus locate a
+        VTPM. The node's unit address is an invariant handle to the
+        adapter and given by the
+        <emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis> property.
+        The <emphasis role="bold"><literal>&#8220;ibm,my-dma-window&#8221;</literal></emphasis>
+        property encodes the adapter's LIOBN and RTCE table size for use with the
+        CRQ and LDRMA mechanisms. The CRQ's assigned interrupt source number is given
+        by the node's
+        <emphasis role="bold"><literal>&#8220;interrupt&#8221;</literal></emphasis> property.</para>
+
+      <para>The presence of a VTPM device tree node causes the client to load a
+        device driver associated with the node's
+        <emphasis role="bold"><literal>&#8220;compatible&#8221;</literal></emphasis> property.
+        The driver first allocates and pins memory for the CRQ - an array of
+        16 byte elements, large enough to contain all possible responses.
+        The queue is then RTCE mapped using the H_PUT_TCE hcall and the values of the
+        <emphasis role="bold"><literal>&#8220;ibm,my-dma-window&#8221;</literal></emphasis> property.
+        The CRQ is registered via the H_REG_CRQ hcall,
+        and the partition may request interrupt notification using the source given by the
+        <emphasis role="bold"><literal>&#8220;interrupt&#8221;</literal></emphasis> property.</para>
+
+      <para>The driver then follows the VTPM initialization steps as described in
+        <xref linkend="sec_virtual_trusted_platform_module" />
+        resulting in the allocation and RTCE mapping of memory buffers with which to send/receive TPM commands and responses of the format described in the Trusted Computing Group TPM Specification, version 1.2 [29]. Once initialized the client may send commands by writing them directly to the RTCE-mapped memory buffer and issuing the H_SEND_CRQ hcall with the buffer's I/O address. If successful, the driver awaits an interrupt indicating that a response to the command is available – and is present in the same buffer used for command transmission. Notice that the client does not use LRDMA facilities itself, firmware is the only entity to copy data.
+</para>
+    </section>
+
+    <section xml:id="sec_vtpm_requirements">
+      <title>VTPM Requirements</title>
+
+      <para>This normative section provides the general requirements for the support of VTPM.</para>
+
+      <variablelist>
+        <!--varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vtpm_requirements"
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+
+          <listitem>
+            <para><emphasis role="bold">For the VTPM option:</emphasis> The platform
+            must implement the Partition Adjunct Option as defined in
+            <xref linkend="sec_partition_adjunct_option" />.</para>
+          </listitem>
+       	</varlistentry-->
+
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vtpm_requirements"
+          xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+
+          <listitem>
+            <para><emphasis role="bold">For the VTPM option:</emphasis> The platform must implement the
+            Reliable Command/Response Transport option as defined in
+            <xref linkend="dbdoclet.50569348_48491" />.</para>
+          </listitem>
+       	</varlistentry>
+
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vtpm_requirements"
+          xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+
+          <listitem>
+            <para><emphasis role="bold">For the VTPM option:</emphasis> The platform must implement the
+            Logical Remote DMA option as defined in
+            <xref linkend="dbdoclet.50569348_61656" />.</para>
+          </listitem>
+       	</varlistentry>
+      </variablelist>
+
+      <para>In addition to the firmware primitives, and the structures they define,
+        the partition’s OS needs to know specific information regarding the configuration
+        of the virtual IOA’s that it has been assigned so that it can load and configure
+        the correct device driver code. This information is provided by the OF device
+        tree node associated with the virtual IOA
+        (<xref linkend="table_properties_vtpm_node"/>).</para>
+
+        <table frame="all" pgwide="1" xml:id="table_properties_vtpm_node">
+          <title>Properties of the <emphasis role="bold"><literal>vtpm</literal></emphasis> Node in the OF Device Tree</title>
+          <tgroup cols="3">
+            <colspec colname="c1" colwidth="30*" />
+            <colspec colname="c2" colwidth="15*" align="center" />
+            <colspec colname="c4" colwidth="55*" />
+            <thead valign="middle">
+              <row>
+                <entry align="center">
+                  <para>
+                    <emphasis role="bold">Property Name</emphasis>
+                  </para>
+                </entry>
+                <entry>
+                  <para>
+                    <emphasis role="bold">Required?</emphasis>
+                  </para>
+                </entry>
+                <entry align="center">
+                  <para>
+                    <emphasis role="bold">Definition</emphasis>
+                  </para>
+                </entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>
+                  <para>
+                    <emphasis role="bold"><literal>&#8220;name&#8221;</literal></emphasis>
+                  </para>
+                </entry>
+                <entry>
+                  <para>Y</para>
+                </entry>
+                <entry>
+                  <para>Standard property name per
+                  <xref linkend="dbdoclet.50569387_45524" />, specifying the
+                  virtual device name, the value shall be
+                  <emphasis role="bold"><literal>&#8220;vtpm&#8221;</literal></emphasis>.</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>
+                    <emphasis role="bold"><literal>&#8220;device_type&#8221;</literal></emphasis>
+                  </para>
+                </entry>
+                <entry>
+                  <para>Y</para>
+                </entry>
+                <entry>
+                  <para>Standard property name per
+                  <xref linkend="dbdoclet.50569387_45524" />, specifying the
+                  virtual device type, the value shall be
+                  <emphasis role="bold"><literal>&#8220;IBM,vtpm&#8221;</literal></emphasis>.</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>
+                    <emphasis role="bold"><literal>&#8220;compatible&#8221;</literal></emphasis>
+                  </para>
+                </entry>
+                <entry>
+                  <para>Y</para>
+                </entry>
+                <entry>
+                  <para>Standard property name per
+                  <xref linkend="dbdoclet.50569387_45524" />, specifying the
+                  programming models that are compatible with this virtual IOA, the value shall be either
+                  <emphasis role="bold"><literal>&#8220;IBM,vtpm&#8221;</literal></emphasis>
+                  for VTPM version 1.2 or
+                  <emphasis role="bold"><literal>&#8220;IBM,vtpm20&#8221;</literal></emphasis>
+                  for VTPM version 2.0.</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>
+                    <emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis>
+                  </para>
+                </entry>
+                <entry>
+                  <para>Y</para>
+                </entry>
+                <entry>
+                  <para>Standard property name per
+                  <xref linkend="dbdoclet.50569387_45524" />, specifying the unit
+                  address (unit ID) associated with this virtual IOA presented as
+                  an encoded array as with
+                  <emphasis role="bold"><literal>encode-phys</literal></emphasis> of length
+                  <emphasis role="bold"><literal>&#8220;#address-cells&#8221;</literal></emphasis> value shall be
+                  0xwhatever (virtual
+                  <emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis> property used for unit
+                  address no actual locations used, therefore, the size field has
+                  zero cells (does not exist) as determined by the value of the
+                  <emphasis role="bold"><literal>&#8220;#size-cells&#8221;</literal></emphasis> property).</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>
+                    <emphasis role="bold"><literal>&#8220;interrupts&#8221;</literal></emphasis>
+                  </para>
+                </entry>
+                <entry>
+                  <para>Y</para>
+                </entry>
+
+                <entry>
+                  <para>Standard property name specifying the interrupt source
+                  number and sense code associated with this virtual IOA
+                  presented as an encoded array of two cells encoded as with
+                  <emphasis role="bold"><literal>encode-int</literal></emphasis> with the first cell containing
+                  the interrupt source number, and the second cell containing the
+                  sense code 0 indicating positive edge triggered. The interrupt
+                  source number being the value returned by the H_XIRR or H_IPOLL
+                  hcall().</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>
+                    <emphasis role="bold"><literal>&#8220;ibm,phandle&#8221;</literal></emphasis>
+                  </para>
+                </entry>
+                <entry>
+                  <para>Y</para>
+                </entry>
+                <entry>
+                  <para>Device's phandle encoded with
+                    <emphasis role="bold"><literal>encode-int</literal></emphasis> –
+                    present only if DRC is enabled..</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>
+                    <emphasis role="bold"><literal>&#8220;ibm,my-drc-index&#8221;</literal></emphasis>
+                  </para>
+                </entry>
+                <entry>
+                  <para>For DR</para>
+                </entry>
+                <entry>
+                  <para>The integer index for the connector between the device and
+                    its parent – present only if DRC is enabled.</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>
+                    <emphasis role="bold"><literal>&#8220;ibm,#dma-address-cells&#8221;</literal></emphasis>
+                  </para>
+                </entry>
+                <entry>
+                  <para>See definition column</para>
+                </entry>
+                <entry>
+                  <para>Property name, to define the package&#8217;s dma address
+                  format. The property value specifies the number of cells that are used
+                  to encode the physical address field of dma-window properties. This
+                  property is present when the dma address format cannot be derived
+                  using the method described in the definition for the
+                  <emphasis role="bold"><literal>&#8220;ibm,#dma-address-cells&#8221;</literal></emphasis> property
+                  in
+                  <xref linkend="LoPAR.DeviceTree" />.</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>
+                    <emphasis role="bold"><literal>&#8220;ibm,#dma-size-cells&#8221;</literal></emphasis>
+                  </para>
+                </entry>
+                <entry>
+                  <para>See definition column</para>
+                </entry>
+                <entry>
+                  <para>Property name, to define the package&#8217;s dma address
+                  size format. The property value specifies the number of cells
+                  that are used to encode the size field of dma-window
+                  properties. This property is present when the dma address size
+                  format cannot be derived using the method described in the
+                  definition for the
+                  <emphasis role="bold"><literal>&#8220;ibm,#dma-size-cells&#8221;</literal></emphasis> property
+                  in
+                  <xref linkend="LoPAR.DeviceTree" />.</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>
+                    <emphasis role="bold"><literal>&#8220;ibm,my-dma-window&#8221;</literal></emphasis>
+                  </para>
+                </entry>
+                <entry>
+                  <para>Y</para>
+                </entry>
+                <entry>
+                  <para>Property name specifying the DMA window associated with
+                    this virtual IOA presented as an encoded array of three values
+                    (LIOBN, phys, size).</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>
+                    <emphasis role="bold"><literal>&#8220;ibm,loc-code&#8221;</literal></emphasis>
+                  </para>
+                </entry>
+                <entry>
+                  <para>Y</para>
+                </entry>
+                <entry>
+                  <para>Property name specifying the unique and persistent location
+                    code associated with this virtual IOA.</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para><emphasis role="bold"><literal>&#8220;ibm,adjunct-virtual-addresses&#8221;</literal></emphasis></para>
+                </entry>
+                <entry>
+                  <para>Y</para>
+                </entry>
+                <entry>
+                  <para>Vendor unique property name indicating ranges of the client program virtual address space that are used by the virtual device serving partition adjunct.
+                  See <xref linkend="LoPAR.DeviceTree" /> information about the children
+                  of the <literal>/vdevice</literal> node.</para>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+
+    </section>
+  </section>
 </chapter>
