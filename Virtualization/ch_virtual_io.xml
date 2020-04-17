@@ -13999,6 +13999,1243 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
         </section>
       </section>
     </section>
+    <section xml:id="sec_vterm_multiplex">
+      <title>Vterm Multiplex</title>
+
+      <para>Virtual Serial Multiplex (VSM) IOA allows a highly-privileged logical
+        partition to serve multiple simultaneous partner partition's client Vterm
+        IOAs. Management consoles are able to indirectly interact with a single VSM
+        IOA to access multiple simultaneous partner partition's client virtual serial
+        sessions up to a maximum number of simultaneous connections.</para>
+
+      <para>VSM support is provided by code running in a highly-privileged logical
+        partition that uses the mechanisms of the Reliable Command/Response Transport
+        (single sided) and an extended class of Vterm HCALLs to manage, service, and
+        send virtual serial traffic to platform code.</para>
+
+      <para>The VSM architecture is built upon the architecture specified in the
+        following sections:
+        <itemizedlist spacing="compact">
+          <listitem>
+            <para>
+              <xref linkend="dbdoclet.50569348_21877" /></para>
+          </listitem>
+
+          <listitem>
+            <para>
+              <xref linkend="dbdoclet.50569348_94955" /></para>
+          </listitem>
+
+          <listitem>
+            <para>
+              <xref linkend="dbdoclet.50569348_51946" /></para>
+          </listitem>
+        </itemizedlist>
+      </para>
+
+      <section xml:id="sec_virtual_serial_multiplex_general">
+        <title>Virtual Serial Multiplex General</title>
+
+        <para>This section contains an informative outline of the architectural
+          intent of use of VSM.</para>
+
+        <para>A highly-privileged partition's device tree contains one node notifying
+          the partition that it has been assigned one VSM adapter. The node's
+          <emphasis role="bold"><literal>&#8220;type&#8221;</literal></emphasis>
+          and
+          <emphasis role="bold"><literal>&#8220;compatible&#8221;</literal></emphasis>
+          properties notify the partition that the virtual adapter is a Virtual Serial
+          Multiplex adapter. The unit address of the node is used by the partition to
+          map the virtual device to the OS's corresponding logical representation. The
+          node's
+          <emphasis role="bold"><literal>&#8220;interrupts&#8221;</literal></emphasis>
+          property specifies the interrupt source number that has
+          been assigned to the VSM for data received on the response queue. The partition,
+          uses the hcall()s associated with the Reliable Command/Response Transport
+          facility to register and deregister its CRQ, manage notification of responses,
+          and send command requests to the platform. A single sided CRQ is implemented
+          for the VSM adapter. All command requests sent to the platform via H_SEND_CRQ
+          are processed immediately under the H_SEND_CRQ context.</para>
+
+          <section xml:id="sec_vsm_initialization">
+            <title>VSM Initialization</title>
+
+            <para>The device driver, when configured and opened, allocates memory for
+              its request queue (an array, large enough for all possible outstanding
+              requests, of 16 byte elements). The driver then pins the queue and maps
+              it into I/O space, via the kernel’s I/O mapping services that invoke
+              the H_PUT_TCE hcall(), using the first window pane specified in the
+              <emphasis role="bold"><literal>&#8220;ibm,my-dma-window&#8221;</literal></emphasis>
+              property. The queue is then registered using the H_REG_CRQ hcall().
+              Finally the device driver registers to receive control when the interrupt
+              source specified in the virtual IOA’s device tree node signals.</para>
+
+            <para>Once the CRQ is setup, the device driver queues an Initialization
+              Command/Response with the second byte of “Initialize” in order to attempt
+              to tell the platform side that everything is setup on the partition side.
+              The response to this send may be that the send has been dropped or has
+              successfully been sent. If successful, the sender should expect back an
+              Initialization Command/Response with a second byte of
+              “Initialization Complete,” at which time the communication path can be
+              deemed to be open. If dropped, then the sender waits for the receipt
+              of an Initialization Command/Response with a second byte of “Initialize,”
+              at which time an “Initialization Complete” message is sent, and if that
+              message is sent successfully, then the communication path can be deemed
+              to be open.</para>
+
+            <para>The device driver then queues a Version Exchange message to
+              handshake with the platform and determine any version compatibility.
+              If successful, the sender should expect back an Version Exchange Response.</para>
+
+            <para>
+            This architecture does not specify the payload format of the requests or
+            responses. However, the architectural intent is supplied in the following
+            tables for reference.</para>
+
+            <table frame="all" pgwide="1" xml:id="table_crq_message_protocols_vsm_ioa">
+              <title>CRQ Message Protocols (Virtual Serial Multiplex IOA)</title>
+              <tgroup cols="4">
+                <colspec colname="c1" colwidth="15*" align="center" />
+                <colspec colname="c2" colwidth="15*" align="center" />
+                <colspec colname="c3" colwidth="15*" align="center" />
+                <colspec colname="c4" colwidth="55*"/>
+                <thead valign="middle">
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">Byte Offset</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">Field Name</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">Subfield Name</emphasis>
+                      </para>
+                    </entry>
+                    <entry align="center" >
+                      <para>
+                        <emphasis role="bold">Description</emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                </thead>
+                <tbody valign="middle">
+                  <row>
+                    <entry>
+                      <para>0</para>
+                    </entry>
+                    <entry>
+                      <para>Header</para>
+                    </entry>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                    <entry>
+                      <para>Contains Element Valid Bit plus Event Type Encodings (see
+                        <xref linkend="dbdoclet.50569348_49382" />).</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>1</para>
+                    </entry>
+                    <entry morerows="1">
+                      <para>Payload</para>
+                    </entry>
+                    <entry>
+                      <para>Command/ Transport Event Code</para>
+                    </entry>
+                    <entry>
+                      <para>For Valid Command Response Entries, see
+                        <xref linkend="table_example_reliable_crq_entry_command_byte_definitions_for_vsm" />.
+                        <?linebreak?>For Transport Event Codes see
+                        <xref linkend="dbdoclet.50569348_93265" />.</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>2-15</para>
+                    </entry>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                    <entry>
+                      <para>Format Dependent</para>
+                    </entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
+
+            <table frame="all" pgwide="1" xml:id="table_example_reliable_crq_entry_command_byte_definitions_for_vsm">
+              <?dbhtml table-width="80%" ?><?dbfo table-width="80%" ?>
+              <title>Example Reliable CRQ Entry Command Byte Definitions for VSM</title>
+              <tgroup cols="2">
+                <colspec colname="c1" colwidth="40*" align="center" />
+                <colspec colname="c2" colwidth="60*"/>
+                <thead valign="middle">
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">Command Byte Value</emphasis>
+                      </para>
+                    </entry>
+                    <entry align="center" >
+                      <para>
+                        <emphasis role="bold">Definition</emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                </thead>
+                <tbody valign="middle">
+                  <row>
+                    <entry>
+                      <para>0x01</para>
+                    </entry>
+                    <entry>
+                      <para>Version Exchange</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>0x81</para>
+                    </entry>
+                    <entry>
+                      <para>Version Exchange Response</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>0x02</para>
+                    </entry>
+                    <entry>
+                      <para>Signal VTERM Interrupt</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>0x82</para>
+                    </entry>
+                    <entry>
+                      <para>Signal VTERM Interrupt Response</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>0x03</para>
+                    </entry>
+                    <entry>
+                      <para>Error Indication</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>0x04 - 0xFF</para>
+                    </entry>
+                    <entry>
+                      <para>Reserved</para>
+                    </entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
+
+            <table frame="all" pgwide="1" xml:id="table_example_version_exchange_queue_element_for_vsm">
+              <?dbhtml table-width="80%" ?><?dbfo table-width="80%" ?>
+              <title>Example Version Exchange Queue Element for VSM</title>
+              <tgroup cols="3">
+                <colspec colname="c1" colwidth="20*" align="center" />
+                <colspec colname="c2" colwidth="20*" align="center" />
+                <colspec colname="c3" colwidth="60*"/>
+                <thead valign="middle">
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">Byte Offset</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">Field Value</emphasis>
+                      </para>
+                    </entry>
+                    <entry align="center" >
+                      <para>
+                        <emphasis role="bold">Description</emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                </thead>
+                <tbody valign="middle">
+                  <row>
+                    <entry>
+                      <para>0</para>
+                    </entry>
+                    <entry>
+                      <para>0x80</para>
+                    </entry>
+                    <entry>
+                      <para>Valid Header</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>1</para>
+                    </entry>
+                    <entry>
+                      <para>0x01</para>
+                    </entry>
+                    <entry>
+                      <para>Version Exchange (Response: 0x81)</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>2-3</para>
+                    </entry>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                    <entry>
+                      <para>Version</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>4-15</para>
+                    </entry>
+                    <entry>
+                      <para>NA</para>
+                    </entry>
+                    <entry>
+                      <para>Reserved</para>
+                    </entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
+
+            <table frame="all" pgwide="1" xml:id="table_example_signal_vterm_interrupt_queue_element_for_vsm">
+              <?dbhtml table-width="80%" ?><?dbfo table-width="80%" ?>
+              <title>Example Signal VTERM Interrupt Queue Element for VSM</title>
+              <tgroup cols="3">
+                <colspec colname="c1" colwidth="20*" align="center" />
+                <colspec colname="c2" colwidth="20*" align="center" />
+                <colspec colname="c3" colwidth="60*"/>
+                <thead valign="middle">
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">Byte Offset</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">Field Value</emphasis>
+                      </para>
+                    </entry>
+                    <entry align="center" >
+                      <para>
+                        <emphasis role="bold">Description</emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                </thead>
+                <tbody valign="middle">
+                  <row>
+                    <entry>
+                      <para>0</para>
+                    </entry>
+                    <entry>
+                      <para>0x80</para>
+                    </entry>
+                    <entry>
+                      <para>Valid Header</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>1</para>
+                    </entry>
+                    <entry>
+                      <para>0x02</para>
+                    </entry>
+                    <entry>
+                      <para>Signal Interrupt (Response: 0x82)</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>2-7</para>
+                    </entry>
+                    <entry>
+                      <para>NA</para>
+                    </entry>
+                    <entry>
+                      <para>Reserved</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>8-15</para>
+                    </entry>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                    <entry>
+                      <para>Console-token</para>
+                    </entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
+
+            <table frame="all" pgwide="1" xml:id="table_example_error_indication_queue_element_for_vsm">
+              <?dbhtml table-width="80%" ?><?dbfo table-width="80%" ?>
+              <title>Example Error Indication Queue Element for VSM</title>
+              <tgroup cols="3">
+                <colspec colname="c1" colwidth="20*" align="center" />
+                <colspec colname="c2" colwidth="20*" align="center" />
+                <colspec colname="c3" colwidth="60*"/>
+                <thead valign="middle">
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">Byte Offset</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">Field Value</emphasis>
+                      </para>
+                    </entry>
+                    <entry align="center" >
+                      <para>
+                        <emphasis role="bold">Description</emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                </thead>
+                <tbody valign="middle">
+                  <row>
+                    <entry>
+                      <para>0</para>
+                    </entry>
+                    <entry>
+                      <para>0x80</para>
+                    </entry>
+                    <entry>
+                      <para>Valid Header</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>1</para>
+                    </entry>
+                    <entry>
+                      <para>0x03</para>
+                    </entry>
+                    <entry>
+                      <para>Error Indication</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>2-3</para>
+                    </entry>
+                    <entry>
+                      <para>NA</para>
+                    </entry>
+                    <entry>
+                      <para>Reserved</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>4-5</para>
+                    </entry>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                    <entry>
+                      <para>Error Cause. This field contains a value as detailed in
+                        <xref linkend="table_vsm_error_cause" />
+                        showing the cause of the error.</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>6-7</para>
+                    </entry>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                    <entry>
+                      <para>Internal Error Detail. This field contains details defined
+                        internally to help narrow down the scope of the Error Cause.</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>8-15</para>
+                    </entry>
+                    <entry>
+                      <para>NA</para>
+                    </entry>
+                    <entry>
+                      <para>Reserved</para>
+                    </entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
+
+            <table frame="all" pgwide="1" xml:id="table_vsm_error_cause">
+              <?dbhtml table-width="80%" ?><?dbfo table-width="80%" ?>
+              <title>Error Cause</title>
+              <tgroup cols="2">
+                <colspec colname="c1" colwidth="40*" align="center" />
+                <colspec colname="c2" colwidth="60*"/>
+                <thead valign="middle">
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">Value</emphasis>
+                      </para>
+                    </entry>
+                    <entry align="center" >
+                      <para>
+                        <emphasis role="bold">Definition</emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                </thead>
+                <tbody valign="middle">
+                  <row>
+                    <entry>
+                      <para>0x01</para>
+                    </entry>
+                    <entry>
+                      <para>Firmware Problem</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>0x02</para>
+                    </entry>
+                    <entry>
+                      <para>Device Driver Problem</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>0x03 - 0xFFFF</para>
+                    </entry>
+                    <entry>
+                      <para>Reserved</para>
+                    </entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
+          </section>
+
+          <section xml:id="sec_open_virtual_serial_session_request">
+            <title>Open Virtual Serial Session Request</title>
+
+            <para>Partition receives a request to open the virtual serial session
+              for a client partner partition's Vterm IOA.</para>
+
+            <itemizedlist>
+              <listitem>
+                <para>Partition uses the H_OPEN_VTERM_LP hcall with the client partner
+                  partition's LP ID and session ID as parameters.</para>
+              </listitem>
+
+              <listitem>
+                <para>On successful open, the partition receives a console-token that
+                  represents the handle of the client LP and session.</para>
+              </listitem>
+            </itemizedlist>
+          </section>
+
+          <section xml:id="sec_receive_char_event">
+            <title>Receive Char Event</title>
+
+            <para>The partition receives an interrupt when a valid command(s) is/are
+              received on the response queue.</para>
+
+            <itemizedlist>
+              <listitem>
+                <para>The partition is notified of Vterm receive data for a specific
+                  client partner partition's LP ID and session (console-token handler)
+                  via the response queue.</para>
+              </listitem>
+
+              <listitem>
+                <para>The partition uses the H_GET_TERM_CHAR_LP hcall() with the token
+                  handler to receive data from the client Vterm IOA.</para>
+              </listitem>
+
+              <listitem>
+                <para>The partition continues to call H_GET_TERM_CHAR_LP with the token
+                  handler until H_Success is returned with zero count of characters
+                  specified in R4.</para>
+              </listitem>
+
+              <listitem>
+                <para>The partition replies to notification CRQ message with a “done”
+                  CRQ response w/ the token handler. This essentially behaves like
+                  the H_EOI for the connection represented by the console-token handler.
+                  Race conditions could occur in any situation; therefore, the
+                  partition should again call H_GET_TERM_CHAR_LP w/ the token handler
+                  to verify the queue is empty.</para>
+              </listitem>
+            </itemizedlist>
+          </section>
+
+          <section xml:id="sec_send_char_event">
+            <title>Send Char Event</title>
+
+            <para>Partition wishes to send a char or string to a specific client
+              partner partition's LP ID and session (console-token handler).</para>
+
+            <itemizedlist>
+              <listitem>
+                <para>Partition uses the H_PUT_TERM_CHAR_LP with the unit-address of
+                  the VSM adapter, the token representing the handle of the client LP
+                  and session, the length of the string to transmit, and the string
+                  to send in char0_7 and char8_15.</para>
+              </listitem>
+            </itemizedlist>
+          </section>
+
+          <section xml:id="sec_close_virtual_serial_session_request">
+            <title>Close Virtual Serial Session Request</title>
+
+            <para>Partition receives a request to close the virtual serial session.</para>
+
+            <itemizedlist>
+              <listitem>
+                <para>Partition uses the H_CLOSE_VTERM_LP HCALL with console-token
+                  handler as a parameter.</para>
+              </listitem>
+            </itemizedlist>
+          </section>
+
+          <section xml:id="sec_vsm_device_drive_close">
+            <title>VSM Device Driver Close</title>
+
+            <itemizedlist>
+              <listitem>
+                <para>Partition uses the H_FREE_CRQ hcall().</para>
+              </listitem>
+
+              <listitem>
+                <para>The platform “closes” any valid virtual serial sessions and
+                  de-registers each.</para>
+              </listitem>
+            </itemizedlist>
+          </section>
+        </section>
+
+        <section xml:id="sec_virtual_serial_multiplex_requirements">
+          <title>Virtual Serial Multiplex Requirements</title>
+
+          <para>This normative section provides the general requirements for the
+            support of VSM.</para>
+
+            <variablelist>
+             	<varlistentry>
+                <term><emphasis role="bold">R1-<xref linkend="sec_virtual_serial_multiplex_requirements"
+                xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+                <listitem>
+                  <para><emphasis role="bold">For the VSM option:</emphasis> The
+                    platform must implement the single sided Reliable Command/Response
+                    Transport option as defined in
+                    <xref linkend="dbdoclet.50569348_48491" />.</para>
+                </listitem>
+             	</varlistentry>
+
+             	<varlistentry>
+                <term><emphasis role="bold">R1-<xref linkend="sec_virtual_serial_multiplex_requirements"
+                xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+                <listitem>
+                  <para><emphasis role="bold">For the VSM option:</emphasis> The platform
+                    must implement a new class of VTERM hcalls() as defined in
+                    <xref linkend="sec_virtual_serial_multiplex_hcalls" />.</para>
+                </listitem>
+             	</varlistentry>
+            </variablelist>
+
+          <para>In addition to the firmware primitives, and the structures they define,
+            the partition’s OS needs to know specific information regarding the
+            configuration of the virtual IOAs that it has been assigned so that
+            it can load and configure the correct device driver code. This information
+            is provided by the Open Firmware device tree node associated with the
+            virtual IOA (see
+            <xref linkend="sec_virtual_serial_multiplex_device_tree_node" />).</para>
+        </section>
+
+        <section xml:id="sec_virtual_serial_multiplex_hcalls">
+          <title>Virtual Serial Multiplex hcalls()</title>
+
+          <para>The following hcall()s are used to send data to and get data from
+            both the client and sever Vterm IOAs.</para>
+
+          <section xml:id="sec_open_vterm_lp">
+            <title>H_OPEN_VTERM_LP</title>
+
+            <simplesect>
+              <title>Syntax:</title>
+
+              <programlisting><![CDATA[int64 hcall ( const uint64 H_OPEN_VTERM_LP,
+              uint64 unit-address,
+              uint64 partner-session-id,
+              uint64 partner-partition-id );]]></programlisting>
+
+            </simplesect>
+            <simplesect>
+              <title>Parameters:</title>
+
+              <itemizedlist>
+                <listitem>
+                  <para>unit-address: The unit address of the VSM IOA, from the
+                    <emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis>
+                    property of the VSM IOA.</para>
+                </listitem>
+
+                <listitem>
+                  <para>partner-session-id: The partner session ID to which to be connected</para>
+                </listitem>
+
+                <listitem>
+                  <para>partner-partition-id: The partition ID to which to be connected.</para>
+                </listitem>
+              </itemizedlist>
+            </simplesect>
+
+            <simplesect>
+              <title>Semantics:</title>
+
+              <itemizedlist>
+                <listitem>
+                  <para>Hypervisor checks the unit-address parameter for validity
+                    against the VSM IOA unit address assigned to the partition, else
+                    return H_Parameter.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Hypervisor returns H_Parameter if it detects that the virtual
+                    console associated with the partner-session-id and
+                    partner-partition-id pair could not be found or is not valid.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Hypervisor returns H_Parameter if it detects that the virtual
+                    console associated with the partner-session-id and
+                    partner-partition-id pair is already active or migrating.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Hypervisor returns H_State if the VSM CRQ has not been
+                    registered successfully.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Hypervisor returns H_State if the VSM has not successfully
+                    completed the version exchange handshake.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Hypervisor returns H_Resource if the maximum number of
+                    simultaneous virtual serial sessions has been exceeded.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Hypervisor returns an H_Busy, H_LongBusyOrder1mSec, or
+                    H_LongBusyOrder10mSec, software must call H_OPEN_VTERM_LP
+                    again with the same parameters. Software may choose to treat
+                    H_LongBusyOrder1mSec and H_LongBusyOrder10mSec the same as H_Busy</para>
+                </listitem>
+
+                <listitem>
+                  <para>Else, make a multiplex connection between the VSM IOA specified
+                    by unit-address and the partner Vterm IOA specified by the
+                    partner-partition-id and partner-session-id pair, allowing
+                    future H_PUT_TERM_CHAR_LP and H_GET_TERM_CHAR_LP operations to
+                    flow between the two Vterm IOAs, and return H_Success.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Upon return with H_Success register R4 contains the
+                    console-token to be used as a handle for future H_PUT_TERM_CHAR_LP,
+                    H_GET_TERM_CHAR_LP, and H_CLOSE_VTERM_LP operations along with
+                    applicable CRQ messages for the VSM IOA.</para>
+                </listitem>
+              </itemizedlist>
+            </simplesect>
+          </section>
+
+          <section xml:id="sec_put_term_char_lp">
+            <title>H_PUT_TERM_CHAR_LP</title>
+
+            <simplesect>
+              <title>Syntax:</title>
+
+              <programlisting><![CDATA[int64 hcall ( const uint64 H_PUT_TERM_CHAR_LP,
+              uint64 unit-address,
+              uint64 console-token,
+              uint64 len,
+              uint64 char0_7,
+              uint64 char8_15 );]]></programlisting>
+
+            </simplesect>
+            <simplesect>
+              <title>Parameters:</title>
+
+              <itemizedlist>
+                <listitem>
+                  <para>unit-address: The unit address of the VSM IOA, from the
+                    <emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis>
+                    property of the VSM IOA.</para>
+                </listitem>
+
+                <listitem>
+                  <para>console-token: The console token received from H_OPEN_VTERM_LP
+                    crq response</para>
+                </listitem>
+
+                <listitem>
+                  <para>len: The length of the string to transmit through the virtual
+                    terminal port. Valid values are in the range of 0-16.</para>
+                </listitem>
+
+                <listitem>
+                  <para>char0_7 and char8_15: The string starts in the high order byte
+                    of register R7 and proceeds toward the low order byte in register R8</para>
+                </listitem>
+              </itemizedlist>
+            </simplesect>
+
+            <simplesect>
+              <title>Semantics:</title>
+
+              <itemizedlist>
+                <listitem>
+                  <para>Hypervisor checks the unit-address parameter for validity
+                    against the VSM IOA unit address assigned to the partition,
+                    else return H_Parameter.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Hypervisor returns H_Hardware if it detects that the virtual
+                    console terminal connection is not working.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Hypervisor returns H_Closed if it detects that the virtual
+                    console associated with the console-token parameter is not
+                  open or not currently valid.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the length parameter is outside of the values 0-16 the
+                    hypervisor immediately returns H_Parameter with no other action.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the partition’s virtual console terminal buffer has room
+                    for the entire string, the hypervisor queues the output string and
+                    returns H_Success. Note: There is always room for a zero-length
+                    string (a zero length write can be used to test the virtual console
+                    terminal connection).</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the buffer cannot hold the entire string, no data is
+                    enqueued and the return code is H_Busy.</para>
+                </listitem>
+              </itemizedlist>
+            </simplesect>
+          </section>
+
+          <section xml:id="sec_get_term_char_lp">
+            <title>H_GET_TERM_CHAR_LP</title>
+
+            <simplesect>
+              <title>Syntax:</title>
+
+              <programlisting><![CDATA[int64 hcall ( const uint64 H_GET_TERM_CHAR_LP,
+              uint64 unit-address,
+              uint64 console-token );]]></programlisting>
+
+            </simplesect>
+            <simplesect>
+              <title>Parameters:</title>
+
+              <itemizedlist>
+                <listitem>
+                  <para>unit-address: The unit address of the VSM IOA, from the
+                    <emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis>
+                    property of the VSM IOA.</para>
+                </listitem>
+
+                <listitem>
+                  <para>console-token: The console token received from H_OPEN_VTERM_LP
+                    crq response</para>
+                </listitem>
+              </itemizedlist>
+            </simplesect>
+
+            <simplesect>
+              <title>Semantics:</title>
+
+              <itemizedlist>
+                <listitem>
+                  <para>Hypervisor checks the unit-address parameter for validity against
+                    the VSM IOA unit address assigned to the partition, else return
+                    H_Parameter.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Hypervisor returns H_Hardware if it detects that the virtual
+                    console terminal connection is not working.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Hypervisor returns H_Closed if it detects that the virtual
+                    console associated with the console-token parameter is not
+                  open or not currently valid.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Hypervisor returns H_Success in all other cases, returning
+                    maximum number of characters available in the partition’s virtual
+                    console terminal input buffer (up to 16) -- a len value of 0
+                    indicates that the input buffer is empty.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Upon return with H_Success register R4 contains the number of
+                    bytes (if any) returned in registers R5 and R6.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Upon return with H_Success the return character string starts
+                    in the high order byte of register R5 and proceeds toward the low
+                    order byte in register R6 for the number of characters specified
+                    in R4. The contents of all other byte locations of registers R5
+                    and R6 are undefined.</para>
+                </listitem>
+              </itemizedlist>
+            </simplesect>
+          </section>
+
+          <section xml:id="sec_close_vterm_lp">
+            <title>H_CLOSE_VTERM_LP</title>
+
+            <simplesect>
+              <title>Syntax:</title>
+
+              <programlisting><![CDATA[int64 hcall ( const uint64 H_CLOSE_VTERM_LP,
+              uint64 unit-address,
+              uint64 console-token );]]></programlisting>
+
+            </simplesect>
+            <simplesect>
+              <title>Parameters:</title>
+
+              <itemizedlist>
+                <listitem>
+                  <para>unit-address: The unit address of the VSM IOA, from the
+                    <emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis>
+                    property of the VSM IOA.</para>
+                </listitem>
+
+                <listitem>
+                  <para>console-token: The console token received from H_OPEN_VTERM_LP
+                    hcall response</para>
+                </listitem>
+              </itemizedlist>
+            </simplesect>
+
+            <simplesect>
+              <title>Semantics:</title>
+
+              <itemizedlist>
+                <listitem>
+                  <para>Hypervisor checks the unit-address parameter for validity against
+                    the VSM IOA unit address assigned to the partition, else return
+                    H_Parameter.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Hypervisor returns H_Closed if it detects that the virtual
+                    console associated with the console-token parameter is not open
+                    or not currently valid.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Hypervisor returns an H_Busy, H_LongBusyOrder1mSec, or
+                    H_LongBusyOrder10mSec, software must call H_CLOSE_VTERM_LP
+                    again with the same parameters. Software may choose to treat
+                    H_LongBusyOrder1mSec and H_LongBusyOrder10mSec the same as H_Busy</para>
+                </listitem>
+
+                <listitem>
+                  <para>Else, break the multiplex connection between the VSM IOA
+                    specified by unit-address and the partner Vterm IOA specified by
+                    the console-token, and return H_Success.</para>
+                </listitem>
+              </itemizedlist>
+            </simplesect>
+          </section>
+        </section>
+        <section xml:id="sec_virtual_serial_multiplex_device_tree_node">
+          <title>Virtual Serial Multiplex Device Tree Node</title>
+
+          <variablelist>
+           	<varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="sec_virtual_serial_multiplex_device_tree_node"
+              xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For the VSM option:</emphasis> The platform's
+                OF device tree must include as a child of the /vdevice node,
+                one node of type “vty-mserver”.</para>
+              </listitem>
+           	</varlistentry>
+
+           	<varlistentry>
+              <term><emphasis role="bold">R1-<xref linkend="sec_virtual_serial_multiplex_device_tree_node"
+              xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For the VSM option:</emphasis> The platform's
+                vty-mserver OF node must contain properties defined in
+                <xref linkend="table_properties_vtymserver_node_vsm" />
+                (other standard I/O adapter properties are permissible as appropriate).</para>
+              </listitem>
+           	</varlistentry>
+          </variablelist>
+
+          <table frame="all" pgwide="1" xml:id="table_properties_vtymserver_node_vsm">
+            <title>Properties of the vty-mserver Node (Virtual Serial Multiplex IOA)</title>
+            <tgroup cols="3">
+              <colspec colname="c1" colwidth="30*" align="left" />
+              <colspec colname="c2" colwidth="10*" align="center" />
+              <colspec colname="c3" colwidth="60*" align="left" />
+              <thead valign="middle">
+                <row>
+                  <entry align="center">
+                    <para>
+                      <emphasis role="bold">Property Name</emphasis>
+                    </para>
+                  </entry>
+                  <entry align="center">
+                    <para>
+                      <emphasis role="bold">Required?</emphasis>
+                    </para>
+                  </entry>
+                  <entry align="center">
+                    <para>
+                      <emphasis role="bold">Definition</emphasis>
+                    </para>
+                  </entry>
+                </row>
+              </thead>
+              <tbody valign="middle">
+                <row>
+                  <entry>
+                    <para><emphasis role="bold"><literal>&#8220;name&#8221;</literal></emphasis></para>
+                  </entry>
+                  <entry>
+                    <para>Y</para>
+                  </entry>
+                  <entry>
+                    <para>Standard property name per <citetitle>IEEE 1275</citetitle> specifying the virtual
+                    device name, the value shall be
+                    <literal>&#8220;vty-mserver&#8221;</literal>.</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para><emphasis role="bold"><literal>&#8220;device_type&#8221;</literal></emphasis></para>
+                  </entry>
+                  <entry>
+                    <para>Y</para>
+                  </entry>
+                  <entry>
+                    <para>Standard property name per <citetitle>IEEE 1275</citetitle> specifying the virtual
+                    device type, the value shall be
+                    <literal>&#8220;serial-multiplex&#8221;</literal>.</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para><emphasis role="bold"><literal>&#8220;model&#8221;</literal></emphasis></para>
+                  </entry>
+                  <entry>
+                    <para>NA</para>
+                  </entry>
+                  <entry>
+                    <para>Property not present.</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para><emphasis role="bold"><literal>&#8220;compatible&#8221;</literal></emphasis></para>
+                  </entry>
+                  <entry>
+                    <para>Y</para>
+                  </entry>
+                  <entry>
+                    <para>Standard property name per <citetitle>IEEE 1275</citetitle> specifying the programming
+                    models that are compatible with this virtual IOA, the value shall be
+                    <literal>&#8220;IBM,serial-multiplex&#8221;</literal>.</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para><emphasis role="bold"><literal>&#8220;used-by-rtas&#8221;</literal></emphasis></para>
+                  </entry>
+                  <entry>
+                    <para>N</para>
+                  </entry>
+                  <entry>
+                    <para>Property not present.</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para><emphasis role="bold"><literal>&#8220;ibm,loc-code&#8221;</literal></emphasis></para>
+                  </entry>
+                  <entry>
+                    <para>Y</para>
+                  </entry>
+                  <entry>
+                    <para>Property name specifying the unique and
+                    persistent location code associated with this virtual IOA
+                    presented as an encoded array as with
+                    <emphasis role="bold"><literal>encode-string</literal></emphasis>.
+                    The value shall be of the form specified in
+                    <xref linkend="LoPAR.Platform" /> information on
+                    Virtual Card Connector Location Codes.</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para><emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis></para>
+                  </entry>
+                  <entry>
+                    <para>Y</para>
+                  </entry>
+                  <entry>
+                    <para>Standard property name per <citetitle>IEEE 1275</citetitle> specifying the
+                    register addresses, used as the unit address (unit
+                    ID), associated with this virtual IOA presented as
+                    an encoded array as with <emphasis role="bold"><literal>encode-phys</literal></emphasis>.
+                    Because this virtual IOA's parent, <literal>/vdevice</literal>, has
+                    <emphasis role="bold"><literal>&#8220;#address-cells&#8221;</literal></emphasis>
+                    value of 1 and
+                    <emphasis role="bold"><literal>&#8220;#size-cells&#8221;</literal></emphasis>
+                    value of 0, the
+                    <emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis>
+                    property value for this device consists of a single cell.</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para><emphasis role="bold"><literal>&#8220;ibm,my-dma-window&#8221;</literal></emphasis></para>
+                  </entry>
+                  <entry>
+                    <para>Y</para>
+                  </entry>
+                  <entry>
+                    <para>Property name specifying the DMA window
+                    associated with this virtual IOA presented as an encoded
+                    array of two sets (two window panes) of three values (LIOBN, phys, size) encoded as with
+                    <emphasis role="bold"><literal>encode-int</literal></emphasis>,
+                    <emphasis role="bold"><literal>encode-phys</literal></emphasis>, and
+                    <emphasis role="bold"><literal>encode-int</literal></emphasis> respectively.</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para><emphasis role="bold"><literal>&#8220;interrupts&#8221;</literal></emphasis></para>
+                  </entry>
+                  <entry>
+                    <para>Y</para>
+                  </entry>
+                  <entry>
+                    <para>Standard property name specifying the interrupt source
+                    number and sense code associated with this virtual
+                    IOA presented as an encoded array of two cells encoded as with
+                    <emphasis role="bold"><literal>encode-int</literal></emphasis> with the first cell
+                    containing the interrupt source number, and the
+                    second cell containing the sense code 0 indicating positive
+                    edge triggered. The interrupt source number being the value
+                    returned by the H_XIRR or H_IPOLL hcall().</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para><emphasis role="bold"><literal>&#8220;ibm,my-drc-index&#8221;</literal></emphasis></para>
+                  </entry>
+                  <entry>
+                    <para>For DR</para>
+                  </entry>
+                  <entry>
+                    <para>Present if the platform implements DR for this node.</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para><emphasis role="bold"><literal>&#8220;ibm,#dma-size-cells&#8221;</literal></emphasis></para>
+                  </entry>
+                  <entry>
+                    <para>See Definition Column</para>
+                  </entry>
+                  <entry>
+                    <para>Property name, to define the package’s dma address
+                    size format. The property value specifies the number
+                    of cells that are used to encode the size field of
+                    dma-window properties. This property is present when the
+                    dma address size format cannot be derived using
+                    the method described in the definition for the
+                    <emphasis role="bold"><literal>&#8220;ibm,#dma-size-cells&#8221;</literal></emphasis>
+                    property in
+                    <xref linkend="LoPAR.DeviceTree" /> section on System Bindings.</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para><emphasis role="bold"><literal>&#8220;ibm,#dma-address-cells&#8221;</literal></emphasis></para>
+                  </entry>
+                  <entry>
+                    <para>See Definition Column</para>
+                  </entry>
+                  <entry>
+                    <para>Property name, to define the package’s dma address
+                    format. The property value specifies the number
+                    of cells that are used to encode the physical address field of
+                    dma-window properties. This property is present when the
+                    dma address format cannot be derived using
+                    the method described in the definition for the
+                    <emphasis role="bold"><literal>&#8220;ibm,#dma-address-cells&#8221;</literal></emphasis>
+                    property in
+                    <xref linkend="LoPAR.DeviceTree" /> section on System Bindings.</para>
+                  </entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
+
+        </section>
+    </section>
   </section>
 
   <section xml:id="sec_vmc">
