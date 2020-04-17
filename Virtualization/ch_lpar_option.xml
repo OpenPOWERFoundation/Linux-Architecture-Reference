@@ -916,6 +916,116 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
           <row>
             <entry>
               <para>
+                <xref linkend="sec_int_get_source_info" xrefstyle="select: title nopage" /> / <xref linkend="sec_int_get_source_info" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Get the ESB addresses for a LISN</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_int_set_source_config" xrefstyle="select: title nopage" /> / <xref linkend="sec_int_set_source_config" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Assign a target and priority to a LISN</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_int_get_source_config" xrefstyle="select: title nopage" /> / <xref linkend="sec_int_get_source_config" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Get the target and priority assigned to a LISN </para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_int_get_queue_info" xrefstyle="select: title nopage" /> / <xref linkend="sec_int_get_queue_info" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Get the notification management page for a LISN</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_int_set_queue_config" xrefstyle="select: title nopage" /> / <xref linkend="sec_int_set_queue_config" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Set/Reset an EQ for a target and priority</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_int_get_queue_config" xrefstyle="select: title nopage" /> / <xref linkend="sec_int_get_queue_config" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Get the EQ set for a target and priority</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_int_set_os_reporting_line" xrefstyle="select: title nopage" /> / <xref linkend="sec_int_set_os_reporting_line" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Set the OS reporting cache line pair for a target</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_int_get_os_reporting_line" xrefstyle="select: title nopage" /> / <xref linkend="sec_int_get_os_reporting_line" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Get the OS reporting cache line pair for a target</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_int_esb" xrefstyle="select: title nopage" /> / <xref linkend="sec_int_esb" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Load or store operation on the ESB page for a LISN</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_int_sync" xrefstyle="select: title nopage" /> / <xref linkend="sec_int_sync" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Issue the requested sync</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_int_reset" xrefstyle="select: title nopage" /> / <xref linkend="sec_int_reset" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Reset interrupt state to the initial state</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
                 <xref linkend="dbdoclet.50569344_23386" xrefstyle="select: title nopage" /> / <xref linkend="dbdoclet.50569344_23386" xrefstyle="select: labelnumber nopage" />
               </para>
             </entry>
@@ -4317,6 +4427,215 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
               </entry>
               <entry>
                 <para>hcall-imtt</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_int_get_source_info" xrefstyle="select: title nopage" /> / <xref linkend="sec_int_get_source_info" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x3A8</para>
+              </entry>
+              <entry>
+                <para>Normal</para>
+              </entry>
+              <entry>
+                <para>If the OS enabled XIVE exploitation</para>
+              </entry>
+              <entry>
+                <para>hcall-int-exploitation</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_int_set_source_config" xrefstyle="select: title nopage" /> / <xref linkend="sec_int_set_source_config" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x3AC</para>
+              </entry>
+              <entry>
+                <para>Normal</para>
+              </entry>
+              <entry>
+                <para>If the OS enabled XIVE exploitation</para>
+              </entry>
+              <entry>
+                <para>hcall-int-exploitation</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_int_get_source_config" xrefstyle="select: title nopage" /> / <xref linkend="sec_int_get_source_config" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x3B0</para>
+              </entry>
+              <entry>
+                <para>Normal</para>
+              </entry>
+              <entry>
+                <para>If the OS enabled XIVE exploitation</para>
+              </entry>
+              <entry>
+                <para>hcall-int-exploitation</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_int_get_queue_info" xrefstyle="select: title nopage" /> / <xref linkend="sec_int_get_queue_info" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x3B4</para>
+              </entry>
+              <entry>
+                <para>Normal</para>
+              </entry>
+              <entry>
+                <para>If the OS enabled XIVE exploitation</para>
+              </entry>
+              <entry>
+                <para>hcall-int-exploitation</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_int_set_queue_config" xrefstyle="select: title nopage" /> / <xref linkend="sec_int_set_queue_config" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x3B8</para>
+              </entry>
+              <entry>
+                <para>Normal</para>
+              </entry>
+              <entry>
+                <para>If the OS enabled XIVE exploitation</para>
+              </entry>
+              <entry>
+                <para>hcall-int-exploitation</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_int_get_queue_config" xrefstyle="select: title nopage" /> / <xref linkend="sec_int_get_queue_config" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x3BC</para>
+              </entry>
+              <entry>
+                <para>Normal</para>
+              </entry>
+              <entry>
+                <para>If the OS enabled XIVE exploitation</para>
+              </entry>
+              <entry>
+                <para>hcall-int-exploitation</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_int_set_os_reporting_line" xrefstyle="select: title nopage" /> / <xref linkend="sec_int_set_os_reporting_line" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x3C0</para>
+              </entry>
+              <entry>
+                <para>Normal</para>
+              </entry>
+              <entry>
+                <para>If the OS enabled XIVE exploitation</para>
+              </entry>
+              <entry>
+                <para>hcall-int-exploitation</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_int_get_os_reporting_line" xrefstyle="select: title nopage" /> / <xref linkend="sec_int_get_os_reporting_line" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x3C4</para>
+              </entry>
+              <entry>
+                <para>Normal</para>
+              </entry>
+              <entry>
+                <para>If the OS enabled XIVE exploitation</para>
+              </entry>
+              <entry>
+                <para>hcall-int-exploitation</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_int_esb" xrefstyle="select: title nopage" /> / <xref linkend="sec_int_esb" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x3C8</para>
+              </entry>
+              <entry>
+                <para>Normal</para>
+              </entry>
+              <entry>
+                <para>If the OS enabled XIVE exploitation</para>
+              </entry>
+              <entry>
+                <para>hcall-int-exploitation</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_int_sync" xrefstyle="select: title nopage" /> / <xref linkend="sec_int_sync" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x3CC</para>
+              </entry>
+              <entry>
+                <para>Normal</para>
+              </entry>
+              <entry>
+                <para>If the OS enabled XIVE exploitation</para>
+              </entry>
+              <entry>
+                <para>hcall-int-exploitation</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_int_reset" xrefstyle="select: title nopage" /> / <xref linkend="sec_int_reset" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x3D0</para>
+              </entry>
+              <entry>
+                <para>Normal</para>
+              </entry>
+              <entry>
+                <para>If the OS enabled XIVE exploitation</para>
+              </entry>
+              <entry>
+                <para>hcall-int-exploitation</para>
               </entry>
             </row>
             <row>
@@ -9840,6 +10159,317 @@ hcall ( const uint64 H_CLEAR_HPT);]]></programlisting>
 
       <section xml:id="dbdoclet.50569344_26787">
         <title>Interrupt Support hcall()s</title>
+
+        <para><xref linkend="table_xive_legacy_vs_exploitation" />
+          below describes legacy vs exploitation differences related to the client
+          architecture, device tree and hcalls. The symbol @ESB refers to a logical
+          real address returned from the hcall()
+          <xref linkend="sec_int_get_source_info" xrefstyle="select: title nopage"/>. The symbol
+          @TIMA refers to the logical real address in the
+          <emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis>
+          property of the
+          External Interrupt Virtualization Node.</para>
+
+        <table frame="all" pgwide="1" xml:id="table_xive_legacy_vs_exploitation">
+          <title>XIVE Legacy vs. Exploitation Mode Hypervisor Call Function Table</title>
+          <tgroup cols="2">
+            <colspec colname="c1" colwidth="50*" align="center" />
+            <colspec colname="c2" colwidth="50*" align="center" />
+            <thead valign="middle">
+              <row>
+                <entry>
+                  <para>
+                    <emphasis role="bold">Legacy</emphasis>
+                  </para>
+                </entry>
+                <entry>
+                  <para>
+                    <emphasis role="bold">Exploitation Mode</emphasis>
+                  </para>
+                </entry>
+              </row>
+            </thead>
+            <tbody valign="middle">
+              <row>
+                <entry>
+                  <para>Client Architecture Support<?linebreak?>
+                    Option Vector 5 Byte 23 bits 0-1 undefined or 0b00</para>
+                  <para>
+                    <literal>/chosen</literal>
+                    <emphasis role="bold"><literal>&#8220;ibm,architecture-vec&#8221;</literal></emphasis> Byte 23 bits 0-1 undefined or 0b00<footnote xml:id="fn_cas_option_vec_p9">
+                      <para>See ibm,architecture vector 5, byte 23 in
+                        <xref linkend="LoPAR.DeviceTree" />
+                        for more details.
+                      </para>
+                    </footnote>
+                  </para>
+                </entry>
+                <entry>
+                  <para>Client Architecture Support<?linebreak?>
+                    Option Vector 5 Byte 23 bits 0-1 undefined or 0b00</para>
+                  <para>
+                    <literal>/chosen</literal>
+                    <emphasis role="bold"><literal>&#8220;ibm,architecture-vec&#8221;</literal></emphasis> Byte 23 bits 0-1 value 0b01<footnoteref linkend="fn_cas_option_vec_p9" />
+                  </para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>“ibm,get-xive”</para>
+                </entry>
+                <entry>
+                  <para>hcall() <xref linkend="sec_int_get_source_config" xrefstyle="select: title nopage" /></para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>“ibm,set-xive”</para>
+                </entry>
+                <entry>
+                  <para>hcall() <xref linkend="sec_int_set_source_config" xrefstyle="select: title nopage" /><?linebreak?>
+                    hcall() <xref linkend="sec_int_set_queue_config" xrefstyle="select: title nopage" /></para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>“ibm,int-off”</para>
+                </entry>
+                <entry>
+                  <para>CI load double to @ESB + 0xD00<footnote xml:id="fn_xive_spec">
+                    <para>See XIVE specification for details on the CI operations.</para></footnote>
+                  </para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>“ibm,int-on”</para>
+                </entry>
+                <entry>
+                  <para>CI load double to @ESB + 0xC00<footnoteref linkend="fn_xive_spec" /></para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>“set-indicator” with indicator 9005</para>
+                </entry>
+                <entry>
+                  <para>Same</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>“get-sensor-state” with indicator 9005</para>
+                </entry>
+                <entry>
+                  <para>Same</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>H_EOI</para>
+                </entry>
+                <entry>
+                  <para>CI load double to @ESB + 0xC00 if store EOI is not
+                    enabled<footnoteref linkend="fn_xive_spec" /><?linebreak?>
+                  CI store double to @ESB + 0x400 if store EOI is
+                  enabled<footnoteref linkend="fn_xive_spec" /><?linebreak?>
+                  CI store byte to @TIMA + 0x11 of pre-interrupt
+                  CPPR<footnoteref linkend="fn_xive_spec" />
+                </para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>H_CPPR</para>
+                </entry>
+                <entry>
+                  <para>CI store byte to @TIMA + 0x11 of new CPPR<footnoteref linkend="fn_xive_spec" /></para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>H_IPI</para>
+                </entry>
+                <entry>
+                  <para>CI store byte to @ESB + 0x00<footnoteref linkend="fn_xive_spec" /></para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para> H_IPOLL </para>
+                </entry>
+                <entry>
+                  <para>CI load byte from @TIMA + 0x10<footnoteref linkend="fn_xive_spec" /></para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>H_XIRR</para>
+                </entry>
+                <entry>
+                  <para>CI load half word from @TIMA + 0x810<footnoteref linkend="fn_xive_spec" /></para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>H_XIRR-X</para>
+                </entry>
+                <entry>
+                  <para>Deprecated</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>H_VIO_SIGNAL</para>
+                </entry>
+                <entry>
+                  <para>Same<footnote xml:id="fn_race_condition">
+                    <para>The following are clarified in the hcall definition:</para>
+                    <orderedlist spacing="compact">
+                      <listitem>
+                        <para>A race between a VIO virtual adapter generating a new
+                          interrupt and a H_VIO_SIGNAL() or H_VIOCTL() hcall
+                          could have multiple outcomes. H_VIO_SIGNAL()/H_VIOCTL()
+                          wins and the interrupt does not occur, or the new interrupt
+                          wins and one device interrupt occurs after H_VIO_SIGNAL()/H_VIOCTL()
+                          call returns.</para>
+                      </listitem>
+                      <listitem>
+                        <para>Interrupting events that occur while H_VIO_SIGNAL()/H_VIOCTL()
+                          has disabled interrupts will never generate an interrupt.</para>
+                      </listitem>
+                    </orderedlist></footnote>
+                  </para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>H_VIOCTL with sub functions:<?linebreak?>
+                    DISABLE_ALL_VIO_INTERRUPTS<?linebreak?>
+                    DISABLE_VIO_INTERRUPT<?linebreak?>
+                    ENABLE_VIO_INTERRUPT</para>
+                </entry>
+                <entry>
+                  <para>Same<footnoteref linkend="fn_race_condition" /></para>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+
+        <table frame="all" pgwide="1" xml:id="table_hypervisor_call_functions_unique_to_xive_exploitation">
+          <?dbhtml table-width="80%" ?><?dbfo table-width="80%" ?>
+          <title>Hypervisor Call Functions Unique to XIVE Exploitation</title>
+          <tgroup cols="2">
+            <colspec colname="c1" colwidth="60*"/>
+            <colspec colname="c2" colwidth="40*"/>
+            <thead valign="middle">
+              <row>
+                <entry align="center" >
+                  <para>
+                    <emphasis role="bold">Function Description</emphasis>
+                  </para>
+                </entry>
+                <entry align="center" >
+                  <para>
+                    <emphasis role="bold">HCALL</emphasis>
+                  </para>
+                </entry>
+              </row>
+            </thead>
+            <tbody valign="middle">
+              <row>
+                <entry>
+                  <para>Get the ESB addresses for a LISN</para>
+                </entry>
+                <entry>
+                  <para><xref linkend="sec_int_get_source_info" xrefstyle="select: title nopage" /></para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>Assign a target and priority to a LISN</para>
+                </entry>
+                <entry>
+                  <para><xref linkend="sec_int_set_source_config" xrefstyle="select: title nopage" /></para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>Get the target and priority assigned to a LISN</para>
+                </entry>
+                <entry>
+                  <para><xref linkend="sec_int_get_source_config" xrefstyle="select: title nopage" /></para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>Get the notification management page for a LISN</para>
+                </entry>
+                <entry>
+                  <para><xref linkend="sec_int_get_queue_info" xrefstyle="select: title nopage" /></para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>Set/Reset an EQ for a target and priority</para>
+                </entry>
+                <entry>
+                  <para><xref linkend="sec_int_set_queue_config" xrefstyle="select: title nopage" /></para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>Get the EQ set for a target and priority</para>
+                </entry>
+                <entry>
+                  <para><xref linkend="sec_int_get_queue_config" xrefstyle="select: title nopage" /></para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>Set the OS reporting cache line pair for a target</para>
+                </entry>
+                <entry>
+                  <para><xref linkend="sec_int_set_os_reporting_line" xrefstyle="select: title nopage" /></para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>Get the OS reporting cache line pair for a target </para>
+                </entry>
+                <entry>
+                  <para><xref linkend="sec_int_get_os_reporting_line" xrefstyle="select: title nopage" /></para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>Load or store operation on the ESB page for a LISN</para>
+                </entry>
+                <entry>
+                  <para><xref linkend="sec_int_esb" xrefstyle="select: title nopage" /></para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>Issue the requested sync</para>
+                </entry>
+                <entry>
+                  <para><xref linkend="sec_int_sync" xrefstyle="select: title nopage" /></para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>Reset interrupt state to the initial state</para>
+                </entry>
+                <entry>
+                  <para><xref linkend="sec_int_reset" xrefstyle="select: title nopage" /></para>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+
         <para>Injudicious values written to the interrupt source controller may
         affect innocent partitions. The following hcall()s monitor the
         architected functions.</para>
@@ -10139,6 +10769,1411 @@ hcall ( const uint64 H_XIRR-X,/* Accept an interrupt returning the external  */
               <listitem>
                 <para>If the partition is not in XIVE legacy mode, the Hypervisor returns
                 H_Function.</para>
+              </listitem>
+            </itemizedlist>
+          </simplesect>
+        </section>
+
+        <section xml:id="sec_int_get_source_info">
+          <title>H_INT_GET_SOURCE_INFO</title>
+
+          <para>The H_INT_GET_SOURCE_INFO hcall() is used to obtain the logical real
+            address of the MMIO page through which the Event State Buffer entry
+            associated with the value of the “lisn” parameter is managed.
+            The initial state of the ESB PQ bits will be the architected off value
+            of 0b01. The “lisn” parameter can come from several different properties
+            or hcalls. For example, the “lisn” parameter value for I/O adapters is
+            passed to a partition through the
+            <emphasis role="bold"><literal>&#8220;interrupts&#8221;</literal></emphasis> and
+            <emphasis role="bold"><literal>&#8220;interrupt-map&#8221;</literal></emphasis> properties
+            in the device tree node describing the I/O adapter. Alternatively, for
+            inter processor interrupts, the “lisn” parameter is a value the OS chooses
+            from a range of LISNs from the
+            <emphasis role="bold"><literal>&#8220;ibm,xive-lisn-ranges&#8221;</literal></emphasis> property.
+            While for platform accelerators, the “lisn” parameter is a value returned
+            by the allocating hcall(), H_ALLOCATE_VAS_WINDOW. Depending upon the specific
+            Logical Interrupt Source, there might be either one or two page addresses
+            assigned to the Logical Interrupt Source as indicated by the returned values
+            of this hcall(). The hcall() returns four values in addition to the return code.
+            The first value is the logical real address of the full function page address,
+            which allows both trigger and reset functions. The second value is either the
+            logical real address of the trigger only page, or the reserved value -1 (all ones).
+            The value of -1 indicates that the Event Source Buffer does not have a trigger only page.
+            <footnote>
+              <para>See the XIVE specification for more details on the full function
+                page versus the trigger only page.</para></footnote>
+          </para>
+
+          <simplesect>
+            <title>Syntax:</title>
+            <programlisting><![CDATA[int64                  /* H_Success:    Expected Return code */
+                       /* H_Function:   The calling OS is not in exploitation mode */
+                       /* H_Busy:       Call again to complete the function */
+                       /* H LongBusyOrder*: Wait the indicated time and call again */
+                       /* H_Hardware:   A hardware fault occurred which prevented */
+                       /*               successful completion */
+                       /* H_State:      H_INT_RESET is in progress */
+                       /* H_Parameter:  A reserved flag is on */
+                       /* H_P2:         The “lisn” parameter was invalid for the */
+                       /*               calling partition */
+hcall ( const uint64 H_INT_GET_SOURCE_INFO, /* Returns the logical real address of */
+                                            /* the Event State Buffer */
+        uint64 flags,
+        uint64 lisn );                      /* associated with “lisn” */]]></programlisting>
+          </simplesect>
+
+          <simplesect>
+            <title>Parameters:</title>
+
+            <itemizedlist>
+              <listitem>
+                <para>flags: bits 0-63 reserved</para>
+              </listitem>
+
+              <listitem>
+                <para>“lisn” is per
+                  <emphasis role="bold"><literal>&#8220;interrupts&#8221;</literal></emphasis>,
+                  <emphasis role="bold"><literal>&#8220;interrupt-map&#8221;</literal></emphasis>, or
+                  <emphasis role="bold"><literal>&#8220;ibm,xive-lisn-ranges&#8221;</literal></emphasis> properties,
+                  or as returned by the
+                  <emphasis>ibm,query-interrupt-source-number</emphasis>
+                  RTAS call, or as returned by the H_ALLOCATE_VAS_WINDOW hcall</para>
+              </listitem>
+            </itemizedlist>
+          </simplesect>
+
+          <simplesect>
+            <title>Return Values:</title>
+
+            <itemizedlist>
+              <listitem>
+                <para>R4: “flags”:
+                  <itemizedlist>
+                    <listitem>
+                      <para>Bits 0-59: Reserved</para>
+                    </listitem>
+
+                    <listitem>
+                      <para>Bit 60: ESB hcall: ESB hcall==1, hcall() H_INT_ESB must be
+                        used for Event State Buffer management</para>
+                    </listitem>
+
+                    <listitem>
+                      <para>Bit 61: LSI: LSI==1, the interrupt associated with the
+                        “lisn” is a LSI (Level Sensitive Interrupt), LSI==0, the
+                        interrupt associated with the “lisn” is a MSI (Message Signaled Interrupt)</para>
+                    </listitem>
+
+                    <listitem>
+                      <para>Bit 62: Trigger: Trigger==1, the full function page supports trigger</para>
+                    </listitem>
+
+                    <listitem>
+                      <para>Bit 63: Store EOI Supported</para>
+                    </listitem>
+                  </itemizedlist>
+                </para>
+              </listitem>
+
+              <listitem>
+                <para>R5: Logical Real address of full function Event State Buffer
+                  management page, -1 if ESB hcall flag is set to 1.</para>
+              </listitem>
+
+              <listitem>
+                <para>R6: Logical Real Address of trigger only Event State Buffer
+                  management page or -1 if ESB hcall flag is set to 1.</para>
+              </listitem>
+
+              <listitem>
+                <para>R7: Power of 2 page size for the ESB management pages returned
+                  in R5 and R6. For example, a 4K page size is represented by the value
+                  of 12 (4K = 2<superscript>12</superscript>). There is a minimum page size of 4K.</para>
+              </listitem>
+            </itemizedlist>
+          </simplesect>
+
+          <simplesect>
+            <title>Semantics:</title>
+
+            <itemizedlist>
+              <listitem>
+                <para>Verify that no reserved flag bits are on else return H_Parameter.</para>
+              </listitem>
+
+              <listitem>
+                <para>Verify that a H_INT_RESET is not in progress else return H_State.</para>
+              </listitem>
+
+              <listitem>
+                <para>Validate the “lisn” parameter per the list of interrupt sources
+                  allocated to the calling partition else return H_P2.</para>
+              </listitem>
+
+              <listitem>
+                <para>Load R4 with the return flags, setting the reserved bits to 0.</para>
+              </listitem>
+
+              <listitem>
+                <para>Load R5 with the logical real address of the full function Event
+                  State Buffer management page.</para>
+              </listitem>
+
+              <listitem>
+                <para>If the associated Event State Buffer has two management pages
+                  defined load the logical real address of the trigger only page into
+                  R6 else load R6 with -1.</para>
+              </listitem>
+
+              <listitem>
+                <para>Load R7 with the power of 2 page size of the ESB management pages.</para>
+              </listitem>
+
+              <listitem>
+                <para>Return H_Success.</para>
+              </listitem>
+            </itemizedlist>
+          </simplesect>
+        </section>
+
+        <section xml:id="sec_int_set_source_config">
+          <title>H_INT_SET_SOURCE_CONFIG</title>
+
+          <para>The H_INT_SET_SOURCE_CONFIG hcall() is used to assign a Logical Interrupt
+            Source to a target. The Logical In- terrupt Source is designated with the
+            “lisn” parameter and the target is designated with the “target” and
+            “priority” parameters. Upon return from the hcall(), no additional interrupts
+            will be directed to the old EQ. The old EQ should be investigated for
+            nterrupts that occurred prior to or during the hcall().</para>
+
+          <simplesect>
+            <title>Syntax:</title>
+            <programlisting><![CDATA[int64                  /* H_Success:    Expected Return code */
+                       /* H_Function:   The calling OS is not in exploitation mode */
+                       /* H_Busy:       Call again to complete the function */
+                       /* H LongBusyOrder*: Wait the indicated time and call again */
+                       /* H_Hardware:   A hardware fault occurred which prevented */
+                       /*               successful completion */
+                       /* H_State:      H_INT_RESET is in progress */
+                       /* H_Parameter:  A reserved flag is on */
+                       /* H_P2:         The “lisn” parameter was invalid for the */
+                       /*               calling partition */
+                       /* H_P3:         The “target” parameter was invalid for the */
+                       /*               calling partition */
+                       /* H_P4:         The “priority” parameter was invalid */
+hcall ( const uint64 H_INT_SET_SOURCE_CONFIG, /* Assigns */
+        uint64 flags,
+        uint64 lisn,                          /* source "lisn" */
+        uint64 target,                        /* to the target */
+        uint64 priority,                      /* and “priority” combination, */
+        uint eisn );                          /* setting its associated "eisn" */]]></programlisting>
+          </simplesect>
+
+          <simplesect>
+            <title>Parameters:</title>
+
+            <itemizedlist>
+              <listitem>
+                <para> “flags”
+                  <itemizedlist>
+                    <listitem>
+                      <para>Bits 0-61: Reserved</para>
+                    </listitem>
+
+                    <listitem>
+                      <para>Bit 62: setEisn: setEisn==1, set the “eisn” in the EA</para>
+                    </listitem>
+
+                    <listitem>
+                      <para>Bit63: M: m==1 masks the interrupt source in the hardware
+                        interrupt control structure.<footnote>
+                          <para>As defined in Section 3.7 "Processing an EAS" in
+                            the XIVE Specification.</para></footnote>
+                        An interrupt masked by this mechanism will be dropped, but
+                        it's source state bits will still be set. There is no race-free
+                        way of unmasking and restoring the source. Thus this should only
+                        be used in interrupts that are also masked at the source, and
+                        only in cases where the interrupt is not meant to be used for
+                        a large amount of time be- cause no valid target exists for it
+                        for example
+                      </para>
+                    </listitem>
+                  </itemizedlist>
+                </para>
+              </listitem>
+
+              <listitem>
+                <para>“lisn” is per
+                  <emphasis role="bold"><literal>&#8220;interrupts&#8221;</literal></emphasis>,
+                  <emphasis role="bold"><literal>&#8220;interrupt-map&#8221;</literal></emphasis>, or
+                  <emphasis role="bold"><literal>&#8220;ibm,xive-lisn-ranges&#8221;</literal></emphasis> properties,
+                  or as returned by the
+                  <emphasis>ibm,query-interrupt-source-number</emphasis> RTAS call, or
+                  as returned by the H_ALLOCATE_VAS_WINDOW hcall</para>
+              </listitem>
+
+              <listitem>
+                <para>“target” is per
+                  <emphasis role="bold"><literal>&#8220;ibm,ppc-interrupt-server#s&#8221;</literal></emphasis> or
+                  <emphasis role="bold"><literal>&#8220;ibm,ppc-interrupt-gserver#s&#8221;</literal></emphasis></para>
+              </listitem>
+
+              <listitem>
+                <para>“priority” is a valid priority not in
+                  <emphasis role="bold"><literal>&#8220;ibm,plat-res-int-priorities&#8221;</literal></emphasis></para>
+              </listitem>
+
+              <listitem>
+                <para>“eisn” is the guest EISN associated with the “lisn”</para>
+              </listitem>
+            </itemizedlist>
+          </simplesect>
+
+          <simplesect>
+            <title>Return Values:</title>
+
+            <para>None</para>
+          </simplesect>
+
+          <simplesect>
+            <title>Semantics:</title>
+
+            <itemizedlist>
+              <listitem>
+                <para>Verify that no reserved flag bits are on else return H_Parameter.</para>
+              </listitem>
+
+              <listitem>
+                <para>Verify that a H_INT_RESET is not in progress else return H_State.</para>
+              </listitem>
+
+              <listitem>
+                <para>Validate the “lisn” parameter per the list of interrupt sources
+                  allocated to the calling partition else return H_P2.</para>
+              </listitem>
+
+              <listitem>
+                <para>If “priority” is not 0xFF
+                  <itemizedlist>
+                    <listitem>
+                      <para>Validate the “target” parameter per the list of threads
+                        allocated to the calling partition else return H_P3.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para>If the partition thread count is greater than the hardware
+                        thread count, validate the “target” has a corresponding hardware
+                        thread else return H_Not_Available.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para>Validate the “priority” parameter is a valid priority
+                        and not in listed in the
+                        <emphasis role="bold"><literal>&#8220;ibm,plat-res-int-priorities&#8221;</literal></emphasis>
+                        property else return H_P4.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para>Fill the Event Assignment Structure associated with “lisn” with:
+                        <itemizedlist>
+                          <listitem>
+                            <para>Block and Event Notification Descriptor Table Index
+                              associated with “target”/”priority” pair.</para>
+                          </listitem>
+
+                          <listitem>
+                            <para>Set the “M” bit to the value of the flags “M” bit.</para>
+                          </listitem>
+
+                          <listitem>
+                            <para>If setEisn==1, store “eisn”.</para>
+                          </listitem>
+
+                          <listitem>
+                            <para>Issue syncs required to ensure all in-flight
+                              interrupts are complete.</para>
+                          </listitem>
+                        </itemizedlist>
+                      </para>
+                    </listitem>
+                  </itemizedlist>
+                </para>
+              </listitem>
+
+              <listitem>
+                <para>Else
+                  <itemizedlist>
+                    <listitem>
+                      <para>Reset the Event Assignment Structure associated with “lisn” by:
+                        <itemizedlist>
+                          <listitem>
+                            <para>Issue syncs required to ensure all in-flight interrupts
+                              are complete</para>
+                          </listitem>
+
+                          <listitem>
+                            <para>Invalidating the Block and End Notification Descriptor
+                              Table Index</para>
+                          </listitem>
+
+                          <listitem>
+                            <para>Resetting the eisn</para>
+                          </listitem>
+                        </itemizedlist>
+                      </para>
+                    </listitem>
+                  </itemizedlist>
+                </para>
+              </listitem>
+
+              <listitem>
+                <para>Return H_Success.</para>
+              </listitem>
+            </itemizedlist>
+          </simplesect>
+        </section>
+
+        <section xml:id="sec_int_get_source_config">
+          <title>H_INT_GET_SOURCE_CONFIG</title>
+
+          <para>The H_INT_GET_SOURCE_CONFIG hcall() is used to determine to which
+            target/priority pair is assigned to the specified Logical Interrupt Source.</para>
+
+          <simplesect>
+            <title>Syntax:</title>
+            <programlisting><![CDATA[
+int64                  /* H_Success:    Expected Return code */
+                       /* H_Function:   The calling OS is not in exploitation mode */
+                       /* H_Busy:       Call again to complete the function */
+                       /* H LongBusyOrder*: Wait the indicated time and call again */
+                       /* H_Hardware:   A hardware fault occurred which prevented */
+                       /*               successful completion */
+                       /* H_State:      H_INT_RESET is in progress */
+                       /* H_Parameter:  A reserved flag is on */
+                       /* H_P2:         The “lisn” parameter was invalid for the */
+                       /*               calling partition */
+hcall ( const uint64 H_INT_GET_SOURCE_CONFIG, /* Returns the target and priority */
+        uint64 flags,                         /* to which the */
+        uint64 lisn );                        /* "lisn" is assigned */]]></programlisting>
+          </simplesect>
+
+          <simplesect>
+            <title>Parameters:</title>
+
+            <itemizedlist>
+              <listitem>
+                <para>“flags”: bits 0-63 Reserved</para>
+              </listitem>
+
+              <listitem>
+                <para> “lisn” is per
+                  <emphasis role="bold"><literal>&#8220;interrupts&#8221;</literal></emphasis>,
+                  <emphasis role="bold"><literal>&#8220;interrupt-map&#8221;</literal></emphasis>, or
+                  <emphasis role="bold"><literal>&#8220;ibm,xive-lisn-ranges&#8221;</literal></emphasis> properties,
+                  or as returned by the
+                  <emphasis>ibm,query-interrupt-source-number</emphasis> RTAS call, or as returned by the
+                  H_ALLOCATE_VAS_WINDOW hcall</para>
+              </listitem>
+            </itemizedlist>
+          </simplesect>
+
+          <simplesect>
+            <title>Return Values:</title>
+
+            <itemizedlist>
+              <listitem>
+                <para>R4: Target to which the specified Logical Interrupt Source is
+                  assigned, else this is undefined.</para>
+              </listitem>
+
+              <listitem>
+                <para>R5: Priority to which the specified Logical Interrupt Source is
+                  assigned, else this is set to 0xFF (disabled).</para>
+              </listitem>
+
+              <listitem>
+                <para>R6: EISN for the specified Logical Interrupt Source (this will
+                  be equivalent to the LISN if not changed by H_INT_SET_SOURCE_CONFIG).</para>
+              </listitem>
+            </itemizedlist>
+          </simplesect>
+
+          <simplesect>
+            <title>Semantics:</title>
+
+            <itemizedlist>
+              <listitem>
+                <para>Verify that no reserved flag bits are on else return H_Parameter.</para>
+              </listitem>
+
+              <listitem>
+                <para>Verify that a H_INT_RESET is not in progress else return H_State.</para>
+              </listitem>
+
+              <listitem>
+                <para>Validate the “lisn” parameter per the list of interrupt sources
+                  allocated to the calling partition else return H_P2.</para>
+              </listitem>
+
+              <listitem>
+                <para>Load R4 with the target associated with the “lisn” parameter.</para>
+              </listitem>
+
+              <listitem>
+                <para>Load R5 with the priority associated with the “lisn” parameter.</para>
+              </listitem>
+
+              <listitem>
+                <para>Load R6 with the EISN associated with the “lisn” parameter.</para>
+              </listitem>
+
+              <listitem>
+                <para>Return H_Success.</para>
+              </listitem>
+            </itemizedlist>
+          </simplesect>
+        </section>
+
+        <section xml:id="sec_int_get_queue_info">
+          <title>H_INT_GET_QUEUE_INFO</title>
+
+          <para>The H_INT_GET_QUEUE_INFO hcall() is used to get the logical real
+            address of the notification management page7 associated with the
+            specified target and priority.
+          </para>
+
+          <simplesect>
+            <title>Syntax:</title>
+            <programlisting><![CDATA[int64                  /* H_Success:    Expected Return code */
+                       /* H_Function:   The calling OS is not in exploitation mode */
+                       /* H_Busy:       Call again to complete the function */
+                       /* H LongBusyOrder*: Wait the indicated time and call again */
+                       /* H_Hardware:   A hardware fault occurred which prevented */
+                       /*               successful completion */
+                       /* H_State:      H_INT_RESET is in progress */
+                       /* H_Parameter:  A reserved flag is on */
+                       /* H_P2:         The “lisn” parameter was invalid for the */
+                       /*               calling partition */
+                       /* H_P3:         The "priority" parameter was invalid  */
+hcall ( const uint64 H_INT_GET_QUEUE_INFO,/* Returns the logical real address of the */
+        uint64 flags,                     /* notification management page associated */
+        uint64 target,                    /* the "target" */
+        uint64 priority );                /* and “priority” combination. */]]></programlisting>
+          </simplesect>
+
+          <simplesect>
+            <title>Parameters:</title>
+
+            <itemizedlist>
+              <listitem>
+                <para>“flags”: bits 0-63 Reserved</para>
+              </listitem>
+
+              <listitem>
+                <para>“target” is per
+                  <emphasis role="bold"><literal>&#8220;ibm,ppc-interrupt-server#s&#8221;</literal></emphasis> or
+                  <emphasis role="bold"><literal>&#8220;ibm,ppc-interrupt-gserver#s&#8221;</literal></emphasis></para>
+              </listitem>
+
+              <listitem>
+                <para>“priority” is valid priority not in the
+                  <emphasis role="bold"><literal>&#8220;ibm,plat-res-int-priorities&#8221;</literal></emphasis></para>
+              </listitem>
+            </itemizedlist>
+          </simplesect>
+
+          <simplesect>
+            <title>Return Values:</title>
+
+            <itemizedlist>
+              <listitem>
+                <para>R4: Logical real address of notification page</para>
+              </listitem>
+
+              <listitem>
+                <para>R5: Power of 2 page size of the notification page</para>
+              </listitem>
+            </itemizedlist>
+          </simplesect>
+
+          <simplesect>
+            <title>Semantics:</title>
+
+            <itemizedlist>
+              <listitem>
+                <para>Verify that no reserved flag bits are on else return H_Parameter.</para>
+              </listitem>
+
+              <listitem>
+                <para>Verify that a H_INT_RESET is not in progress else return H_State.</para>
+              </listitem>
+
+              <listitem>
+                <para>Validate the “target” parameter per the list of threads allocated
+                  to the calling partition else return H_P2.</para>
+              </listitem>
+
+              <listitem>
+                <para>If the partition thread count is greater than the hardware thread
+                  count, validate the “target” has a corresponding hardware thread else
+                  return H_Not_Available.</para>
+              </listitem>
+
+              <listitem>
+                <para>Validate the “priority” parameter is a valid priority and not in
+                  listed in the
+                  <emphasis role="bold"><literal>&#8220;ibm,plat-res-int-priorities&#8221;</literal></emphasis>
+                  property else return H_P3.</para>
+              </listitem>
+
+              <listitem>
+                <para>Load R4 with the ESn page from the Event Notification Descriptor
+                  Table associated with “target” and “priority”.</para>
+              </listitem>
+
+              <listitem>
+                <para>Load R5 with the page size of the ESn page.</para>
+              </listitem>
+
+              <listitem>
+                <para>Return H_Success.</para>
+              </listitem>
+            </itemizedlist>
+          </simplesect>
+        </section>
+
+        <section xml:id="sec_int_set_queue_config">
+          <title>H_INT_SET_QUEUE_CONFIG</title>
+
+          <para>The H_INT_SET_QUEUE_CONFIG hcall() is used to set or reset an EQ for a
+            given “target” and “priority”. It is also used to set the notification
+            config associated with the EQ. An EQ size of 0 is used to reset the EQ
+            config for a given target and priority. If resetting the EQ config, the
+            END associated with the given “target” and “priority” will be changed to
+            disable queuing.</para>
+
+          <para>Upon return from the hcall(), no additional interrupts will be directed
+            to the old EQ (if one was set). The old EQ (if one was set) should be
+            investigated for interrupts that occurred prior to or during the hcall().</para>
+
+          <simplesect>
+            <title>Syntax:</title>
+            <programlisting><![CDATA[int64                  /* H_Success:    Expected Return code */
+                       /* H_Function:   The calling OS is not in exploitation mode */
+                       /* H_Busy:       Call again to complete the function */
+                       /* H LongBusyOrder*: Wait the indicated time and call again */
+                       /* H_Hardware:   A hardware fault occurred which prevented */
+                       /*               successful completion */
+                       /* H_State:      H_INT_RESET is in progress */
+                       /* H_Parameter:  A reserved flag is on */
+                       /* H_P2:         The “lisn” parameter was invalid for the */
+                       /*               calling partition */
+                       /* H_P3:         The "priority" parameter was invalid  */
+hcall ( const uint64 H_INT_SET_QUEUE_CONFIG,/* Sets the Event Notification Descriptor
+                                            /* parameters */
+        uint64 flags,                       /* Per the flag request */
+        uint64 target,                      /* and the specified “priority” */
+        uint64 priority,                    /* and “priority” combination. */
+        uint64 eventQueue,                  /* to a new EQ */
+        uint64 eventQueueSize );            /* and power of 2 EQ size per */
+                                            /* “ibm,xive-eq-sizes” */]]></programlisting>
+          </simplesect>
+
+          <simplesect>
+            <title>Parameters:</title>
+
+            <itemizedlist>
+              <listitem>
+                <para>“flags”:
+                  <itemizedlist>
+                    <listitem>
+                      <para>Bits 0-62: Reserved</para>
+                    </listitem>
+
+                    <listitem>
+                      <para>Bit 63: Unconditional Notify (n) per the XIVE spec</para>
+                    </listitem>
+                  </itemizedlist>
+                </para>
+              </listitem>
+
+              <listitem>
+                <para>“target”: is per
+                  <emphasis role="bold"><literal>&#8220;ibm,ppc-interrupt-server#s&#8221;</literal></emphasis> or
+                  <emphasis role="bold"><literal>&#8220;ibm,ppc-interrupt-gserver#s&#8221;</literal></emphasis></para>
+              </listitem>
+
+              <listitem>
+                <para>“priority”: is valid priority not in the
+                  <emphasis role="bold"><literal>&#8220;ibm,plat-res-int-priorities&#8221;</literal></emphasis></para>
+              </listitem>
+
+              <listitem>
+                <para>“eventQueue”: The logical real address of the start of the EQ</para>
+              </listitem>
+
+              <listitem>
+                <para>“eventQueueSize”: The power of 2 EQ size per
+                  <emphasis role="bold"><literal>&#8220;ibm,xive-eq-sizes&#8221;</literal></emphasis></para>
+              </listitem>
+            </itemizedlist>
+          </simplesect>
+
+          <simplesect>
+            <title>Return Values:</title>
+
+            <para>None</para>
+          </simplesect>
+
+          <simplesect>
+            <title>Semantics:</title>
+
+            <itemizedlist>
+              <listitem>
+                <para>Verify that no reserved flag bits are on else return H_Parameter.</para>
+              </listitem>
+
+              <listitem>
+                <para>Verify that a H_INT_RESET is not in progress else return H_State.</para>
+              </listitem>
+
+              <listitem>
+                <para>Validate the “target” parameter per the list of threads allocated
+                  the calling partition else return H_P2.</para>
+              </listitem>
+
+              <listitem>
+                <para>If the partition thread count is greater than the hardware thread
+                  count, validate the “target” has a corresponding hardware thread else
+                  return H_Not_Available.</para>
+              </listitem>
+
+              <listitem>
+                <para>Validate the “priority” parameter is a valid priority and not in listed in the
+                  <emphasis role="bold"><literal>&#8220;ibm,plat-res-int-priorities&#8221;</literal></emphasis>
+                  property else return H_P3.</para>
+              </listitem>
+
+              <listitem>
+                <para>Validate the “eventQueueSize” parameter per
+                  <emphasis role="bold"><literal>&#8220;ibm,xive-eq-sizes&#8221;</literal></emphasis>,
+                  else return H_P5.</para>
+              </listitem>
+
+              <listitem>
+                <para>Validate that if “eventQueueSize” is not 0 then the calling partition owns the logical real address in “eventQueue” for the length of “eventQueueSize” else return H_P4.</para>
+              </listitem>
+
+              <listitem>
+                <para>If “Unconditional Notify” = 0 notification is conditioned by the
+                  notification page from H_INT_GET_QUEUE_INFO.</para>
+              </listitem>
+
+              <listitem>
+                <para>If the “eventQueueSize” is not 0 then:
+                  <itemizedlist>
+                    <listitem>
+                      <para>The memory pointed to by “eventQueue” must be zeroed by the OS.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para>The generation bit for the EQ will start at 1.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para>The EQ page offset counter will start at 0.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para>The EQ config will be set to “eventQueue” and “eventQueueSize”.</para>
+                    </listitem>
+                  </itemizedlist>
+                </para>
+              </listitem>
+
+              <listitem>
+                <para>If the “eventQueueSize” is 0 then:
+                  <itemizedlist>
+                    <listitem>
+                      <para>The EQ config will be reset.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para>Queuing of interrupts will be disabled.</para>
+                    </listitem>
+                  </itemizedlist>
+                </para>
+              </listitem>
+
+              <listitem>
+                <para>Issue syncs required to ensure all in-flight interrupts are complete.</para>
+              </listitem>
+
+              <listitem>
+                <para>Return H_Success.</para>
+              </listitem>
+            </itemizedlist>
+          </simplesect>
+        </section>
+
+        <section xml:id="sec_int_get_queue_config">
+          <title>H_INT_GET_QUEUE_CONFIG</title>
+
+          <para>The H_INT_GET_QUEUE_CONFIG hcall() is used to get an EQ and the EQ size
+            for a given target and priority. If requested via the “Debug” flag,
+            this will also return the current generation value and event queue offset.
+          </para>
+          <simplesect>
+            <title>Syntax:</title>
+            <programlisting><![CDATA[int64                  /* H_Success:    Expected Return code */
+                       /* H_Function:   The calling OS is not in exploitation mode */
+                       /* H_Busy:       Call again to complete the function */
+                       /* H LongBusyOrder*: Wait the indicated time and call again */
+                       /* H_Hardware:   A hardware fault occurred which prevented */
+                       /*               successful completion */
+                       /* H Not Available: Not enough resources available */
+                       /* H_State:      H_INT_RESET is in progress */
+                       /* H_Parameter:  A reserved flag is on */
+                       /* H_P2:         The "target" parameter was invalid for the */
+                       /*               calling partition */
+                       /* H_P3:         The "priority" parameter was invalid  */
+hcall ( const uint64 H_INT_GET_QUEUE_CONFIG,  /* Returns the EQ config */
+        uint64 flags,                         /* information for the  */
+        uint64 target,                        /* specified "target" */
+        uint64 priority );                    /* and “priority” combination. */]]></programlisting>
+          </simplesect>
+
+          <simplesect>
+            <title>Parameters:</title>
+
+            <itemizedlist>
+              <listitem>
+                <para>"flags":
+                  <itemizedlist>
+                    <listitem>
+                      <para>Bits 0-62: Reserved</para>
+                    </listitem>
+
+                    <listitem>
+                      <para>Bit 63: Debug: Return debug data</para>
+                    </listitem>
+                  </itemizedlist>
+                </para>
+              </listitem>
+
+              <listitem>
+                <para>“target”: is per
+                  <emphasis role="bold"><literal>&#8220;ibm,ppc-interrupt-server#s&#8221;</literal></emphasis> or
+                  <emphasis role="bold"><literal>&#8220;ibm,ppc-interrupt-gserver#s&#8221;</literal></emphasis></para>
+              </listitem>
+
+              <listitem>
+                <para>“priority”: is valid priority not in the
+                  <emphasis role="bold"><literal>&#8220;ibm,plat-res-int-priorities&#8221;</literal></emphasis></para>
+              </listitem>
+            </itemizedlist>
+          </simplesect>
+
+          <simplesect>
+            <title>Return Values:</title>
+
+            <itemizedlist>
+              <listitem>
+                <para>R4: “flags”:
+                  <itemizedlist>
+                    <listitem>
+                      <para>Bit 0-62: Reserved</para>
+                    </listitem>
+
+                    <listitem>
+                      <para>Bit 62: The value of Event Queue Generation Number (g) per
+                        the XIVE spec if “Debug” = 1</para>
+                    </listitem>
+
+                    <listitem>
+                      <para>Bit 63: The value of Unconditional Notify (n) per the XIVE spec</para>
+                    </listitem>
+                  </itemizedlist>
+                </para>
+              </listitem>
+
+              <listitem>
+                <para>R5: The logical real address of the start of the EQ</para>
+              </listitem>
+
+              <listitem>
+                <para>R6: The power of 2 EQ size per
+                  <emphasis role="bold"><literal>&#8220;ibm,xive-eq-sizes&#8221;</literal></emphasis></para>
+              </listitem>
+
+              <listitem>
+                <para>R7: The value of Event Queue Offset Counter per XIVE spec if
+                  “Debug” = 1, else 0</para>
+              </listitem>
+            </itemizedlist>
+          </simplesect>
+
+          <simplesect>
+            <title>Semantics:</title>
+
+            <itemizedlist>
+              <listitem>
+                <para>Verify that no reserved flag bits are on else return H_Parameter.</para>
+              </listitem>
+
+              <listitem>
+                <para>Verify that a H_INT_RESET is not in progress else return H_State.</para>
+              </listitem>
+
+              <listitem>
+                <para>Validate the “target” parameter per the list of threads
+                  allocated the calling partition else return H_P2.</para>
+              </listitem>
+
+              <listitem>
+                <para>If the partition thread count is greater than the hardware thread
+                  count, validate the “target” has a corresponding hardware thread
+                  else return H_Not_Available.</para>
+              </listitem>
+
+              <listitem>
+                <para>Validate the “priority” parameter is a valid priority and not in
+                  listed in the
+                  <emphasis role="bold"><literal>&#8220;ibm,plat-res-int-priorities&#8221;</literal></emphasis>
+                  property else return H_P3.</para>
+              </listitem>
+
+              <listitem>
+                <para>Load R4 with the return flags, setting the reserved bits to 0.</para>
+              </listitem>
+
+              <listitem>
+                <para>Load R5 with the logical real address of the EQ associated with
+                  “target” and “priority”. Set to -1 if no EQ has
+                been specified</para>
+              </listitem>
+
+              <listitem>
+                <para>Load R6 with the size of the EQ associated with the “target” and
+                  “priority”. Set to 0 if no EQ has been specified.</para>
+              </listitem>
+
+              <listitem>
+                <para>If “Debug” = 1
+                  <itemizedlist>
+                    <listitem>
+                      <para>Load the event queue generation number into the return flags</para>
+                    </listitem>
+
+                    <listitem>
+                      <para>Load R7 with the event queue offset counter</para>
+                    </listitem>
+
+                    <listitem>
+                      <para>Use the appropriate hardware facility to get an atomic
+                        view of the generation number and offset counter.</para>
+                    </listitem>
+                  </itemizedlist>
+                </para>
+              </listitem>
+
+              <listitem>
+                <para>Return H_Success.</para>
+              </listitem>
+            </itemizedlist>
+          </simplesect>
+        </section>
+
+        <section xml:id="sec_int_set_os_reporting_line">
+          <title>H_INT_SET_OS_REPORTING_LINE</title>
+
+          <para>The H_INT_SET_OS_REPORTING_LINE hcall() is used to set the reporting
+            cache line pair for the calling thread. The reporting cache lines will
+            contain the OS interrupt context when the OS issues a CI store byte to
+            @TIMA+0xC10 8 to acknowledge the OS interrupt. The reporting cache lines
+            can be reset by inputting -1 in “reportingLine”. Issuing the CI store byte
+            without reporting cache lines registered will result in the data not being
+            accessible to the OS.</para>
+
+          <simplesect>
+            <title>Syntax:</title>
+            <programlisting><![CDATA[int64                  /* H_Success:    Expected Return code */
+                       /* H_Busy:       Call again to complete the function */
+                       /* H LongBusyOrder*: Wait the indicated time and call again */
+                       /* H_Function:   The calling OS is not in exploitation mode */
+                       /* H_Hardware:   A hardware fault occurred which prevented */
+                       /*               successful completion */
+                       /* H Not Available: Not enough resources available */
+                       /* H_State:      H_INT_RESET is in progress */
+                       /* H_Parameter:  A reserved flag is on */
+                       /* H_P2:         The reporting cache line logical real */
+                       /*               address/length is not owned by the caller or */
+                       /*               is improperly aligned. */
+hcall ( const uint64 H_INT_SET_OS_REPORTING_LINE, /* For calling thread */
+        uint64 flags,                             /*   */
+        uint64 reportingLine );                   /* set the reporting line */]]></programlisting>
+          </simplesect>
+
+          <simplesect>
+            <title>Parameters:</title>
+
+            <itemizedlist>
+              <listitem>
+                <para>“flags”: bits 0-63 Reserved</para>
+              </listitem>
+
+              <listitem>
+                <para>“reportingLine”: The logical real address of the reporting cache line pair</para>
+              </listitem>
+            </itemizedlist>
+          </simplesect>
+
+          <simplesect>
+            <title>Return Values:</title>
+
+            <para>None</para>
+          </simplesect>
+
+          <simplesect>
+            <title>Semantics:</title>
+
+            <itemizedlist>
+              <listitem>
+                <para>Verify that no reserved flag bits are on else return H_Parameter.</para>
+              </listitem>
+
+              <listitem>
+                <para>Verify that a H_INT_RESET is not in progress else return H_State.</para>
+              </listitem>
+
+              <listitem>
+                <para>If the partition thread count is greater than the hardware thread count,
+                  validate the “target” has a corresponding hardware thread else return
+                  H_Not_Available.</para>
+              </listitem>
+
+              <listitem>
+                <para>If the “reportingLine” is not -1
+                  <itemizedlist>
+                    <listitem>
+                      <para>Validate the calling partition owns the logical real address
+                        in “reportingLine” for two cache lines else return H_P2.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para>Validate that the “reportingLine” is cached aligned, else
+                        return H_P2.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para>Set the “reportingLine” in the NVT associated with the input
+                        “target”.</para>
+                    </listitem>
+                  </itemizedlist>
+                </para>
+              </listitem>
+
+              <listitem>
+                <para>If the “reportingLine” is -1
+                  <itemizedlist>
+                    <listitem>
+                      <para>Reset the NVT’s reporting line.</para>
+                    </listitem>
+                  </itemizedlist>
+                </para>
+              </listitem>
+
+              <listitem>
+                <para>Return H_Success.</para>
+              </listitem>
+            </itemizedlist>
+          </simplesect>
+        </section>
+
+        <section xml:id="sec_int_get_os_reporting_line">
+          <title>H_INT_GET_OS_REPORTING_LINE</title>
+
+          <para>The H_INT_GET_OS_REPORTING_LINE hcall() is used to get the logical real
+            address of the reporting cache line pair set for the input “target”. If no
+            reporting cache line pair has been set, -1 is returned.</para>
+
+          <simplesect>
+            <title>Syntax:</title>
+            <programlisting><![CDATA[int64                  /* H_Success:    Expected Return code */
+                       /* H_Busy:       Call again to complete the function */
+                       /* H LongBusyOrder*: Wait the indicated time and call again */
+                       /* H_Function:   The calling OS is not in exploitation mode */
+                       /* H_Hardware:   A hardware fault occurred which prevented */
+                       /*               successful completion */
+                       /* H Not Available: Not enough resources available */
+                       /* H_State:      H_INT_RESET is in progress */
+                       /* H_Parameter:  A reserved flag is on */
+                       /* H_P2:         The “target” parameter was invalid for the */
+                       /*               calling partition */
+hcall ( const uint64 H_INT_GET_OS_REPORTING_LINE, /* For calling thread */
+        uint64 flags,                             /*   */
+        uint64 target );                          /* for the target */]]></programlisting>
+          </simplesect>
+
+          <simplesect>
+            <title>Parameters:</title>
+
+            <itemizedlist>
+              <listitem>
+                <para>“flags”: bits 0-63 Reserved</para>
+              </listitem>
+
+              <listitem>
+                <para>“target”: is per
+                  <emphasis role="bold"><literal>&#8220;ibm,ppc-interrupt-server#s&#8221;</literal></emphasis></para>
+              </listitem>
+            </itemizedlist>
+          </simplesect>
+
+          <simplesect>
+            <title>Return Values:</title>
+
+            <itemizedlist>
+              <listitem>
+                <para>R4: The logical real address of the reporting line if set, else -1</para>
+              </listitem>
+            </itemizedlist>
+          </simplesect>
+
+          <simplesect>
+            <title>Semantics:</title>
+
+            <itemizedlist>
+              <listitem>
+                <para>Verify that no reserved flag bits are on else return H_Parameter.</para>
+              </listitem>
+
+              <listitem>
+                <para>Verify that a H_INT_RESET is not in progress else return H_State.</para>
+              </listitem>
+
+              <listitem>
+                <para>Validate the “target” parameter per the list of threads allocated
+                  the calling partition else return H_P2.</para>
+              </listitem>
+
+              <listitem>
+                <para>Validate the thread indicated by “target” is online else
+                  return H_Not_Available.</para>
+              </listitem>
+
+              <listitem>
+                <para>If the partition thread count is greater than the hardware
+                  thread count, validate the “target” has a corresponding hardware
+                  thread else return H_Not_Available.</para>
+              </listitem>
+
+              <listitem>
+                <para>Load R4 with the logical real address of the reporting line
+                  associated with “target”. Load R4 with -1 if no reporting line has been set.</para>
+              </listitem>
+
+              <listitem>
+                <para>Return H_Success.</para>
+              </listitem>
+            </itemizedlist>
+          </simplesect>
+        </section>
+
+        <section xml:id="sec_int_esb">
+          <title>H_INT_ESB</title>
+
+          <para></para>
+
+          <simplesect>
+            <title>Syntax:</title>
+            <programlisting><![CDATA[int64                  /* H_Success:    Expected Return code */
+                       /* H_Busy:       Call again to complete the function */
+                       /* H LongBusyOrder*: Wait the indicated time and call again */
+                       /* H_Function:   The calling OS is not in exploitation mode */
+                       /* H_Hardware:   A hardware fault occurred which prevented */
+                       /*               successful completion */
+                       /* H_State:      H_INT_RESET is in progress */
+                       /* H_Parameter:  A reserved flag is on */
+                       /* H_P2:         The “lisn” parameter was invalid for the */
+                       /*               calling partition */
+                       /* H_P3:         The “esbOffset” parameter is invalid */
+hcall ( const uint64 H_INT_ESB, /* Issue the */
+        uint64 flags,           /* load or store  */
+        uint64 lisn,            /* for the lisn */
+        uint64 esbOffset,       /* at the esbOffset */
+        uint64 storeData );     /*  */]]></programlisting>
+          </simplesect>
+
+          <simplesect>
+            <title>Parameters:</title>
+
+            <itemizedlist>
+              <listitem>
+                <para>“flags”:
+                  <itemizedlist>
+                    <listitem>
+                      <para>bits 0-62: Reserved</para>
+                    </listitem>
+
+                    <listitem>
+                      <para>bit 63: Store: Store=1, store operation, else load operation</para>
+                    </listitem>
+                  </itemizedlist>
+                </para>
+              </listitem>
+
+              <listitem>
+                <para>“lisn” is per
+                  <emphasis role="bold"><literal>&#8220;interrupts&#8221;</literal></emphasis>,
+                  <emphasis role="bold"><literal>&#8220;interrupt-map&#8221;</literal></emphasis>, or
+                  <emphasis role="bold"><literal>&#8220;ibm,xive-lisn-ranges&#8221;</literal></emphasis> properties, or as returned by the
+                  <emphasis>ibm,query-interrupt-source-number</emphasis>
+                  RTAS call, or as returned by the H_ALLOCATE_VAS_WINDOW hcall</para>
+              </listitem>
+
+              <listitem>
+                <para>“esbOffset” is the offset into the ESB management page for the load or store operation</para>
+              </listitem>
+
+              <listitem>
+                <para>“storeData” is the data to write for a store operation</para>
+              </listitem>
+            </itemizedlist>
+          </simplesect>
+
+          <simplesect>
+            <title>Return Values:</title>
+
+            <itemizedlist>
+              <listitem>
+                <para>R4: The value of the load if load operation, else -1</para>
+              </listitem>
+            </itemizedlist>
+          </simplesect>
+
+          <simplesect>
+            <title>Semantics:</title>
+
+            <itemizedlist>
+              <listitem>
+                <para>Verify that no reserved flag bits are on else return H_Parameter.</para>
+              </listitem>
+
+              <listitem>
+                <para>Verify that a H_INT_RESET is not in progress else return H_State.</para>
+              </listitem>
+
+              <listitem>
+                <para>Validate the “lisn” parameter per the list of interrupt sources
+                  allocated to the calling partition else return H_P2.</para>
+              </listitem>
+
+              <listitem>
+                <para>Validate the “esbOffset” parameter is valid per the XIVE Spec
+                  else return H_P3.</para>
+              </listitem>
+
+              <listitem>
+                <para>If bit 63 of flags is 0
+                  <itemizedlist>
+                    <listitem>
+                      <para>Issue the load operation to the “esbOffset” of the ESB
+                        management page associated with “lisn”.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para>Load R4 with the results of the load operation.</para>
+                    </listitem>
+                  </itemizedlist>
+                </para>
+              </listitem>
+
+              <listitem>
+                <para>If bit 63 of flags is 1
+                  <itemizedlist>
+                    <listitem>
+                      <para>Issue the store operation to the “esbOffset” of the ESB
+                        management page associated with “lisn”, storing “storeData”.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para>Load R4 with -1.</para>
+                    </listitem>
+                  </itemizedlist>
+                </para>
+              </listitem>
+
+              <listitem>
+                <para>Return H_Success.</para>
+              </listitem>
+            </itemizedlist>
+          </simplesect>
+        </section>
+
+        <section xml:id="sec_int_sync">
+          <title>H_INT_SYNC</title>
+
+          <para>The H_INT_SYNC hcall() is used to issue hardware syncs that will
+            ensure any in flight events for the input lisn are in the event queue.</para>
+
+          <simplesect>
+            <title>Syntax:</title>
+            <programlisting><![CDATA[int64                  /* H_Success:    Expected Return code */
+                       /* H_Busy:       Call again to complete the function */
+                       /* H LongBusyOrder*: Wait the indicated time and call again */
+                       /* H_Function:   The calling OS is not in exploitation mode */
+                       /* H_Hardware:   A hardware fault occurred which prevented */
+                       /*               successful completion */
+                       /* H_State:      H_INT_RESET is in progress */
+                       /* H_Parameter:  A reserved flag is on */
+hcall ( const uint64 H_INT_SYNC,  /* Issue VC syncs to ensure any in flight events */
+        uint64 flags,             /*  */
+        uint64 lisn );            /* are in the EQ for the input lisn */]]></programlisting>
+          </simplesect>
+
+          <simplesect>
+            <title>Parameters:</title>
+
+            <itemizedlist>
+              <listitem>
+                <para>“flags”: bits 0-63 Reserved</para>
+              </listitem>
+
+              <listitem>
+                <para>“lisn” is per
+                  <emphasis role="bold"><literal>&#8220;interrupts&#8221;</literal></emphasis>,
+                  <emphasis role="bold"><literal>&#8220;interrupt-map&#8221;</literal></emphasis>, or
+                  <emphasis role="bold"><literal>&#8220;ibm,xive-lisn-ranges&#8221;</literal></emphasis> properties, or as returned by the
+                  <emphasis>ibm,query-interrupt-source-number</emphasis>
+                  RTAS call, or as returned by the H_ALLOCATE_VAS_WINDOW hcall</para>
+              </listitem>
+            </itemizedlist>
+          </simplesect>
+
+          <simplesect>
+            <title>Return Values:</title>
+
+            <para>None</para>
+          </simplesect>
+
+          <simplesect>
+            <title>Semantics:</title>
+
+            <itemizedlist>
+              <listitem>
+                <para>Verify that no reserved flag bits are on else return H_Parameter.</para>
+              </listitem>
+
+              <listitem>
+                <para>Verify that a H_INT_RESET is not in progress else return H_State.</para>
+              </listitem>
+
+              <listitem>
+                <para>Validate the “lisn” parameter per the list of interrupt sources
+                  allocated to the calling partition else return H_P2. </para>
+              </listitem>
+
+              <listitem>
+                <para>Perform the appropriate hardware syncs to ensure any in flight
+                  events for the input “lisn” are in the event queue.</para>
+              </listitem>
+
+              <listitem>
+                <para>Return H_Success.</para>
+              </listitem>
+            </itemizedlist>
+          </simplesect>
+        </section>
+
+        <section xml:id="sec_int_reset">
+          <title>H_INT_RESET</title>
+
+          <para>The H_INT_RESET hcall() is used to reset all of the partition’s interrupt
+            exploitation structures to their initial state. This means losing all p
+            reviously set interrupt state set via H_INT_SET_SOURCE_CONFIG and
+            H_INT_SET_QUEUE_CONFIG.
+          </para>
+
+          <simplesect>
+            <title>Syntax:</title>
+            <programlisting><![CDATA[int64                  /* H_Success:    Expected Return code */
+                       /* H_Busy:       Call again to complete the function */
+                       /* H LongBusyOrder*: Wait the indicated time and call again */
+                       /* H_Function:   The calling OS is not in exploitation mode */
+                       /* H_Hardware:   A hardware fault occurred which prevented */
+                       /*               successful completion */
+                       /* H_Parameter:  A reserved flag is on */
+                       /* H_State:      H_INT_RESET is in progress on another thread */
+                       /*               for this partition */
+hcall ( const uint64 H_INT_RESET,   /* Reset all interrupt structures */
+        uint64 flags );             /* to their initial state */]]></programlisting>
+          </simplesect>
+
+          <simplesect>
+            <title>Parameters:</title>
+
+            <itemizedlist>
+              <listitem>
+                <para>“flags”: bits 0-63 Reserved</para>
+              </listitem>
+            </itemizedlist>
+          </simplesect>
+
+          <simplesect>
+            <title>Return Values:</title>
+
+            <para>None</para>
+          </simplesect>
+
+          <simplesect>
+            <title>Semantics:</title>
+
+            <itemizedlist>
+              <listitem>
+                <para>Verify that no reserved flag bits are on else return H_Parameter.</para>
+              </listitem>
+
+              <listitem>
+                <para>Block all other exploitation hcalls (they all will return H_STATE
+                  if called while H_INT_RESET is in progress).</para>
+              </listitem>
+
+              <listitem>
+                <para>Verify that no other threads are currently in the middle of an
+                  H_INT_RESET for this partition else return H_STATE</para>
+              </listitem>
+
+              <listitem>
+                <para>Reset the following:
+                  <itemizedlist>
+                    <listitem>
+                      <para>All EAs</para>
+                    </listitem>
+
+                    <listitem>
+                      <para>All ESB states</para>
+                    </listitem>
+
+                    <listitem>
+                      <para>All ENDs
+                        <itemizedlist>
+                          <listitem>
+                            <para>Specifically, including clearing out its EQ pointer and size</para>
+                          </listitem>
+                        </itemizedlist>
+                      </para>
+                    </listitem>
+                  </itemizedlist>
+                </para>
+              </listitem>
+
+              <listitem>
+                <para>All OS Reporting LinesUnblock all other exploitation hcalls when finished.</para>
+              </listitem>
+
+              <listitem>
+                <para>Return H_Success.</para>
               </listitem>
             </itemizedlist>
           </simplesect>
