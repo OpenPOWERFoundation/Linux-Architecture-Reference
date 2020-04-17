@@ -6824,8 +6824,19 @@
       <para>For LSIs, the platform shall adhere to the
       <xref linkend="dbdoclet.50569387_67880" /> interrupt structure OF
       representation.</para>
+      <para>PAPR may support one of two generations of interrupt controllers with
+        backward compatible firmware interfaces. The first generation interrupt
+        controller is represented per
+        <xref linkend="sec_powerpc_external_interrupt_controller_nodes" />
+        and its sub sections.
+        The second generation, External Interrupt Virtualization Engine is
+        represented either per
+        <xref linkend="sec_powerpc_external_interrupt_controller_nodes" />
+        when operated in Legacy Compatibility mode, or per
+        <xref linkend="sec_powerpc_external_interrupt_virtualization_engine_node" />
+        and its sub sections when operated in Exploitation mode.</para>
 
-      <section>
+      <section xml:id="sec_powerpc_external_interrupt_controller_nodes">
         <title>PowerPC External Interrupt Controller Nodes</title>
 
         <para>This section describes the properties for the PowerPC External
@@ -7174,6 +7185,130 @@
           </variablelist>
 
         </section>
+
+      </section>
+
+      <section xml:id="sec_powerpc_external_interrupt_virtualization_engine_node">
+        <title>PowerPC External Interrupt Virtualization Engine Nodes</title>
+
+        <para>This section describes the properties for the External Interrupt Virtualization
+          node. Interrupt controllers are normally packaged inside system chips, however,
+          they are logically represented in the device tree by the interrupt controller
+          node. This node reports the logical real addresses through which the client
+          program can manage the interrupt context for its physical processor thread.</para>
+
+        <para>Event source resources consist of either a single or pair of page addresses
+          associated with each individual event source that is allocated to the partition.
+          These addresses do not appear in the device tree; rather the platform provides
+          the hcall(), H_INT_GET_SOURCE_INFO.</para>
+
+        <para>At a dynamic reconfiguration event, such as adding or removing an IO adapter,
+          or processor, the associated
+          <emphasis role="bold"><literal>&#8220;int&#8221;</literal></emphasis>
+          property is added or removed from the partition
+          configuration and along with it the associated page addresses.</para>
+
+        <variablelist>
+          <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;name&#8221;</literal></emphasis> [S]</term>
+              <listitem>
+                <para>Standard
+                <emphasis>property name</emphasis> that denotes a PowerPC External
+                Interrupt Controller.</para>
+                <para><emphasis>prop-encoded-array</emphasis>: A string, encoded as with
+                <emphasis role="bold"><literal>encode-string</literal></emphasis>.</para>
+                <para>The value of this string shall be
+                <literal>&#8220;interrupt-controller&#8221;</literal>.</para>
+              </listitem>
+  			  </varlistentry>
+
+          <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;device_type&#8221;</literal></emphasis> [S]</term>
+              <listitem>
+                <para>Standard
+                <emphasis>property name</emphasis> that indicates an Interrupt
+                Controller.</para>
+                <para><emphasis>prop-encoded-array</emphasis>: A string, encoded as with
+                <emphasis role="bold"><literal>encode-string</literal></emphasis>.</para>
+                <para>The value of this property shall be
+                <literal>&#8220;power-ivpe&#8221;</literal>.</para>
+              </listitem>
+  			  </varlistentry>
+
+          <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis> [S]</term>
+              <listitem>
+                <para>Standard
+                <emphasis>property name</emphasis> to define the base logical addresses
+                and sizes of the registers for managing the interrupt context of a
+                physical processor thread</para>
+                <para>
+                  <emphasis>prop-encoded-array</emphasis>: Two
+                  (<emphasis>encode-phys, endcode-int</emphasis>)
+                  pairs. The entries represent the user and OS level views of the
+                  XIVE physical processor thread interrupt management areas respectively
+                  (“TIMA” addresses). The first of the two entries is the base address and
+                  size of the user level view and the second of the two entries is the
+                  base address and size of the OS level view.</para>
+              </listitem>
+  			  </varlistentry>
+
+          <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;compatible&#8221;</literal></emphasis> [S]</term>
+              <listitem>
+                <para>Standard
+                <emphasis>property name</emphasis> to define alternate
+                <emphasis role="bold"><literal>&#8220;name&#8221;</literal></emphasis> property values.</para>
+                <para>
+                <emphasis>prop-encoded-array</emphasis>: The concatenation, with
+                <emphasis role="bold"><literal>encode+</literal></emphasis>, of an arbitrary number of text strings,
+                each encoded as with
+                <emphasis role="bold"><literal>encode-string</literal></emphasis>.</para>
+                <para>The property value shall include
+                <emphasis role="bold"><literal>&#8220;ibm,power-ivpe&#8221;</literal></emphasis>.</para>
+              </listitem>
+  			  </varlistentry>
+
+          <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;ibm,xive_eq-sizes&#8221;</literal></emphasis></term>
+              <listitem>
+                <para><emphasis>property name</emphasis>: Defines the sizes of event
+                queues that are supported by for the XIVE option.</para>
+                <para>
+                <emphasis>prop-encoded-value</emphasis>: One to N integers, encoded as with
+                <emphasis role="bold"><literal>encode-int</literal></emphasis>.</para>
+                <para>Each integer is expressed as the power of 2 of the event queue size.
+                  For example, a 4K event queue size is represented by the value of 12
+                  (4K = 2<superscript>12</superscript>). The integers are arranged in ascending order.</para>
+              </listitem>
+  			  </varlistentry>
+
+          <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;ibm,xive-lisn-ranges&#8221;</literal></emphasis></term>
+              <listitem>
+                <para><emphasis>property name:</emphasis> Defines the LISN ranges assigned
+                to the client program.</para>
+                <para><emphasis>prop-encoded-array</emphasis>: One or more
+                (<emphasis>LISN, number</emphasis>) pairs, where LISN is a single cell
+                hexadecimal value between 0x00000000 and 0x7FFFFFFF, and number is an
+                integer. Each pair represents a contiguous range of LISNs. These LISNs
+                can be used by the OS for any purpose (eg IPIs). The first range will
+                contain at least one per possible thread in the partition.</para>
+              </listitem>
+  			  </varlistentry>
+
+          <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;interrupt-controller&#8221;</literal></emphasis> [S]</term>
+              <listitem>
+                <para>Standard
+                <emphasis>property name</emphasis> to indicate an interrupt (sub-)tree
+                root.</para>
+                <para><emphasis>prop-encoded-array</emphasis>: &lt;none&gt; The presence of
+                this property indicates that this node represents an interrupt
+                controller.</para>
+              </listitem>
+  			  </varlistentry>
+        </variablelist>
 
       </section>
 
