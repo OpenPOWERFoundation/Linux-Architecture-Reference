@@ -1026,6 +1026,46 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
           <row>
             <entry>
               <para>
+                <xref linkend="sec_open_vterm_lp" xrefstyle="select: title nopage" /> / <xref linkend="sec_open_vterm_lp" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Open a terminal session with a Vterm IOA</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_get_term_char_lp" xrefstyle="select: title nopage" /> / <xref linkend="sec_get_term_char_lp" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Get data from a Vterm session</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_put_term_char_lp" xrefstyle="select: title nopage" /> / <xref linkend="sec_put_term_char_lp" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Put data to a Vterm session</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <xref linkend="sec_close_vterm_lp" xrefstyle="select: title nopage" /> / <xref linkend="sec_close_vterm_lp" xrefstyle="select: labelnumber nopage" />
+              </para>
+            </entry>
+            <entry>
+              <para>Close an existing session with a Vterm IOA</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
                 <xref linkend="dbdoclet.50569344_23386" xrefstyle="select: title nopage" /> / <xref linkend="dbdoclet.50569344_23386" xrefstyle="select: labelnumber nopage" />
               </para>
             </entry>
@@ -4636,6 +4676,82 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
               </entry>
               <entry>
                 <para>hcall-int-exploitation</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_open_vterm_lp" xrefstyle="select: title nopage" /> / <xref linkend="sec_open_vterm_lp" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x408</para>
+              </entry>
+              <entry>
+                <para>Normal</para>
+              </entry>
+              <entry>
+                <para>If VSM is implemented</para>
+              </entry>
+              <entry>
+                <para>hcall-vsm</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_get_term_char_lp" xrefstyle="select: title nopage" /> / <xref linkend="sec_get_term_char_lp" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x40C</para>
+              </entry>
+              <entry>
+                <para>Critical</para>
+              </entry>
+              <entry>
+                <para>If VSM is implemented</para>
+              </entry>
+              <entry>
+                <para>hcall-vsm</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_put_term_char_lp" xrefstyle="select: title nopage" /> / <xref linkend="sec_put_term_char_lp" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x410</para>
+              </entry>
+              <entry>
+                <para>Critical</para>
+              </entry>
+              <entry>
+                <para>If VSM is implemented</para>
+              </entry>
+              <entry>
+                <para>hcall-vsm</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>
+                  <xref linkend="sec_close_vterm_lp" xrefstyle="select: title nopage" /> / <xref linkend="sec_close_vterm_lp" xrefstyle="select: labelnumber nopage" />
+                </para>
+              </entry>
+              <entry>
+                <para>0x414</para>
+              </entry>
+              <entry>
+                <para>Normal</para>
+              </entry>
+              <entry>
+                <para>If VSM is implemented</para>
+              </entry>
+              <entry>
+                <para>hcall-vsm</para>
               </entry>
             </row>
             <row>
@@ -10940,7 +11056,7 @@ hcall ( const uint64 H_INT_GET_SOURCE_INFO, /* Returns the logical real address 
           <title>H_INT_SET_SOURCE_CONFIG</title>
 
           <para>The H_INT_SET_SOURCE_CONFIG hcall() is used to assign a Logical Interrupt
-            Source to a target. The Logical In- terrupt Source is designated with the
+            Source to a target. The Logical Interrupt Source is designated with the
             “lisn” parameter and the target is designated with the “target” and
             “priority” parameters. Upon return from the hcall(), no additional interrupts
             will be directed to the old EQ. The old EQ should be investigated for
@@ -10994,7 +11110,7 @@ hcall ( const uint64 H_INT_SET_SOURCE_CONFIG, /* Assigns */
                         way of unmasking and restoring the source. Thus this should only
                         be used in interrupts that are also masked at the source, and
                         only in cases where the interrupt is not meant to be used for
-                        a large amount of time be- cause no valid target exists for it
+                        a large amount of time because no valid target exists for it
                         for example
                       </para>
                     </listitem>
