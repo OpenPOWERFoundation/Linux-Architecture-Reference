@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   Copyright (c) 2016 OpenPOWER Foundation
-  
+
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
@@ -13,21 +13,21 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-  
+
 -->
-<section xmlns="http://docbook.org/ns/docbook" 
+<section xmlns="http://docbook.org/ns/docbook"
          xmlns:xi="http://www.w3.org/2001/XInclude"
-         xmlns:xlink="http://www.w3.org/1999/xlink" 
+         xmlns:xlink="http://www.w3.org/1999/xlink"
          version="5.0"
          xml:id="dbdoclet.50569337_22801">
 
   <title>RTAS Error/Event Return Format</title>
-  
+
   <para>This section describes in detail the return value retrieved by an
-  RTAS call to either the 
-  <emphasis>event-scan</emphasis> or 
+  RTAS call to either the
+  <emphasis>event-scan</emphasis> or
   <emphasis>check-exception</emphasis> function.</para>
-  
+
   <para>The return value consists of a fixed part and an optional Extended
   Error Report, described in the next section, which contains full details
   of the error. The fixed part is intended to allow reporting the most
@@ -36,15 +36,15 @@
   strategy. At the same time, the mechanism is capable of providing full
   disclosure of the error syndrome information for OSs which have a more
   complete error handling strategy.</para>
-  
+
   <para>RTAS can return at most one return code per invocation. If multiple
   conditions exist, RTAS returns them in descending order of severity on
   successive calls.</para>
-  
+
   <section xml:id="dbdoclet.50569337_75663">
     <title>Reporting and Recovery Philosophy, and Description of
     Fields</title>
-    
+
     <para>All firmware implementations use a common error and event reporting
     scheme, as described in detail below. It is not required that error
     recovery be present in firmware implementations, nor is it required that
@@ -56,7 +56,7 @@
     Report format, and the philosophy which should be applied in generating
     return values from firmware or interpreting such return codes in an
     OS.</para>
-    
+
     <para>In general, an OS would look at the Disposition field first to see
     if an error has been corrected already by firmware. If not corrected to
     the OS&#8217;s satisfaction, the OS would examine the Severity field.
@@ -65,35 +65,35 @@
     continue or to halt operations. In either case, it may choose to log
     information regarding the error, using the remaining fields and optional
     Extended Error Log.</para>
-    
-    <para>The following sections describe the field values in 
+
+    <para>The following sections describe the field values in
     <xref linkend="dbdoclet.50569337_21249"/>.</para>
-    
+
     <section>
       <title>Version</title>
-      
+
       <para>This field is used only to distinguish among present and potential
       future formats for the remainder of the error report. This value will be
       incremented if extensions are made to the format described here. The
       primary function of this field is for future OSs to identify whether an
       error report may contain some (unknown at present) feature that was added
       after the initial version of this specification.</para>
-      
+
     </section>
-    
+
     <section>
       <title>Severity</title>
-      
+
       <para>This field represents the value judgment of firmware of how serious
       the problem being reported should be considered by the OS.</para>
-      
+
       <para>Errors which are believed to represent a permanent hardware failure
       affecting the entire system are considered &#8220;FATAL.&#8221; OSs would
       not attempt to continue normal operation after receiving notice of such
       an error. OSs may not even be able to perform an orderly shutdown in the
       presence of a Fatal error, though they may make a policy decision to
       try.</para>
-      
+
       <para>Less serious errors, but still causing a loss of data or state, are
       considered &#8220;ERRORs.&#8221; In general, continuing after such an
       error is questionable, since details of what has failed may not be
@@ -101,7 +101,7 @@
       with which the OS can associate it. However, OSs may make a policy
       decision (for example, based on the error Type, the Initiator, or the
       Target) to continue operation after an Error.</para>
-      
+
       <para>There are some types of errors, such as parity errors in memory or
       a parity error on a transfer between CPU and memory, which occur
       synchronously with the current process execution context. Such errors are
@@ -116,33 +116,33 @@
       are reported as having Severity &#8220;ERROR_SYNC&#8221;. It is OS
       dependent whether recovery is possible after such an error, or whether
       the OS will treat it as a fatal problem.</para>
-      
+
       <para>The &#8220;WARNING&#8221; return value indicates that a
       non-state-losing error, either fully recovered by firmware or not needing
       recovery, has occurred. No OS action is required, and full operation is
       expected to continue unhindered by the error. Examples include corrected
       ECC errors or bus transfer failures which were re-tried
       successfully.</para>
-      
+
       <para>The &#8220;EVENT&#8221; return value is the mechanism firmware uses
       to communicate event information to the OS. The event may have been
-      detected by polling using 
+      detected by polling using
       <emphasis>event-scan</emphasis> or on the occurrence of an interrupt by
-      calling 
+      calling
       <emphasis>check-exception</emphasis>. In either case, the Error Return
       value indicates the event which has occurred in the Type field. See the
       Type description below for a description of specific events and their
       expected handling.</para>
-      
+
       <para>The &#8220;NO_ERROR&#8221; return value indicates that no error was
       present. In this case, the remainder of the Error Return fields are not
       valid and should not be referenced.</para>
-      
+
     </section>
-    
+
     <section>
       <title>RTAS Disposition</title>
-      
+
       <para>An aggressive firmware implementation may choose to attempt
       recovery for some classes of error so an OS can continue operation in the
       face of recoverable errors. If firmware detects an error for which it has
@@ -152,13 +152,13 @@
       Severity says how serious an error was, and Disposition says, regardless
       of severity, whether or not the OS has to even look at it. In general, an
       OS will first examine Disposition, then Severity.</para>
-      
+
       <para>A return value of &#8220;FULLY RECOVERED&#8221; means that RTAS was
       able to completely recover the machine state after the error, and OS
       operation can continue unhindered. The severity of the problem in this
       case is irrelevant, though for consistency a &#8220;FATAL&#8221; error
       can never be &#8220;FULLY RECOVERED.&#8221;</para>
-      
+
       <para>A return value of &#8220;LIMITED RECOVERY&#8221; means that RTAS
       was able to recover the state of the machine, but that some feature of
       the machine has been disabled or lost (for example, error checking), or
@@ -169,36 +169,36 @@
       &#8220;NOT RECOVERED,&#8221; and initiate shutdown. A less conservative
       OS may choose to let the user decide whether to continue or to shut
       down.</para>
-      
+
       <para>A value of &#8220;NOT RECOVERED&#8221; indicates that the RTAS
       either did not attempt recovery, or that it attempted recovery but was
       unsuccessful.</para>
-      
+
     </section>
-    
+
     <section>
       <title>Optional Part Presence</title>
-      
+
       <para>This is a single flag, valid only if the 32-bit Error Return value
       is located in memory, which indicates whether or not an Extended Error
       Log Length field and the Extended Error Log follows it in memory. It will
       be set on an in-memory return result from RTAS if and only if the RTAS
       call indicated sufficient space to return the Extended Error Log, and the
       RTAS implementation supports the Extended Error Log.</para>
-      
+
     </section>
-    
+
     <section>
       <title>Initiator</title>
-      
+
       <para>This field indicates, to the best ability of RTAS to determine it,
       the initiator of a failed transaction. (Note that in the
-      &#8220;Initiator&#8221; field of 
+      &#8220;Initiator&#8221; field of
       <xref linkend="dbdoclet.50569337_30773"/>, the value &#8220;I/O&#8221;
       indicates one of the defined I/O buses or IOAs. This field contains
       finer-grained details of which type of I/O bus failed, if known, and
       &#8220;UNKNOWN&#8221; if RTAS cannot tell.)</para>
-      
+
       <para>In many of the newer LoPAR platforms, the platform error
       notification and handling flow is asynchronous to the OS and software
       execution flow, therefore the context of Initiator is not applicable to
@@ -206,15 +206,15 @@
       Not Applicable&#8221; is used for Initiator. In logs created with Version
       6 or later, more detailed information about the error is provided in the
       Platform Event log format.</para>
-      
+
     </section>
-    
+
     <section>
       <title>Target</title>
-      
+
       <para>If RTAS can determine it, this field indicates the target of a
       failed transaction.</para>
-      
+
       <para>In many of the newer LoPAR platforms, the platform error
       notification and handling flow is asynchronous to the OS and software
       execution flow, therefore the context of Target is not applicable to the
@@ -222,12 +222,12 @@
       Applicable&#8221; is used for Target. In logs created with Version 6 or
       later, more detailed information about the error are provided in the
       Platform Event log format.</para>
-      
+
     </section>
-    
+
     <section>
       <title>Type</title>
-      
+
       <para>This field identifies the general type of the error or event. In
       some cases (for example, INTERN_DEV_FAIL), multiple possible events are
       grouped together under a common return value. In such cases,
@@ -235,17 +235,17 @@
       them. Non-platform-aware software will generally treat all errors of a
       given type the same, so it generally will not need to access the Extended
       Error Log information.</para>
-      
+
       <para>In the table, the EPOW values are associated with a Severity of
       EVENT. All other values will be associated with Severity values of FATAL,
       ERROR, ERROR_SYNC, or WARNING, and may or may not be corrected by
       RTAS.</para>
-      
+
       <para>EPOW is an event type which indicates the potential loss of power
       or environmental conditions outside the limits of safe operation of the
-      platform. See 
+      platform. See
       <xref linkend="dbdoclet.50569337_17513"/> for more information.</para>
-      
+
       <para>The &#8220;Platform Error (224)&#8221;, introduced for Version 6,
       generalizes that the error is identified by the platform and the specific
       details are encoded in the Platform Event log format itself.</para>
@@ -254,12 +254,12 @@
       event notification, the Platform Event Log contains the &#8220;IO
       Events&#8221; section which identifies additional details associated with
       the event.</para>
-      
+
       <para>The &#8220;Platform information event (226)&#8221; indicates the
       return log should be logged as &#8220;Information Log&#8221;. These logs
       indicate key platform events and can be used for reference
       purposes.</para>
-      
+
       <para>The &#8220;Resource deallocation event (227)&#8221; indicates an
       event notification to the OS that a specific hardware resource has
       experienced recurring recoverable errors with a trend toward
@@ -269,23 +269,23 @@
       Identification&#8221; section which identifies the &#8220;Logical
       Entity&#8221; by Resource Type and Resource ID, associated with the
       event.</para>
-      
+
       <para>The &#8220;Dump notification event (228)&#8221; indicates that a
       dump file is present in the platform and is available for retrieval by
       the OS. For this type of event notification, the Platform Event Log
       contains the &#8220;Dump Locator&#8221; section which contains additional
       event specific information.</para>
-      
+
       <para>Additional Type values will be added in future revisions of the
       specification. If an OS does not recognize a particular event type, it
       can examine the severity first, and then choose to ignore the event if it
       is not serious.</para>
-      
+
     </section>
-    
+
     <section>
       <title>Extended Event Log Length / Change Scope</title>
-      
+
       <para>This optional 32-bit field is present in memory following the
       32-bit Event Return value if the Optional Part Presence flag is
       &#8220;PRESENT&#8221;, and it indicates the length in bytes of the
@@ -294,24 +294,24 @@
       may be zero. The field is also present for a resource change &#8220;Hot
       Plug&#8221; event, such as a PRRN event, and then represents the scope of
       a resource change.</para>
-      
+
     </section>
-    
+
     <section xml:id="dbdoclet.50569337_28848">
       <title>RTAS Event Return Format Fixed Part</title>
-      
+
       <para>The summary portion of the error return is designed to fit into a
       single 32-bit integer. When used as a data return format in memory, an
       optional Length field and Extended Error Log data may follow the summary.
       The fixed part contains a &#8220;presence&#8221; flag which identifies
       whether an extended report is present.</para>
-      
+
       <para>In the table below, the location of each field within the integer
       is included in parentheses after its name. Numerical field values are
       indicated in decimal unless noted otherwise.</para>
 
       <table frame="all" pgwide="1" xml:id="dbdoclet.50569337_21249">
-        <title>RTAS Event Return Format (Fixed Part) 
+        <title>RTAS Event Return Format (Fixed Part)
         <emphasis>(Continued)</emphasis></title>
         <tgroup cols="2">
           <colspec colname="c1" colwidth="30*" />
@@ -326,7 +326,7 @@
               </entry>
               <entry>
                 <para>
-                  <emphasis role="bold">Description, Values (Described in 
+                  <emphasis role="bold">Description, Values (Described in
                   <xref linkend="dbdoclet.50569337_75663"/>)</emphasis>
                 </para>
               </entry>
@@ -480,9 +480,9 @@
               </entry>
               <entry>
                 <para>Length in bytes of Extended Event Log information which
-                follows (see 
+                follows (see
                 <xref linkend="dbdoclet.50569337_79682"/>) OR the scope
-                parameter to be input the 
+                parameter to be input the
                 <emphasis>ibm,update-nodes</emphasis> RTAS to retrieve the nodes
                 that were changed by selected &#8220;Hot Plug&#8221;
                 events.</para>
@@ -491,7 +491,7 @@
           </tbody>
         </tgroup>
       </table>
-      
+
       <para>Typically, most OSs care about, and have handlers for, only a few
       specific errors. Since coding of an error is unique in the above scheme,
       an OS can check for specific errors, then if nothing matches exactly,
@@ -500,17 +500,17 @@
       that RTAS delivered to the OS. Platforms may provide more complete error
       diagnosis and reporting in RTAS, combined with off-line diagnostics which
       take advantage of the information reported from previous failures.</para>
-      
+
     </section>
 
   </section>
-  
+
   <section xml:id="dbdoclet.50569337_79682">
     <title>Version 6 Extensions of Event Log Format</title>
 
     <section xml:id="dbdoclet.50569337_59870">
       <title>RTAS General Extended Event Log Format, Version 6</title>
-      
+
       <para>The following section defines new extensions to the event log
       format which are identified by a Version number 0x06 in the first byte in
       the returned buffer (byte 0 of the fixed-part information). The following
@@ -520,23 +520,23 @@
       sections of this chapter. This format is also intended to be usable as
       residual error log data in NVRAM, so that the OS could alternatively
       retrieve error data after an error event which caused a reboot.</para>
-      
+
       <para>Platforms indicate the maximum length of the error log buffer in
-      the 
+      the
       <literal>&#8220;rtas-error-log-max&#8221;</literal> RTAS property in the
       OF device tree, so that the OS can allocate a buffer large enough to hold
-      the extended error log data when calling the RTAS 
-      <emphasis>event-scan</emphasis> or 
+      the extended error log data when calling the RTAS
+      <emphasis>event-scan</emphasis> or
       <emphasis>check-exception</emphasis> functions. If the allocated buffer is
       not large enough to hold all the error log data, the data is truncated to
       the size of the buffer.</para>
-      
-      <para>Requirement 
-      <xref linkend="dbdoclet.50569337_44999"/> and 
+
+      <para>Requirement
+      <xref linkend="dbdoclet.50569337_44999"/> and
       <xref linkend="dbdoclet.50569337_85491"/> require that four bytes of the
       vendor-specific format contain a unique identifier for the company that
       has defined the format. The description of the &#8220;name&#8221; string
-      in 
+      in
       <xref linkend="dbdoclet.50569387_45524"/> provides alternatives for
       defining this identifier. Examples of these unique identifiers include
       stock ticker labels and Organizationally Unique Identifiers (OUIs). Since
@@ -548,7 +548,7 @@
       Monitoring (a fictional name for the purposes of this example) were to
       create a vendor-specific log format 12, then bytes 12-15 of such a log
       may contain &#8220;AIM&lt;NULL&gt;&#8221;.</para>
-      
+
       <para>This identifier is intended to apply to the company that defines
       the specific format, and may be used by other companies that wish to be
       compatible with that format. For example, if another company wanted to
@@ -556,33 +556,33 @@
       AIM-specific error log format for logs generated on their own platform,
       their log would have to contain an identifier of
       &#8220;AIM&lt;NULL&gt;&#8221;.</para>
-      
+
 	    <variablelist>
-	    
+
 	    	<varlistentry xml:id="dbdoclet.50569337_44999">
-	    		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_59870" 
+	    		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_59870"
     			xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
 	    			<listitem>
 				      <para>Platforms which
 				      support Version 6 of the Extended Event Log Format must do so by
 				      including a 0x06 value in the first byte of the RTAS Event Return Format
-				      (Fixed Part) and using the formats described in 
+				      (Fixed Part) and using the formats described in
 				      <xref linkend="dbdoclet.50569337_79682"/> (and all subsections under that
 				      section).</para>
 				      <para>
-				      
+
 				      <emphasis role="bold">Software Implementation Note:</emphasis> OSs running on
 				      platforms which support Version 6 of the Extended Event Log Format must
-				      ensure that the length parameter passed in the 
+				      ensure that the length parameter passed in the
 				      <emphasis>event-scan</emphasis> RTAS call be at least 2 KB.</para>
 				    </listitem>
 	    	</varlistentry>
-	    
+
 	    	<varlistentry>
-	    		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_59870" 
+	    		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_59870"
     			xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
 	    			<listitem>
-				      <para>If the length parameter on the RTAS 
+				      <para>If the length parameter on the RTAS
 				      <emphasis>event-scan</emphasis> call for returning data using Version 6 of
 				      the Extended Event Log Format is insufficient to return all the data the
 				      platform would otherwise make available, the platform must truncate the
@@ -590,26 +590,26 @@
 				      section.</para>
 	    			</listitem>
 	    	</varlistentry>
-	    
+
 	    	<varlistentry>
-	    		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_59870" 
+	    		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_59870"
     			xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
 	    			<listitem>
 				      <para>All event logs returning a Version 6
 				      Platform Event Log format must include the Main-A and Main-B Sections.
 				      Other sections are optional depending on the specific event type as
-				      specified in Requirement 
+				      specified in Requirement
 				      <xref linkend="dbdoclet.50569337_69083"/>.</para>
 	    			</listitem>
 	    	</varlistentry>
-	    
+
 	    	<varlistentry xml:id="dbdoclet.50569337_69083">
-	    		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_59870" 
+	    		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_59870"
     			xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
 	    			<listitem>
 				      <para>The following
 				      sections must be provided as indicated:</para>
-				      
+
 				      <orderedlist numeration="loweralpha">
 							  <listitem>
 						      <para>For the Platform error Type, the Primary Service Reference Code
@@ -639,12 +639,12 @@
 						      <para>For the HOTPLUG Type, the Hotplug section must be provided.</para>
 							  </listitem>
 							</orderedlist>
-					      
+
 	    			</listitem>
 	    	</varlistentry>
-	    
+
 	    </variablelist>
-    
+
       <para>
       <emphasis role="bold">Software Implementation Note:</emphasis> All fields in the
       Platform Event Log marked &#8220;Platform specific information&#8221; or
@@ -652,7 +652,7 @@
       information reserved for platform or platform Service Application use
       only. That information is not defined in this document. Information in
       these fields should be ignored by the OS.</para>
-      
+
       <para>
       <emphasis role="bold">Software Implementation and Architecture Note:</emphasis> All
       fields currently marked &#8220;Reserved&#8221; are set to zero by RTAS
@@ -660,7 +660,7 @@
       the Platform Event Log may be defined in the future in this architecture
       document for platform specific usage without change to this
       architecture.</para>
-      
+
       <table frame="all" pgwide="1" xml:id="dbdoclet.50569337_85491">
         <title>RTAS General Extended Event Log Format, Version 6</title>
         <tgroup cols="3">
@@ -839,7 +839,7 @@
               <entry>
                 <para>Detail vendor specific log data. If byte 2, bits 4:7,
                 above, are a value of 14 (Platform Event Log) and bytes 12-16
-                are &#8220;IBM &#8221;, then see 
+                are &#8220;IBM &#8221;, then see
                 <xref linkend="dbdoclet.50569337_97351"/> for the content of
                 this field.</para>
               </entry>
@@ -847,16 +847,16 @@
           </tbody>
         </tgroup>
       </table>
-      
+
     </section>
-    
+
     <section xml:id="dbdoclet.50569337_97351">
       <title>Platform Event Log Format, Version 6</title>
-      
+
       <para>This format is used when byte 2, bits 4:7, of the RTAS General
       Extended Event Log Version 6 are a value of 14 (Platform Event
       Log).</para>
-      
+
       <table frame="all" pgwide="1" xml:id="dbdoclet.50569337_74137">
         <title>Overview of Platform Event Log Format, Version
         6</title>
@@ -898,7 +898,7 @@
                 <para>48</para>
               </entry>
               <entry>
-                <para>Main-A section (ID = 'PH'). Required section. See 
+                <para>Main-A section (ID = 'PH'). Required section. See
                 <xref linkend="dbdoclet.50569337_30523"/> for the
                 format.</para>
               </entry>
@@ -912,7 +912,7 @@
               </entry>
               <entry>
                 <para>Main-B section (ID = 'UH'). Required, always follow
-                Main-A section. See 
+                Main-A section. See
                 <xref linkend="dbdoclet.50569337_68192"/> for the
                 format.</para>
               </entry>
@@ -928,7 +928,7 @@
                 <para>Logical Resource Identification section (ID = 'LR').
                 Optional, present only for Resource deallocation event
                 notification. If present, this section always follows Main-B
-                section. See 
+                section. See
                 <xref linkend="dbdoclet.50569337_26787"/> for the
                 format.</para>
               </entry>
@@ -945,7 +945,7 @@
                 <para>Primary SRC section (ID = 'PS'). Required for
                 &#8220;Platform Error&#8221; event type, optional for other
                 event types. If present, this section always follows Main-B
-                section. See 
+                section. See
                 <xref linkend="dbdoclet.50569337_17545"/> for the
                 format.</para>
               </entry>
@@ -960,7 +960,7 @@
               <entry>
                 <para>Dump Locator section (ID = 'DH') Optional, present only
                 for dump event notification. If present, this section follows
-                Main-B or Primary SRC section. See 
+                Main-B or Primary SRC section. See
                 <xref linkend="dbdoclet.50569337_94114"/> for the
                 format.</para>
               </entry>
@@ -975,7 +975,7 @@
               <entry>
                 <para>EPOW section (ID = 'EP'). Optional, present only for
                 &#8220;EPOW&#8221; interrupt event notification. If present,
-                this section follows Main-B section. See 
+                this section follows Main-B section. See
                 <xref linkend="dbdoclet.50569337_81250"/> for the
                 format.</para>
               </entry>
@@ -990,7 +990,7 @@
               <entry>
                 <para>IO Events section (ID = 'IE'). Optional, present only for
                 &#8220;ibm,io-events&#8221; interrupt event notification. If
-                present, this section follows Main-B section. See 
+                present, this section follows Main-B section. See
                 <xref linkend="dbdoclet.50569337_74350"/> for the
                 format.</para>
               </entry>
@@ -1005,7 +1005,7 @@
               <entry>
                 <para>Failing Enclosure MTMS section (ID = 'MT'). Required for
                 errors only. If present, this section follows Main-B section or
-                Primary SRC. See 
+                Primary SRC. See
                 <xref linkend="dbdoclet.50569337_16482"/> for the
                 format.</para>
               </entry>
@@ -1034,7 +1034,7 @@
                 <para>Machine Check Interrupt section (ID = 'MC'). Optional for
                 &#8220;Platform Error&#8221; event types with ERROR_SYNC
                 severity caused by a machine check interrupt. If present, this
-                section follows the Main-B. See 
+                section follows the Main-B. See
                 <xref linkend="dbdoclet.50569337_54366"/>.</para>
               </entry>
             </row>
@@ -1046,8 +1046,8 @@
                 <para>???</para>
               </entry>
               <entry>
-                <para>Hotplug Section (ID = “HP”). Optional, present only for 
-                Hotplug event notification. If present, this section follows 
+                <para>Hotplug Section (ID = “HP”). Optional, present only for
+                Hotplug event notification. If present, this section follows
                 Main-B section. See <xref linkend="error.hotplug"/>.</para>
               </entry>
             </row>
@@ -1066,12 +1066,12 @@
           </tbody>
         </tgroup>
       </table>
-      
+
     </section>
-    
+
     <section xml:id="dbdoclet.50569337_30523">
       <title>Platform Event Log Format, Main-A Section</title>
-      
+
       <table frame="all" pgwide="1">
         <title>Platform Event Log Format, Version 6, Main-A
         Section</title>
@@ -1278,12 +1278,12 @@
           </tbody>
         </tgroup>
       </table>
-      
+
     </section>
-    
+
     <section xml:id="dbdoclet.50569337_68192">
       <title>Platform Event Log Format, Main-B Section</title>
-      
+
       <table frame="all" pgwide="1">
         <title>Platform Event Log Format, Version 6, Main-B
         Section</title>
@@ -1547,20 +1547,20 @@
           </tbody>
         </tgroup>
       </table>
-      
+
 	    <section>
 	      <title>Error/Event Severity</title>
-	      
+
 	      <para>This field indicates the severity of the error event and the impact
 	      of the error to the platform (if applicable).</para>
-	      
-	      <para><emphasis role="bold">Non-error or Informational Event:</emphasis> 
+
+	      <para><emphasis role="bold">Non-error or Informational Event:</emphasis>
 	      This value indicates an event
 	      that is a non-error event. Informational or user action event log entries
 	      must use this value. The Event Type field provides additional event
 	      information.</para>
-	      
-	      <para><emphasis  role="bold">Recovered Error, general:</emphasis> 
+
+	      <para><emphasis  role="bold">Recovered Error, general:</emphasis>
 	      This value indicates an error event that
 	      has been automatically recovered or corrected by the platform hardware
 	      and/or firmware, e.g. ECC, internal spare or redundancy, cache line
@@ -1569,9 +1569,9 @@
 	      Flags has the value of &#8220;Hidden Error&#8221;. An event log with this
 	      value is used primarily for error thresholding design and code debug or
 	      as a record to indicate error frequency or trend.</para>
-	      
+
 	      <para>
-	      <emphasis role="bold">Recovered Error, spare capacity utilized:</emphasis> 
+	      <emphasis role="bold">Recovered Error, spare capacity utilized:</emphasis>
 	      This value
 	      indicates that an error on a resource has been recovered by utilizing
 	      another resource not currently assigned for use (spare). The failing
@@ -1580,9 +1580,9 @@
 	      a spare processor, continuing the operations of the faulty one. In this
 	      case the failing component is considered permanently in an error
 	      state.</para>
-	      
+
 	      <para>
-	      <emphasis role="bold">Recovered Error, loss of entitled capacity:</emphasis> 
+	      <emphasis role="bold">Recovered Error, loss of entitled capacity:</emphasis>
 	      This value indicates that an error on a resource has been recovered by
 	      utilizing another resource already in use by the system. The failing
 	      component is to be considered permanently in an error state. This results
@@ -1594,7 +1594,7 @@
 	      deallocation event notification&#8221; and the revised amount of entitled
 	      capacity would be found in the Logical Resource Identification Section,
 	      Entitled Capacity field.</para>
-	      
+
 	      <para><emphasis role="bold">Predictive Error, general: </emphasis>
 	      This value indicates an event that has
 	      been automatically recovered or corrected by the platform hardware and/or
@@ -1603,7 +1603,7 @@
 	      action is required. The automatic platform recovery actions have no
 	      impact to system performance (e.g. ECC, CRC, etc.), or the impact is
 	      unknown.</para>
-	      
+
 	      <para><emphasis  role="bold">Predictive Error, degraded performance: </emphasis>
 	      This value indicates an
 	      error event that has been automatically recovered or corrected by the
@@ -1612,8 +1612,8 @@
 	      unrecoverable error. A deferred service or repair action is required. The
 	      automatic platform recovery actions are impacting/degrading system
 	      performance.</para>
-	      
-	      <para><emphasis  role="bold">Predictive Error, fault may be corrected after 
+
+	      <para><emphasis  role="bold">Predictive Error, fault may be corrected after
 	      platform re-boot: </emphasis>
 	      This value indicates an error event that has been automatically recovered
 	      or corrected by the platform hardware and/or firmware. However, the
@@ -1624,8 +1624,8 @@
 	      after re-boot, then a part replacement is required. The automatic
 	      platform recovery actions have no impact to system performance (e.g. ECC,
 	      CRC, etc.), or the impact is unknown.</para>
-	      
-	      <para><emphasis  role="bold">Predictive Error, fault may be corrected 
+
+	      <para><emphasis  role="bold">Predictive Error, fault may be corrected
 	      after platform re-boot, degraded performance: </emphasis>
 	      This value indicates an error event that has been
 	      automatically recovered or corrected by the platform hardware and/or
@@ -1636,7 +1636,7 @@
 	      fault cannot be corrected after re-boot, then a part replacement is
 	      required. The automatic platform recovery actions are impacting/degrading
 	      the system performance.</para>
-	      
+
 	      <para><emphasis role="bold">Predictive Error, loss of redundancy: </emphasis>
 	      This value indicates an error
 	      event that has been automatically recovered or corrected by the platform
@@ -1645,7 +1645,7 @@
 	      subsystem may causes platform unrecoverable error. A deferred service or
 	      repair action is required to restore redundancy. The loss of redundancy
 	      may or may not impact system performance.</para>
-	      
+
 	      <para><emphasis role="bold">Unrecoverable Error, general: </emphasis>
 	      This value indicates an error event
 	      that is unrecoverable or uncorrectable by the platform hardware and/or
@@ -1654,8 +1654,8 @@
 	      platform may be able to re-boot successfully and resume. A service or
 	      repair action is required as soon as possible to correct the
 	      error.</para>
-	      
-	      <para><emphasis role="bold">Unrecoverable Error, bypassed with degraded 
+
+	      <para><emphasis role="bold">Unrecoverable Error, bypassed with degraded
 	      performance: </emphasis>This value
 	      indicates an error event that is unrecoverable or uncorrectable by the
 	      platform hardware and/or firmware. However, the hardware or platform
@@ -1664,8 +1664,8 @@
 	      performance is degraded due to the deconfigured platform resource(s) e.g.
 	      processor, cache, memory, etc. A deferred service or repair action is
 	      required.</para>
-	      
-	      <para><emphasis role="bold">Unrecoverable Error, bypassed with loss 
+
+	      <para><emphasis role="bold">Unrecoverable Error, bypassed with loss
 	      of redundancy: </emphasis>This value
 	      indicates an error event that is unrecoverable or uncorrectable by the
 	      platform hardware and/or firmware. However, the hardware or platform
@@ -1674,8 +1674,8 @@
 	      platform resource(s) resulted in loss of redundancy (e.g. Redundant FSP
 	      with static fail-over) with no loss of system performance. A deferred
 	      service or repair action is required.</para>
-	      
-	      <para><emphasis role="bold">Unrecoverable Error, bypassed with loss 
+
+	      <para><emphasis role="bold">Unrecoverable Error, bypassed with loss
 	      of redundancy + performance: </emphasis>
 	      This value indicates an error event that is unrecoverable or
 	      uncorrectable by the platform hardware and/or firmware. However, the
@@ -1684,8 +1684,8 @@
 	      The deconfigured platform resource(s) resulted in loss of redundancy and
 	      system performance. A deferred service or repair action is
 	      required.</para>
-	      
-	      <para><emphasis role="bold">Unrecoverable Error, bypassed with loss 
+
+	      <para><emphasis role="bold">Unrecoverable Error, bypassed with loss
 	      of function: </emphasis>This value
 	      indicates an error event that is unrecoverable or uncorrectable by the
 	      platform hardware and/or firmware. However, the hardware or platform
@@ -1693,36 +1693,36 @@
 	      can be IPLed or re-IPLed with the error bypassed. The deconfigured
 	      platform resource(s) resulted in loss of platform or system function. A
 	      deferred service or repair action is required.</para>
-	      
+
 	      <para><emphasis role="bold">Error on diagnostic test, general: </emphasis>
 	      This value indicates an error
 	      event that is detected during a diagnostic test. Impact to the system is
 	      undefined or unknown.</para>
-	      
-	      <para><emphasis role="bold">Error on diagnostic test, resource may 
+
+	      <para><emphasis role="bold">Error on diagnostic test, resource may
 	      produce incorrect results: </emphasis>
 	      This value indicates an error event that is detected during a diagnostic
 	      test. The error may produce incorrect computational results (e.g.
 	      processor floating point unit test error).</para>
-	      
+
 	    </section>
-	    
+
 	    <section>
 	      <title>Event Sub-Type</title>
-	      
+
 	      <para>This field provides additional information on the non-error event
 	      type.</para>
-	      
+
 	      <para><emphasis role="bold">Not applicable: </emphasis>
 	      This value is used when the event is associated
 	      with an error. Error/Event Severity field and SRC section provide
 	      additional error information.</para>
-	      
+
 	      <para><emphasis role="bold">Miscellaneous, Information Only: </emphasis>
 	      This value is used when the event
 	      is &#8220;for information only&#8221; or the event description doesn't
 	      fit into any other defined values in this field.</para>
-	      
+
 	      <para><emphasis role="bold">Dump Notification: </emphasis>
 	      This value is used by the hypervisor or
 	      partition firmware as a &#8220;Dump Notification&#8221; event to the OS
@@ -1730,32 +1730,32 @@
 	      value is used by the HMC as a &#8220;Dump Notification&#8221; event to
 	      the Service Application to indicate a dump file is present for
 	      transmission to the manufacturer.</para>
-	      
-	      <para><emphasis role="bold">Previously reported error has been 
+
+	      <para><emphasis role="bold">Previously reported error has been
 	      corrected by system: </emphasis>This value
 	      is used by the platform firmware to indicate that the error event that
 	      was previously reported has been corrected by the platform. On a
 	      subsequent platform boot, this event type is logged to indicate that the
 	      array was successfully repaired.</para>
-	      
-	      <para><emphasis role="bold">System resources manually deconfigured 
+
+	      <para><emphasis role="bold">System resources manually deconfigured
 	      by user: </emphasis>This value is used
 	      by the platform firmware to indicate that a subset of platform
 	      resource(s) was/were deconfigured due to user's request (e.g. via
 	      platform ASM menu). The deconfigured resource(s) is/are not associated
 	      with error detected by the platform. The event is a reminder to the user
-	      that the platform is running with partial capacity. 
+	      that the platform is running with partial capacity.
 	      <emphasis role="bold">Note:</emphasis> The platform
 	      provides this user option for platform performance testing
 	      purpose.</para>
-	      
-	      <para><emphasis role="bold">System resources deconfigured by 
+
+	      <para><emphasis role="bold">System resources deconfigured by
 	      system due to prior error event: </emphasis>
 	      This value is used by the platform firmware to indicate that the platform
 	      is IPLed with resource(s) deconfigured due to error detected and reported
 	      previously. The event is a reminder to the user that the platform
 	      requires service.</para>
-	      
+
 	      <para><emphasis role="bold">Resource deconfiguration notification: </emphasis>
 	      This value is used by
 	      partition firmware as an &#8220;Event Notification&#8221; to the OS that
@@ -1763,90 +1763,90 @@
 	      by the OS should be deallocated due to predictive error. A Logical
 	      Resource Identification section is included in the event log to indicate
 	      the Resource Type and ID.</para>
-	      
-	      <para><emphasis role="bold">Customer environmental problem has 
+
+	      <para><emphasis role="bold">Customer environmental problem has
 	      returned to normal: </emphasis>This value
 	      is used by the platform firmware to indicate that a customer
 	      environmental problem (e.g. utility power, room ambient temperature,
 	      etc.) detected and reported previously, has returned to normal.</para>
-	      
+
 	      <para><emphasis role="bold">Concurrent Maintenance: </emphasis>
 	      This value is used by the platform firmware
 	      to indicate any non-error event associated with concurrent maintenance
 	      activity.</para>
-	      
+
 	      <para><emphasis role="bold">Capacity Upgrade Event: </emphasis>
 	      This value is used by the platform firmware
 	      to indicate any non-error event associated with capacity upgrade
 	      activity.</para>
-	      
+
 	      <para><emphasis role="bold">Resource Sparing Event: </emphasis>
 	      This value is used by the platform firmware
 	      to indicate any non-error event associated with platform resource sparing
 	      activity.</para>
-	      
+
 	      <para><emphasis role="bold">Dynamic Reconfiguration Event: </emphasis>
 	      This value is used by the partition
 	      firmware to indicate any significant but non-error event associated with
-	      dynamic reconfiguration activity. 
+	      dynamic reconfiguration activity.
 	      <emphasis role="bold">Implementation Note:</emphasis> Due to limited
 	      platform storage resource, non-error event log associated with a logical
 	      partition will be reported to the OS but may not be stored in the
 	      platform.</para>
-	      
-	      <para><emphasis role="bold">Normal system/platform shutdown or 
+
+	      <para><emphasis role="bold">Normal system/platform shutdown or
 	      powered off: </emphasis>This value is used
 	      by the platform firmware to indicate any non-error event associated with
 	      normal system/platform shutdown or powered off activity initiated by the
 	      user.</para>
-	      
-	      <para><emphasis role="bold">Platform powered off by user without 
+
+	      <para><emphasis role="bold">Platform powered off by user without
 	      normal shutdown (abnormal powered off): </emphasis>
 	      This value is used by the platform firmware to indicate
 	      that the platform is abnormally powered off by the user.</para>
-	      
+
 	    </section>
-	    
+
 	    <section>
 	      <title>Error Action Flags</title>
-	      
+
 	      <para>The following are the definitions of the actions taken for the
 	      various Error Action Flags.</para>
-	      
+
 	      <para><emphasis role="bold">Report Externally - </emphasis>
 	      This flag instructs the service processor
 	      (error logger component) to send the error to the service application
 	      (e.g. service focal point(s) or FNM error analyzer). If this flag is set,
 	      the SP always sends the error:</para>
-	      
+
 	      <itemizedlist>
 	        <listitem>
-	      
+
 	          <para>To the &#8220;managing HMC(s)&#8221; if one (or multiple)
 	          exists.</para>
-	
+
 	        </listitem>
 	        <listitem>
-	              
+
 	          <para>And to the hypervisor (unless the &#8220;Don't report to
 	          hypervisor&#8221; flag is also set).</para>
-	
+
 	        </listitem>
 	      </itemizedlist>
-	      
+
 	      <para><emphasis role="bold">Service Action Required - </emphasis>
 	      This flag instructs the Service
 	      application that some service action is required by either the customer
 	      or by the manufacturer&#8217;s service personnel. This is equivalent to
 	      saying Customer Notification is required. Contrast this flag with the
 	      &#8220;Call Home Required&#8221; flag.</para>
-	      
+
 	      <para><emphasis role="bold">Call Home Required - </emphasis>
 	      This flag indicates that the error requires
 	      service and a Call Home Operation is to be performed. There are
 	      additional policies used in combination with this flag: what subsystem
 	      performs the Call Home, what is sent and where it is sent.</para>
-	      
+
 	      <para><emphasis role="bold">Hidden Error - </emphasis>
 	      This flag allows errors to be placed in a
 	      partition's OS error log, but still remain hidden from the customer. This
@@ -1855,7 +1855,7 @@
 	      flag to the OS. Note that this flag has no impact on the SP reporting
 	      errors to either the HMC or hypervisor or for the hypervisor reporting
 	      errors to partitions.</para>
-	      
+
 	      <para><emphasis role="bold">Don't report Error to hypervisor - </emphasis>
 	      While a partition is booting and
 	      before it is functional (e.g. no OS error logging available), partition
@@ -1864,12 +1864,12 @@
 	      this flag to indicate that they need not be sent back to the hypervisor.
 	      This is due to the error scope being limited to the failing partition and
 	      the hypervisor has already taken the appropriate actions.</para>
-	      
-	      <para><emphasis role="bold">Incomplete Information for Error 
+
+	      <para><emphasis role="bold">Incomplete Information for Error
 	      Isolation - </emphasis>Some errors are not
 	      contained to a single enclosure and require error isolation from an
 	      entity with broader system view / scope.</para>
-	      
+
 	      <para><emphasis role="bold">Software Error - </emphasis>
 	      This flag is used by the partition error logger to
 	      indicate to the error is most likely to be caused by the software. When
@@ -1877,22 +1877,22 @@
 	      by either software or hardware. The Software Error and Hardware Error
 	      flags are used to trigger the manufacturer&#8217;s support system to
 	      automatically download software or firmware fixes.</para>
-	      
+
 	      <para><emphasis role="bold">Hardware Error - </emphasis>
 	      This flag is used by the partition error logger to
 	      indicate to the error is most likely to be caused by the hardware. The
 	      Software Error and Hardware Error flags are used to trigger the
 	      manufacturer&#8217;s support system to automatically download software or
 	      firmware fixes.</para>
-	      
+
 	    </section>
-    
+
     </section>
-    
+
     <section xml:id="dbdoclet.50569337_26787">
       <title>Platform Event Log Format, Logical Resource
       Identification section</title>
-      
+
       <table frame="all" pgwide="1">
         <title>Platform Event Log Format, Version 6, Logical
         Resource Identification Section</title>
@@ -2042,12 +2042,12 @@
           </tbody>
         </tgroup>
       </table>
-      
+
     </section>
-    
+
     <section xml:id="dbdoclet.50569337_17545">
       <title>Platform Event Log Format, Primary SRC Section</title>
-      
+
       <table frame="all" pgwide="1">
         <title>Platform Event Log Format, Version 6, Primary SRC
         Section</title>
@@ -2352,7 +2352,7 @@
           </tbody>
         </tgroup>
       </table>
-      
+
       <table frame="all" pgwide="1">
         <title>Platform Event Log Format, Version 6, FRU Call-out
         Structure</title>
@@ -2582,68 +2582,68 @@
           </tbody>
         </tgroup>
       </table>
-      
+
 	    <section>
 	      <title>FRU Replacement or Maintenance Procedure
 	      Priority</title>
-	      
+
 	      <para>This field defines the service priority of the specific call-out,
 	      i.e., replacing the FRU part number or performing the maintenance
 	      procedure ID as given in the FRU/Procedure Identity substructure. Here
 	      are the priority descriptions:</para>
-	      
+
 	      <itemizedlist>
 	        <listitem>
-	      
-	          <para><emphasis role="bold">'H' </emphasis>= High priority and 
+
+	          <para><emphasis role="bold">'H' </emphasis>= High priority and
 	          mandatory call-out. Replacing the FRU (or
 	          performing the maintenance procedure) is mandatory. If multiple call-outs
 	          with 'H' priority are given, all must be replaced or performed as a
 	          group.</para>
-	    
+
 	        </listitem>
 	        <listitem>
-	          
-	          <para><emphasis role="bold">'M' </emphasis>= Medium priority. 
+
+	          <para><emphasis role="bold">'M' </emphasis>= Medium priority.
 	          Replacing the FRU (or performing
 	          maintenance procedure) with 'M' priority one at a time in the order given
 	          after all call-outs prior to this one, if present, are performed.</para>
-	      
+
 	        </listitem>
 	        <listitem>
-	          
-	          <para><emphasis role="bold">'A' </emphasis>= Medium priority group A 
+
+	          <para><emphasis role="bold">'A' </emphasis>= Medium priority group A
 	          (1st group). Replacing all the FRUs
 	          with 'A' priority as a group after all call-outs prior to this group, if
 	          present, are performed.</para>
-	      
+
 	        </listitem>
 	        <listitem>
-	          
-	          <para><emphasis role="bold">'B' </emphasis>= Medium priority group B 
+
+	          <para><emphasis role="bold">'B' </emphasis>= Medium priority group B
 	          (2nd group). Replacing all the FRUs
 	          with 'B' priority as a group after all call-outs prior to this group, if
 	          present, are performed.</para>
-	      
+
 	        </listitem>
 	        <listitem>
-	          
-	          <para><emphasis role="bold">'C' </emphasis>= Medium priority group C 
+
+	          <para><emphasis role="bold">'C' </emphasis>= Medium priority group C
 	          (3rd group). Replacing all the FRUs
 	          with 'C' priority as a group after all call-outs prior to this group, if
 	          present, are performed.</para>
-	      
+
 	        </listitem>
 	        <listitem>
-	          
-	          <para><emphasis role="bold">'L' </emphasis>= Low priority. After 
+
+	          <para><emphasis role="bold">'L' </emphasis>= Low priority. After
 	          performed all the prior call-outs, if
 	          present, and problem still persists, replacing the FRU with this priority
 	          one at a time in the order given.</para>
-	      
+
 	        </listitem>
 	      </itemizedlist>
-	          
+
 	      <para>The list of FRU/Procedure call-outs in the &#8220;call-out&#8221;
 	      subsection of the SRC structure must be in order as defined above, i.e.
 	      High, Medium, Low. 'M' has the same medium priority level as 'A', 'B', or
@@ -2651,31 +2651,31 @@
 	      'C'. A group call-out must be contiguous in the list. Within the medium
 	      priority level, follow the call-out order in the list A list without High
 	      or Medium priority is also valid.</para>
-	      
+
 	    </section>
-	    
+
 	    <section>
 	      <title>Failing Component Type Description</title>
-	      
+
 	      <itemizedlist>
 	        <listitem>
-	      
+
 	          <para><emphasis role="bold">Normal Hardware FRU: </emphasis>
 	          Hardware FRU in the platform which the
 	          platform firmware or code can positively identify, and its VPD contains
 	          the part number and associated information.</para>
-	      
+
 	        </listitem>
 	        <listitem>
-	          
+
 	          <para><emphasis role="bold">Code FRU: </emphasis>
 	          Some layer of platform firmware or OS code is
 	          suspected. The procedure ID field provides additional information about
 	          which code(s) is/are the potential problem.</para>
-	      
+
 	        </listitem>
 	        <listitem>
-	          
+
 	          <para><emphasis role="bold">Configuration error: </emphasis>
 	          The problem may be related to how hardware
 	          or code is configured. For example, an adapter is plugged in a slot that
@@ -2683,21 +2683,21 @@
 	          reason to use one of these is if the analysis can provide more
 	          information to the customer and service provider by giving a location
 	          code.</para>
-	      
+
 	        </listitem>
 	        <listitem>
-	          
+
 	          <para><emphasis role="bold">Maintenance procedure required: </emphasis>
 	          Further isolation of the problem
 	          is required by performing the procedure as identified in the Procedure ID
 	          field. Procedures are designed to help to isolate problems and guide the
 	          service provider through identifying which FRUs to replace in which
 	          order.</para>
-	      
+
 	        </listitem>
 	        <listitem>
-	          
-	          <para><emphasis role="bold">Symbolic FRU: </emphasis>Used for a single 
+
+	          <para><emphasis role="bold">Symbolic FRU: </emphasis>Used for a single
 	          FRU where the analysis code knows
 	          exactly what the part is but there is no part number, or the part number
 	          cannot be pulled from VPD, or when there is something special (like a
@@ -2705,41 +2705,41 @@
 	          or FRUs without VPD (so a part number cannot be filled in). The term
 	          &#8220;Symbolic&#8221; simply means &#8220;not an actual part
 	          number&#8221;.</para>
-	      
+
 	        </listitem>
 	        <listitem>
-	          
-	          <para><emphasis role="bold">External FRU: </emphasis>A failing part(s) 
+
+	          <para><emphasis role="bold">External FRU: </emphasis>A failing part(s)
 	          which is/are not in the system,
 	          e.g. attached storage sub-system, network hubs/switches, external drives
 	          like CD/DVD boxes.</para>
-	      
+
 	        </listitem>
 	        <listitem>
-	          
-	          <para><emphasis role="bold">External Code: </emphasis>Code not running 
+
+	          <para><emphasis role="bold">External Code: </emphasis>Code not running
 	          in the platform but is the
 	          potential source of the error. This could be something like storage
 	          subsystem code or even another system in the same cluster.</para>
-	      
+
 	        </listitem>
 	        <listitem>
-	          
-	          <para><emphasis role="bold">Tool FRU: </emphasis>This is a special 
+
+	          <para><emphasis role="bold">Tool FRU: </emphasis>This is a special
 	          tool that will be required by one of
 	          the FRUs in the list. Tools are only added as FRUs when they are not part
 	          of the CE tool kit and therefore the repair action could be delayed if
 	          the CE did not know to bring it. Examples are Optical Cleaning Kits for
 	          fiber channel, and special tools for torque or reach or weight
 	          considerations.</para>
-	      
+
 	        </listitem>
 	      </itemizedlist>
-	      
+
 	    </section>
-    
+
     </section>
-    
+
     <section xml:id="dbdoclet.50569337_94114">
       <title>Platform Event Log Format, Dump Locator Section</title>
       <para>&#160;</para>
@@ -2918,12 +2918,12 @@
           </tbody>
         </tgroup>
       </table>
-      
+
     </section>
-    
+
     <section xml:id="dbdoclet.50569337_81250">
       <title>Platform Event Log Format, EPOW Section</title>
-      
+
       <table frame="all" pgwide="1" xml:id="dbdoclet.50569337_39498">
         <title>Platform Event Log Format, Version 6, EPOW
         Section</title>
@@ -3079,12 +3079,12 @@
           </tbody>
         </tgroup>
       </table>
-      
+
     </section>
-    
+
     <section xml:id="dbdoclet.50569337_74350">
       <title>Platform Event Log Format, IO Events Section</title>
-      
+
       <table frame="all" pgwide="1" xml:id="dbdoclet.50569337_86901">
         <title>Platform Event Log Format, Version 6, IO Events
         Section</title>
@@ -3233,7 +3233,8 @@
                 <para>0x04 = Node off-line</para>
                 <para>0x05 = platform-dump-max-size change</para>
                 <para>0x08 = Generic Notification</para>
-                <para>0x09 = NVDIMM status change</para>
+                <para>0x09 = Platform protection of NVDIMM contents enabled</para>
+                <para>0x0A = Platform protection of NVDIMM contents disabled</para>
                 <para>All other values = Reserved</para>
               </entry>
             </row>
@@ -3263,7 +3264,7 @@
                 <para>For the platform-dump-max-size change I/O-Event Sub-Type:
                 8 bytes for the new value of the platform-dump-max-size system
                 parameter (specifying the sum (in bytes) of the maximum size of
-                each unique platform dump type that the 
+                each unique platform dump type that the
                 <emphasis>ibm,platform-dump</emphasis> RTAS call could
                 return).</para>
                 <para>&#160;</para>
@@ -3275,13 +3276,13 @@
           </tbody>
         </tgroup>
       </table>
-      
+
     </section>
-    
+
     <section xml:id="dbdoclet.50569337_16482">
       <title>Platform Event Log Format, Failing Enclosure
       MTMS</title>
-      
+
       <table frame="all" pgwide="1">
         <title>Platform Event Log Format, Version 6, Failing
         Enclosure MTMS</title>
@@ -3395,25 +3396,25 @@
       <para>The Failing Enclosure Machine Type, Model, and Serial Number (MTMS)
       that is associated with the error is important for service and
       support.</para>
-      
+
       <para>The source of information for the MTMS fields varies according to
       the following:</para>
 
       <itemizedlist>
         <listitem>
-              
+
           <para>For CEC errors, it is the CEC enclosure MTMS.</para>
 
         </listitem>
         <listitem>
-          
+
           <para>For errors in I/O enclosures (drawers and towers) that have their
           own MTMS and are sold as separate MTMS from the CEC, we use the I/O
           Drawer MTMS.</para>
 
         </listitem>
         <listitem>
-          
+
           <para>For I/O enclosures that were sold as a feature, this section
           contains the Feature Code and Serial Number of the I/O enclosure. When
           the Feature Code is used, it is left justified in the Machine Type and
@@ -3421,12 +3422,12 @@
 
         </listitem>
       </itemizedlist>
-      
+
     </section>
-    
+
     <section>
       <title>Platform Event Log Format, Impacted Partitions</title>
-      
+
       <table frame="all" pgwide="1">
         <title>Platform Event Log Format, Version 6, Impacted
         Partitions</title>
@@ -3568,17 +3569,17 @@
           </tbody>
         </tgroup>
       </table>
-      
+
       <para>This section describes partitions that are impacted by an error.
       When this section is supplied, the partitions in this list (and only
       these partitions) are notified of the error.</para>
-      
+
     </section>
-    
+
     <section xml:id="dbdoclet.50569337_54366">
       <title>Platform Event Log Format, Failing Memory
       Address</title>
-      
+
       <table frame="all" pgwide="1">
         <title>Platform Error Event Log Format, Version 6, Failing
         Memory Address</title>
@@ -3716,7 +3717,7 @@
           </tbody>
         </tgroup>
       </table>
-      
+
       <table frame="all" pgwide="1">
         <title>UE Error Information</title>
         <tgroup cols="3">
@@ -4060,17 +4061,17 @@
           </tbody>
         </tgroup>
       </table>
-      
+
       <para>For an error log that has the machine check interrupt section
       filled out, the platform is not required to provide the date and time
       stamp in the main-a section. The fields will be binary zeroes if the date
       and time stamp is not provided.</para>
-      
+
     </section>
 
     <section xml:id="error.hotplug">
       <title>Platform Event Log Format, Hotplug Section</title>
-      
+
       <table frame="all" pgwide="1" xml:id="table.error.hotplug">
         <title>Platform Error Event Log Format, Version 6, Hotplug Section</title>
         <tgroup cols="4">
@@ -4100,7 +4101,7 @@
                 <para>2</para>
               </entry>
               <entry namest='c3' nameend='c4'>
-                <para>Section ID: A two-ASCII character field which uniquely 
+                <para>Section ID: A two-ASCII character field which uniquely
                 identifies the type of section. Value = “HP”.</para>
               </entry>
             </row>
@@ -4112,7 +4113,7 @@
                 <para>2</para>
               </entry>
               <entry namest='c3' nameend='c4' >
-                <para>Section length: Length in bytes of the section, including 
+                <para>Section length: Length in bytes of the section, including
                 the section ID.</para>
               </entry>
             </row>
@@ -4221,14 +4222,14 @@
                 <para>1</para>
               </entry>
               <entry>
-                <para>0 = Transactional Request: When using “drc count”or “drc count indexed”as the Hotplug 
-                Identifier, the OS should take steps to verify the entirety of the request can be satisfied 
-                before proceeding with the hotplug / unplug operations. If only a partial count can be 
-                satisfied, the OS should ignore the entirety of the request. If the OS cannot determine 
-                this beforehand, it should satisfy the hotplug / unplug request for as many of the 
+                <para>0 = Transactional Request: When using “drc count”or “drc count indexed”as the Hotplug
+                Identifier, the OS should take steps to verify the entirety of the request can be satisfied
+                before proceeding with the hotplug / unplug operations. If only a partial count can be
+                satisfied, the OS should ignore the entirety of the request. If the OS cannot determine
+                this beforehand, it should satisfy the hotplug / unplug request for as many of the
                 requested resources as possible, and attempt to revert to the original OS / DRC state.</para>
-                <para>1 = Non-transactional Request: When using “drc count”or “drc count indexed”as the 
-                Hotplug Identifier, the OS should attempt to satisfy as much of the request as possible, 
+                <para>1 = Non-transactional Request: When using “drc count”or “drc count indexed”as the
+                Hotplug Identifier, the OS should attempt to satisfy as much of the request as possible,
                 even if it cannot be satisfied for all the DRCs specified.</para>
               </entry>
             </row>
@@ -4240,7 +4241,7 @@
                 <para>Reserved</para>
               </entry>
             </row>
-            
+
             <row>
               <entry>
                 <para>0x0C</para>
@@ -4251,11 +4252,11 @@
               <entry namest='c3' nameend='c4' >
                 <para>Hotplug Identifier<?linebreak?>
                 Variable length field depending on the Hotplug Identifier Type specified.
-                For drc name, this field is a null-terminated ASCII character field containing 
+                For drc name, this field is a null-terminated ASCII character field containing
                 the drc name of the resource to hotplug.</para>
                 <para>For drc index, this is 4 byte field with the drc index of the resource to hotplug.</para>
                 <para>For drc count, this is a 4 byte field with the number of resources to hotplug.</para>
-                <para>For drc count indexed, this is two 4 byte fields the first being the number of resources 
+                <para>For drc count indexed, this is two 4 byte fields the first being the number of resources
                 to hotplug and the second being the drc index at which to start.</para>
               </entry>
             </row>
@@ -4269,9 +4270,9 @@
               <entry namest='c3' nameend='c4' >
                 <para>Hotplug Token<?linebreak?>
                 Present only if corresponding Hotplug Event Capability bit is set.</para>
-                <para>Integer value that can be used in conjunction with other fields of the hotplug 
-                event structure (Hotplug Indentifier, Hotplug Type, etc.) to allow OS to associate 
-                hotplug event with the request which generated it for the purposes of providing 
+                <para>Integer value that can be used in conjunction with other fields of the hotplug
+                event structure (Hotplug Indentifier, Hotplug Type, etc.) to allow OS to associate
+                hotplug event with the request which generated it for the purposes of providing
                 feedback to the requestor, such as debugging or error information.</para>
               </entry>
             </row>
@@ -4280,5 +4281,5 @@
       </table>
     </section>
   </section>
- 
+
 </section>
