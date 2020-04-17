@@ -18686,6 +18686,54 @@ hcall ( const uint64 H_VASI_STATE, /* Return the state of the VASI service */
       Complete&#8221; message is sent, and if that message is sent
       successfully, then the communication path can be deemed to be
       open.</para>
+
+      <para>For a partition booted on P9 Firmware or newer, the client partition uses
+        the hcall()s associated with the Subordinate CRQ Transport facility to register
+        and deregister any sub-CRQs necessary for the operations of the VFC. Once the
+        main CRQ connection is complete between the client and the server, the client
+        receives from the server the number of sub-CRQs that can be supported on the
+        client side. The client allocates memory for the first sub-CRQ (an array, large
+        enough for all possible responses, of 32 byte elements), pins the queue and
+        maps it into the I/O space of the RTCE window specified in the
+        <emphasis role="bold"><literal>&#8220;ibm,my-dma-window&#8221;</literal></emphasis>
+        property using the standard kernel mapping services that subsequently use the
+        H_PUT_TCE hcall(). The queue is then registered using the H_REG_SUB_CRQ hcall().
+        This process continues until all desired sub-CRQs are registered or until the
+        H_REG_SUB_CRQ hcall() indicates that the resources allocated to the client for
+        sub-CRQs for the virtual IOA have already been allocated (H_Resource returned).
+        Interrupt numbers for the Sub-CRQs that have been registered, are returned by
+        the H_REG_SUB_CRQ hcall() (See
+        <xref linkend="dbdoclet.50569348_63838" />).</para>
+
+      <para>Once all the CRQs and Sub-CRQs are setup, the communications between the
+        client and server device drivers may commence for purposes of further setup
+        operations, and then normal I/O requests, error communications, etc. The
+        protocol for this communication is beyond the scope of this architecture.
+        When a partition calls H_FREE_CRQ or crashes, the Hypervisor notifies the
+        partner partition by placing a Transport Event in the partner’s main CRQ.
+        Following the main CRQ, a 32-byte transport event will also be sequentially
+        placed on active partner Subordinate queues. For Partition Mobility, in the
+        event of an active migration, VFC client and server will receive a 32-byte Partner
+        Partition Suspended transport event on the main CRQ and sequentially on any
+        active Subordinate queues. The 32-byte Subordinate CRQ transport event uses
+        the same Format byte (second byte) and is as defined in
+        <xref linkend="dbdoclet.50569348_93265" />).
+        For Partition Mobility, if the partition is not booted in at least P9 Base
+        Compatibility mode, the Sub-CRQs will not be migrated to the target, however,
+        all associated RTCE mapped memory will be migrated. Upon Partition Mobility abort,
+        the Sub-CRQs will remain intact on the source.</para>
+
+      <para>For a platform that does not support the Subordinate CRQ Transport
+        facility or is not booted on P9 Firmware or newer, the partition should
+        expect H_Parameter from H_REG_SUB_CRQ.</para>
+
+      <para><emphasis role="bold">Implementation Note:</emphasis> On some earlier levels
+      of P9 Firmware, the partition may need to be booted in P9 Base Compatibility
+      mode or newer, else the partition should expect H_Parameter from H_REG_SUB_CRQ.
+      In later levels of P9 Firmware (FW930 and later), the partition may be able to
+      successfully H_REG_SUB_CRQ in older compatibility modes; however, all Sub-CRQs
+      will not be migrated to the target to maintain compatibility.</para>
+
       <para>When the VFC Adapter device driver receives an I/O request from one
       of the FC device head drivers, it executes the following sequence. First
       an I/O request control block is allocated. Then it builds the FC
@@ -19189,6 +19237,18 @@ hcall ( const uint64 H_VASI_STATE, /* Return the state of the VASI service */
             <xref linkend="dbdoclet.50569364_23132" />).</para>
           </listitem>
        	</varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vfc_npiv_req"
+          xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+
+          <listitem>
+            <para><emphasis role="bold">For the VFC option:</emphasis> On P9 Firmware
+            and newer, the platform must implement the Subordinate CRQ
+            Transport option as defined in
+            <xref linkend="dbdoclet.50569348_28179" />.</para>
+          </listitem>
+       	</varlistentry>
       </variablelist>
 
       <section xml:id="dbdoclet.50569364_98316">
@@ -19509,6 +19569,22 @@ hcall ( const uint64 H_VASI_STATE, /* Return the state of the VASI service */
                         client-server communications protocol.</para>
                       </entry>
                     </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold"><literal>&#8220;interrupt-ranges&#8221;</literal></emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>See Definition Column</para>
+                      </entry>
+                      <entry>
+                        <para>Standard property name that defines the interrupt number(s)
+                          and range(s) handled by this device. Subordinate CRQs
+                          associated with this VFC use interrupt numbers from these
+                          ranges. Only present on P9 Firmware and newer.</para>
+                      </entry>
+                    </row>
                   </tbody>
                 </tgroup>
               </table>
@@ -19822,6 +19898,22 @@ hcall ( const uint64 H_VASI_STATE, /* Return the state of the VASI service */
                   definition for the
                   <emphasis role="bold"><literal>&#8220;ibm,#dma-address-cells&#8221;</literal></emphasis> property in
                   <xref linkend="LoPAR.DeviceTree" />.</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>
+                    <emphasis role="bold"><literal>&#8220;interrupt-ranges&#8221;</literal></emphasis>
+                  </para>
+                </entry>
+                <entry>
+                  <para>See Definition Column</para>
+                </entry>
+                <entry>
+                  <para>Standard property name that defines the interrupt number(s)
+                    and range(s) handled by this device. Subordinate CRQs
+                    associated with this VFC use interrupt numbers from these
+                    ranges. Only present on P9 Firmware and newer.</para>
                 </entry>
               </row>
             </tbody>
