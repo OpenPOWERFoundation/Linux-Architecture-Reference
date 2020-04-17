@@ -14761,7 +14761,7 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
       </variablelist>
 
       <table frame="all" pgwide="1" xml:id="table_reliable_crq_entry_format_for_vasi">
-        <?dbhtml table-width="50%" ?><?dbfo table-width="50%" ?>
+        <?dbhtml table-width="70%" ?><?dbfo table-width="70%" ?>
         <title>Reliable CRQ Entry Format Byte Definitions for VASI (Header=0x80)</title>
         <tgroup cols="2">
           <colspec colname="c1" colwidth="50*" align="center" />
@@ -14879,7 +14879,31 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
             </row>
             <row>
               <entry>
-                <para>0x11-0x80</para>
+                <para>0x11</para>
+              </entry>
+              <entry>
+                <para>VASI Add Buffer Indirect Request</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x12</para>
+              </entry>
+              <entry>
+                <para>VASI Message Upload</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x13</para>
+              </entry>
+              <entry>
+                <para>VASI Message Download</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x14-0x80</para>
               </entry>
               <entry>
                 <para>Reserved</para>
@@ -14967,7 +14991,31 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
             </row>
             <row>
               <entry>
-                <para>0x91-0xFF</para>
+                <para>0x91</para>
+              </entry>
+              <entry>
+                <para>VASI Add Buffer Indirect Response</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x92</para>
+              </entry>
+              <entry>
+                <para>VASI Message Upload Response</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x90</para>
+              </entry>
+              <entry>
+                <para>VASI Message Download Response</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x94-0xFF</para>
               </entry>
               <entry>
                 <para>Reserved</para>
@@ -15187,7 +15235,42 @@ able 252‚ “VASI Reliable CRQ Response Status Values‚” on page 721.
             </row>
             <row>
               <entry>
-                <para>0x15-0xFF</para>
+                <para>0x15</para>
+              </entry>
+              <entry>
+                <para>Invalid Indirect Buffer Descriptor: Either the IOBA is too
+                  large for the LIOBN or its logical TCE does not contain a valid
+                  logical address mapping.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x16</para>
+              </entry>
+              <entry>
+                <para>Invalid Indirect Buffer Length: The indirect buffer size is
+                  not large enough to contain the total number of buffers indicated.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x17</para>
+              </entry>
+              <entry>
+                <para>Invalid Control Code</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x18</para>
+              </entry>
+              <entry>
+                <para>Invalid Sub-control Code</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>0x19-0xFF</para>
               </entry>
               <entry>
                 <para>Reserved</para>
@@ -15466,6 +15549,69 @@ able 252‚ “VASI Reliable CRQ Response Status Values‚” on page 721.
             and VASI State requests must only be sent after successful VASI Opens and prior to a VASI Close.</para>
           </listitem>
        	</varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp"
+          xrefstyle="select: labelnumber nopage"/>-27.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis>
+            For the VASI option: The VASI Add Buffer Indirect message must be as defined in
+            <xref linkend="figure_format_of_the_vasi_add_buffer_indirect_crq_elem" />.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp"
+          xrefstyle="select: labelnumber nopage"/>-28.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis>
+            The platform must process the VASI Add Buffer Indirect Request message
+            per the semantics described in
+            <xref linkend="sec_vasi_add_buffer_indirect" />.</para>
+          </listitem>
+       	</varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp"
+          xrefstyle="select: labelnumber nopage"/>-29.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis>
+            The VASI Message Upload message must be as defined in
+            <xref linkend="figure_format_of_the_vasi_message_upload_crq_elements" />.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp"
+          xrefstyle="select: labelnumber nopage"/>-30.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis>
+            The platform must process the VASI Message Upload  Request message
+            per the semantics described in
+            <xref linkend="sec_vasi_message_upload" />.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp"
+          xrefstyle="select: labelnumber nopage"/>-31.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis>
+            The VASI Message Download message must be as defined in
+            <xref linkend="figure_format_of_the_vasi_message_download_crq_elements" />.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_vasi_req_resp"
+          xrefstyle="select: labelnumber nopage"/>-32.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the VASI option:</emphasis>
+            The platform must process the VASI Message Download  Request
+            message per the semantics described in
+            <xref linkend="sec_vasi_message_download" />.</para>
+          </listitem>
+        </varlistentry>
       </variablelist>
 
       <section xml:id="sec_vasi_exchange_capabilities">
@@ -15553,7 +15699,7 @@ able 252‚ “VASI Reliable CRQ Response Status Values‚” on page 721.
                   <para>Reserved 1</para>
                 </entry>
                 <entry>
-                  <para>4:1 - 13:5</para>
+                  <para>4:1 - 12:7</para>
                 </entry>
                 <entry>
                   <para>Reserved for future expansion</para>
@@ -15562,6 +15708,72 @@ able 252‚ “VASI Reliable CRQ Response Status Values‚” on page 721.
               <row>
                 <entry namest="c1" nameend="c3">
                   <para>&#160;</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>MSP Failover</para>
+                </entry>
+                <entry>
+                  <para>13:0</para>
+                </entry>
+                <entry>
+                  <para>MSP failover supported</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>Multiple opens</para>
+                </entry>
+                <entry>
+                  <para>13:1</para>
+                </entry>
+                <entry>
+                  <para>Multiple opens per stream supported</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>Buffer Management Scheme 2</para>
+                </entry>
+                <entry>
+                  <para>13:2</para>
+                </entry>
+                <entry>
+                  <para>Hypervisor's support of buffer mangement scheme version 2</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>Enhanced VASI Signal to Suspend</para>
+                </entry>
+                <entry>
+                  <para>13:3</para>
+                </entry>
+                <entry>
+                  <para>VASI Signal to Suspend to be sent when the management console indicates the client is suspendable</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>Enhanced Progress CRQ</para>
+                </entry>
+                <entry>
+                  <para>13:4</para>
+                </entry>
+                <entry>
+                  <para>Progress CRQ includes a correlator</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>Add Buffer Indirect Command</para>
+                </entry>
+                <entry>
+                  <para>13:5</para>
+                </entry>
+                <entry>
+                  <para>Add Buffer Indirect command supported</para>
                 </entry>
               </row>
               <row>
@@ -16320,6 +16532,532 @@ able 252‚ “VASI Reliable CRQ Response Status Values‚” on page 721.
         </figure>
 
       </section>
+
+      <section xml:id="sec_vasi_add_buffer_indirect">
+        <title>VASI Add Buffer Indirect</title>
+
+        <para>The VASI Add Buffer Indirect Command message, see
+          <xref linkend="figure_format_of_the_vasi_add_buffer_indirect_crq_elem" />
+          indicates to the hypervisor that the originator VSP device driver is
+          providing the hypervisor with multiple empty buffers for the specific BOTTOM
+          instance.</para>
+
+        <para>A maximum of 255 buffers can be sent in a single VASI Add Buffer Indirect
+          CRQ command, however, the platform may only be able to process a subset of
+          the buffers in a single call. The buffers do not have to be of the same size.
+          For each buffer sent, the hypervisor organizes its input buffers into N buffer
+          pools per service, by size as indicated by the buffer descriptor. The VASI
+          <emphasis role="bold"><literal>&#8220;ibm,#buffer-pools&#8221;</literal></emphasis>
+          device tree property relates how many buffer size pools
+          the firmware implements. The first N different sizes supplied by the device
+          driver specifies the sizes of the N buffer size pools -- buffers of other
+          sizes are rejected.</para>
+
+        <para>The VASI Add Buffer Indirect Response message indicates to the originating
+          VASI device driver that the hypervisor has processed the associated VASI Add
+          Buffer Indirect Command message. All VASI Add Buffer Indirect CRQ messages
+          generate a VASI Add Buffer Indirect Response message to provide feedback to
+          the VASI device driver for flow control of the firmware's VASI CRQ.</para>
+
+        <para>The count field in the VASI Add Buffer Indirect response indicates how
+          many buffers PHYP processed successfully. Buffers are always processed in
+          order from the beginning of the indirect buffer, so any unprocessed buffers
+          are always at the end. Buffer processing stops if an error is encountered.
+          Processing of a subset of buffers per call is not considered an error and
+          the unprocessed buffers will be freed back to the pool by the VSP to be used
+          in subsequent calls.</para>
+
+        <para>If the Status field of the VASI Add Buffer Indirect CRQ message is
+          “Invalid Indirect Buffer Descriptor” then the last 8 bytes of the response
+          contains the Indirect Buffer Descriptor, otherwise, the last 8 bytes contain
+          the CRQ message Correlator (1st 8 Bytes of Indirect Buffer as set by VSP).</para>
+
+        <para>If any error is encountered in processing a VASI Add Buffer Indirect
+          command, the associated VASI stream is transitioned the to the “Aborted”
+          state by the VSP to terminate the operation and free the stream's buffer pool.</para>
+
+        <para>Status Values defined for the VASI Add Buffer Indirect response message:
+          <itemizedlist spacing="compact" mark="none">
+            <listitem>
+              <para>Success</para>
+            </listitem>
+
+            <listitem>
+              <para>Hardware</para>
+            </listitem>
+
+            <listitem>
+              <para>Invalid BOTTOM</para>
+            </listitem>
+
+            <listitem>
+              <para>Invalid Indirect Buffer Descriptor</para>
+            </listitem>
+
+            <listitem>
+              <para>Invalid Indirect Buffer Length</para>
+            </listitem>
+
+            <listitem>
+              <para>Invalid Buffer Descriptor</para>
+            </listitem>
+
+            <listitem>
+              <para>Invalid Buffer Length</para>
+            </listitem>
+          </itemizedlist>
+        </para>
+
+        <simplesect>
+          <title>Semantics for VASI Add Buffer Indirect Request Message:</title>
+
+          <itemizedlist>
+            <listitem>
+              <para>Construct VASI Add Buffer Indirect Response message prototype
+                (copy low order 14 bytes from the request message to the response prototype.</para>
+            </listitem>
+
+            <listitem>
+              <para>Set the Count field (Byte 3) in the response prototype to zero.</para>
+            </listitem>
+
+            <listitem>
+              <para>Validate the BOTTOM field, else respond “Invalid BOTTOM”.</para>
+            </listitem>
+
+            <listitem>
+              <para>Insert the TOP recorded for the open BOTTOM into the response
+                prototype.</para>
+            </listitem>
+
+            <listitem>
+              <para>Validate high order Indirect Buffer Descriptor bit is 0b1, else
+                respond with “Invalid Indirect Buffer Descriptor”</para>
+            </listitem>
+
+            <listitem>
+              <para>Validate that the indirect Buffer Descriptor address translates
+                through the LIOBN of the first pane of the
+                <emphasis role="bold"><literal>&#8220;ibm,my-dma-window&#8221;</literal></emphasis>
+                property, else respond with “Invalid Indirect Buffer Descriptor”.</para>
+            </listitem>
+
+            <listitem>
+              <para>Copy the first 8 bytes at the translated Indirect Buffer Descriptor
+                address (Correlator) into the low order 8 bytes of the response prototype.</para>
+            </listitem>
+
+            <listitem>
+              <para>Validate that the Indirect Buffer Descriptor length field is at
+                least the total number of buffers indicated in the Count field in the
+                Request plus 1 (the Correlator), else respond with “Invalid Indirect Buffer Length”.</para>
+            </listitem>
+
+            <listitem>
+              <para>For each buffer indicated in the Indirect Buffer Descriptor:
+                <itemizedlist>
+                  <listitem>
+                    <para>Validate high order Buffer Descriptor bit is 0b1, else respond
+                      with “Invalid Buffer Descriptor”</para>
+                  </listitem>
+
+                  <listitem>
+                    <para>Validate that the Buffer Descriptor address translates through
+                      the LIOBN of the first pane of the
+                      <emphasis role="bold"><literal>&#8220;ibm,my-dma-window&#8221;</literal></emphasis>
+                      property, else respond with “Invalid Buffer Descriptor”.</para>
+                  </listitem>
+
+                  <listitem>
+                    <para>If the Buffer Descriptor length field does not match the
+                      buffer length of one of the buffer pools then:
+                      <itemizedlist>
+                        <listitem>
+                          <para>If buffer lengths are assigned to all buffer pools,
+                            then respond with “Invalid Buffer Length”</para>
+                        </listitem>
+
+                        <listitem>
+                          <para>Else select an unassigned buffer pool, and assign its
+                            length to match the length field of the Buffer Descriptor.</para>
+                        </listitem>
+                      </itemizedlist>
+                    </para>
+                  </listitem>
+
+                  <listitem>
+                    <para>Enqueue the buffer descriptor onto the per service session
+                      (“BOTTOM”) pool whose buffer length matches the length field of
+                      the Buffer Descriptor, increment the Free Buffers in Pool count
+                      for the pool.</para>
+                  </listitem>
+
+                  <listitem>
+                    <para>Increment the Processed Buffers count.</para>
+                  </listitem>
+
+                  <listitem>
+                    <para>Check if processing time still exists, if so continue to the
+                      next buffer.</para>
+                  </listitem>
+                </itemizedlist>
+              </para>
+            </listitem>
+
+            <listitem>
+              <para>Copy the Processed Buffers count into the Count field (Byte 3) in
+                the response prototype.</para>
+            </listitem>
+
+            <listitem>
+              <para>Respond “Success”.</para>
+            </listitem>
+          </itemizedlist>
+
+          <figure xml:id="figure_format_of_the_vasi_add_buffer_indirect_crq_elem">
+            <title>Format of the VASI Add Buffer Indirect CRQ Elements</title>
+            <mediaobject>
+              <imageobject role="html">
+                <imagedata fileref="figures/figure_format_vasi_add_buffer_indirect_crq_elem.gif" format="GIF"
+                scalefit="1" />
+              </imageobject>
+              <imageobject role="fo">
+                <imagedata contentdepth="100%" fileref="figures/figure_format_vasi_add_buffer_indirect_crq_elem.gif"
+                format="GIF" scalefit="1" width="100%" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+
+          <figure xml:id="figure_vasi_indirect_memory_buffer_format">
+            <title>Indirect Memory Buffer Format</title>
+            <mediaobject>
+              <imageobject role="html">
+                <imagedata fileref="figures/figure_vasi_indirect_memory_buffer_format.gif" format="GIF"
+                scalefit="1" />
+              </imageobject>
+              <imageobject role="fo">
+                <imagedata contentdepth="100%" fileref="figures/figure_vasi_indirect_memory_buffer_format.gif"
+                format="GIF" scalefit="1" width="100%" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+        </simplesect>
+      </section>
+
+      <section xml:id="sec_vasi_message_upload">
+        <title>VASI Message Upload</title>
+
+        <para>The VASI Message Upload Command message (see
+          <xref linkend="figure_format_of_the_vasi_message_upload_crq_elements" />)
+          requests the receiving VSP to process the message. The “Control” field
+          defines how the VSP is suppose to process.</para>
+
+        <para>The valid message control codes are unique to the specific
+          VASI operation stream. See
+          <xref linkend="table_vasi_message_control_codes" />
+          for more details. The valid message sub-control codes are unique to each
+          VASI operation stream and defined control code. See
+          <xref linkend="table_vasi_message_subcontrol_codes" />
+          for more details. The 8 byte message data field is also operation
+          specific and unique to each control and sub-control code combination. See
+          <xref linkend="table_vasi_message_data" />
+          for more details.</para>
+
+        <para>The VASI Message Upload Response message indicates to the hypervisor
+          that the VSP has processed the message.</para>
+
+        <para>Status Values defined for the VASI Message Upload response message:
+          <itemizedlist spacing="compact" mark="none">
+            <listitem>
+              <para>Success</para>
+            </listitem>
+
+            <listitem>
+              <para>Invalid TOP</para>
+            </listitem>
+
+            <listitem>
+              <para>Invalid Control</para>
+            </listitem>
+
+            <listitem>
+              <para>Invalid Sub-Control</para>
+            </listitem>
+          </itemizedlist>
+        </para>
+
+        <simplesect>
+          <title>Semantics for processing the VASI Message Upload Response Message:</title>
+
+          <itemizedlist>
+            <listitem>
+              <para>Validate the BOTTOM parameter for the caller; else respond
+                “Invalid BOTTOM”</para>
+            </listitem>
+          </itemizedlist>
+
+          <figure xml:id="figure_format_of_the_vasi_message_upload_crq_elements">
+            <title>Format of the VASI Message Upload CRQ Elements</title>
+            <mediaobject>
+              <imageobject role="html">
+                <imagedata fileref="figures/figure_format_vasi_message_upload_crq_elem.gif" format="GIF"
+                scalefit="1" />
+              </imageobject>
+              <imageobject role="fo">
+                <imagedata contentdepth="100%" fileref="figures/figure_format_vasi_message_upload_crq_elem.gif"
+                format="GIF" scalefit="1" width="100%" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+
+          <table frame="all" pgwide="1" xml:id="table_vasi_message_control_codes">
+            <?dbhtml table-width="80%" ?><?dbfo table-width="80%" ?>
+            <title>VASI Message Control Codes</title>
+            <tgroup cols="2">
+              <colspec colname="c1" colwidth="20*" align="center" />
+              <colspec colname="c2" colwidth="80*"/>
+              <thead valign="middle">
+                <row>
+                  <entry>
+                    <para>
+                      <emphasis role="bold">Value</emphasis>
+                    </para>
+                  </entry>
+                  <entry align="center" >
+                    <para>
+                      <emphasis role="bold">Definition</emphasis>
+                    </para>
+                  </entry>
+                </row>
+              </thead>
+              <tbody valign="middle">
+                <row>
+                  <entry>
+                    <para>0x01</para>
+                  </entry>
+                  <entry>
+                    <para>Hypervisor pass-through: (Migration Only)<?linebreak?>
+                      This control bit tells the VSP receiving a Message Upload
+                      command to pass the command control, and data to the other
+                      side of the migration for transmission to the hypervisor as a
+                      VASI Message Download Command. The Sub-Control and data fields
+                      are opaque to the VSP and not defined here.</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>0x02-0xFF</para>
+                  </entry>
+                  <entry>
+                    <para>Reserved for future expansion</para>
+                    <note><para> Message control codes are values not bit fields.</para></note>
+                  </entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
+
+          <table frame="all" pgwide="1" xml:id="table_vasi_message_subcontrol_codes">
+            <?dbhtml table-width="80%" ?><?dbfo table-width="80%" ?>
+            <title>VASI Message Sub-Control Codes</title>
+            <tgroup cols="3">
+              <colspec colname="c1" colwidth="20*" align="center" />
+              <colspec colname="c2" colwidth="20*" align="center" />
+              <colspec colname="c3" colwidth="60*"/>
+              <thead valign="middle">
+                <row>
+                  <entry>
+                    <para>
+                      <emphasis role="bold">Control Code</emphasis>
+                    </para>
+                  </entry>
+                  <entry>
+                    <para>
+                      <emphasis role="bold">Sub-Control Values</emphasis>
+                    </para>
+                  </entry>
+                  <entry align="center" >
+                    <para>
+                      <emphasis role="bold">Definition</emphasis>
+                    </para>
+                  </entry>
+                </row>
+              </thead>
+              <tbody valign="middle">
+                <row>
+                  <entry>
+                    <para>0x01</para>
+                  </entry>
+                  <entry>
+                    <para>0x00-0xFF</para>
+                  </entry>
+                  <entry>
+                    <para>Hypervisor defined and outside the scope of this architecture.</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>0x02-0xFF</para>
+                  </entry>
+                  <entry>
+                    <para>0x00-0xFF</para>
+                  </entry>
+                  <entry>
+                    <para>Reserved</para>
+                  </entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
+
+          <table frame="all" pgwide="1" xml:id="table_vasi_message_data">
+            <?dbhtml table-width="80%" ?><?dbfo table-width="80%" ?>
+            <title>VASI Message Data</title>
+            <tgroup cols="3">
+              <colspec colname="c1" colwidth="20*" align="center" />
+              <colspec colname="c2" colwidth="20*" align="center" />
+              <colspec colname="c3" colwidth="60*"/>
+              <thead valign="middle">
+                <row>
+                  <entry>
+                    <para>
+                      <emphasis role="bold">Control Code</emphasis>
+                    </para>
+                  </entry>
+                  <entry>
+                    <para>
+                      <emphasis role="bold">Sub-Control Bit Values</emphasis>
+                    </para>
+                  </entry>
+                  <entry align="center" >
+                    <para>
+                      <emphasis role="bold">Definition</emphasis>
+                    </para>
+                  </entry>
+                </row>
+              </thead>
+              <tbody valign="middle">
+                <row>
+                  <entry>
+                    <para>0x01</para>
+                  </entry>
+                  <entry>
+                    <para>0x00-0xFF</para>
+                  </entry>
+                  <entry>
+                    <para>Hypervisor defined and outside the scope of this architecture.</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>0x02-0xFF</para>
+                  </entry>
+                  <entry>
+                    <para>0x00-0xFF</para>
+                  </entry>
+                  <entry>
+                    <para>Reserved</para>
+                  </entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
+        </simplesect>
+      </section>
+
+      <section xml:id="sec_vasi_message_download">
+        <title>VASI Message Download</title>
+
+        <para>The VASI Message Download Command message (see
+          <xref linkend="figure_format_of_the_vasi_message_download_crq_elements" />)
+          passes the message data to the VASI Virtual IOA of the VASI Stream,
+          associated with the BOTTOM parameter, for processing.</para>
+
+        <para>The “Control” and “Sub-Control” fields define how the VASI Virtual IOA
+          is suppose to process the message.</para>
+
+        <para>The valid message control codes are unique to the specific
+          VASI operation stream. See
+          <xref linkend="table_vasi_message_control_codes" />
+          for more details. The valid message sub-control codes are unique to each
+          VASI operation stream and defined control code. See
+          <xref linkend="table_vasi_message_subcontrol_codes" />
+          for more details. The 8 byte message data field is also operation
+          specific and unique to each control and sub-control code combination. See
+          <xref linkend="table_vasi_message_data" />
+          for more details.</para>
+
+        <para>The VASI Message Download Response message indicates to the VSP that
+          the hypervisor that has processed the message.</para>
+
+        <para>Status Values defined for the VASI Message Download response message:
+          <itemizedlist spacing="compact" mark="none">
+            <listitem>
+              <para>Success</para>
+            </listitem>
+
+            <listitem>
+              <para>Hardware</para>
+            </listitem>
+
+            <listitem>
+              <para>Invalid BOTTOM</para>
+            </listitem>
+
+            <listitem>
+              <para>Invalid Control</para>
+            </listitem>
+
+            <listitem>
+              <para>Invalid Sub-Control</para>
+            </listitem>
+          </itemizedlist>
+        </para>
+
+        <simplesect>
+          <title>Semantics for processing the VASI Message Download Response Message:</title>
+
+          <itemizedlist>
+            <listitem>
+              <para>Construct VASI Signal Response message prototype (copy the low
+                order 14 bytes from the Request message to the response prototype).</para>
+            </listitem>
+
+            <listitem>
+              <para>Validate the BOTTOM parameter for the caller; else respond
+                “Invalid BOTTOM”</para>
+            </listitem>
+
+            <listitem>
+              <para>Insert the TOP recorded for the open BOTTOM into the response prototype.</para>
+            </listitem>
+
+            <listitem>
+              <para>Determine the VASI stream associated with the BOTTOM parameter.
+                If the “Control” or “Sub-Control” parameter is invalid for the VASI
+                operation stream represented by the BOTTOM parameter (refer to
+                <xref linkend="table_vasi_message_control_codes" />, and
+                <xref linkend="table_vasi_message_subcontrol_codes" />,
+                then respond “Invalid Control Code” or “Invalid Sub-Control Code”
+                respectively.</para>
+            </listitem>
+          </itemizedlist>
+
+          <figure xml:id="figure_format_of_the_vasi_message_download_crq_elements">
+            <title>Format of the VASI Message Download CRQ Elements</title>
+            <mediaobject>
+              <imageobject role="html">
+                <imagedata fileref="figures/figure_format_vasi_message_download_crq_elem.gif" format="GIF"
+                scalefit="1" />
+              </imageobject>
+              <imageobject role="fo">
+                <imagedata contentdepth="100%" fileref="figures/figure_format_vasi_message_download_crq_elem.gif"
+                format="GIF" scalefit="1" width="100%" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+        </simplesect>
+      </section>
     </section>
 
     <section xml:id="sec_vasi_virtual_ioa_devtree">
@@ -16900,10 +17638,30 @@ hcall ( const uint64 H_VASI_SIGNAL, /* Signal the VASI operation stream of */
                 </row>
                 <row>
                   <entry>
+                    <para>Failover</para>
+                  </entry>
+                  <entry>
+                    <para>0x6</para>
+                  </entry>
+                  <entry>
+                    <para>Failover operation</para>
+                  </entry>
+                  <entry>
+                    <para>Partition Migration</para>
+                  </entry>
+                  <entry>
+                    <para>Y</para>
+                  </entry>
+                  <entry>
+                    <para>N</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
                     <para>Reserved</para>
                   </entry>
                   <entry>
-                    <para>0x6-0xFFFF</para>
+                    <para>0x7-0xFFFF</para>
                   </entry>
                   <entry>
                     <para>Reserved</para>
@@ -17254,6 +18012,106 @@ hcall ( const uint64 H_VASI_STATE, /* Return the state of the VASI service */
           </table>
         </section>
 
+        <section xml:id="sec_vasi_partition_migration_failover_reason_codes">
+          <title>Partition Migration Failover Reason Codes</title>
+
+          <para><xref linkend="table_partition_migration_failover_codes" />
+          defines the Failover reason code layout for Partition Migration for use with the H_VASI_SIGNAL hypervisor call and the VASI Signal &amp; State CRQ requests, as defined in
+          <xref linkend="sec_vasi_state" />.</para>
+
+          <table frame="all" pgwide="1" xml:id="table_partition_migration_failover_codes">
+            <title>Partition Migration Failover Reason Codes</title>
+            <tgroup cols="3">
+              <colspec colname="c1" colwidth="20*" align="center" />
+              <colspec colname="c2" colwidth="10*" align="center" />
+              <colspec colname="c2" colwidth="70*" align="left" />
+              <thead valign="middle">
+                <row>
+                  <entry>
+                    <para>
+                      <emphasis role="bold">Name</emphasis>
+                    </para>
+                  </entry>
+                  <entry>
+                    <para>
+                      <emphasis role="bold">Byte:bit - Byte:bit</emphasis>
+                    </para>
+                  </entry>
+                  <entry align="center">
+                    <para>
+                      <emphasis role="bold">Description</emphasis>
+                    </para>
+                  </entry>
+                </row>
+              </thead>
+              <tbody valign="middle">
+                <row>
+                  <entry>
+                    <para>Failing Entity</para>
+                  </entry>
+                  <entry>
+                    <para>0:0 - 0:7</para>
+                  </entry>
+                  <entry>
+                    <para>1=Orchestrator<?linebreak?>
+                          2=VSP providing VASI partition source migration service<?linebreak?>
+                          3=Partition Firmware<?linebreak?>
+                          4=VSP providing VASI partition target migration service</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>Failover Direction</para>
+                  </entry>
+                  <entry>
+                    <para>1:0-1:1</para>
+                  </entry>
+                  <entry>
+                    <para>0=Failover direction not indicated<?linebreak?>
+                          1=Failover to this MSP<?linebreak?>
+                          2=Failover from this MSP</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>Error Type</para>
+                  </entry>
+                  <entry>
+                    <para>1:2-1:2</para>
+                  </entry>
+                  <entry>
+                    <para>0=Fatal error<?linebreak?>
+                          1=Non-fatal error</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>Reserved</para>
+                  </entry>
+                  <entry>
+                    <para>1:3-1:7</para>
+                  </entry>
+                  <entry>
+                    <para>Reserved for future expansion</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>Detailed Error</para>
+                  </entry>
+                  <entry>
+                    <para>2-3</para>
+                  </entry>
+                  <entry>
+                    <para>Bytes two and three of the reason code are opaque values, architected by
+                    individual aborting entities.</para>
+                  </entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
+        </section>
+
         <section xml:id="sec_vasi_partition_migration_states">
           <title>Partition Migration VASI States</title>
 
@@ -17416,6 +18274,29 @@ hcall ( const uint64 H_VASI_STATE, /* Return the state of the VASI service */
                     Enabled to Completed on a successful inactive migration.</para>
                   </entry>
                </row>
+               <row>
+                 <entry>
+                   <para>Failover</para>
+                 </entry>
+                 <entry>
+                   <para>7</para>
+                 </entry>
+                  <entry>
+                   <para>This state is defined on both the source and the destination
+                     platform and indicates one or more of the active MSP pairs has
+                     failed and the operation will continue on the remaining MSP pairs.
+                     This state indicates that a failover is in progress. The Failover
+                     state is the final migration state for the MSPs that are failing,
+                     for all other components failover is not the final state as the
+                     migration will either continue on or abort.</para>
+
+                     <note>
+                       <para>The Failover state will never be returned by the H_VAS_STATE
+                         hcall but will be delivered to the MSP via the VASI
+                         State request CRQ.</para>
+                    </note>
+                 </entry>
+              </row>
               </tbody>
             </tgroup>
           </table>
