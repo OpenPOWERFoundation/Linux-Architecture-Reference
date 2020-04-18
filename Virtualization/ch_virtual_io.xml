@@ -9480,8 +9480,10 @@ hcall ( const uint64 H_SEND_LOGICAL_LAN, /* Send a message on the logical LAN */
         uint64 buff-5, /*   with a control byte of “invalid” indicates the end of */
         uint64 buff-6, /*   the message (only the number of buffers needed are */
                        /*   used). */
-        uint64 continue-token /* value of 0 on first call, value returned in R4 on */
-                              /*   H_Busy */
+        uint64 continue-token, /* value of 0 on first call, value returned in R4 on */
+                               /*   H_Busy */
+        uint64 mss             /* The Maximum Segment Size to use when segmenting */
+                               /*   the message */
       );]]></programlisting>
 
           <para>The H_Dropped return code indicates to the sender that one or more
@@ -9527,6 +9529,11 @@ hcall ( const uint64 H_SEND_LOGICAL_LAN, /* Send a message on the logical LAN */
               again but use the value returned in R4 from the previous call as the
               value of continue-token.</para>
             </listitem>
+
+            <listitem>
+              <para>mss: The Maximum Segment Size to use if segmenting of the message
+                is necessary.</para>
+            </listitem>
           </itemizedlist>
         </simplesect>
 
@@ -9549,7 +9556,19 @@ hcall ( const uint64 H_SEND_LOGICAL_LAN, /* Send a message on the logical LAN */
             </listitem>
 
             <listitem>
+              <para>If the caller has enabled large send/receive, verify the MSS is
+                0 or at least 16 – else H_Parameter.</para>
+            </listitem>
+
+            <listitem>
               <para>Verifies the VLAN number -- else H_Parameter.</para>
+            </listitem>
+
+            <listitem>
+              <para>If the caller has enabled large send/receive and the MSS is not 0,
+                verify the message contains an Ethernet packet using IPv4 or IPv6 and
+                TCP – else H_Parameter. The complete TCP header must be within the
+                first 4096 bytes of the frame.</para>
             </listitem>
 
             <listitem>
@@ -9643,30 +9662,75 @@ hcall ( const uint64 H_SEND_LOGICAL_LAN, /* Send a message on the logical LAN */
                 </listitem>
 
                 <listitem>
-                  <para>Searches the receiver&#8217;s receive queue for a suitable buffer
-                  and atomically dequeues it:</para>
+                  <para>If the MSS parameter is being used, the receiver IOA is not enabled for large receive, and the TCP payload in the frame is larger than the value of the mss parameter, the TCP payload of the message is divided into separate messages with copies of the MAC, VLAN, IP, and TCP headers in each.</para>
+                </listitem>
+
+                <listitem>
+                  <para>For each message segment (packets without an MSS will be sent
+                    as a single segment):</para>
 
                   <itemizedlist>
                     <listitem>
-                      <para>If no suitable buffer is found, the receiver&#8217;s dropped
-                      packet counter (last 8 bytes of buffer list) is incremented and
-                      processing proceeds to the next receiver if any.</para>
+                      <para>Searches the receiver&#8217;s receive queue for a suitable buffer
+                      and atomically dequeues it:</para>
+
+                      <itemizedlist>
+                        <listitem>
+                          <para>If no suitable buffer is found, the receiver&#8217;s dropped
+                          packet counter (last 8 bytes of buffer list) is incremented and
+                          processing proceeds to the next receiver if any.</para>
+                        </listitem>
+                      </itemizedlist>
+                    </listitem>
+
+                    <listitem>
+                      <para>If the receiver has enabled large-receive support, write
+                        the MSS value in the second 8 bytes of the selected receive
+                        buffer.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para>If segmentation is required, firmware will update portions
+                        of the IP and TCP headers as necessary.
+
+                        <itemizedlist>
+                          <listitem>
+                            <para>If the packet is using IPv4, firmware will always
+                              regenerate the checksum for each segment.</para>
+                          </listitem>
+
+                          <listitem>
+                            <para>For each segment, firmware will increment the IP
+                              ident field by 1. It is the sender's responsibility
+                              to ensure that no other packets are sent with the
+                              colliding ident values.</para>
+                          </listitem>
+
+                          <listitem>
+                            <para>If the receiver has not enabled checksum offload,
+                              firmware will update the checksum in the TCP header.</para>
+                          </listitem>
+                        </itemizedlist>
+                      </para>
+                    </listitem>
+
+                    <listitem>
+                      <para>Copy the send data in to the selected receive buffer, build a
+                      receive queue entry, and generate an interrupt to the receiver if the
+                      interrupt is enabled.</para>
                     </listitem>
                   </itemizedlist>
                 </listitem>
 
                 <listitem>
-                  <para>Copy the send data in to the selected receive buffer, build a
-                  receive queue entry, and generate an interrupt to the receiver if the
-                  interrupt is enabled.</para>
+                  <para>If any frames were dropped return H_Dropped else return
+                  H_Success. This may happen if the receiver is low on buffers of the
+                  correct size.</para>
                 </listitem>
+
               </itemizedlist>
             </listitem>
 
-            <listitem>
-              <para>If any frames were dropped return H_Dropped else return
-              H_Success.</para>
-            </listitem>
           </itemizedlist>
 
           <para><emphasis role="bold">Firmware Implementation Note:</emphasis> If during the
@@ -10005,7 +10069,9 @@ hcall ( const uint64 H_CHANGE_LOGICAL_LAN_MAC, /* Change the MAC address */
                   <para>This bit is implemented when PHYP supports sending TCP
                   packets with a non-zero TCP checksum field when bit 6 of the
                   buffer descriptor (the "No Checksum" bit) is set.  This bit
-                  indicates R1–17.3.6.2.2–3 is not required.</para>
+                  indicates
+                  <xref linkend="req_illan_attributes_checksum_offload_3" xrefstyle="select: labelnumber nopage" />
+                  is not required.</para>
                 </entry>
               </row>
               <row>
@@ -10013,10 +10079,30 @@ hcall ( const uint64 H_CHANGE_LOGICAL_LAN_MAC, /* Change the MAC address */
                   <para>47</para>
                 </entry>
                 <entry>
-                  <para>Reserved</para>
+                  <para>Large send/receive enabled</para>
                 </entry>
                 <entry>
-                  <para>&#160;</para>
+                  <para>This bit is implemented for a VIOA whenever the Large Send option is
+                    implemented for TCP. This bit is initially set to 0 by the firmware and
+                    the ILLAN DD may attempt to set it to 1 by use of the H_ILLAN_ATTRIBUTES
+                    hcall() if the DD supports the option to receive TCP packets sent using
+                    H_SEND_LOGICAL_LAN with a non-zero MSS. Firmware will not allow changing
+                    the state of this bit if it does not support Large Send as indicated by
+                    bit 48 for the VIOA (H_Constrained would be returned in this case from
+                    the H_ILLAN_ATTRIBUTES hcall() when this bit is a 1 in the set-mask).
+                    The state of this bit cannot be changed between the time that the ILLAN is
+                    registered by an H_REGISTER_LOGICAL_LAN and it is de-registered by
+                    an H_FREE_LOGICAL_LAN. See
+                    <xref linkend="sec_illan_large_send_indication" />
+                    for more information.<?linebreak?>
+                    1: The partition software has indicated that it supports receiving
+                    large-send packets sent using H_SEND_LOGICAL_LAN with a non-zero MSS.
+                    If no buffers are available to fit the large packet, it will be
+                    dropped.<?linebreak?>
+                    0: The partition software has not indicated that it supports the
+                    Large Receive option for packets sent using H_SEND_LOGICAL_LAN,
+                    or it has but the firmware does not support the option, or supports
+                    the option but not for this protocol or for this VIOA.</para>
                 </entry>
               </row>
               <row>
@@ -10027,13 +10113,16 @@ hcall ( const uint64 H_CHANGE_LOGICAL_LAN_MAC, /* Change the MAC address */
                   <para>Large Send Indication Supported</para>
                 </entry>
                 <entry>
-                  <para>The bit is implemented when the large send indication bit in
-                  the I/O descriptor passed to H_SEND_LOGICAL_LAN is
-                  supported by firmware.</para>
-                  <para>0: Software must not request large send indication,
-                  by setting Bit 5 of the buffer descriptor.</para>
-                  <para>1: Software may request large send indication, by
-                  setting Bit 5 of the buffer descriptor.</para>
+                  <para>The bit is implemented when firmware supports the large send
+                    indication bit in the I/O descriptor passed to H_SEND_LOGICAL_LAN.
+                    This bit allows the partition software to enable large receive as
+                    described in
+                    <xref linkend="sec_illan_large_send_indication" />.<?linebreak?>
+                    0: Software must not request large send indication,
+                    by setting Bit 5 of the buffer descriptor.<?linebreak?>
+                    1: Software may request large send indication, by
+                    setting Bit 5 of the buffer descriptorand may supply an MSS value
+                    greater than 0.</para>
                 </entry>
               </row>
               <row>
@@ -10166,14 +10255,14 @@ hcall ( const uint64 H_CHANGE_LOGICAL_LAN_MAC, /* Change the MAC address */
                   H_REGISTER_LOGICAL_LAN and it is deregistered by an
                   H_FREE_LOGICAL_LAN. See
                   <xref linkend="dbdoclet.50569350_53238" /> for more
-                  information.</para>
-                  <para>1: The partition software has indicated that it supports
+                  information.<?linebreak?>
+                  1: The partition software has indicated that it supports
                   the ILLAN Checksum Offload Support option for TCP and IPv6
                   protocol and for the above stated extension headers by using
                   the H_ILLAN_ATTRIBUTES hcall() with this bit set to a 1 in the
                   set-mask, and the firmware has verified that it supports this
-                  protocol for the option for the VIOA.</para>
-                  <para>0: The partition software has not indicated that it
+                  protocol for the option for the VIOA.<?linebreak?>
+                  0: The partition software has not indicated that it
                   supports the ILLAN Checksum Offload Support option for TCP and
                   IPv6 protocol and for the above stated extension headers by
                   using the H_ILLAN_ATTRIBUTES hcall() with this bit set to a 1
@@ -11428,7 +11517,7 @@ hcall ( const uint64 H_ILLAN_ATTRIBUTES,/* Returns in R4 the resulting ILLAN */
               </listitem>
            	</varlistentry>
 
-           	<varlistentry>
+           	<varlistentry xml:id="req_illan_attributes_checksum_offload_3">
               <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569350_37925"
               xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
 
@@ -11562,7 +11651,7 @@ hcall ( const uint64 H_ILLAN_ATTRIBUTES,/* Returns in R4 the resulting ILLAN */
       </section>
 
       <section xml:id="sec_illan_large_send_indication">
-        <title>ILLAN Large Send Indication option</title>
+        <title>ILLAN Large Send/Receive option</title>
 
         <para>This option allows the virtual device to send an
         indication to the receiver that the data being sent by
@@ -11592,6 +11681,12 @@ hcall ( const uint64 H_ILLAN_ATTRIBUTES,/* Returns in R4 the resulting ILLAN */
                     <para>Implement the Large Send Indication bit of the ILLAN Attributes as defined in
                     <xref linkend="dbdoclet.50569350_11661" />.</para>
                   </listitem>
+
+                  <listitem>
+                    <para>Handle the large send/receive enabled bit being set in the
+                      ILLAN Attributes set mask as defined in
+                      <xref linkend="dbdoclet.50569350_11661" />.</para>
+                  </listitem>
                 </orderedlist>
               </listitem>
            	</varlistentry>
@@ -11612,12 +11707,26 @@ hcall ( const uint64 H_ILLAN_ATTRIBUTES,/* Returns in R4 the resulting ILLAN */
               <listitem>
                 <para><emphasis role="bold">For the ILLAN Large send indication option:</emphasis>
                 When the Large Send Indication bit of the first buffer descriptor is set to 1,
-                then the firmware for the H_SEND_LOGICAL_LAN hcall() must set the Large Send Indication
-                bit in the receiver's receive queue entry to 1 when the packet is copied to the
-                destination receive buffer.</para>
+                then the firmware for the H_SEND_LOGICAL_LAN hcall() must set the Large
+                Send Indication bit in the receiver's receive queue entry to 1 when the
+                packet is copied to the destination receive buffer and examine the MSS
+                parameter. If the MSS is greater than 0 and the both the sender and
+                receiver have enabled large send/receive using H_ILLAN_ATTRIBUTES,
+                firmware will copy the MSS into the receive buffer.</para>
               </listitem>
            	</varlistentry>
           </variablelist>
+        </section>
+
+        <section xml:id="sec_illan_receive_buffer">
+          <title>Receive Buffer</title>
+
+          <para>Bit 5 in the Receive Queue entry indicates that the buffer contains a
+            large-send packet. The software device driver should inspect the 8-byte
+            value at byte offset 8 of the receive buffer for the MSS. If that value is 0,
+            the MSS is stored in the packet itself. In the case that the buffer contains
+            a large-send packet, the Ipv4 checksum can be considered good and does not
+            need to be verified.</para>
         </section>
       </section>
     </section>
