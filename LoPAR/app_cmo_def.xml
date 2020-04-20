@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2016 OpenPOWER Foundation
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<appendix xmlns="http://docbook.org/ns/docbook"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         version="5.0"
+         xml:lang="en"
+         xml:id="dbdoclet.50569382_58396">
+
+  <title>CMO Characteristics Definitions</title>
+
+  <para>This appendix defines the string that is returned by the
+  <emphasis>ibm,get-system-parameter</emphasis> RTAS call when the parameter
+  token value of 44 (CMO Characteristics) is specified on the
+  <emphasis>ibm,get-system-parameter</emphasis> RTAS call as per
+  <xref linkend="dbdoclet.50569332_62190"/>.</para>
+
+  <section>
+    <title>CMO Terms</title>
+    <para>The LoPAR Cooperative Memory Over-commitment option (CMO) defines
+    terms as presented in
+    <xref linkend="dbdoclet.50569382_93865" />.</para>
+
+    <table frame="all" pgwide="1" xml:id="dbdoclet.50569382_93865">
+      <title>CMO Terms</title>
+      <tgroup cols="2">
+        <colspec colname="c1" colwidth="50*" />
+        <colspec colname="c2" colwidth="50*" />
+        <tbody>
+          <row>
+            <entry>
+              <para>Term</para>
+            </entry>
+            <entry>
+              <para>Definition</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>CMO Page Size</para>
+            </entry>
+            <entry>
+              <para>Page size as determined by the hypervisor. CMO page size is
+              expressed as the power of 2 of the page size. For example, a 4K
+              page size is represented by the value of 12 (4K = 2
+              <emphasis>12</emphasis>).</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Primary Paging Service Partition</para>
+            </entry>
+            <entry>
+              <para>The primary paging service partition identifies the primary
+              VIOS which provides access to paging services and devices for
+              partitions participating in CMO. The primary paging service
+              partition value is the partition number of the VIOS.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Secondary Paging Service Partition</para>
+            </entry>
+            <entry>
+              <para>The secondary paging service partition identifies the
+              secondary VIOS in a redundant Paging Service Partition
+              configuration. If the hypervisor detects a problem with the
+              primary VIOS, it fails over to the secondary VIOS. The secondary
+              paging service partition value is the partition number of the
+              secondary VIOS.</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </section>
+
+  <section>
+    <title>Key Words And Values</title>
+    <para>
+    <xref linkend="dbdoclet.50569382_70763" />defines the key words and the
+    associated legal values that will be returned in the ASCII NULL terminated
+    string when the parameter token value of 44 (CMO characteristics) is
+    specified on the
+    <emphasis>ibm,get-system-parameter</emphasis> RTAS call. The key word and
+    value is separated by an ASCII equal (&#8220;=&#8221;). Each key word,
+    value pair is delimited by an ASCII comma in the string. The numerical
+    value of the characteristic corresponding to the key word is the decimal
+    number that corresponds to the numeric characters in the value part of the
+    key word, value pair.</para>
+
+    <table frame="all" pgwide="1" xml:id="dbdoclet.50569382_70763">
+      <title>CMO Characteristics</title>
+      <tgroup cols="4">
+        <colspec colname="c1" colwidth="25*" />
+        <colspec colname="c2" colwidth="25*" />
+        <colspec colname="c3" colwidth="25*" />
+        <colspec colname="c4" colwidth="25*" />
+        <tbody>
+          <row>
+            <entry>
+              <para>Characteristics</para>
+            </entry>
+            <entry>
+              <para>Key Word</para>
+            </entry>
+            <entry>
+              <para>Values</para>
+            </entry>
+            <entry>
+              <para>Notes</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>CMO Page Size</para>
+            </entry>
+            <entry>
+              <para>CMOPageSize</para>
+            </entry>
+            <entry>
+              <para>1 - 64</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Primary Paging Service Partition</para>
+            </entry>
+            <entry>
+              <para>PrPSP</para>
+            </entry>
+            <entry>
+              <para>-1 through N</para>
+            </entry>
+            <entry morerows="1">
+              <para>Set to -1 when the partition is not in CMO mode (i.e. is a
+              dedicated memory partition)</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Secondary Paging Service Partition</para>
+            </entry>
+            <entry>
+              <para>SecPSP</para>
+            </entry>
+            <entry>
+              <para>-1 through N</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </section>
+</appendix>

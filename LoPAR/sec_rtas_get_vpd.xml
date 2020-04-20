@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2016 OpenPOWER Foundation
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<section xmlns="http://docbook.org/ns/docbook"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         version="5.0"
+         xml:lang="en"
+         xml:id="dbdoclet.50569332_72964">
+    <title><emphasis>ibm,get-vpd</emphasis> RTAS Call</title>
+    <para>This RTAS call allows for collection of VPD that changes after OS
+    boot time (after the initial reporting in the OF device tree). When this
+    call is implemented, there is no overlap between what is reported in the
+    device tree and what is reported with this RTAS call. Also, when this
+    RTAS call is implemented, all VPD, except PCI and I/O device VPD, which
+    is dynamically changed during OS run time is reported with this call and
+    not via the
+    <emphasis role="bold"><literal>&#8220;ibm,vpd&#8221;</literal></emphasis> property in the OF device
+    tree.</para>
+
+    <variablelist>
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_72964"
+        xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+          <listitem>
+            <para>For all Dynamic Reconfiguration options
+            except PCI Hot Plug, when the platform VPD can change dynamically due to
+            a Dynamic Reconfiguration operation, the platform must implement the
+            <emphasis>ibm,get-vpd</emphasis> RTAS call.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_72964"
+        xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+          <listitem>
+            <para>The RTAS function
+            <emphasis>ibm,get-vpd</emphasis> must implement the argument call buffer
+            defined by
+            <xref linkend="dbdoclet.50569332_62393" />.</para>
+
+            <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_62393">
+              <title>Argument Call Buffer
+              <emphasis>ibm,get-vpd</emphasis></title>
+              <tgroup cols="3">
+                <colspec colname="c1" colwidth="1*" />
+                <colspec colname="c2" colwidth="2*" />
+                <colspec colname="c3" colwidth="4*" />
+                <thead>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">Parameter Type</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">Name</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">Values</emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                </thead>
+                <tbody>
+                  <row>
+                    <entry morerows="6" valign="middle">
+                      <para>In</para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis>Token</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>Token for
+                      <emphasis>ibm,get-vpd</emphasis></para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Number Inputs</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>4</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Number Outputs</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>3</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Pointer to Location Code</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>Real address of NULL-terminated string, contiguous in
+                      real memory and below 4GB, which is the location code of the
+                      FRU for which to obtain the VPD. When this parameter references
+                      a NULL string the VPD for all location codes is
+                      returned.</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Work Area Address</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>Address of work area</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Work Area Size</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>Size of work area</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Sequence Number</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>Integer representing the sequence number of the call.
+                      First call in sequence starts with 1, following calls (if
+                      necessary) use the
+                      <emphasis>Next Sequence Number</emphasis> returned from the
+                      previous call.</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry morerows="2" valign="middle">
+                      <para>Out</para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis>Status</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>-1: Hardware error</para>
+                      <para>-3: Parameter error</para>
+                      <para>-4: Optional: VPD changed, start again</para>
+                      <para>0: Success</para>
+                      <para>1: More data available; call again</para>
+                      <para>990x: Extended Delay where x is a number 0-5 (see text
+                      below)</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Next Sequence Number</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>Return this integer as the
+                      <emphasis>Sequence Number</emphasis> parameter on the next call
+                      to continue the sequence, or 1 if no more calls are
+                      required</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Bytes Returned</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>Integer representing the number of valid bytes returned
+                      in the work area.</para>
+                    </entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
+            <para>When the 990x
+            <emphasis>Status</emphasis> is returned, it is suggested that software
+            delay for 10 raised to the x milliseconds (where x is the last digit of
+            the 990x return code), before calling
+            <emphasis>ibm,get-vpd</emphasis> with the same input parameters. However,
+            software may issue the
+            <emphasis>ibm,get-vpd</emphasis> call again either earlier or later than
+            this.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_72964"
+        xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+          <listitem>
+            <para>On the first call to
+            <emphasis>ibm,get-vpd</emphasis> for a particular VPD gathering operation,
+            the caller must provide a
+            <emphasis>Sequence Number</emphasis> of 1 (32-bit integer)</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_72964"
+        xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+          <listitem>
+            <para>Upon calling
+            <emphasis>ibm,get-vpd</emphasis> with a
+            <emphasis>Sequence Number</emphasis> of 1, a previously returned
+            <emphasis>Next Sequence Number</emphasis> must be discarded. This means
+            that multiple calls to
+            <emphasis>ibm,get-vpd</emphasis> cannot be interleaved by multiple
+            processors, and if processor &#8220;B&#8221; starts a new
+            <emphasis>ibm,get-vpd</emphasis> sequence while processor &#8220;A&#8221;
+            has a call sequence in process (that is, the function on processor
+            &#8220;A&#8221; has returned a
+            <emphasis>Status</emphasis> of 1, and the subsequent call has not yet been
+            made) then the call sequence on processor &#8220;A&#8221; is
+            abandoned.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_72964"
+        xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
+          <listitem>
+            <para>Optionally, if firmware detects a change in
+            the VPD being requested before the entire VPD is returned, the
+            <emphasis>ibm,get-vpd</emphasis> call must return a
+            <emphasis>Status</emphasis> of -4 and the caller must start again with a
+            Starting Number of 1.</para>
+            <para>
+            <emphasis role="bold">Implementation Note:</emphasis> The platform should not impede
+            forward progress by continuously returning a
+            <emphasis>Status</emphasis> of -4.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_72964"
+        xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
+          <listitem>
+            <para>The return data format in the work area
+            must be such that after returning all the data and concatenating all data
+            together in the order received, that the data is the same as is obtained
+            from the
+            <emphasis role="bold"><literal>&#8220;ibm,vpd&#8221;</literal></emphasis> property of the OF device
+            tree.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_72964"
+        xrefstyle="select: labelnumber nopage"/>-7.</emphasis></term>
+          <listitem>
+            <para>Each stanza of the returned data must
+            include the YL (location code) keyword.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_72964"
+        xrefstyle="select: labelnumber nopage"/>-8.</emphasis></term>
+          <listitem>
+            <para>If the
+            <emphasis>ibm,get-vpd</emphasis> RTAS call is implemented, then the
+            platform must not provide the
+            <emphasis role="bold"><literal>&#8220;ibm,vpd&#8221;</literal></emphasis> or
+            <emphasis role="bold"><literal>&#8220;ibm,loc-code&#8221;</literal></emphasis> properties in the OF
+            device tree
+            <emphasis>root</emphasis> node.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_72964"
+        xrefstyle="select: labelnumber nopage"/>-9.</emphasis></term>
+          <listitem>
+            <para>If the
+            <emphasis>ibm,get-vpd</emphasis> RTAS call is implemented, then any VPD
+            which may change after OS boot must be reported via the
+            <emphasis>ibm,get-vpd</emphasis> RTAS call.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_72964"
+        xrefstyle="select: labelnumber nopage"/>-10.</emphasis></term>
+          <listitem>
+            <para>If the
+            <emphasis>Status</emphasis> returned is 1 (more data available, call
+            again), then the caller must call
+            <emphasis>ibm,get-vpd</emphasis> again with the
+            <emphasis>Sequence Number</emphasis> parameter set to the
+            <emphasis>Next Sequence Number</emphasis> integer from the previously
+            returned call.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_72964"
+        xrefstyle="select: labelnumber nopage"/>-11.</emphasis></term>
+          <listitem>
+            <para>If a
+            <emphasis>Status</emphasis> of anything other than 0 or 1 is returned, the
+            contents of the work area is not defined.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_72964"
+        xrefstyle="select: labelnumber nopage"/>-12.</emphasis></term>
+          <listitem>
+            <para>The work area must be contiguous in real
+            memory and must reside below 4GB.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_72964"
+        xrefstyle="select: labelnumber nopage"/>-13.</emphasis></term>
+          <listitem>
+            <para>Firmware cannot count on the contents of
+            the work area at the beginning of any call to
+            <emphasis>ibm,get-vpd</emphasis> (regardless of the value of the
+            <emphasis>Sequence Number</emphasis>).</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_72964"
+        xrefstyle="select: labelnumber nopage"/>-14.</emphasis></term>
+          <listitem>
+            <para>The location code referenced by the
+            <emphasis>Pointer to Location Code</emphasis> parameter must reside in
+            contiguous real memory below an address of 4GB.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_72964"
+        xrefstyle="select: labelnumber nopage"/>-15.</emphasis></term>
+          <listitem>
+            <para>If the
+            <emphasis>ibm,get-vpd</emphasis> RTAS call is implemented, then firmware
+            must supply the
+            <emphasis role="bold"><literal>&#8220;ibm,vpd-size&#8221;</literal></emphasis> property in the
+            <emphasis role="bold"><literal>/rtas</literal></emphasis> node, the value of which is a single cell,
+            encoded as with
+            <emphasis>encode-int</emphasis>, which is the estimated maximum size in
+            bytes of the VPD that is returned if the
+            <emphasis>Pointer to Location Code</emphasis> parameter to the
+            <emphasis>ibm,get-vpd</emphasis> RTAS function is NULL (that is, all
+            system VPD). This size should take in to account possible concurrent
+            addition of new platform elements after the partition is started. If
+            firmware is unable to estimate this size, it may return a value of 0x0 to
+            indicate that no estimate is available.</para>
+            <para>
+              <emphasis role="bold">Software Implementation Notes:</emphasis>
+            </para>
+
+            <orderedlist>
+              <listitem>
+                <para>An OS should be prepared for older versions of firmware where
+                the
+                <emphasis role="bold"><literal>&#8220;ibm,vpd-size&#8221;</literal></emphasis> property is not
+                provided.</para>
+              </listitem>
+
+              <listitem>
+                <para>Each stanza of the returned data must include the YL (location
+                code) keyword.</para>
+              </listitem>
+            </orderedlist>
+          </listitem>
+     	</varlistentry>
+    </variablelist>
+
+  </section>

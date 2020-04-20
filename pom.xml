@@ -17,11 +17,11 @@
   <modules>
     <!-- TODO: Add new documents are build in the project, add their directories to this list to
                enable all document builds from the top level -->
-    <!-- module>LoPAPR</module -->
-    <module>Error Handling</module>
+    <module>LoPAR</module>
+    <!--module>Error Handling</module>
     <module>RTAS</module>
     <module>DeviceTree</module>
     <module>Virtualization</module>
-    <module>Platform</module>
+    <module>Platform</module-->
   </modules>
 </project>

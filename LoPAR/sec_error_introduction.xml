@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2016 OpenPOWER Foundation
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<section xmlns="http://docbook.org/ns/docbook"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         version="5.0"
+         xml:id="dbdoclet.50569337_66258">
+
+  <title>Introduction</title>
+
+  <para>RTAS provides a mechanism which helps OSs avoid the need for
+  platform-dependent code that checks for, or recovers from, errors or
+  exceptional conditions. The mechanism is used to return information about
+  hardware errors which have occurred as well as information about non-error
+  events, such as environmental conditions (for example, temperature or
+  voltage out-of-bounds) which may need OS attention. This permits RTAS to
+  pass hardware event information to the OS in a way which is abstracted from
+  the platform hardware. This mechanism primarily presents itself to the OS
+  via two RTAS functions,
+  <emphasis>event-scan</emphasis> and
+  <emphasis>check-exception</emphasis>, which are described further in
+  <xref linkend="dbdoclet.50569332_16852"/>. A further RTAS function, 
+  <emphasis>rtas-last-error</emphasis>, is also provided to return
+  information about hardware failures detected specifically within an RTAS
+  call.</para>
+
+  <para>The
+  <emphasis>event-scan</emphasis> function is called periodically to check for
+  the presence or past occurrence of a hardware event, such as a soft failure
+  or voltage condition, which did not cause a program exception or interrupt
+  (for example, an ECC error detected and corrected by background scrubbing
+  activity). The
+  <emphasis>check-exception</emphasis> function is called to provide further
+  detail on what platform event has occurred when certain exceptions or
+  interrupts are signaled. The events reported by these two functions are
+  mutually exclusive on any given platform; that is, a platform may choose to
+  notify the OS of a particular event type either through
+  <emphasis>event-scan</emphasis> or through an interrupt and
+  <emphasis>check-exception</emphasis>, but not both.</para>
+
+  <para>Since firmware is platform-specific, it can examine hardware
+  registers, can often diagnose many kinds of hardware errors down to a root
+  cause, and may even perform some very limited kinds of error recovery on
+  behalf of the OS. The reporting format, described in this chapter, permits
+  firmware to report the type of error which has occurred, what entities in
+  the platform were involved in the error, and whether firmware has
+  successfully recovered from the error without the need for further OS
+  involvement. Firmware may not, in many cases, be able to determine all the
+  details of an error, so there are also returned values which indicate this
+  fact. Firmware may optionally provide extended error diagnostic
+  information, as described in
+  <xref linkend="dbdoclet.50569337_79682"/>.</para>
+
+  <para>The abstractions provided by this architecture enable the handling of
+  most platform errors and events without integrating platform-specific code
+  into each supported OS.</para>
+
+  <para><emphasis role="bold">Architecture Note:</emphasis> It is not a goal of the firmware to diagnose all
+  hardware failures. Most I/O device failures, for example, will be detected
+  and recovered by an associated device driver. Firmware attempts to
+  determine the cause of a problem and report what it finds, to aid the end
+  user (by providing meaningful diagnostic data for messages) and to prevent
+  the loss of error syndrome information. Firmware is never required to
+  correct any problem, but in some cases may attempt to do so. System vendors
+  who want more extensive error diagnosis may create OS error handlers which
+  contain specific hardware knowledge, or could use firmware to collect a
+  minimum set of error information which could then be used by diagnostics to
+  further analyze the cause of the error.</para>
+
+</section>

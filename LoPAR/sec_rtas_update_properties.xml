@@ -1,0 +1,1402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2016 OpenPOWER Foundation
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<section xmlns="http://docbook.org/ns/docbook"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         version="5.0"
+         xml:lang="en"
+         xml:id="dbdoclet.50569332_40069">
+    <title><emphasis>ibm,update-properties</emphasis> RTAS Call</title>
+
+    <para>This RTAS call is used to report updates to the properties changed
+    due to a massive platform reconfiguration such as when the partition is
+    migrated between machines. This RTAS call reports changes in the node
+    specified by the phandle value in the work area passed using the Work
+    Area Address argument. The phandle value may be that of a critical node
+    that the caller is interested in or one reported by
+    <emphasis>ibm,update-nodes</emphasis> RTAS call. These changes may include
+    any combination of new values, deleted and added properties. Updates for
+    a given node are retained until the platform is subsequently
+    reconfigured, and remain available to subsequent calls to
+    <emphasis>ibm,update-nodes</emphasis>.</para>
+    <para>There may be more changes than can be reported in a single 4 K work
+    area. In this case, the RTAS call returns with a status of 1 &#8220;More
+    properties updated -- call again&#8221;. On the first call, the second
+    word of the work area contains the value 0 specifying that the RTAS call
+    is to start with the first changed property for the specified updated
+    node. On a call with a status value of 1, the first sixteen (16) bytes of
+    the work area contain values that, when subsequently supplied in the work
+    area of another call to
+    <emphasis>ibm,update-properties</emphasis> RTAS, specify that the call
+    returns the updated property data for properties after those reported in
+    the previous call.</para>
+    <para>A single updated property value string may exceed the capacity of a
+    single 4 K work area. In that case, the updated property value descriptor
+    for the property appears in the work area of multiple sequential calls to
+    <emphasis>ibm,update-properties</emphasis> RTAS. When the updated property
+    value descriptor contains the final data for the property value, the
+    property string length field of the updated property value descriptor is
+    a positive number. When the updated property value descriptor contains
+    either the initial or interim data for the property value, the updated
+    property string length field is a negative number denoting the twos
+    complement of the length of the updated property string contained in the
+    work area. The data value strings for a given property name are
+    concatenated until the final updated property value descriptor is
+    processed.</para>
+    <para>The first value returned, with an updated property name string of
+    NULL, is always the node&#8217;s name (for example: full path ||
+    <emphasis>name</emphasis> property value || @ unit address) even if there
+    has been no change.</para>
+
+    <variablelist>
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_40069"
+        xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Update OF Tree option:</emphasis> The platform must
+            implement the
+            <emphasis>ibm,update-properties</emphasis> RTAS call using the argument
+            call buffer defined by
+            <xref linkend="dbdoclet.50569332_63317" />.</para>
+
+            <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_63317">
+              <title>Argument Call Buffer
+              <emphasis>ibm,update-properties</emphasis></title>
+              <tgroup cols="3">
+                <colspec colname="c1" colwidth="1*" />
+                <colspec colname="c2" colwidth="2*" />
+                <colspec colname="c3" colwidth="4*" />
+                <thead>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">Parameter Type</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">Name</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">Values</emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                </thead>
+                <tbody>
+                  <row>
+                    <entry morerows="4" valign="middle">
+                      <para>In</para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis>Token</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>Token for
+                      <emphasis>ibm,update-properties</emphasis></para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Number Inputs</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>2</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Number Outputs</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>1</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Work Area Address</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>32 bit real address of work area</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Scope</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>Values per
+                      <xref linkend="dbdoclet.50569332_71049" />.</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry valign="middle">
+                      <para>Out</para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis>Status</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>-1: Hardware Error</para>
+                      <para>-2: Busy</para>
+                      <para>-3: Parameter Error (Purpose does not match the current
+                      partition state)</para>
+                      <para>0: Success</para>
+                      <para>1: More properties updated -- call again</para>
+                    </entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_40069"
+        xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+          <listitem>
+            <para><emphasis>ibm,update-properties</emphasis> RTAS call must be 4 KB long
+            aligned on a 4 KB boundary that is accessible with MSR[DR] = 0, else RTAS
+            may return -3 &#8220;Parameter Error&#8221;.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_40069"
+        xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+          <listitem>
+            <para>The work area on the first call to
+            <emphasis>ibm,update-properties</emphasis> RTAS for a given updated node
+            must be formatted as specified in
+            <xref linkend="dbdoclet.50569332_84989" />, else RTAS may return -3
+            &#8220;Parameter Error&#8221;.</para>
+
+            <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_84989">
+              <title>Initial Format of Work Area for
+              <emphasis>ibm,update-properties</emphasis></title>
+              <tgroup cols="1">
+                <colspec colname="c1" colwidth="100*" />
+                <thead>
+                  <row>
+                    <entry>
+                      <para>
+                      <emphasis role="bold">phandle</emphasis> of updated node containing updated
+                      properties to be reported (4 bytes)</para>
+                    </entry>
+                  </row>
+                </thead>
+                <tbody>
+                  <row>
+                    <entry>
+                      <para>0x00000000 (Indicates Initial call for specified
+                      <emphasis role="bold">phandle</emphasis>)</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>8 bytes of 0x00 (reserved)</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>Don&#8217;t Care . . .</para>
+                    </entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_40069"
+        xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+          <listitem>
+            <para>Upon successful return (non-negative status
+            value) from
+            <emphasis>ibm,update-properties</emphasis> the work area must by formatted
+            as defined in
+            <xref linkend="dbdoclet.50569332_72959" />.</para>
+
+            <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_72959">
+              <title>Return Format of Work Area for
+              <emphasis>ibm,update-properties</emphasis></title>
+              <tgroup cols="2">
+                <colspec colname="c1" colwidth="50*" />
+                <colspec colname="c2" colwidth="50*" />
+                <thead>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Description</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>Comments</para>
+                    </entry>
+                  </row>
+                </thead>
+                <tbody>
+                  <row>
+                    <entry>
+                      <para>
+                      <emphasis role="bold">phandle</emphasis> of updated node containing updated
+                      properties to be reported.</para>
+                    </entry>
+                    <entry>
+                      <para>4 Bytes</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>State Variable</para>
+                      <para>(to be returned if status argument value = 1)</para>
+                    </entry>
+                    <entry>
+                      <para>4 Bytes</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>Reserved</para>
+                    </entry>
+                    <entry>
+                      <para>8 bytes</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>Number of properties reported in the work area</para>
+                    </entry>
+                    <entry>
+                      <para>4 Bytes</para>
+                      <para>The number (N) of updated property value descriptors that
+                      follow -- see below</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>N updated property value descriptors</para>
+                    </entry>
+                    <entry>
+                      <para>Each updated property value descriptor is formatted
+                      as:</para>
+                      <para>&#160;</para>
+                      <para>Null terminated string indicating the name of the updated
+                      property.</para>
+                      <para>followed by:</para>
+                      <para>Value Descriptor -- 4 Bytes decoded as</para>
+                      <para>&#160;</para>
+                      <para>0x00000000 Name only property (
+                      <emphasis role="bold"><literal>&#8220;encode-null&#8221;</literal></emphasis>) no value
+                      follows</para>
+                      <para>&#160;</para>
+                      <para>0x80000000 The property is to be deleted no value
+                      follows</para>
+                      <para>&#160;</para>
+                      <para>Other positive values are the length (M) of the
+                      immediately following property value string that completes the
+                      update of the property value.</para>
+                      <para>&#160;</para>
+                      <para>Other negative values are the twos complement of the
+                      length (M) of the immediately following property value string
+                      that either starts or continues the update of the property
+                      value with the remainder in the work area of subsequent call(s)
+                      to
+                      <emphasis>ibm,update-properties</emphasis>.</para>
+                      <para>&#160;</para>
+                      <para>Followed by:</para>
+                      <para>0-M bytes of property value string.</para>
+                    </entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_40069"
+        xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
+          <listitem>
+            <para>Upon successful return (non-negative status
+            value) from
+            <emphasis>ibm,update-properties</emphasis> when the State Variable had
+            been 0x00000000, the first updated property descriptor must describe the
+            fully qualified path name of the node specified by the phandle argument
+            in the work buffer; the three fields of this updated property descriptor
+            are:</para>
+
+            <itemizedlist>
+              <listitem>
+                <para>Property name string is as from
+                <emphasis>encode-null</emphasis></para>
+              </listitem>
+
+              <listitem>
+                <para>Value descriptor is the 4 byte binary length of the value
+                string</para>
+              </listitem>
+
+              <listitem>
+                <para>Value string is the fully qualified path name as from the node
+                name string returned by the open firmware
+                <emphasis>package-to-path</emphasis> client interface call.</para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_40069"
+        xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
+          <listitem>
+            <para>The work area on subsequent call(s) to
+            <emphasis>ibm,update-properties</emphasis> RTAS for a given updated node
+            must be formatted as specified in
+            <xref linkend="dbdoclet.50569332_96468" />, else RTAS may return -3
+            &#8220;Parameter Error&#8221;.</para>
+
+            <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_96468">
+              <title>Format of Work Area for Subsequent Calls to
+              <emphasis>ibm,update-properties</emphasis></title>
+              <tgroup cols="1">
+                <colspec colname="c1" colwidth="100*" />
+                <thead>
+                  <row>
+                    <entry>
+                      <para>
+                      <emphasis role="bold">phandle</emphasis> of updated node containing updated
+                      properties to be reported (4 Bytes)</para>
+                    </entry>
+                  </row>
+                </thead>
+                <tbody>
+                  <row>
+                    <entry>
+                      <para>Value from last call to
+                      <emphasis>ibm,update-properties</emphasis> RTAS that returned
+                      status of 1 (12 bytes).</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>Don&#8217;t Care . . .</para>
+                    </entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_40069"
+        xrefstyle="select: labelnumber nopage"/>-7.</emphasis></term>
+          <listitem>
+            <para><emphasis>ibm,update-properties</emphasis> RTAS call, the platform must
+            restrict its reported property updates to those specified in
+            <xref linkend="dbdoclet.50569332_71049" /> for the value of the specified
+            <emphasis role="bold"><literal>&#8220;Scope&#8221;</literal></emphasis> argument.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_40069"
+        xrefstyle="select: labelnumber nopage"/>-8.</emphasis></term>
+          <listitem>
+            <para>For the
+            <emphasis>ibm,update-properties</emphasis> RTAS call, the platform must
+            return a
+            <emphasis>Status</emphasis> of -3 (Parameter Error) for an unrecognized
+            value of the &#8220;Scope&#8221; argument.</para>
+
+            <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_71049">
+              <title>Properties of the Nodes That May Be Reported by
+              <emphasis>ibm,update-properties</emphasis> for a &#8220;
+              <emphasis>Scope</emphasis>&#8221;</title>
+              <tgroup cols="3">
+                <colspec colname="c1" colwidth="33*" />
+                <colspec colname="c2" colwidth="33*" />
+                <colspec colname="c3" colwidth="33*" />
+                <thead>
+                  <row>
+                    <entry>
+                      <para>Scope Value</para>
+                    </entry>
+                    <entry>
+                      <para>Reportable node types (value of
+                      <emphasis role="bold"><literal>&#8220;name&#8221;</literal></emphasis> or
+                      <emphasis role="bold"><literal>&#8220;device_type&#8221;</literal></emphasis> property)</para>
+                    </entry>
+                    <entry>
+                      <para>Property Name</para>
+                    </entry>
+                  </row>
+                </thead>
+                <tbody>
+                  <row>
+                    <entry morerows="6" valign="middle">
+                      <para>All negative values: Resource Reassignment events as from
+                      event-scan RTAS</para>
+                    </entry>
+                    <entry>
+                      <para>/memory</para>
+                    </entry>
+                    <entry>
+                      <para><emphasis role="bold"><literal>&#8220;ibm,associativity&#8221;</literal></emphasis></para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>ibm,dynamic-reconfiguration-memory</para>
+                    </entry>
+                    <entry>
+                      <para><emphasis role="bold"><literal>&#8220;ibm,dynamic-memory&#8221;</literal></emphasis></para>
+                      <para><emphasis role="bold"><literal>&#8220;ibm,dynamic-memory-v2&#8221;</literal></emphasis></para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>cpu</para>
+                    </entry>
+                    <entry>
+                      <para>&#8220;ibm,associativity&#8221;</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>ibm,random-v#</literal></emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>&lt;all&gt;</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>ibm,compression-v#</literal></emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>&lt;all&gt;</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>ibm,encryption-v#</literal></emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>&lt;all&gt;</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>ibm,memory-utilization_instrumentation-v#</literal></emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>&lt;all&gt;</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry morerows="31" valign="middle">
+                      <para>1 Partition Migration / Hibernation</para>
+                    </entry>
+                    <entry morerows="18" valign="middle">
+                      <para>
+                        <emphasis role="bold"><literal>root</literal></emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,model-class&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;clock-frequency&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>
+                        &#8220;ibm,extended-clock-frequency&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;model&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;compatible&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;name&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;system-id&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,partition-no&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,aix-diagnostics&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,diagnostic-lic&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>
+                        &#8220;ibm,platform-hardware-notification&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>
+                        &#8220;ibm,ignore-hp-po-fails-for-dlpar&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,managed-address-types&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,service-indicator-mode&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>openprom</literal></emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;model&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry morerows="9" valign="middle">
+                      <para>
+                        <emphasis role="bold"><literal>rtas</literal></emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;power-on-max-latency&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>
+                        &#8220;ibm,associativity-reference-points&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>
+                        &#8220;ibm,max-associativity-domains&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,configure-kernel-dump&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>
+                        &#8220;ibm,configure-kernel-dump-sizes&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>
+                        &#8220;ibm,configure-kernel-dump-version&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>
+                        &#8220;ibm,read-slot-reset-state-functions&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,configure-pe&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,change-msix-capable&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,current-associativity-domains&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry morerows="1" valign="middle">
+                      <para>
+                        <emphasis role="bold"><literal>vdevice</literal></emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,drc-info&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>children of the
+                      <emphasis role="bold"><literal>vdevice</literal></emphasis> node</para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,loc-code&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry morerows="31" valign="middle">
+                      <para>1 Partition Migration / Hibernation</para>
+                      <para>&#160;</para>
+                    </entry>
+                    <entry morerows="20" valign="middle">
+                      <para>
+                        <emphasis role="bold"><literal>cpu</literal></emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;name&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;d-cache-sets&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;d-cache-size&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;i-cache-sets&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;i-cache-size&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;bus-frequency&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,extended-bus-frequency&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>
+                        &#8220;ibm,extended-clock-frequency&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;clock-frequency&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;timebase-frequency&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;l2-cache&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;performance-monitor&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,associativity&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>TLB properties (See
+                      <xref linkend="LoPAR.DeviceTree" />)</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;slb-size&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,tbu40-offset&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,pi-features&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,spurr&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,pa-optimizations&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                      <emphasis role="bold"><literal>&#8220;ibm,dfp&#8221;</literal></emphasis> (sign bit
+                      only)</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,sub-processors&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry morerows="4" valign="middle">
+                      <para>
+                        <emphasis role="bold"><literal>cache</literal></emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;d-cache-sets&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;d-cache-size&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;i-cache-sets&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;i-cache-size&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>l2-cache</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>options</literal></emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,dasd-spin-interval&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>memory</literal></emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,associativity&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry morerows="2" valign="middle">
+                      <para>
+                        <emphasis role="bold"><literal>ibm,dynamic-reconfiguration-memory</literal></emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para><emphasis role="bold"><literal>&#8220;ibm,associativity-lookup-arrays&#8221;</literal></emphasis></para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para><emphasis role="bold"><literal>&#8220;ibm,dynamic-memory&#8221;</literal></emphasis></para>
+                      <para><emphasis role="bold"><literal>&#8220;ibm,dynamic-memory-v2&#8221;</literal></emphasis></para>
+                      <para>only the associativity list index fields</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para><emphasis role="bold"><literal>&#8220;ibm,memory-preservation-time&#8221;</literal></emphasis></para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>/chosen</literal></emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,architecture-vec-5&#8221;</literal></emphasis>
+                      </para>
+                      <para>byte 3 (I/O Super Page Option support parameters)</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry morerows="3" valign="middle">
+                      <para>1 Partition Migration / Hibernation</para>
+                      <para>&#160;</para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>ibm,random-v#</literal></emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>&lt;all&gt;</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>ibm,compression-v#</literal></emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>&lt;all&gt;</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>ibm,encryption-v#</literal></emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>&lt;all&gt;</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>ibm,memory-utilization_instrumentation-v#</literal></emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>&lt;all&gt;</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>2 Activate Firmware</para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>rtas</literal></emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <orderedlist>
+                        <listitem>
+                          <para>Any
+                          <emphasis role="bold"><literal>/rtas</literal></emphasis> node property as defined per LoPAR
+                          remains invariant.</para>
+                        </listitem>
+
+                        <listitem>
+                          <para>Any
+                          <emphasis role="bold"><literal>/rtas</literal></emphasis> node property or definition
+                          extension, except for the value of a function token property*,
+                          may change (provided that the client program has indicated
+                          support for such property or definition extension) including
+                          the following:</para>
+                          <para>
+                            <emphasis role="bold"><literal>&#8220;ibm,read-slot-reset-state-functions&#8221;
+                            &#8220;ibm,configure-pe&#8221;</literal></emphasis>
+                          </para>
+                        </listitem>
+                      </orderedlist>
+                      <para>*NOTE: This exception mandates that if an RTAS function
+                      token property survives a firmware activation, the token value
+                      of that RTAS function call does not change.</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry morerows="34" valign="middle">
+                      <para>3 Device Reconfiguration</para>
+                    </entry>
+                    <entry morerows="10" valign="middle">
+                      <para>
+                        <emphasis role="bold"><literal>ibm,coherent-platform-facility</literal></emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;compatible&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;status&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,caia-version&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,psl-revision&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,vpd-size&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;vendor-id&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;device-id&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;subsystem-id&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;subsystem-vendor-id&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;revision-id&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;class-code&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry morerows="23" valign="middle">
+                      <para>
+                        <emphasis role="bold"><literal>ibm,coherent-platform-function</literal></emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;compatible&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,max-ints-per-process&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,min-ints-per-process&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,#processes&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,config-record-type&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,config-record-size&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,#config-records&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,error-buffer-size&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,vpd-size&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,scratchpad-size&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;vendor-id&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;device-id&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;subsystem-id&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;subsystem-vendor-id&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;revision-id&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;class-code&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,process-mmio&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,supports-aur&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,supports-csrp&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,supports-prr&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,process-mmio-size&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,programming-model&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold"><literal>&#8220;ibm,programming-models&#8221;</literal></emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
+          </listitem>
+     	</varlistentry>
+    </variablelist>
+
+
+  </section>

@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2016 OpenPOWER Foundation
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<section xmlns="http://docbook.org/ns/docbook"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         version="5.0" xml:lang="en"
+         xml:id="dbdoclet.50569337_29979">
+
+  <title>RTAS Error and Event Classes</title>
+
+  <para>
+  <xref linkend="dbdoclet.50569337_82470"/> describes the predefined classes of
+  error and event notifications that can be presented through the
+  <emphasis>check-exception</emphasis> and
+  <emphasis>event-scan</emphasis> RTAS functions. More detailed descriptions
+  of these classes are given later in this chapter.
+  <xref linkend="dbdoclet.50569337_82470"/> defines nodes in the OF device
+  tree which, through an
+  <literal>&#8220;interrupts&#8221;</literal> property, may list the
+  platform-dependent interrupts related to each class. From this information,
+  OSs know which interrupts may be handled by calling
+  <emphasis>check-exception</emphasis>. The OF structure for describing these
+  interrupts is defined in
+  <xref linkend="LoPAR.DeviceTree"/>.
+  This document also defines the mask parameter for the
+
+  <emphasis>check-exception</emphasis> and
+  <emphasis>event-scan</emphasis> RTAS functions which limits the search for
+  errors and events to the classes specified.</para>
+
+  <table frame="all" pgwide="1" xml:id="dbdoclet.50569337_82470">
+    <title>Error and Event Classes with RTAS Function Call
+    Mask</title>
+    <?dbhtml table-width="75%" ?>
+    <?dbfo table-width="75%" ?>
+    <tgroup cols="3">
+      <colspec colname="c1" colwidth="40*" />
+      <colspec colname="c2" colwidth="40*" />
+      <colspec colname="c3" colwidth="20*" />
+      <thead>
+        <row>
+          <entry>
+            <para>
+              <emphasis role="bold">Class Type</emphasis>
+            </para>
+          </entry>
+          <entry>
+            <para>
+              <emphasis role="bold">OF Node Name(where the
+              <literal>&#8220;interrupts&#8221;</literal> property lists the
+              interrupts)</emphasis>
+            </para>
+          </entry>
+          <entry>
+            <para>
+              <emphasis role="bold">RTAS Function Call Mask(value = 1 enables
+              class)</emphasis>
+            </para>
+          </entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>
+            <para>Internal Errors</para>
+          </entry>
+          <entry>
+            <para>internal-errors</para>
+          </entry>
+          <entry>
+            <para>bit 0</para>
+          </entry>
+        </row>
+        <row>
+          <entry>
+            <para>Environmental and Power Warnings</para>
+          </entry>
+          <entry>
+            <para>epow-events</para>
+          </entry>
+          <entry>
+            <para>bit 1</para>
+          </entry>
+        </row>
+        <row>
+          <entry>
+            <para>Reserved</para>
+          </entry>
+          <entry>
+            <para>&#160;</para>
+          </entry>
+          <entry>
+            <para>bit 2</para>
+          </entry>
+        </row>
+        <row>
+          <entry>
+            <para>Hot Plug Events</para>
+          </entry>
+          <entry>
+            <para>hot-plug-events</para>
+          </entry>
+          <entry>
+            <para>bit 3</para>
+          </entry>
+        </row>
+        <row>
+          <entry>
+            <para>I/O Events and Errors</para>
+          </entry>
+          <entry>
+            <para>ibm,io-events</para>
+          </entry>
+          <entry>
+            <para>bit 4</para>
+          </entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+
+  <variablelist>
+
+  	<varlistentry>
+  		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_29979"
+  		xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+  			<listitem>
+			    <para><emphasis role="bold">For the Platform Interrupt Event option:</emphasis> The platform
+			    must implement the I/O Events and Errors class type along with the
+			    appropriate
+			    <emphasis role="bold"><literal>ibm,io-events</literal></emphasis> node property to specify the
+			    interrupts.</para>
+  			</listitem>
+  	</varlistentry>
+
+  	<varlistentry>
+  		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_29979"
+  		xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+  			<listitem>
+			    <para>Platform-specific error and event interrupts
+			    that a platform provider wants the OS to enable must be listed in the
+			    <literal>&#8220;interrupts&#8221;</literal> property of the appropriate OF
+			    event class node, as described in
+			    <xref linkend="dbdoclet.50569337_82470"/>.</para>
+  			</listitem>
+  	</varlistentry>
+
+  	<varlistentry xml:id="dbdoclet.50569337_80415">
+  		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_29979"
+  		xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+  			<listitem>
+			    <para>To enable
+			    platform-specific error and event interrupt notification, OSs must find the
+			    list of interrupts (described in
+			    <xref linkend="dbdoclet.50569337_82470"/>) for each error and event class in the
+			    OF device tree, and enable them.</para>
+  			</listitem>
+  	</varlistentry>
+
+  	<varlistentry>
+  		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_29979"
+  		xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+  			<listitem>
+			    <para>OSs must have interrupt handlers for the
+			    enabled interrupts described in Requirement
+			    <xref linkend="dbdoclet.50569337_80415"/>, which call the RTAS
+			    <emphasis>check-exception</emphasis> function to determine the cause of the
+			    interrupt.</para>
+  			</listitem>
+  	</varlistentry>
+
+  	<varlistentry xml:id="dbdoclet.50569337_31164">
+  		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_29979"
+  		xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
+  			<listitem>
+			    <para>Platforms which
+			    support error and event reporting must provide information to the OS via
+			    the RTAS
+			    <emphasis>event-scan</emphasis> and
+			    <emphasis>check-exception</emphasis> functions, using the reporting format
+			    described in
+			    <xref linkend="dbdoclet.50569337_21249"/>.</para>
+  			</listitem>
+  	</varlistentry>
+
+  	<varlistentry>
+  		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_29979"
+  		xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
+  			<listitem>
+			    <para>Optional Extended Error Log information, if
+			    returned by the
+			    <emphasis>event-scan</emphasis> or
+			    <emphasis>check-exception</emphasis> functions, must be in the reporting
+			    format described in
+			    <xref linkend="dbdoclet.50569337_85491"/>.</para>
+  			</listitem>
+  	</varlistentry>
+
+  	<varlistentry xml:id="dbdoclet.50569337_36036">
+  		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_29979"
+  		xrefstyle="select: labelnumber nopage"/>-7.</emphasis></term>
+  			<listitem>
+			    <para>To provide control
+			    over performance, the RTAS event reporting functions must not perform any
+			    event data gathering for classes not selected in the event class mask
+			    parameter, nor any extended data gathering if the time critical parameter
+			    is non-zero or the log buffer length parameter does not allow for an
+			    extended error log.</para>
+  			</listitem>
+  	</varlistentry>
+
+  	<varlistentry>
+  		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_29979"
+  		xrefstyle="select: labelnumber nopage"/>-8.</emphasis></term>
+  			<listitem>
+			    <para>To prevent the loss of any event
+			    notifications, the RTAS event reporting functions must be written to gather
+			    and process error and event data without destroying the state information
+			    of events other than the one being processed.</para>
+  			</listitem>
+  	</varlistentry>
+
+  	<varlistentry>
+  		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_29979"
+  		xrefstyle="select: labelnumber nopage"/>-9.</emphasis></term>
+  			<listitem>
+			    <para>Any interrupts or interrupt controls used for
+			    error and event notification must not be shared between error and event
+			    classes, or with any other types of interrupt mechanisms. This allows the
+			    OS to partition its interrupt handling and prevents blocking of one class
+			    of interrupt by the processing of another.</para>
+  			</listitem>
+  	</varlistentry>
+
+  	<varlistentry>
+  		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_29979"
+  		xrefstyle="select: labelnumber nopage"/>-10.</emphasis></term>
+  			<listitem>
+			    <para>If a platform chooses to report multiple
+			    event or error sources through a single interrupt, it must ensure that the
+			    interrupt remains asserted or is re-asserted until
+			    <emphasis>check-exception</emphasis> has been used to process all
+			    outstanding errors or events for that interrupt.</para>
+  			</listitem>
+  	</varlistentry>
+
+  </variablelist>
+
+  <para>
+  <emphasis role="bold">Platform Implementation Note:</emphasis> In Requirement
+  <xref linkend="dbdoclet.50569337_31164"/>, although the fixed-part return format
+  for
+  <emphasis>check-exception</emphasis> and
+  <emphasis>event-scan</emphasis> is the same, there are some expectations
+  about what types of error response may be returned from these functions, as
+  follows:</para>
+
+  <itemizedlist>
+    <listitem>
+
+      <para>The
+      <emphasis>event-scan</emphasis> function is mainly intended to report only
+      errors that have been recovered or are non-critical to the OS, since it is
+      only called on a periodic basis. As such, it should never be used to report
+      a Severity greater than &#8220;WARNING&#8221;. More critical errors should
+      be signaled by an interrupt. Typically, the expected response of an OS to
+      an
+      <emphasis>event-scan</emphasis> error report is simply to log the error. The
+      <emphasis>check-exception</emphasis> function may report error information
+      of any severity.</para>
+
+    </listitem>
+    <listitem>
+
+      <para>If
+      <emphasis>event-scan</emphasis> is reporting a critical error (for example,
+      a checkstop) that occurred before the current boot session, it should not
+      report it with a &#8220;FATAL&#8221; Severity, even though the condition
+      was fatal at the time the failure occurred. The Severity field informs the
+      OS of the severity of the event at the time of reporting. Errors which
+      occurred before a successful reboot are no longer critical. Likewise, the
+      RTAS Disposition field for such an error should be
+      &#8220;FULLY_RECOVERED&#8221;. There is a bit in the extended error log to
+      indicate these &#8220;residual&#8221; errors.</para>
+
+    </listitem>
+    <listitem>
+
+      <para>Although
+      <emphasis>check-exception</emphasis> can potentially clean up an error and
+      return a &#8220;FULLY_RECOVERED&#8221; disposition, recovery still may not
+      occur if the MSR
+      <emphasis>RI</emphasis> bit is not set to 1. It is up to the OS to examine
+      the RI bit, to determine whether processor state is preserved so that a
+      return from the machine check interrupt handler can be safely
+      attempted.</para>
+
+    </listitem>
+  </itemizedlist>
+
+  <xi:include href="sec_rtas_error_indications.xml"/>
+  <xi:include href="sec_rtas_env_epow.xml"/>
+  <xi:include href="sec_rtas_hot_plug.xml"/>
+
+</section>

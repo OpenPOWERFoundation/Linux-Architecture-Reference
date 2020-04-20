@@ -1,0 +1,535 @@
+<appendix xmlns="http://docbook.org/ns/docbook"
+xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
+  <title>SPLPAR Characteristics Definitions</title>
+  <section>
+    <title xml:id="dbdoclet.50569367_15730">SPLPAR Characteristics Definitions</title>
+
+    <para>This appendix defines the string that is returned by the
+    ibm,get-system-parameter RTAS call when the parameter token value of 20
+    (SPLPAR Characteristics) is specified on the ibm,get-system-parameter RTAS
+    call as per <xref linkend="LoPAR.RTAS" />.</para>
+  </section>
+  <section>
+    <title>SPLPAR Terms</title>
+    <para>The LoPAR Shared Processor Logical Partition option (SPLPAR) defines
+    many terms as presented in
+    <xref linkend="dbdoclet.50569367_35778" />.</para>
+
+    <table frame="all" pgwide="1" xml:id="dbdoclet.50569367_35778">
+      <title>SPLPAR Terms</title>
+      <tgroup cols="2">
+        <colspec colname="c1" colwidth="20*" align="center"/>
+        <colspec colname="c2" colwidth="80*" />
+        <thead>
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">Term</emphasis>
+              </para>
+            </entry>
+            <entry align="center">
+              <para>
+                <emphasis role="bold">Definition</emphasis>
+              </para>
+            </entry>
+          </row>
+        </thead>
+        <tbody valign="middle">
+          <row>
+            <entry>
+              <para>Bound Threads</para>
+            </entry>
+            <entry>
+              <para>For virtual processor dispatches, if the hypervisor always
+              dispatches a set of virtual threads together on a physical
+              processor, the threads are said to be bound. This allows an
+              operating system to make scheduling decisions based on cache
+              affinity and work load. A change in this characteristic takes
+              effect on the next reboot of the partition.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Capacity Increment</para>
+            </entry>
+            <entry>
+              <para>This defines the delta by which the entitled capacity of a
+              partition can be incremented or decremented by DLPAR/WLM. The
+              capacity increment is expressed as a percentage of a physical
+              processor. A change in the capacity increment takes effect on the
+              next reboot of the partition.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Desired Entitled Capacity</para>
+            </entry>
+            <entry>
+              <para>The desired entitled capacity set by the system
+              administrator in the partition definition. The desired entitled
+              capacity is expressed as a percentage of a physical processor.
+              The desired entitled capacity can change without a reboot of the
+              partition. The entitled capacity that the partition is currently
+              using may differ from the desired entitled capacity because of
+              WLM actions or failed system processors.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Desired Memory</para>
+            </entry>
+            <entry>
+              <para>The desired memory set by the system administrator in the
+              partition definition. The desired memory is expressed in MB of
+              storage. The desired memory can change without a reboot of the
+              partition. The desired memory that the partition is currently
+              using may differ from the desired memory because of WLM actions
+              or because of failed system memory.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Desired Number of Processors</para>
+            </entry>
+            <entry>
+              <para>The desired number of virtual processors set by the system
+              administrator in the partition definition. The desired number of
+              processors can change without a reboot of the partition. The
+              number of processors that the partition is currently using may
+              differ from the desired number of processors because of WLM
+              actions or because of failed system processors.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Desired Variable Capacity Weight</para>
+            </entry>
+            <entry>
+              <para>The desired variable capacity weight set by the system
+              administrator in the partition definition. The desired variable
+              capacity weight is a number between 0 and 255. The desired
+              variable capacity weight can change without a reboot of the
+              partition. The variable capacity weight that the partition is
+              currently using may differ from the desired variable capacity
+              because of WLM actions.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Dispatch Wheel Rotation Period</para>
+            </entry>
+            <entry>
+              <para>The duration of the hypervisor&#8217;s scheduling window.
+              The time over which the entitled capacity of a virtual processor
+              has to be utilized by the partition. At the start of a dispatch
+              wheel rotation period, each virtual processor is eligible for CPU
+              time corresponding to its entitled capacity. If the entire
+              entitled capacity of a virtual processor is not utilized during a
+              dispatch wheel rotation period, the unused entitled capacity is
+              lost. The dispatch wheel rotation period is expressed as N number
+              of time base ticks. The dispatch wheel duration of a partition
+              with a capacity increment of 100 is 0. A change in the dispatch
+              wheel rotation period takes effect on the next reboot of the
+              partition.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Minimum Entitled Capacity</para>
+            </entry>
+            <entry>
+              <para>The minimum entitled capacity that is needed to power on
+              the partition. The capacity is expressed as a percentage of a
+              physical processor. The minimum entitled capacity is set by the
+              system administrator in the partition definition. DLPAR cannot
+              take the entitled capacity below the minimum entitled capacity. A
+              change in the minimum entitled capacity takes effect on the next
+              reboot of the partition. A partition can give up its entitled
+              capacity to be below the minimum entitled capacity.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Minimum Entitled Capacity per Virtual Processor</para>
+            </entry>
+            <entry>
+              <para>The minimum entitled capacity that the platform requires
+              for a virtual processor of any partition on the platform. The
+              minimum virtual per virtual processor is enforced by the HMC in
+              the partition definition and by the hypervisor for H_SET_PPP (
+              <xref linkend="dbdoclet.50569344_14689" />). A change in the
+              minimum entitled capacity per virtual processor takes effect on
+              the next reboot of the partition.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Minimum Memory</para>
+            </entry>
+            <entry>
+              <para>The minimum amount of main store that is needed to power on
+              the partition. Minimum memory is expressed in MB of storage. The
+              minimum memory is set by the system administrator in the
+              partition definition. DLPAR cannot take the partition memory
+              below the minimum memory. A change in the minimum memory takes
+              effect on the next reboot of the partition. A partition can
+              always give up its memory to go below the minimum memory.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Minimum Number of Processors</para>
+            </entry>
+            <entry>
+              <para>The minimum number of virtual processors that are needed to
+              start the partition. The minimum number of virtual processors is
+              set by the system administrator in the partition definition.
+              DLPAR cannot take the number of virtual processors below the
+              minimum number of processors. A change in the minimum number of
+              processors takes effect on the next reboot of the partition. A
+              partition can always give up its virtual processors to go below
+              the minimum number of processors.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Maximum Entitled Capacity</para>
+            </entry>
+            <entry>
+              <para>The maximum entitled capacity currently that can be
+              assigned to the partition through DLPAR/WLM. The capacity is
+              expressed as a percentage of a physical processor. The Maximum
+              entitled capacity is set up by the system administrator in the
+              partition definition. A change in the maximum entitled capacity
+              maximum takes effect on the next reboot of the partition.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Maximum Platform Processors</para>
+            </entry>
+            <entry>
+              <para>The maximum number of processors that can be active on the
+              platform. A change in the maximum platform processors takes
+              effect on the next reboot of the partition.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Dedicated Donate Mode</para>
+            </entry>
+            <entry>
+              <para>For a partition with a capacity increment of 100, the
+              platform uses a dedicated CPU to actualize a virtual processor of
+              the partition. For such a partition, the platform can increase
+              the capacity of the shared processor pool by utilizing the unused
+              processor capacity of the partition. If the platform supports the
+              dedicated donate function, it can be enabled by the system
+              administrator in the partition definition. The value of this
+              characteristic can change without a reboot of the
+              partition.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Thread</para>
+            </entry>
+            <entry>
+              <para>A multi threaded processor may have multiple contexts
+              executing concurrently. Each of them is called a thread. From a
+              software viewpoint, a thread is an independent executing unit.
+              Threads on a processor share some of the architected and
+              unarchitected resources of a physical processor.</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </section>
+  <section>
+    <title>Key Words And Values</title>
+    <para>Table
+    <xref linkend="dbdoclet.50569367_78034" /> defines the key words and the
+    associated legal values that will be returned in the ASCII NULL terminated
+    string when the parameter token value of 20 (SPLPAR characteristics) is
+    specified on the ibm,get-system-parameter RTAS call. The key word and value
+    is separated by an ascii equal (&#8220;=&#8221;). Each key word, value pair
+    is delimited by an ascii comma in the string. The numerical value of the
+    characteristic corresponding to the key word is the decimal number that
+    corresponds to the numeric characters in the value part of the key word,
+    value pair.</para>
+    <table frame="all" pgwide="1" xml:id="dbdoclet.50569367_78034">
+      <title>SPLPAR Characteristics</title>
+      <?dbhtml table-width="75%" ?><?dbfo table-width="75%" ?>
+      <tgroup cols="4">
+        <colspec colname="c1" colwidth="35*" align="center" />
+        <colspec colname="c2" colwidth="25*" align="center" />
+        <colspec colname="c3" colwidth="20*" align="center" />
+        <colspec colname="c4" colwidth="20*" align="center" />
+        <thead>
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">Characteristics</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">Key Word</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">Values</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">Notes</emphasis>
+              </para>
+            </entry>
+          </row>
+        </thead>
+        <tbody valign="middle">
+          <row>
+            <entry>
+              <para>Bound Threads</para>
+            </entry>
+            <entry>
+              <para>BoundThrds</para>
+            </entry>
+            <entry>
+              <para>0,1</para>
+            </entry>
+            <entry>
+              <para>1</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Capacity Increment</para>
+            </entry>
+            <entry>
+              <para>CapInc</para>
+            </entry>
+            <entry>
+              <para>1 through 100</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Dispatch Wheel Rotation Period</para>
+            </entry>
+            <entry>
+              <para>DisWheRotPer</para>
+            </entry>
+            <entry>
+              <para>1 through N</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Minimum Entitled Capacity</para>
+            </entry>
+            <entry>
+              <para>MinEntCap</para>
+            </entry>
+            <entry>
+              <para>0 through N</para>
+            </entry>
+            <entry>
+              <para>2</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Minimum Entitled Capacity per Virtual Processor</para>
+            </entry>
+            <entry>
+              <para>MinEntCapPerVP</para>
+            </entry>
+            <entry>
+              <para>1 through 100</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Minimum Memory</para>
+            </entry>
+            <entry>
+              <para>MinMem</para>
+            </entry>
+            <entry>
+              <para>0 through N</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Minimum Number of Processors</para>
+            </entry>
+            <entry>
+              <para>MinProcs</para>
+            </entry>
+            <entry>
+              <para>0 through N</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Maximum Entitled Capacity</para>
+            </entry>
+            <entry>
+              <para>MaxEntCap</para>
+            </entry>
+            <entry>
+              <para>1 through N</para>
+            </entry>
+            <entry>
+              <para>3</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Maximum Platform Processors</para>
+            </entry>
+            <entry>
+              <para>MaxPlatProcs</para>
+            </entry>
+            <entry>
+              <para>1 through N</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Desired Entitled Capacity</para>
+            </entry>
+            <entry>
+              <para>DesEntCap</para>
+            </entry>
+            <entry>
+              <para>0 through N</para>
+            </entry>
+            <entry>
+              <para>4</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Desired Memory</para>
+            </entry>
+            <entry>
+              <para>DesMem</para>
+            </entry>
+            <entry>
+              <para>0 through N</para>
+            </entry>
+            <entry>
+              <para>5</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Desired Number of Processors</para>
+            </entry>
+            <entry>
+              <para>DesProcs</para>
+            </entry>
+            <entry>
+              <para>0 through N</para>
+            </entry>
+            <entry>
+              <para>6</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Desired Variable Capacity Weight</para>
+            </entry>
+            <entry>
+              <para>DesVarCapWt</para>
+            </entry>
+            <entry>
+              <para>0 through 255</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Dedicated Donate Mode</para>
+            </entry>
+            <entry>
+              <para>DedDonMode</para>
+            </entry>
+            <entry>
+              <para>0,1</para>
+            </entry>
+            <entry>
+              <para>7</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <para><emphasis  role="bold">Notes:</emphasis>
+      <orderedlist>
+        <listitem>
+          <para>0=Threads are not bound, 1=Threads are bound.</para>
+        </listitem>
+
+        <listitem>
+          <para>The maximum numeric value of Minimum Entitled Capacity is the
+          number of processors on the platform multiplied by 100.</para>
+        </listitem>
+
+        <listitem>
+          <para>The maximum numeric value of Maximum Entitled Capacity is the
+          number of processors on the platform multiplied by 100.</para>
+        </listitem>
+
+        <listitem>
+          <para>The numeric value of Desired Entitled Capacity is greater or equal
+          than the numeric value of the Minimum Entitled Capacity and less than or
+          equal to the numeric value of the Maximum Entitled Capacity.</para>
+        </listitem>
+
+        <listitem>
+          <para>The numeric value of Desired Memory is greater or equal than the
+          numeric value of the Minimum Memory and less than or equal to the maximum
+          memory set by the system administrator in the partition profile.</para>
+        </listitem>
+
+        <listitem>
+          <para>The numeric value of Desired Number of Processors is greater or
+          equal than the numeric value of the Minimum Number of Processors and less
+          than or equal to the maximum number of virtual processors set by the system
+          administrator in the partition profile.</para>
+        </listitem>
+
+        <listitem>
+          <para>0=Dedicated Donate Mode is disabled, 1=Dedicated Donate Mode is
+          enabled.</para>
+        </listitem>
+      </orderedlist>
+    </para>
+  </section>
+</appendix>

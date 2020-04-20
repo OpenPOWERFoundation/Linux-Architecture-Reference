@@ -1,0 +1,617 @@
+<appendix xmlns="http://docbook.org/ns/docbook"
+xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdoclet.50569383_58396">
+  <title>Platform Dependent hcall()s</title>
+
+  <para>This appendix defines the set of hypervisor calls (hcall()s) that are
+  platform dependent. The existence and/or implementation of the hcall() can
+  vary between firmware releases and between hardware platforms.</para>
+  <section>
+    <title>hcall()s Supported by Firmware Release &amp; Hardware
+    Platform</title>
+    <para>
+    <xref linkend="dbdoclet.50569383_56867" /> is a list of platform specific
+    hcall()s, which will be described in this chapter.</para>
+
+    <table frame="all" pgwide="1" xml:id="dbdoclet.50569383_56867">
+      <title>Platform Dependent hcall()s Supported by Release and
+      Hardware Platform</title>
+      <tgroup cols="4">
+        <colspec colname="c1" colwidth="40*" align="center" />
+        <colspec colname="c2" colwidth="20*" align="center" />
+        <colspec colname="c3" colwidth="20*" align="center" />
+        <colspec colname="c4" colwidth="20*" align="center" />
+        <thead>
+          <row>
+            <entry>
+              <para><emphasis role="bold">Function Name/Section</emphasis></para>
+            </entry>
+            <entry>
+              <para><emphasis role="bold">Hypervisor Call Function Token</emphasis></para>
+            </entry>
+            <entry>
+              <para><emphasis role="bold">Firmware Releases Supported</emphasis></para>
+            </entry>
+            <entry>
+              <para><emphasis role="bold">Hardware Platform Supported</emphasis></para>
+            </entry>
+          </row>
+        </thead>
+        <tbody valign="middle">
+          <row>
+            <entry>
+              <para>Reserved</para>
+            </entry>
+            <entry>
+              <para>0xF000-0xF07C</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+            <entry>
+              <para>&#160;</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>H_GetPerformanceCounterInfo /
+              <xref linkend="dbdoclet.50569383_65658" xrefstyle="select: labelnumber" /></para>
+            </entry>
+            <entry>
+              <para>0xF080</para>
+            </entry>
+            <entry>
+              <para>eFW 3.5 and later</para>
+            </entry>
+            <entry>
+              <para>Power 6 and later</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </section>
+  <section>
+    <title>Supported hcall()s</title>
+    <section xml:id="dbdoclet.50569383_65658">
+      <title>H_GetPerformanceCounterInfo (0xF080)</title>
+      <para>This call returns information about the performance of selectable
+      performance counters maintained by the hardware or from data collected by
+      the Hypervisor.</para>
+
+      <simplesect>
+        <title>Syntax:</title>
+
+        <programlisting><![CDATA[int64                  /* H_Success, H_Privilege, H_Authority */
+                       /* H_Hardware, H_Not_Available */
+hcall ( const uint64 H_GetPerformanceCounterInfo /* Retrieve performance info */
+        uint64 size,   /* Size of getPerformanceCounterInfoParms */
+        getPerformanceCounterInfoParms* ); /* Requested/Response data */]]></programlisting>
+
+      </simplesect>
+
+      <simplesect>
+        <title>Parameters:</title>
+
+        <itemizedlist>
+          <listitem>
+            <para>size &#8211; size of the getPerformanceCounterInfoParms</para>
+          </listitem>
+
+          <listitem>
+            <para>getPerformanceCounterInfoParms &#8211; parameter list indicating
+            which performance counter information to retrieve.
+            <xref linkend="dbdoclet.50569383_34010" /></para>
+          </listitem>
+        </itemizedlist>
+      </simplesect>
+
+      <simplesect>
+        <title>Semantics:</title>
+
+        <itemizedlist>
+          <listitem>
+            <para>Validate the getPerformanceInfoParms is accessible, else
+            H_Privilege.</para>
+          </listitem>
+
+          <listitem>
+            <para>Validate the size and contents of getPerformanceCounterInfoParms,
+            else H_Parameter.</para>
+          </listitem>
+
+          <listitem>
+            <para>Validate information is available for the firmware level and
+            platform, else H_Not_Available.</para>
+          </listitem>
+
+          <listitem>
+            <para>Validate partition is permitted to retrieve performance
+            information, else H_Authority.</para>
+          </listitem>
+
+          <listitem>
+            <para>Copy requested performance counters into getPerformanceInfoParms
+            and return H_Success.</para>
+          </listitem>
+        </itemizedlist>
+
+        <table frame="all" pgwide="1" xml:id="dbdoclet.50569383_34010">
+          <title>Performance_Counter_Info_Parms struct</title>
+          <tgroup cols="4">
+            <colspec colname="c1" colwidth="25*" />
+            <colspec colname="c2" colwidth="15*" align="center" />
+            <colspec colname="c3" colwidth="15*" align="center" />
+            <colspec colname="c4" colwidth="45*" align="center" />
+            <thead>
+              <row>
+                <entry align="center">
+                  <para><emphasis role="bold">Member Name</emphasis></para>
+                </entry>
+                <entry>
+                  <para><emphasis role="bold">Member Type</emphasis></para>
+                </entry>
+                <entry>
+                  <para><emphasis role="bold">IN/OUT</emphasis></para>
+                </entry>
+                <entry align="center">
+                  <para><emphasis role="bold">Description</emphasis></para>
+                </entry>
+              </row>
+            </thead>
+            <tbody valign="middle">
+              <row>
+                <entry>
+                  <para>Requested_Information</para>
+                </entry>
+                <entry>
+                  <para>uint_32</para>
+                </entry>
+                <entry>
+                  <para>INPUT</para>
+                </entry>
+                <entry>
+                  <para>See
+                  <xref linkend="dbdoclet.50569383_64760" /></para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>starting_index</para>
+                </entry>
+                <entry>
+                  <para>int_32</para>
+                </entry>
+                <entry>
+                  <para>BOTH</para>
+                </entry>
+                <entry>
+                  <para>At input, the partition id of the first
+                  processor/partition to retrieve performance metrics. If -1 is
+                  specified for this parameter, only information for the current
+                  processor/partition is returned.</para>
+                  <para>At output, the actual first processor/partition id that
+                  was found.</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>returned_values</para>
+                </entry>
+                <entry>
+                  <para>uint_32</para>
+                </entry>
+                <entry>
+                  <para>OUTPUT</para>
+                </entry>
+                <entry>
+                  <para>Number of lists of counters returned</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>reserved</para>
+                </entry>
+                <entry>
+                  <para>uint_32</para>
+                </entry>
+                <entry>
+                  <para>N/A</para>
+                </entry>
+                <entry>
+                  <para>Alignment</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>reserved</para>
+                </entry>
+                <entry>
+                  <para>uint_64[2]</para>
+                </entry>
+                <entry>
+                  <para>N/A</para>
+                </entry>
+                <entry>
+                  <para>Alignment</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>counter_value</para>
+                </entry>
+                <entry>
+                  <para>perf_data</para>
+                </entry>
+                <entry>
+                  <para>BOTH</para>
+                </entry>
+                <entry>
+                  <para>Array of counters values</para>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <para>The possible values for Requested_Information are as shown in
+        <xref linkend="dbdoclet.50569383_64760" />.</para>
+
+        <table frame="all" pgwide="1" xml:id="dbdoclet.50569383_64760">
+          <title>Performance Counter Info Requested_Information
+          Values</title>
+          <tgroup cols="3">
+            <colspec colname="c1" colwidth="30*" />
+            <colspec colname="c2" colwidth="15*" align="center" />
+            <colspec colname="c3" colwidth="55*" />
+            <thead>
+              <row>
+                <entry align="center">
+                  <para>
+                    <emphasis role="bold">Name</emphasis>
+                  </para>
+                </entry>
+                <entry>
+                  <para>
+                    <emphasis role="bold">Value</emphasis>
+                  </para>
+                </entry>
+                <entry align="center">
+                  <para>
+                    <emphasis role="bold">Description</emphasis>
+                  </para>
+                </entry>
+              </row>
+            </thead>
+            <tbody valign="middle">
+              <row>
+                <entry>
+                  <para>Dispatch_PURR_by_processor</para>
+                </entry>
+                <entry>
+                  <para>0x0000 0010</para>
+                </entry>
+                <entry>
+                  <para>The value for the counter_value is a list of values per
+                  physical processor as follows:</para>
+                  <itemizedlist>
+                    <listitem>
+                      <para>uint64 processor time (in PURR cycles) that the processor
+                      was running work on behalf of partitions since the boot of the
+                      CEC</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint32 hardware processor id</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint16 owning partition id (0xFFFF is shared or
+                      unowned)</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint8 processor state (0x01-Not Installed, 0x02-Guarded
+                      Off, 0x03-Unlicensed, 0x04-Shared, 0x05-Borrowed,
+                      0x06-Dedicated)</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint8[1] reserved</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint32 hardware chip id (a value of -1 will be returned
+                      for Not Installed processors)</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint32 hardware module id</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint32 primary affinity domain</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint32 secondary affinity domain</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint32 processor version (a value of -1 will be returned
+                      for Not Installed processors)</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint16 logical processor index</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint8[10] reserved</para>
+                    </listitem>
+                  </itemizedlist>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>Entitled_capped<?linebreak?>
+                  _uncapped_donated<?linebreak?>
+                  _idle_PURR<?linebreak?>
+                  _by_partition</para>
+                </entry>
+                <entry>
+                  <para>0x0000 0020</para>
+                </entry>
+                <entry>
+                  <para>The value for the counter_value is a list of uint64
+                  values as follows:</para>
+                      <para>Partition id</para>
+                  <itemizedlist>
+                    <listitem>
+                      <para>Hypervisor collected PURR cycles that the partition was
+                      entitled to consume since the boot of the CEC (or partition
+                      creation).</para>
+                    </listitem>
+                    <listitem>
+                      <para>Hypervisor collected PURR cycles that the partition
+                      consumed as capped cycles since boot of the CEC (or partition
+                      creation). For a dedicated partition, all cycles consumed will
+                      be reported as capped cycles. For shared, these are the capped
+                      (entitled) cycles consumed by the partition.</para>
+                    </listitem>
+                    <listitem>
+                      <para>Hypervisor collected PURR cycles that the partition
+                      consumed as uncapped shared partition cycles since boot of the
+                      CEC (or partition creation).</para>
+                    </listitem>
+                    <listitem>
+                      <para>Hypervisor collected PURR cycles that were donated from a
+                      dedicated partition to uncapped partitions since boot of the
+                      CEC (or partition creation).</para>
+                    </listitem>
+                    <listitem>
+                      <para>Partition collected PURR cycles that the partition
+                      considers as idle cycles. These cycles can be subtracted from
+                      the total cycles consumed to calculate the partition&#8217;s
+                      view of utilization. Note that not all operating system
+                      versions will report this value.</para>
+                    </listitem>
+                  </itemizedlist>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>Run_instructions<?linebreak?>
+                  _run_cycles<?linebreak?>
+                  _by_partition</para>
+                </entry>
+                <entry>
+                  <para>0x0000 0030</para>
+                </entry>
+                <entry>
+                  <para>The value for the counter_value is a list of uint64
+                  values as follows:</para>
+                  <itemizedlist>
+                    <listitem>
+                      <para>Partition id</para>
+                    </listitem>
+                    <listitem>
+                      <para>Hypervisor collected instructions completed while the run
+                      latch is set since boot of the CEC (or partition creation).
+                      Note that this value will be zero on processors versions that
+                      do not provide the ability to collect this information.</para>
+                    </listitem>
+                    <listitem>
+                      <para>Hypervisor collected cycles while the run latch is set
+                      since boot of the CEC (or partition creation). Note that this
+                      value will be zero on processors versions that do not provide
+                      the ability to collect this information.</para>
+                    </listitem>
+                  </itemizedlist>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>System_performance<?linebreak?>
+                  _capabilities</para>
+                </entry>
+                <entry>
+                  <para>0x00000040</para>
+                </entry>
+                <entry>
+                  <para>The value for the counter_value is a list of values for
+                  the requesting partition as follows:</para>
+                  <itemizedlist>
+                    <listitem>
+                      <para>uint8 Is partition allowed to get performance data for
+                      other partitions (boolean).</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint8[15] Reserved</para>
+                    </listitem>
+                    <listitem>
+                      <para><emphasis role="bold">Note:</emphasis> This request can only be issued by a partition to
+                      obtain data about itself (i.e. starting_index must always be
+                      -1) H_NOT_AVAILABLE will be returned otherwise.</para>
+                    </listitem>
+                  </itemizedlist>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>Processor_bus_utilization_ABC<?linebreak?>
+                  _links</para>
+                </entry>
+                <entry>
+                  <para>0x00000050</para>
+                </entry>
+                <entry>
+                  <para>The value for the counter_value is a list of values per
+                  physical chip as follows:</para>
+                  <itemizedlist>
+                    <listitem>
+                      <para>uint32 hardware chip id</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint32[3] RESERVED</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint64 idle cycles for A link</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint64 time value (in cycles) data for A link was
+                      collected</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint64 idle cycles for B link</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint64 time value (in cycles) data for B link was
+                      collected</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint64 idle cycles for C link</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint64 time value (in cycles) data for C link was
+                      collected</para>
+                    </listitem>
+                  </itemizedlist>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>Processor_bus_utilization_WXYZ<?linebreak?>
+                  _links</para>
+                </entry>
+                <entry>
+                  <para>0x00000060</para>
+                </entry>
+                <entry>
+                  <para>The value for the counter_value is a list of values per
+                  physical chip as follows:</para>
+                  <itemizedlist>
+                    <listitem>
+                      <para>uint32 hardware chip id</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint32[3] RESERVED</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint64 idle cycles for W link</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint64 time value (in cycles) data for W link was
+                      collected</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint64 idle cycles for X link</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint64 time value (in cycles) data for X link was
+                      collected</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint64 idle cycles for Y link</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint64 time value (in cycles) data for Y link was
+                      collected</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint64 idle cycles for Z link</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint64 time value (in cycles) data for Z link was
+                      collected</para>
+                    </listitem>
+                  </itemizedlist>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>Set MMCRH<?linebreak?>
+                  (LAB ONLY)</para>
+                </entry>
+                <entry>
+                  <para>0x8000 1000</para>
+                </entry>
+                <entry>
+                  <para>At input, counter_value is a single value with what to
+                  set the Performance Monitor Mode Control Register H to:</para>
+                  <itemizedlist>
+                    <listitem>
+                      <para>uint64 value to set MMCRH to in all processors</para>
+                    </listitem>
+                  </itemizedlist>
+                  <para>There will be no output for this function other than
+                  errors.</para>
+                  <para>
+                  <emphasis role="bold">Note 1:</emphasis> A passed value of (-1) will mean
+                  that collection of these values should be disabled.</para>
+                  <para>
+                  <emphasis role="bole">Note 2:</emphasis> Whenever this value is changed, the
+                  programmable counters (HPMC1 &amp; HPMC2) will be reset in the
+                  next collection cycle.</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>Retrieve HPMCx<?linebreak?>
+                  (LAB ONLY)</para>
+                </entry>
+                <entry>
+                  <para>0x8000 2000</para>
+                </entry>
+                <entry>
+                  <para>The value for the counter_value is a list of values per
+                  physical processor as follows:</para>
+                  <itemizedlist>
+                    <listitem>
+                      <para>uint32 hardware processor id</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint32 reserved</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint64 current value of MMCRH for this processor</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint64 elapsed timebase value in cycles since current
+                      MMCRH was set</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint64 value for HPMC1 since current MMCRH was set</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint64 value for HPMC2 since current MMCRH was set</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint64 value for HPMC3 since current MMCRH was set</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint64 current value for HPMC3</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint64 value for HPMC4 since current MMCRH was set</para>
+                    </listitem>
+                    <listitem>
+                      <para>uint64 current value for HPMC4</para>
+                    </listitem>
+                  </itemizedlist>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </simplesect>
+    </section>
+  </section>
+</appendix>

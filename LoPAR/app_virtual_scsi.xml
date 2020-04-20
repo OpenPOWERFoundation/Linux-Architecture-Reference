@@ -1,0 +1,1198 @@
+<appendix xmlns="http://docbook.org/ns/docbook"
+xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdoclet.50569379_75285">
+  <title>A Protocol for VSCSI Communications</title>
+
+  <section>
+    <title>Introduction</title>
+    <para>The purpose of this appendix is to define the protocol used by
+    virtual SCSI (vscsi) client drivers and vscsi server drivers in sufficient
+    detail to ensure compatibility between unlike operating systems
+    implementing these features. The SCSI Architecture Model (SAM-2) defines
+    the following simplified abstract model and terminology for a SCSI
+    system.</para>
+    <para />
+    <figure xml:id="dbdoclet.50569379_57878">
+      <title>SCSI Initiator/Target Architecture</title>
+      <mediaobject>
+        <imageobject role="html">
+          <imagedata fileref="figures/PAPR-66.gif" format="GIF" scalefit="1" />
+        </imageobject>
+        <imageobject role="fo">
+          <imagedata contentdepth="100%" fileref="figures/PAPR-66.gif"
+          format="GIF" scalefit="1" width="100%" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>In <xref linkend="dbdoclet.50569379_57878" />, the Application Client is the
+    application producing or consuming the data being stored. The SCSI
+    Initiator Port is the virtual scsi client adapter running in the client
+    partition. The Service Delivery System is the Hypervisor. The SCSI Target
+    Port is the vscsi host (vhost) adapter running in the VIO server (VIOS).
+    The Logical Unit is the entity providing the data storage
+    services.</para>
+    <para>Note that the model is not symmetrical. Client adapters may
+    communicate only with host adapters and host adapters may communicate
+    only with client adapters. Each may communicate with a maximum of one
+    partner at any point in time. Client adapters may exist only in client
+    partitions. Host adapters may exist only in VIOSs. A client partition may
+    have multiple client adapters and they may communicate with host adapters
+    in the same or different VIOSs. A SCSI host adapter may have multiple
+    Logical Units defined to it for use. Almost all messages are initiated by
+    the client. The client and host adapters communicate using
+    Command/Response Queues (CRQ) defined earlier in this document. A client
+    may not read or write VIOS memory, it may only write to the VIOS CRQ. The
+    VIOS may read and write to client partition memory, if the client passes
+    the VIOS a DMA mapped address for that memory.</para>
+  </section>
+  <section>
+    <title>SCSI Remote DMA Protocol (SRP)</title>
+    <para>The protocol used for transferring data between the application
+    client and the logical unit is the SCSI Remote DMA Protocol (SRP), revision
+    16.a, as defined by the InterNational Committee for Information Technology
+    Standards (INCITS). Copies of the standard are available at the INCITS
+    website at T10.org.</para>
+    <para>The client builds an SRP request in its address space, then DMA maps
+    that request so that the VIOS can access it. The client notifies the VIOS
+    of the request by including that mapped address in a CRQ message. A SCSI
+    Command Data Block (CDB) is encapsulated within the SRP request. Also
+    within the SRP request is a tag field, which is private to the client. The
+    VIOS must not modify that tag value in any way. When the request is
+    complete, the VIOS notifies the client of the completion by including that
+    tag field in the CRQ message to the client. The client then uses that tag
+    value to locate the request being completed.</para>
+    <para>If the SRP request expects to transfer any data, it also contains one
+    of the two types of memory descriptors specified by the SRP standard, to
+    describe the buffer(s) to be used in the data transfer. In the SRP memory
+    descriptor, the virtual address field is the DMA mapped address of the
+    buffer, to be used by the VIOS to transfer the data. The memory handle
+    field is not used and should be initialized to zero.</para>
+    <para>Using the H_SEND_CRQ call, the client sends the SRP request to the
+    VIOS. The first 64 bits of the message describe the type of message, the
+    format, and the length. The second 64 bits of the CRQ message contain the
+    DMA mapped address of the SRP request in the client partition memory. The
+    H_SEND_CRQ call in the client generates a virtual interrupt in the VIOS, if
+    the CRQ is going from empty to non-empty (edge-triggered interrupt).</para>
+    <para>The vhost driver uses the H_COPY_RDMA call and the mapped address to
+    copy the SRP request from client partition memory into VIOS memory,
+    examines the LUN to which the request is addressed, builds the appropriate
+    structure to represent the request, according to the type of backing
+    device, then queues the request to the backing device. The backing device
+    may be an actual physical storage device, a software emulator, or some
+    combination of device and emulation.</para>
+    <para>In the request is an SRP memory descriptor which contains one or more
+    address/length pairs describing one or more buffers in client partition
+    memory address space. The memory handle field of the SRP memory descriptor
+    is not used by vscsi and should be initialized to zero. The virtual address
+    field in the SRP memory descriptor is the DMA mapped address of a buffer in
+    client partition memory that the backing device uses to transfer data. When
+    the backing device services the request, it uses the same DMA services as
+    it would to handle a request that had originated locally on the VIOS.
+    However, DMA services on the VIOS use the H_COPY_RDMA call and the mapped
+    address(es) in the SRP memory descriptor(s) to copy data directly between
+    the client partition and the device, transparent to the device.</para>
+    <para>When the backing device has completed the request, it returns the
+    request along with the results back to the VIOS driver. The VIOS driver
+    builds an SRP response structure and copies that response back into client
+    partition memory over the original SRP request. The SRP response includes
+    any sense data that may have been returned with the request. All virtual
+    devices are &#8220;auto-sense&#8221; devices. The vhost driver then
+    notifies the client partition of the completed request by using H_SEND_CRQ
+    to place a message in the client CRQ. The first 64 bits of the message
+    describe the type, format, and length of the message. The second 64 bits
+    are the &#8220;tag&#8221; field from the original SRP request. The client
+    uses the tag to locate the SRP response and processes the response as
+    appropriate.</para>
+    <para>It is important to note that the client partition must not unmap or
+    modify in any way any of the memory associated with the request between the
+    time that it notifies the VIOS of the request and the time that the VIOS
+    notifies the client of the response.</para>
+  </section>
+  <section>
+    <title>Connection Establishment</title>
+    <para>Before any data can be transferred the two partitions have to
+    establish a connection. Each partition is required to use H_REG_CRQ to
+    register a Command/Response Queue (CRQ) with the Hypervisor to receive
+    messages from the other partition. The size of the queue must be a multiple
+    of 4KB. That memory must be DMA mapped. The size of the CRQ merely
+    determines the number of requests that a client may send to the VIOS in a
+    single burst. The VIOS dequeues the requests as soon as it can, so in
+    evenly balanced systems, where the VIOS has enough CPUs and memory to deal
+    with all of its clients, the size of the CRQ is not a major limiting
+    factor.</para>
+    <para>After H_REG_CRQ returns H_SUCCESS, each partition uses H_SEND_CRQ to
+    attempt to send the Initialization message described previously in this
+    document. This is a race condition that only one partition will win. The
+    first partition to send the Initialization message receives an H_CLOSED
+    return value from the Hypervisor, because the other partition has not yet
+    registered its queue. The winning partition must wait to receive the
+    Initialization message from its partner. The second partition to send the
+    Initialization message receives an H_SUCCESS return value from the
+    Hypervisor. That partition must wait for the Initialization Complete
+    message from its partner. When a partition receives an Initialization
+    message during connection establishment, it must respond with the
+    Initialization Complete message and may then proceed to the next step. When
+    a partition receives the Initialization Complete message during connection
+    establishment, it may then proceed to the next step.</para>
+    <para>The next step in connection establishment is for the client to send
+    one or more of the Management Datagrams (MAD) messages, described in detail
+    later in this chapter. Since this is before the completion of the SRP
+    Login request, no flow control has been established between the client and
+    VIOS, so the client may send only one message at a time and must wait for
+    the response from the VIOS before sending the next one. The exception is
+    the optional MAD_EMPY_IU message. The client may follow that immediately
+    with another message. The VIOS enforces flow control violations by logging
+    and informative error, then closing and reopening the CRQ.</para>
+    <para>The client is required to send the MAD_ADAPTER_INFO_REQUEST. This
+    provides the information that the VIOS displays with the lsmap command. The
+    client may find it useful to save off and display the information that the
+    VIOS returns in the response to the MAD_ADAPTER_INFO_REQUEST. Customers and
+    service personnel frequently find this kind of information useful in
+    unravelling some of the more elaborate configurations.</para>
+    <para>The client is required to send the MAD_CAPABILITIES_EXCHANGE if it
+    wishes to participate in Partition Mobility operations. If it does not send
+    this message, the VIOS does not consider it to be capable of being
+    migrated.</para>
+    <para>If the client wishes to take advantage of the &#8220;fast fail&#8221;
+    feature, it should send the MAD_ENABLE_FAST_FAIL message before the SRP
+    login request.</para>
+    <para>The last step in connection establishment is the SRP login request.
+    The Target Port Identifier field of the SRP Login request is not used by
+    vscsi and should be initialized to zero. The client uses the SRP login
+    request to specify the size of the largest SRP Information Unit that it
+    will send to the VIOS and the format of the type of memory descriptors it
+    intends to use. The size of the largest SRP Information Unit must also
+    account for the size of the largest Management Datagram that the client
+    expects to send. The VIOS may reject the SRP login if it cannot support the
+    requested options. The VIOS will delay sending the response to the SRP
+    login if it does not have any LUNs defined to it yet. This may be the case
+    if both partitions are booted simultaneously and the VIOS has not completed
+    the configuration process when the client sends the SRP login.</para>
+    <para>If the VIOS accepts the SRP login, it sends the SRP login response
+    and notifies the client of this by placing the tag value from the SRP Login
+    in the CRQ message. The request limit delta field of the SRP login response
+    contains the maximum number of requests that the VIOS will allow the client
+    to have active on the VIOS at any one time. This is the flow control
+    mechanism. If the client violates this limit by sending too many requests,
+    the VIOS will terminate the connection to the client. Note that each SRP
+    response message also contains a request limit delta field. Typically, this
+    is set to 1, to indicate that this completed request means another can be
+    initiated. But if the VIOS has substantial resources added to it, it may
+    increase the number of requests a client may have active, and will do so by
+    setting a value greater than one in this field. Once the SRP login has been
+    accepted, the VIOS may increase the number of requests, but it may never
+    decrease that number until this connection is terminated.</para>
+    <para>After receiving an SRP Login Response for the VIOS, the client may
+    then proceed with normal I/O data traffic. Usually, this starts with device
+    discovery, where the client sends a REPORT_LUNS SCSI request to the VIOS.
+    The VIOS responds with the list of LUNs that have been defined to this host
+    adapter. The client may then use other SCSI requests to determine the
+    identity and capabilities of each LUN.</para>
+    <para>If, after establishing a connection (VIOS sends SRP login response,
+    and client receives it), a partition receives another Initialization
+    message, Initialization Complete message, an SRP Login, or SRP Login
+    response without some indication that the connection has been terminated,
+    usually a Transport Event (described later), that is a protocol violation.
+    Protocol violations are handled by logging an error, then closing and
+    reopening the CRQ.</para>
+    <para>Likewise, after a connection has been terminated, the first messages
+    must be either the Initialization or the Initialization Complete messages,
+    as appropriate. Any other message is a protocol violation. And any SRP
+    message received before a successful SRP Login is a protocol
+    violation.</para>
+  </section>
+  <section>
+    <title>Connection Termination</title>
+    <para>A connection may be terminated by the client sending the VIOS an
+    SRP_I_LOGOUT Information Unit. The VIOS may send the client an SRP_T_LOGOUT
+    Information Unit, but only if the client has provided resources for this by
+    sending the MAD EMPTY IU first. In the current implementation, neither is
+    used and the drivers just call H_FREE_CRQ to terminate the
+    connection.</para>
+    <para>A connection may also be terminated by the abnormal termination of a
+    partition. When a partition crashes, the Hypervisor invalidates all of the
+    memory mappings for that partition and places a Transport Event in the CRQ
+    of the partner. If the partition that crashed was a client with requests
+    active on the VIOS, when the storage drivers attempt to service those
+    &#8220;in flight&#8221; requests, they find that the DMA mappings
+    associated with the requests are no longer valid and usually will log one
+    or more errors to that effect.</para>
+    <para>When a partition calls H_FREE_CRQ or crashes, the Hypervisor notifies
+    the partner partition by placing a Transport Event in the partner&#8217;s
+    CRQ. The first byte of the Transport Event is set to 0xFF, to indicate that
+    this is a Transport Event. The second byte describes the event. A value of
+    0x01 indicates that the partner partition failed (crashed). A value of 0x02
+    indicates that the partner partition called H_FREE_CRQ. A value of 0x06
+    indicates to a client that it has been migrated. Only clients that send the
+    MAD_CAPABILITIES message are candidates for being migrated. A VIOS cannot
+    be migrated.</para>
+    <para>When a partition receives a Transport Event, it is not required to
+    close its CRQ. It may instead just wait for an Initialization message from
+    the partner partition when it is ready to communicate again.</para>
+  </section>
+  <section>
+    <title>Client Migration</title>
+    <para>When a client receives the migrated Transport Event, it must unmap
+    any memory associated with any requests currently active on the VIOS. The
+    client will never receive any completions for those requests and must remap
+    and restart them at the end of the migration. Then the client must call
+    H_ENABLE_CRQ until it returns H_SUCCESS. When the CRQ has been successfully
+    enabled, the client sends the Initialization message and waits for the
+    Initialization Complete message. It then goes through the rest of the
+    connection establishment process, followed by the SRP login. After the VIOS
+    sends the SRP Login response, the client may resume normal data transfers,
+    starting with any requests that may have been active on the VIOS when the
+    client was migrated.</para>
+    <para>Note that the partition identification information that the client
+    sends in the MAD_ADAPTER_INFO message immediately after the migration event
+    may be stale and reflect the identification of the original client
+    partition before the migration. A client may register for DLPAR
+    notification of migration, use that notification to obtain the current
+    partition identification, and send another MAD_ADAPTER_INFO message to the
+    VIOS with the correct information.</para>
+  </section>
+  <section>
+    <title>VSCSI Message Formats</title>
+    <para>All virtual scsi communications between client and server occurs
+    using the Reliable Command/Response Transport and Logical Remote DMA
+    functions defined earlier in this document. No other channels of
+    communication are required to perform virtual SCSI functions.</para>
+    <para>These communications are made up of three classes of messages:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>Messages contained entirely within a single CRQ message</para>
+      </listitem>
+
+      <listitem>
+        <para>SRP requests and responses, as defined by the SRP standard</para>
+      </listitem>
+
+      <listitem>
+        <para>Management Datagrams</para>
+      </listitem>
+    </itemizedlist>
+  </section>
+  <section>
+    <title>CRQ Message formats</title>
+    <para>CRQ messages are 16 bytes (128 bits) in length. Only the first byte
+    is architected by the Reliable Command/Response Transport specification
+    described earlier in this document. That specification is repeated in
+    <xref linkend="dbdoclet.50569379_71481" />.</para>
+
+    <table frame="all" pgwide="1" xml:id="dbdoclet.50569379_71481">
+      <title>First Byte of the CRQ Message</title>
+      <?dbhtml table-width="75%" ?><?dbfo table-width="75%" ?>
+      <tgroup cols="2">
+        <colspec colname="c1" colwidth="20*" align="center" />
+        <colspec colname="c2" colwidth="80*" />
+        <thead>
+          <row>
+            <entry>
+              <para><emphasis role="bold">Value</emphasis></para>
+            </entry>
+            <entry align="center">
+              <para><emphasis role="bold">Description</emphasis></para>
+            </entry>
+          </row>
+        </thead>
+        <tbody valign="middle">
+          <row>
+            <entry>
+              <para>0x00</para>
+            </entry>
+            <entry>
+              <para>Element is unused -- all other bytes in the element are
+              undefined</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x01 - 0x7F</para>
+            </entry>
+            <entry>
+              <para>Reserved</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x80</para>
+            </entry>
+            <entry>
+              <para>Valid Command/Response Entry -- the second byte defines the
+              entry format</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x81-0xFE</para>
+            </entry>
+            <entry>
+              <para>Reserved</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0xFF</para>
+            </entry>
+            <entry>
+              <para>Valid Transport Event -- the second byte defines the
+              specific transport event</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <para>If the first byte of a CRQ message is 0x80, then it is a valid
+    Command/Response entry and the second byte describes the format of message.
+    Possible values for the second byte of the CRQ message when the first byte
+    is 0x80 are shown in
+    <xref linkend="dbdoclet.50569379_38069" />.</para>
+
+    <table frame="all" pgwide="1" xml:id="dbdoclet.50569379_38069">
+      <title>Second Byte of the CRQ Message</title>
+      <?dbhtml table-width="50%" ?><?dbfo table-width="50%" ?>
+      <tgroup cols="2">
+        <colspec colname="c1" colwidth="33*" align="center" />
+        <colspec colname="c2" colwidth="67*" />
+        <thead>
+          <row>
+            <entry>
+              <para><emphasis role="bold">Format Byte Value</emphasis></para>
+            </entry>
+            <entry align="center" >
+              <para><emphasis role="bold">Definition</emphasis></para>
+            </entry>
+          </row>
+        </thead>
+        <tbody valign="middle">
+          <row>
+            <entry>
+              <para>0x00</para>
+            </entry>
+            <entry>
+              <para>Unused</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x01</para>
+            </entry>
+            <entry>
+              <para>VSCSI SRP format</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x02</para>
+            </entry>
+            <entry>
+              <para>Management Datagram (MAD) format</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x03</para>
+            </entry>
+            <entry>
+              <para>i5os private format</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x04</para>
+            </entry>
+            <entry>
+              <para>AIX private format</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x05</para>
+            </entry>
+            <entry>
+              <para>Linux private format</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x06</para>
+            </entry>
+            <entry>
+              <para>Message in CRQ format</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x07 - 0xFF</para>
+            </entry>
+            <entry>
+              <para>Reserved</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <para>If the format byte is 0x01, then the rest of the message is a vscsi
+    SRP request or response message. The rest of the CRQ contents for this type
+    of message is shown in
+    <xref linkend="dbdoclet.50569379_60771" />, for messages from the clients,
+    and
+    <xref linkend="dbdoclet.50569379_58834" />, for messages from the VIOS.
+    Messages with a format byte of 0x02 are Management Datagram messages,
+    defined later in this chapter. Messages formats of 0x03, 0x04, and 0x05
+    are reserved for private, Operating System-specific messages, and are
+    currently unused by this implementation. Messages with a format byte of
+    0x06 are messages contained entirely within the CRQ.</para>
+  </section>
+  <section>
+    <title>CRQ VSCSI Client Message Format</title>
+    <para>Client messages are sent from the client partitions to the VIOS.
+    <xref linkend="dbdoclet.50569379_60771" /> shows the format of these
+    messages,</para>
+
+    <table frame="all" pgwide="1" xml:id="dbdoclet.50569379_60771">
+      <title>CRQ VSCSI Client Message</title>
+      <?dbhtml table-width="90%" ?><?dbfo table-width="90%" ?>
+      <tgroup cols="9">
+        <colspec colname="c1" colwidth="11*" align="center" />
+        <colspec colname="c2" colwidth="11*" align="center" />
+        <colspec colname="c3" colwidth="11*" align="center" />
+        <colspec colname="c4" colwidth="11*" align="center" />
+        <colspec colname="c5" colwidth="11*" align="center" />
+        <colspec colname="c6" colwidth="11*" align="center" />
+        <colspec colname="c7" colwidth="11*" align="center" />
+        <colspec colname="c8" colwidth="11*" align="center" />
+        <colspec colname="c9" colwidth="11*" align="center" />
+        <thead>
+          <row>
+            <entry>
+              <para><emphasis role="bold">Byte Offset</emphasis></para>
+            </entry>
+            <entry>
+              <para><emphasis role="bold">0</emphasis></para>
+            </entry>
+            <entry>
+              <para><emphasis role="bold">1</emphasis></para>
+            </entry>
+            <entry>
+              <para><emphasis role="bold">2</emphasis></para>
+            </entry>
+            <entry>
+              <para><emphasis role="bold">3</emphasis></para>
+            </entry>
+            <entry>
+              <para><emphasis role="bold">4</emphasis></para>
+            </entry>
+            <entry>
+              <para><emphasis role="bold">5</emphasis></para>
+            </entry>
+            <entry>
+              <para><emphasis role="bold">6</emphasis></para>
+            </entry>
+            <entry>
+              <para><emphasis role="bold">7</emphasis></para>
+            </entry>
+          </row>
+        </thead>
+        <tbody valign="middle">
+          <row>
+            <entry>
+              <para>0x00</para>
+            </entry>
+            <entry>
+              <para>CRQ Valid</para>
+            </entry>
+            <entry>
+              <para>CRQ Format</para>
+            </entry>
+            <entry nameend="c5" namest="c4">
+              <para>Reserved</para>
+            </entry>
+            <entry nameend="c7" namest="c6">
+              <para>Timeout</para>
+            </entry>
+            <entry nameend="c9" namest="c8">
+              <para>IU Length</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x08</para>
+            </entry>
+            <entry nameend="c9" namest="c2">
+              <para>IU Data Pointer (TCE)</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <para>For this type of message, the first byte (CRQ Valid) must be 0x80,
+    and the second byte (CRQ Format) must be 0x01. Bytes 6 and 7 of the first
+    long word are the IU Length, the length in bytes of the SRP Information
+    Unit being passed. The second long word, IU Data Pointer, is the DMA mapped
+    address of the SRP Information Unit being passed, typically an SRP Request.
+    The VIOS uses the IU length and IU Data Pointer to copy the SRP Request
+    into VIOS local memory for interpretation and processing.</para>
+    <para>Bytes 4 and 5 of the first long word, Timeout, are an optional
+    suggested timeout value for this request. If this value is greater than
+    zero, then the value may be passed along to the backing device as a
+    suggestion for how long this request is expected to take to complete. The
+    VIOS does not enforce any timeout values, but relies upon the underlaying
+    backing devices.</para>
+    <para>Management Datagram (MAD) messages also use this same format, with
+    the exception that the second byte (CRQ Format) must be set to 0x02. Bytes
+    6 and 7 of the first long word are the length of the MAD message, and the
+    second long word, IU Data Pointer, is the DMA mapped address of the MAD
+    message being passed. MAD data structures are defined later in this
+    chapter. For MAD messages, the timeout value is not used.</para>
+  </section>
+  <section>
+    <title>CRQ VSCSI VIOS Message Format</title>
+    <para>VIOS messages are sent from the VIOS to the clients, usually in
+    response to a request from the client. The VIOS message format is shown
+    <xref linkend="dbdoclet.50569379_58834" />.</para>
+
+    <table frame="all" pgwide="1" xml:id="dbdoclet.50569379_58834">
+      <title>CRQ VSCSI VIOS Message</title>
+      <?dbhtml table-width="90%" ?><?dbfo table-width="90%" ?>
+      <tgroup cols="9">
+        <colspec colname="c1" colwidth="20*" align="center" />
+        <colspec colname="c2" colwidth="10*" align="center" />
+        <colspec colname="c3" colwidth="10*" align="center" />
+        <colspec colname="c4" colwidth="10*" align="center" />
+        <colspec colname="c5" colwidth="10*" align="center" />
+        <colspec colname="c6" colwidth="10*" align="center" />
+        <colspec colname="c7" colwidth="10*" align="center" />
+        <colspec colname="c8" colwidth="10*" align="center" />
+        <colspec colname="c9" colwidth="10*" align="center" />
+        <thead>
+          <row>
+            <entry>
+              <para><emphasis role="bold">Byte Offset</emphasis></para>
+            </entry>
+            <entry>
+              <para><emphasis role="bold">0</emphasis></para>
+            </entry>
+            <entry>
+              <para><emphasis role="bold">1</emphasis></para>
+            </entry>
+            <entry>
+              <para><emphasis role="bold">2</emphasis></para>
+            </entry>
+            <entry>
+              <para><emphasis role="bold">3</emphasis></para>
+            </entry>
+            <entry>
+              <para><emphasis role="bold">4</emphasis></para>
+            </entry>
+            <entry>
+              <para><emphasis role="bold">5</emphasis></para>
+            </entry>
+            <entry>
+              <para><emphasis role="bold">6</emphasis></para>
+            </entry>
+            <entry>
+              <para><emphasis role="bold">7</emphasis></para>
+            </entry>
+          </row>
+        </thead>
+        <tbody valign="middle">
+          <row>
+            <entry>
+              <para>0x00</para>
+            </entry>
+            <entry>
+              <para>CRQ Valid</para>
+            </entry>
+            <entry>
+              <para>CRQ Format</para>
+            </entry>
+            <entry>
+              <para>Reserved</para>
+            </entry>
+            <entry>
+              <para>Status</para>
+            </entry>
+            <entry nameend="c7" namest="c6">
+              <para>Reserved</para>
+            </entry>
+            <entry nameend="c9" namest="c8">
+              <para>IU Length</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>0x08</para>
+            </entry>
+            <entry nameend="c9" namest="c2">
+              <para>IU TAG</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <para>For this type of message, the first byte, CRQ Valid, must be 0x80.
+    This same type of message is used for SRP Responses and for responses to
+    MAD messages. If this is an SRP Response, the second byte, CRQ Format, is
+    0x01. If this is the response to a MAD message, the second byte is 0x02.
+    Bytes 6 and 7 of the first long word, IU Length, contain the length of the
+    response. The second long word contains the tag field from the original
+    request. Both the SRP Request data structures and the MAD message data
+    structures contain a tag field for use in this message.</para>
+    <para>The Status field of the VIOS message is for reporting special,
+    non-SCSI status back to the client. This status is used for improving
+    failover times in configurations where the same storage device is visible
+    to this client over multiple adapters or when the same storage device is
+    being shared by multiple clients in clustered configurations.</para>
+    <para>If the client enables the &#8220;fast fail&#8221; feature using the
+    MAD_ENABLE_FAST_FAIL message, and if the VIOS determines that all paths to
+    a device on that client adapter have failed, the VIOS will report a status
+    of ADAPTER_FAILED (0x10) in response to a request to that device.</para>
+    <para>If the storage devices that the client are using are being shared by
+    other clients, as is the case of an IBM General Parallel File System
+    (GPFS&#8482;) configuration, and if the VIOS determines that all error
+    recovery efforts on a device have failed so that there is no point in any
+    more retries from the client, the VIOS will report a status of DEVICE_BUSY
+    (0x08) in response to a request to that device.</para>
+    <para>In both cases (ADAPTER_FAILED and DEVICE_BUSY), the client response
+    should be the same. The device is no longer accessible and the client
+    should abandon any error recovery or attempts to recover access to the
+    device using this client adapter. The client should attempt to failover to
+    another path to the device, using another adapter, if that is
+    possible.</para>
+  </section>
+  <section>
+    <title>Transport Events</title>
+    <para>If the first byte (CRQ Valid) of the CRQ message is 0xFF, then this
+    message is a Transport Event from the Hypervisor and the connection to the
+    partner has been terminated. The second byte will be the reason for the
+    Transport Event, and may be one of the following values:</para>
+    <para>0x01 - Partner Failed. The partner partition has crashed.</para>
+    <para>0x02 - Partner de-registered the CRQ. The partner partition called
+    H_FREE_CRQ for this CRQ. This may be as a result of error recovery, as in
+    the case of a protocol error, or it may be the result of the system
+    administrator removing a client or VIOS adapter.</para>
+    <para>0x06 - Client has been migrated as the result of a Partition Mobility
+    operation. Only clients can be migrated and only clients that send the
+    MAD_CAPABILITIES message are considered to be candidates for
+    migration.</para>
+  </section>
+  <section>
+    <title>Messages in CRQs</title>
+    <para>If the first byte (CRQ Valid) of the CRQ message is 0x80, and the
+    second byte (CRQ Format) is 0x06, then this is a message contained entirely
+    within the CRQ. The rest of the message, including the IU Data Pointer, is
+    unused and must be initialized to zero. These messages do not require any
+    resources on the client or VIOS, and are not subject to flow control, so
+    may be sent at any time. However, they should be used sparingly, because
+    they do take up an entry in the CRQ and they do require interrupt
+    processing time to respond to them, The third byte defines the
+    message.</para>
+    <para>Only two messages of this type have been defined to this
+    point:</para>
+    <para>0xF5 - PING</para>
+    <para>0xF6 - PING RESPONSE</para>
+    <para>If the VIOS is not able to process interrupts, the client will likely
+    be hung, waiting on a completion from the VIOS. To detect this condition,
+    the client may send a PING to the VIOS. If the VIOS is capable of
+    processing an interrupt, it responds to the PING with a PING RESPONSE,
+    directly at interrupt level. If the client does not receive the PING
+    RESPONSE within a reasonably short period of time, it may choose to declare
+    the VIOS dead and attempt to failover to another client adapter. Likewise,
+    if the VIOS for some reason needs to determine if the client is still
+    alive, it may send a PING to the client. The client should respond as
+    expeditiously as possible, with a PING RESPONSE.</para>
+  </section>
+  <section>
+    <title>VSCSI Management Datagrams (MADs)</title>
+    <para>VSCSI uses a number of messages that are not defined by the SRP
+    standard. The paradigm used for these messages is the Management Datagram,
+    discussed in the SRP and Fibre Channel specifications. Like all SRP
+    messages, the MADs are initiated by the client partition and the VIOS
+    responds to them. To initiate a MAD, the client sets the valid field to
+    0x80, sets the format field to 0x02 (MAD_FORMAT), sets the length field to
+    the length of the data structure describing the MAD, sets the ioba field to
+    the mapped memory address of the data structure describing the MAD, and
+    uses the H_SEND_CRQ service provided by the Hypervisor to send the request
+    to the VIOS.</para>
+    <para>Most of these MADs can be initiated any time after the initialization
+    messages (INIT, INIT_COMPLETE) have been exchanged. Some of them are most
+    appropriately done before the SRP_login message and the start of normal
+    data transfer operations. These are: MAD_EMPTY_IU;
+    MAD_ADAPTER_INFO_REQUEST; MAD_CAPABILITIES_EXCHANGE; and
+    MAD_ENABLE_FAST_FAIL. Note that before the SRP_login message, resources
+    allocated by the VIOS for a client are limited so a client should wait for
+    one MAD to complete before issuing another, with the single exception of
+    the MAD_EMPTY_IU message. None of them are required for normal data
+    transfer operations between the client and VIOS. However, the
+    MAD_ADAPTER_INFO_REQUEST provides information that customers find highly
+    desirable, so using it is strongly recommended. In addition, the
+    MAD_ADAPTER_INFO_REQUEST returns the size of the largest data transfer
+    operation that the VIOS will accept from this client. Failure to honor this
+    limit can result in client failure. And the MAD_CAPABILITIES_EXCHANGE
+    message is required before a client is allowed to participate in partition
+    mobility operation.</para>
+    <para>The inter_op structure is used to specify the type of MAD being
+    sent.</para>
+
+    <programlisting><![CDATA[typedef struct _inter_op_fields{
+    uint32_t type;
+    uint16_t status;
+    uint16_t length;
+    uint64_t tag;
+}inter_op;]]></programlisting>
+
+    <para>The type field describes the MAD and will be discussed in the
+    paragraphs that follow.</para>
+    <para>The status field describes the result of the MAD operation. The
+    client is required to initialize the status field to zero. The VIOS
+    responds one of three ways:</para>
+
+    <programlisting><![CDATA[#define MAD_SUCCESS       0x0
+#define MAD_NOT_SUPPORTED 0xF1
+#define MAD_FAILED        0xF7]]></programlisting>
+
+    <para>MAD_NOT_SUPPORTED is returned if the VIOS is down-level. MAD_FAILED
+    is returned in every other situation where the MAD did not succeed.</para>
+    <para>The length field is set to the length of the data structure(s) used
+    in the command.</para>
+    <para>The tag field is reflected back to the client in the response to the
+    MAD. The VIOS uses H_SEND_CRQ to send a response with the format set to
+    0x02 (MAD_FORMAT) and the ioba field is set to the tag field specified by
+    the client.</para>
+    <para>The type field may be set to one of the following:</para>
+
+    <programlisting><![CDATA[
+#define MAD_EMPTY_IU                 0x01
+#define MAD_ERROR_LOGGING_REQUEST    0x02
+#define MAD_ADAPTER_INFO_REQUEST     0x03
+#define RESERVED                     0x04
+#define MAD_CAPABILITIES_EXCHANGE    0x05
+#define MAD_PHYS_ADAP_INFO_REQUEST   0x06
+#define MAD_TAPE_PASSTHROUGH_REQUEST 0x07
+#define MAD_ENABLE_FAST_FAIL         0x08]]></programlisting>
+
+
+    <section>
+      <title>#define MAD_EMPTY_IU 0x01</title>
+      <para>The client sends a MAD_EMPTY_IU command if it wishes to receive an
+      SRP target_logout before the VIOS closes the CRQ. The target_logout SRP
+      response contains the reason that the VIOS is closing the CRQ.</para>
+      <para>The MAD_EMPTY_IU command uses the following data structure:</para>
+
+      <programlisting><![CDATA[struct mad_empty_iu {
+    inter_op op;
+    uint64_t desp;
+    uint port;
+};]]></programlisting>
+
+      <para>The inter_op structure is initialized with the type field set to
+      0x01 (MAD_EMPTY_IU), the status field set to zero, the length field set
+      to the size of the mad_empty_iu structure, and the tag field set as
+      described above.</para>
+      <para>The desp field is set to mapped memory address of the SRP_T_LOGOUT
+      response data structure. The client must not unmap, free, or re-use this
+      memory until it receives the SRP target_logout or the CRQ is
+      closed.</para>
+      <para>The port field is unused at this time.</para>
+    </section>
+    <section>
+      <title>#define MAD_ERROR_LOGGING_REQUEST 0x02</title>
+      <para>The client sends the MAD_ERROR_LOGGING_REQUEST when it wishes the
+      VIOS to write an entry in the system error log on its behalf. Hardware
+      errors in physical storage components on the VIOS usually result in
+      errors on the client partition using that physical storage. The
+      MAD_ERROR_LOGGING REQUEST places client errors in the system error log in
+      proximity to the original hardware error to enable service personnel to
+      assess the impact of the original hardware error.</para>
+      <para>The MAD_ERROR_LOGGING_REQUEST uses the following data
+      structure:</para>
+
+      <programlisting><![CDATA[struct mad_error_logging_request{
+    inter_op op;
+    uint64_t buffer;
+};]]></programlisting>
+
+      <para>The inter_op structure is initialized with the type field set to
+      0x02 (MAD_ERROR_LOGGING_REQUEST), the status field set to zero, the
+      length field set to the size of the mad_error_log structure plus the size
+      of the buffer of additional data, if any, and the tag field set as
+      described above.</para>
+      <para>The buffer field points to a mad_error_log structure.</para>
+
+      <programlisting><![CDATA[struct mad_error_log{
+    uint64_t lun;            // logical unit address
+    uint64_t correlator;     // logged on both client and server in order to be
+                             // able to associate an entry on the client with
+                             // one on the server
+    uint64_t reserved;       // future expansion
+    uint32_t error_id;       // client partition specific (-1 if none is available)
+    int32_t buffer_size;
+                             // size of character buffer to log
+    char client_name[32];    // for example “vscsi0”
+    char device_name[32];    // for example “hdisk0”
+    int32_t partition;       // partition number
+#define LOG_DATA_BINARY 1
+#define LOG_DATA_ASCII  2
+    int32_t flags;           // type of data in buffer
+    char buffer[1];          // start of the buffer, buffer_size bytes
+};]]></programlisting>
+
+      <para>The lun field is set to the Logical Unit Number (LUN) of the device
+      on the client that is logging the error.</para>
+      <para>The correlator field is optional. If used, it should have a unique
+      value that can be used to correlate the error message on the client with
+      the error message on the VIOS.</para>
+      <para>The error_id field is set to a client-specific number associated
+      with the error.</para>
+      <para>The buffer_size is set to the length of the buffer of additional
+      data, which is optional.</para>
+      <para>The client_name array is set to the name by which this client
+      adapter instance is known on the client partition, for example
+      &#8220;vscsi0&#8221;.</para>
+      <para>The device_name array is set to the name by which the device
+      logging the error is known on the client partition, for example
+      &#8220;hdisk0&#8221;.</para>
+      <para>The partition field is set to the number of the client partition
+      requesting that the error be logged.</para>
+      <para>The flags field specifies the type of data contained in the
+      optional buffer.</para>
+      <para>The buffer, if used, starts immediately after the mad_error_log
+      structure. The buffer is not logged by the VIOS at this time.</para>
+    </section>
+    <section>
+      <title>#define MAD_ADAPTER_INFO_REQUEST 0x03</title>
+      <para>The client sends the MAD_ADAPTER_INFO_REQUEST to the VIOS to inform
+      the VIOS of the client&#8217;s identity. The VIOS responds with the
+      equivalent information about itself. The VIOS uses the client information
+      provided in the MAD_ADAPTER_INFO_REQUEST for the display in the
+      &#8220;lsmap&#8221; command. Use of this MAD is not enforced by VIOS.
+      However, customers have found the information useful enough to insist
+      that it be used. The MAD_ADAPTER_INFO_REQUEST may also be used after a
+      Partition Mobility operation to allow the client to update the
+      information on the VIOS, which may have changed during the
+      migration.</para>
+      <para>The MAD_ADAPTER_INFO_REQUEST uses the following data
+      structure:</para>
+
+      <programlisting><![CDATA[struct mad_adapter_information_request{
+    inter_op op;
+    uint64_t buffer;
+};]]></programlisting>
+
+      <para>The inter_op structure is initialized with the type field set to
+      0x03 (MAD_ADAPTER_INFO_REQUEST), the status field set to zero, the length
+      field set to the size of the mad_adapter_information_payload structure,
+      and the tag field set as described above. The buffer field points to
+      mapped memory address of a mad_adapter_information_payload
+      structure.</para>
+
+      <programlisting><![CDATA[typedef struct mad_adapter_information_payload{
+    char srp_version[8];       // initially 16.a
+    char partition_name[96];   // root node property ibm,partition-name
+    uint32_t partition_number; // root node property ibm,partition-no
+#define MAD_VERSION_1 1
+    uint32_t mad_version;      // initially 1
+#define OS400         0x01
+#define LINUX         0x02
+#define AIX           0x03
+#define OFW           0x04
+    uint32_t os_type;
+    uint32_t port_max_txu[8];
+}partner_info;]]></programlisting>
+
+      <para>The srp_version field is a NULL-terminated character array with the
+      version number of the SRP standard to which the partition complies.
+      Current versions of the VIOS and clients all support SRP revision 16.a.
+      The VIOS does not validate or enforce this field currently.</para>
+      <para>The partition name is the ASCII string representing the name of the
+      partition from the root node in the Open Firmware device tree.</para>
+      <para>The partition number is the integer number identifying the
+      partition from the root node in the Open Firmware device tree. Note that
+      partition number 0 is reserved for the hypervisor.</para>
+      <para>The mad_version field is set to the version of MAD messages
+      supported by the partition. The MAD messages described in this document
+      is version 1. The VIOS does not currently validate or enforce this
+      version.</para>
+      <para>The os_type field is set to the type of Operating System being run
+      on the partition. The VIOS uses this information to allocate additional
+      resources for client partitions that have unique requirements and to
+      return different values for sense data in error situations. The VIOS has
+      been able to make minor behavior changes to the device on behalf of
+      clients that use this field.</para>
+      <para>The port_max_txu array is used by the VIOS to report the size of
+      the largest single request that it can handle. Currently only the first
+      entry (port_max_txu[0]) is used. The client initializes this field to
+      zero. The VIOS responds with at least a value of 0x40000, meaning that it
+      is prepared to deal with a request to transfer at least 256,000 bytes of
+      data. The VIOS can respond with a larger value, depending on the
+      resources available and the capabilities of the physical device providing
+      storage.</para>
+      <para>
+      <emphasis role="bold">NOTE</emphasis>: If the VIOS reports a maximum transfer value
+      larger than the minimum of 0x40000, and subsequently a device which
+      cannot support that larger maximum transfer value is added to the device
+      inventory of this host adapter, the VIOS will log an informative error
+      and not report that new device in a REPORT_LUNS request until the client
+      has issued another MAD adapter information request. This prevents the
+      client from passing a data transfer request to a device which is too
+      large for that device to handle. The VIOS will return such requests with
+      an error. Optical devices typically have minimal maximum transfer
+      values.</para>
+    </section>
+    <section>
+      <title>#define MAD_CAPABILITIES_EXCHANGE 0x05</title>
+      <para>The MAD_CAPABILITIES_EXCHANGE command is used to allow the client
+      and VIOS to negotiate support for capabilities that may be required with
+      a partition migration. The data structures used are the capabilities
+      structure, followed by at least one specific capability structure. The
+      client uses a bit-mask to advertise the capabilities that it can support
+      by setting the bits representing those capabilities to one. The VIOS
+      responds by turning off (setting to zero) the bits for any capabilities
+      that it cannot support. This allows clients and VIOSs at a variety of
+      levels to cooperate in the partition migration operation. The client is
+      required to support a minimum level of capabilities in order to be
+      considered to be a candidate for migration.</para>
+      <para>The MAD_CAPABILITIES_EXCHANGE command uses the following data
+      structure:</para>
+
+      <programlisting><![CDATA[struct capabilities_mad{
+    inter_op op;
+    uint64_t buffer;
+};]]></programlisting>
+
+      <para>The inter_op field is initialized with the type field set to 0x05
+      (MAD_CAPABILITIES_EXCHANGE), the status field initialized to zero, the
+      length field set to the size of the capabilities structures being passed,
+      and the tag field set as described above. The capabilities structures
+      must include at least the capabilities structure and the mig_cap
+      structure.</para>
+      <para>The buffer field contains the mapped memory address of a buffer
+      containing these structures.</para>
+
+      <programlisting><![CDATA[struct capabilities{
+    // Allows the server to put a LUN in the proper state
+    //   after migration. The flags are needed if one or
+    //   LUN are using client reserve
+#define CLIENT_MIGRATED    0x01
+#define CLIENT_RECONNECT   0x02
+    // The the client should always set this flag field, it will
+    //   will be reset if the server found some capabilities in the
+    //   list it is not capable of supporting. If the server resets this
+    //   flag field there is at least one capability in the list it does
+    //   support
+#define CAP_LIST_SUPPORTED 0x04
+    // The server sets this flag it overwrites some filed in
+    //   the capabilities list. It is not set for overwriting
+    //   the name or location field
+#define CAP_LIST_DATA      0x08
+    unsigned int flags;
+    // Either a Null string or NULL terminated ASCII strings.
+    //   If string is not NULL it may be displayed by the server
+    //   for the system administrator.
+    char name[32];
+    char loc[32];
+    // list of capabilities follow
+};]]></programlisting>
+
+      <para>The flags field is always set to at least CAP_LIST_SUPPORTED by the
+      client. If the client is sending this command as the result of a
+      successful partition migration operation, it should also set the
+      CLIENT_MIGRATED flag. If the client is sending this command as the result
+      of a VIOS reboot or the VIOS has reset the CRQ, it should also set the
+      CLIENT_RECONNECT flag. If the VIOS cannot support all of the capabilities
+      in the list passed by the client, it will turn off the CAP_LIST_SUPPORTED
+      flag. If the VIOS overwrites some of the data in the capabilities list,
+      it will set the CAP_LIST_DATA flag.</para>
+      <para>The name array is filled with the NULL-terminated string
+      representing the name by which this client adapter instance is known on
+      the client partition, for example &#8220;vscsi0&#8221;.</para>
+      <para>The loc array is filled with the NULL-terminated string from the
+      &#8220;loc-code&#8221; field of the adapter node in the Open Firmware
+      device tree for this client adapter, for example
+      &#8220;U9117.MMA.107086C-V6-C5-T1&#8221;.</para>
+      <para>Following the capabilities structure is a list of capabilities to
+      be negotiated. Capabilities currently supported by the VIOS are
+      MIGRATION_CAPABILITIES and RESERVATION_CAPABILITIES.</para>
+
+      <programlisting><![CDATA[struct capability_common{
+    // Which capability
+#define MIGRATION_CAPABILITIES       0x01
+#define RESERVATION_CAPABILITIES     0x02
+unsigned int cap_type;
+    // Length of this capability
+    //   including the size of this structure
+    //   in bytes
+    int16_t length;
+    // Client initializes to 0x01, server zeros
+    //   if this particular capability is not supported
+#define SERVER_DOES_NOT_SUPPORTS_CAP 0x0
+#define SERVER_SUPPORTS_CAP          0x01
+#define SERVER_CAP_DATA              0x02
+    uint16_t server_support;
+};]]></programlisting>
+
+      <para>The capability_common structure is included in each capability
+      structure and describes the type of capability being negotiated.</para>
+      <para>The cap_type field is set to the type of capability.
+      MIGRATION_CAPABILITIES and RESERVATION_CAPABILITIES are the only types of
+      capabilities currently supported.</para>
+      <para>The length field is set to the size of the capabilities structure,
+      currently either mig_cap or reserve_cap.</para>
+      <para>The server_support field is initialized by the client to 1. If the
+      VIOS does not support that capability, it clears the field.</para>
+      <para>The capabilities structure used for negotiating migration
+      capabilities is as follows:</para>
+
+      <programlisting><![CDATA[struct mig_cap{
+    struct capability_common common;
+    unsigned int ecl;
+};]]></programlisting>
+
+      <para>The ecl field contains the effective capability level. The client
+      sets it to the current migration capability level that this client is
+      capable of supporting. If this level is lower than the level that the
+      VIOS can support or higher than the VIOS currently supports, the VIOS
+      sets the server_support to SERVER_CAP_DATA, sets the ecl field to the
+      lowest level it can support or the level currently supported, as
+      appropriate, and sets flags field of the capabilities structure to
+      CAP_LIST_DATA, to inform the client of the difference in the levels of
+      migration capabilities supported. Currently, the only migration
+      capability level supported is 1.</para>
+      <para>The structure used in negotiating reservation capabilities is as
+      follows:</para>
+
+      <programlisting><![CDATA[struct reserve_cap{
+    struct capability_common common;
+    // Allow for future expansion of different
+    //   types of reserves.
+#define CLIENT_RESERVE_SCSI_2 0x01
+    unsigned int type;
+};]]></programlisting>
+
+      <para>If the client is capable of breaking and re-establishing SCSI-2
+      reservations after a migration event, it should set the type field to
+      CLIENT_RESERVE_SCSI_2. Otherwise, it should initialize the type field to
+      zero.</para>
+    </section>
+    <section>
+      <title>#define MAD_PHYS_ADAP_INFO_REQUEST 0x06</title>
+      <para>The MAD_PHYS_ADAP_INFO_REQUEST returns data about the physical
+      adapter to which the target device is attached, if the device supports
+      it. The only device currently supporting this request is virtual tape.
+      The data structure used with the MAD_PHYS_ADAP_INFO_REQUEST is as
+      follows:</para>
+
+      <programlisting><![CDATA[struct mad_phys_adapter_info_request{
+    inter_op op;
+    uint64_t buffer;
+};]]></programlisting>
+
+      <para>The client initializes the inter_op field, with the type set to
+      0x06 (MAD_PHYS_ADAP_INFO_REQUEST), the status field initialized to zero,
+      the length field set to the size of the mad_phys_adapter_info structure,
+      the tag field set as described above, and the buffer field set to the
+      mapped memory address of a mad_phys_adapter_info structure.</para>
+
+      <programlisting><![CDATA[struct mad_phys_adapter_info{
+    uint64_t lun;
+#define MAD_PHYS_ADAP_INFO_VERSION 0x00000001
+    uint32_t version;
+#ifndef MAX_FRUPN_SIZE
+#define MAX_FRUPN_SIZE   128
+#endif
+#ifndef MAX_FRUSN_SIZE
+#define MAX_FRUSN_SIZE   128
+#endif
+#ifndef MAX_PHYSLOC_SIZE
+#define MAX_PHYSLOC_SIZE 256
+#endif
+    char fruPartNumber [MAX_FRUPN_SIZE];
+    char fruSerialNumber [MAX_FRUSN_SIZE];
+    char physLocationCode [MAX_PHYSLOC_SIZE];
+    char reserved [4];
+};]]></programlisting>
+
+      <para>The client sets the lun field to the Logical Unit Number (LUN) of
+      the virtual device for which it is requesting the physical adapter
+      information, and it sets the version to 0x01
+      (MAD_PHYS_ADAP_INFO_VERSION).</para>
+      <para>If the target device supports returning the physical adapter
+      information, the VIOS copies the Field Replaceable Unit (FRU) part
+      number, the FRU serial number, and the physical location code into the
+      appropriate arrays and returns that information to the client. This
+      information is intended for use by customer service engineers, to assist
+      them in repairing physical tape devices.</para>
+    </section>
+    <section>
+      <title>#define MAD_TAPE_PASSTHROUGH_REQUEST 0x07</title>
+      <para>The MAD_TAPE_PASSTHROUGH_REQUEST enables or disables SCSI command
+      data blocks (CDBs) to be passed directly to the physical tape device
+      driver without examination or emulation by the VIOS drivers.</para>
+      <para>The structure used with the MAD_TAPE_PASSTHROUGH_REQUEST is as
+      follows:</para>
+
+      <programlisting><![CDATA[struct mad_tape_passthrough{
+    inter_op op;
+    uint64_t lun;
+#define MAD_TAPE_PASSTHRU_VERSION 0x00000001
+    uint32_t version;
+/*********************************************
+* The below defines are used to enable or
+* disable the passthrough mode for virtual
+* tape devices supported by the server
+*********************************************/
+#define TAPE_PASSTHROUGH_ENABLE 0x00000001
+#define TAPE_PASSTHROUGH_DISABLE 0x00000002
+    uint32_t passThru;
+};]]></programlisting>
+
+      <para>The client initializes the inter_op structure by setting the type
+      field to 0x07 (MAD_TAPE_PASSTHROUGH_REQUEST), setting the status field to
+      zero, setting the length field to the size of the mad_tape_passthrough
+      structure, and setting the tag field as described above. The lun field is
+      set to the Logical Unit Number of a virtual tape device on this client
+      adapter. The version is set to 0x00000001 (MAD_TAPE_PASSTHRU_VERSION).
+      The passThru is set to either 0x00000001 (TAPE_PASSTHROUGH_ENABLE) or
+      0x00000002 (TAPE_PASSTHROUGH_DISABLE).</para>
+      <para>When tape passthrough is enabled, the SCSI Command Data Blocks are
+      sent directly to the tape head driver, without examination or emulation
+      by the VIOS drivers.</para>
+    </section>
+    <section>
+      <title>#define MAD_ENABLE_FAST_FAIL 0x08</title>
+      <para>The MAD_ENABLE_FAST_FAIL command enables the VIOS to provide a hint
+      to the client that a physical device is no longer accessible so that a
+      failover to alternate paths, if any, should be attempted.</para>
+      <para>The only structure used with the MAD_ENABLE_FAST_FAIL command is
+      the inter_op structure. The type field is set to 0x08
+      (MAD_ENABLE_FAST_FAIL), the status field is initialized to zero, the
+      length field is set to the size of the inter_op structure, and the tag
+      field is set as described above.</para>
+      <para>When the MAD_ENABLE_FAST_FAIL has completed successfully and the
+      VIOS determines that a device is no longer responding, when the VIOS is
+      completing an I/O request for that device back to the client, the VIOS
+      will set the status field in the CRQ message to 0x10 (ADAPTER_FAILED), in
+      addition to returning the normal device error and sense data. Fast fail
+      is disabled by closing the CRQ.</para>
+      <para>Two additional messages may be exchanged between clients and a VIOS
+      - PING and PING_RESPONSE. If a partition needs to know if the other
+      partition is still functional and at least able to respond to an
+      interrupt, it can send a PING message to the other partition. The other
+      partition should respond with a PING_RESPONSE. These are very lightweight
+      messages that require no resources. They fit entirely within the first
+      64-bit quantity of the CRQ message. The PING_RESPONSE should be sent from
+      the interrupt code, immediately after receiving the PING.</para>
+      <para>To send a PING, the valid bit is set to one, the CRQ format field
+      is set to 0x06 (MESSAGE_IN_CRQ), and the status field is set to 0xF5
+      (PING).</para>
+      <para>To send a PING_RESPONSE, the valid bit is set to one, the CRQ
+      format field is set to 0x06 (MESSAGE_IN_CRQ), and the status field is set
+      to 0xF6 (PING_RESPONSE).</para>
+      <para>It is strongly recommended that PING messages be used very
+      sparingly. One way to fill a CRQ with ping messages is to halt the VIOS
+      in kdb while the AIX client has requests active on it.</para>
+
+    </section>
+  </section>
+</appendix>

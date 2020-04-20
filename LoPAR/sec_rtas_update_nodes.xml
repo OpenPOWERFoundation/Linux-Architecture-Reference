@@ -1,0 +1,829 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2016 OpenPOWER Foundation
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<section xmlns="http://docbook.org/ns/docbook"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         version="5.0"
+         xml:lang="en"
+         xml:id="dbdoclet.50569332_84414">
+    <title><emphasis>ibm,update-nodes</emphasis> RTAS Call</title>
+
+    <para>This RTAS call is used to determine which device tree nodes have
+    changed due to a massive platform reconfiguration such as when the
+    partition is migrated between machines. Differing platform
+    reconfigurations are expected to potentially result in different sets of
+    nodes being updated; the &#8220;scope&#8221; argument communicates what
+    set of changes are to be reported. The work area is a 4 KB naturally
+    aligned area of storage below the first 4 GB; as such, it may not be
+    large enough to contain the reports of all changed nodes. The status
+    value of 1 is used to inform the caller that there are more updates to
+    report and that it will have to call the
+    <emphasis>ibm,update-nodes</emphasis> RTAS again to receive them. On
+    subsequent calls the state variable, which is set to zero on the first
+    call, is set to the value returned on the previous call, to supply RTAS
+    with the information it needs to continue from where the previous call
+    ended.</para>
+    <para>Upon return, the work area contains, in addition to the state
+    variable, zero or more operation lists, and logically ends with a
+    terminator (4 byte word naturally aligned containing 0x00000000). An
+    operation list consists of an operator (4 bytes naturally aligned) and
+    zero or more (up to a the maximum number of 4 byte locations remaining in
+    the work area) operands, each 4 bytes long. An operator consists of a
+    single byte opcode followed by 3 bytes encoded with the binary value of
+    the number of operands that follow. An operator with an operand length
+    field of zero performs no operation, and the opcode of zero is reserved
+    for the terminator -- thus the terminator can be considered a special
+    encoding of a no-op operator.</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>The opcode of 0x01 is used for deleted nodes -- the operands are
+        the
+        <emphasis role="bold">phandle</emphasis> values for the deleted nodes.</para>
+      </listitem>
+
+      <listitem>
+        <para>The opcode of 0x02 is used for updated nodes -- the operands are
+        the
+        <emphasis role="bold">phandle</emphasis> values for the updated nodes. The updated
+        properties are obtained using the
+        <emphasis>ibm,update-properties</emphasis> RTAS call.</para>
+      </listitem>
+
+      <listitem>
+        <para>The opcode of 0x03 is used for adding nodes -- the operands are
+        pairs of
+        <emphasis role="bold">phandle</emphasis> and
+        <emphasis role="bold">drc-index</emphasis> values; the
+        <emphasis role="bold">phandle</emphasis> value denotes the parent node of the node to
+        be added and the
+        <emphasis role="bold">ibm,drc-index</emphasis> value is passed with the
+        <emphasis>ibm,configure-connector</emphasis> RTAS call to obtain the
+        contents of the added node.</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>To make processing of device tree updates simpler, all opcode 0x01
+    (delete) operations (if any) are presented prior to all opcode 0x02
+    (update) operations (if any), and finally any 0x03 (addition) operations
+    are presented. The
+    <emphasis role="bold">phandle</emphasis> operand values are the same
+    <emphasis role="bold">phandle</emphasis> values as reported by the
+    <emphasis role="bold"><literal>&#8220;ibm,phandle&#8221;</literal></emphasis> property.</para>
+
+    <variablelist>
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_84414"
+        xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Update OF Tree option:</emphasis> The platform must
+            include the
+            <emphasis role="bold"><literal>&#8220;ibm,phandle&#8221;</literal></emphasis> property in all OF nodes
+            specified in
+            <xref linkend="dbdoclet.50569332_80965" />.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_84414"
+        xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Update OF Tree option:</emphasis> The platform must
+            implement the
+            <emphasis>ibm,update-nodes</emphasis> RTAS call using the argument call
+            buffer defined by
+            <xref linkend="dbdoclet.50569332_55185" />.</para>
+
+            <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_55185">
+              <title>Argument Call Buffer
+              <emphasis>ibm,update-nodes</emphasis></title>
+              <tgroup cols="3">
+                <colspec colname="c1" colwidth="1*" />
+                <colspec colname="c2" colwidth="2*" />
+                <colspec colname="c3" colwidth="4*" />
+                <thead>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">Parameter Type</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">Name</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">Values</emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                </thead>
+                <tbody>
+                  <row>
+                    <entry morerows="4" valign="middle">
+                      <para>In</para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis>Token</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>Token for
+                      <emphasis>ibm,update-nodes</emphasis></para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Number Inputs</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>2</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Number Outputs</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>1</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Work Area Address</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>32 bit real address of work area</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Scope</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>Values per
+                      <xref linkend="dbdoclet.50569332_80965" />.</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>Out</para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis>Status</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>-1: Hardware Error</para>
+                      <para>-2: Busy</para>
+                      <para>-3: Parameter Error (Purpose does not match the current
+                      partition state)</para>
+                      <para>0: Success</para>
+                      <para>1: More nodes updated -- call again</para>
+                    </entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_84414"
+        xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+          <listitem>
+            <para><emphasis>ibm,update-nodes</emphasis> RTAS call work area must be 4 KB
+            long aligned on a 4 KB boundary that is accessible with MSR[DR] = 0, else
+            RTAS may return -3 &#8220;Parameter Error&#8221;.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_84414"
+        xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+          <listitem>
+            <para><emphasis>ibm,update-nodes</emphasis> RTAS for a given value of &#8220;
+            <emphasis>Scope</emphasis>&#8221; must be formatted as specified in
+            <xref linkend="dbdoclet.50569332_76526" />, else RTAS may return -3
+            &#8220;Parameter Error&#8221;.</para>
+
+            <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_76526">
+              <title>Initial Format of Work Area for
+              <emphasis>ibm,update-nodes</emphasis></title>
+              <tgroup cols="1">
+                <colspec colname="c1" colwidth="100*" align="center" />
+                <thead>
+                  <row>
+                    <entry>
+                      <para>0x00000000 (State Variable indicates Initial call for
+                      specified
+                      <emphasis>Scope</emphasis>)</para>
+                    </entry>
+                  </row>
+                </thead>
+                <tbody>
+                  <row>
+                    <entry>
+                      <para>12 bytes of 0x00 (reserved)</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>Don&#8217;t Care . . .</para>
+                    </entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_84414"
+        xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
+          <listitem>
+            <para>Upon successful return (non-negative status
+            value) from
+            <emphasis>ibm,update-nodes</emphasis> the work area must by formatted as
+            defined in
+            <xref linkend="dbdoclet.50569332_64519" />. (Note each entry in
+            <xref linkend="dbdoclet.50569332_64519" /> is 4 bytes long.)</para>
+
+            <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_64519">
+              <title>Format of Work Area for
+              <emphasis>ibm,update-nodes</emphasis></title>
+              <tgroup cols="1">
+                <colspec colname="c1" colwidth="100*" align="center" />
+                <tbody>
+                  <row>
+                    <entry>
+                      <para>State Variable (4 Bytes)</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>12 bytes of 0x00 (reserved)</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>0 or more operation lists</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>. . .</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>Terminator (0x00000000)</para>
+                    </entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_84414"
+        xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
+          <listitem>
+            <para><emphasis>ibm,update-nodes</emphasis> RTAS call operation list for the
+            <emphasis>ibm,update-nodes</emphasis> RTAS call must contain an operator
+            (4 bytes naturally aligned) and zero or more 4 byte operands up to the
+            end of the work area.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_84414"
+        xrefstyle="select: labelnumber nopage"/>-7.</emphasis></term>
+          <listitem>
+            <para>An operator in an
+            <emphasis>ibm,update-nodes</emphasis> RTAS call operation list must be
+            formatted with, starting at the high order byte, a single byte opcode
+            followed by 3 bytes encoded with the binary value of the number of
+            operands that follow.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_84414"
+        xrefstyle="select: labelnumber nopage"/>-8.</emphasis></term>
+          <listitem>
+            <para>An operator in an
+            <emphasis>ibm,update-nodes</emphasis> RTAS call operation list with an
+            operand length field of zero must be considered to perform no
+            operation.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_84414"
+        xrefstyle="select: labelnumber nopage"/>-9.</emphasis></term>
+          <listitem>
+            <para>The opcode of 0x01 in an
+            <emphasis>ibm,update-nodes</emphasis> RTAS call operation list must be
+            used to denote node deletions.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_84414"
+        xrefstyle="select: labelnumber nopage"/>-10.</emphasis></term>
+          <listitem>
+            <para>The operands for opcode 0x01 in an
+            <emphasis>ibm,update-nodes</emphasis> RTAS call operation list must be the
+
+            <emphasis role="bold">phandle</emphasis> values for the deleted nodes.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_84414"
+        xrefstyle="select: labelnumber nopage"/>-11.</emphasis></term>
+          <listitem>
+            <para>The opcode of 0x02 in an
+            <emphasis>ibm,update-nodes</emphasis> RTAS call operation list must be
+            used to denote updated nodes.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_84414"
+        xrefstyle="select: labelnumber nopage"/>-12.</emphasis></term>
+          <listitem>
+            <para>The operands for opcode 0x02 in an
+            <emphasis>ibm,update-nodes</emphasis> RTAS call operation list must be the
+            <emphasis role="bold">phandle</emphasis> values for the updated nodes that may be used
+            as the
+            <emphasis>ibm,update-properties</emphasis> RTAS call argument to obtain
+            the changed properties of the updated node.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_84414"
+        xrefstyle="select: labelnumber nopage"/>-13.</emphasis></term>
+          <listitem>
+            <para>The opcode of 0x03 in an
+            <emphasis>ibm,update-nodes</emphasis> RTAS call operation list must used
+            for the added nodes.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_84414"
+        xrefstyle="select: labelnumber nopage"/>-14.</emphasis></term>
+          <listitem>
+            <para>The operands for opcode of 0x03 in an
+            <emphasis>ibm,update-nodes</emphasis> RTAS call operation list must be
+            <emphasis role="bold">phandle</emphasis> and
+            <emphasis role="bold">drc-index</emphasis> value pairs (each value being 4 bytes
+            on a natural boundary totalling 8 bytes for the pair) denoting the parent
+            node of the added node and the
+            <emphasis>ibm,configure-connector</emphasis> RTAS call argument to obtain
+            the contents of the added node respectively.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_84414"
+        xrefstyle="select: labelnumber nopage"/>-15.</emphasis></term>
+          <listitem>
+            <para>All opcode 0x01 (delete) in an
+            <emphasis>ibm,update-nodes</emphasis> RTAS call operation list (if any)
+            must be presented prior to any opcode 0x02 (update) operations (if
+            any).</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_84414"
+        xrefstyle="select: labelnumber nopage"/>-16.</emphasis></term>
+          <listitem>
+            <para>All opcode 0x02 (update) in an
+            <emphasis>ibm,update-nodes</emphasis> RTAS call operation list (if any)
+            must be presented prior to any opcode 0x03 (add) operations (if
+            any).</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_84414"
+        xrefstyle="select: labelnumber nopage"/>-17.</emphasis></term>
+          <listitem>
+            <para>The work area on subsequent call(s) to
+            <emphasis>ibm,update-nodes</emphasis> RTAS for the same value of the
+            <emphasis role="bold"><literal>&#8220;Scope&#8221;</literal></emphasis> must be formatted as specified in
+            <xref linkend="dbdoclet.50569332_64422" />, else RTAS may return -3
+            &#8220;Parameter Error&#8221;.</para>
+
+            <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_64422">
+              <title>Format of Work Area for Subsequent Calls to
+              <emphasis>ibm,update-nodes</emphasis></title>
+              <tgroup cols="1">
+                <colspec colname="c1" colwidth="100*" align="center" />
+                <thead>
+                  <row>
+                    <entry>
+                      <para>Value of the 1st 16 bytes of the returned work area from
+                      last call to
+                      <emphasis>ibm,update-nodes</emphasis> RTAS that returned status
+                      of 1.</para>
+                    </entry>
+                  </row>
+                </thead>
+                <tbody>
+                  <row>
+                    <entry>
+                      <para>Don&#8217;t Care . . .</para>
+                    </entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_84414"
+        xrefstyle="select: labelnumber nopage"/>-18.</emphasis></term>
+          <listitem>
+            <para>The &#8220;<emphasis>Scope</emphasis>&#8221; argument for the
+            <emphasis>ibm,update-nodes</emphasis> RTAS call must be one of the values
+            specified in the scope value column of
+            <xref linkend="dbdoclet.50569332_80965" />, else RTAS may return -3
+            &#8220;Parameter Error&#8221;.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_84414"
+        xrefstyle="select: labelnumber nopage"/>-19.</emphasis></term>
+          <listitem>
+            <para>For the
+            <emphasis>ibm,update-nodes</emphasis> RTAS call, the platform must
+            restrict its reported node updates to those specified in
+            <xref linkend="dbdoclet.50569332_80965" /> for the value of the specified
+            <emphasis role="bold"><literal>&#8220;Scope&#8221;</literal></emphasis> argument.</para>
+
+          </listitem>
+     	</varlistentry>
+
+      <varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_84414"
+        xrefstyle="select: labelnumber nopage"/>-20.</emphasis></term>
+          <listitem>
+            <para>The work area on the first call to
+            <emphasis>ibm,update-nodes</emphasis> RTAS for a given value of
+            <emphasis>"Scope"</emphasis> must be formatted as specified in
+            <xref linkend="table_initial_format_of_work_area_for_ibm_update_nodes"/>
+            else RTAS may return -3 "Parameter Error".</para>
+
+            <table frame="all" pgwide="1" xml:id="table_initial_format_of_work_area_for_ibm_update_nodes">
+              <title>Initial Format of Work Area for
+              <emphasis>ibm,update-nodes</emphasis> with Device Reconfiguration Scope</title>
+              <tgroup cols="1">
+                <colspec colname="c1" colwidth="100*" align="center"/>
+                <tbody>
+                  <row>
+                    <entry>
+                      <para>0x00000000 (State Variable indicates Initial call for specified <emphasis>Scope</emphasis>)</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>Unit Address of target device for reconfiguration</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>4 bytes of 0x00 (reserved)</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>Don't Care. . .</para>
+                    </entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
+          </listitem>
+     	</varlistentry>
+
+    </variablelist>
+
+    <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_80965">
+      <title>Nodes That May be Reported by
+      <emphasis>ibm,update-nodes</emphasis> for a Given Value of the
+      &#8220;<emphasis>Scope</emphasis>&#8221; Argument</title>
+      <tgroup cols="3">
+        <colspec colname="c1" colwidth="33*" />
+        <colspec colname="c2" colwidth="33*" />
+        <colspec colname="c3" colwidth="33*" />
+        <thead>
+          <row>
+            <entry>
+              <para>Scope Value</para>
+            </entry>
+            <entry>
+              <para>Reportable node types (value of
+              <emphasis role="bold"><literal>&#8220;name&#8221;</literal></emphasis> or
+              <emphasis role="bold"><literal>&#8220;device_type&#8221;</literal></emphasis> property)</para>
+            </entry>
+            <entry>
+              <para>Supported Opcodes</para>
+            </entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry morerows="7" valign="middle">
+              <para>Negative values: Platform Resource Reassignment events as
+              from
+              <emphasis>event-scan</emphasis> RTAS</para>
+            </entry>
+            <entry>
+              <para><emphasis role="bold">cpu</emphasis></para>
+            </entry>
+            <entry>
+              <para>0x02</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para><emphasis role="bold">memory</emphasis></para>
+            </entry>
+            <entry>
+              <para>0x02</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para><emphasis role="bold">ibm,dynamic-reconfiguration-memory</emphasis></para>
+            </entry>
+            <entry>
+              <para>0x02</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">ibm,plaform-facilities</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>0x01-0x03</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">ibm,random-v#</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>0x01-0x03</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">ibm,compression-v#</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>0x01-0x03</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">ibm,encryption-v#</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>0x01-0x03</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">ibm,memory-utilization_instrumentation-v#</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>0x01-0x03</para>
+            </entry>
+          </row>
+          <row>
+            <entry morerows="13" valign="middle">
+              <para>1 Partition Migration / Hibernation</para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">root</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>0x02</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">openprom</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>0x02</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">rtas</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>0x02</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">vdevice</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>0x02</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">cpu</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>0x02</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">cache</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>0x01-0x03</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">options</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>0x02</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">memory</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>0x02</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para><emphasis  role="bold">ibm,dynamic-reconfiguration-memory</emphasis></para>
+            </entry>
+            <entry>
+              <para>&lt;all&gt;</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para><emphasis  role="bold">ibm,platform-facilities</emphasis></para>
+            </entry>
+            <entry>
+              <para>0x01-0x03</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">ibm,random-v#</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>0x01-0x03</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">ibm,compression-v#</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>0x01-0x03</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">ibm,encryption-v#</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>0x01-0x03</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">ibm,memory-utilization_instrumentation-v#</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>0x01-0x03</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>2 Activate Firmware</para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">rtas</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>0x02</para>
+            </entry>
+          </row>
+          <row>
+            <entry morerows="1" valign="middle">
+              <para>3 Device Reconfiguration</para>
+            </entry>
+            <entry>
+              <para>
+                <emphasis role="bold">ibm,coherent-platform-facility</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>0x02</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>
+                <emphasis role="bold">ibm,coherent-platform-function</emphasis>
+              </para>
+            </entry>
+            <entry>
+              <para>0x02</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+
+  </section>

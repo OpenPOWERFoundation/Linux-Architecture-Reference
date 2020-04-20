@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2016 OpenPOWER Foundation
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<section xmlns="http://docbook.org/ns/docbook"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         version="5.0"
+         xml:lang="en"
+         xml:id="sec_get_indices_rtas_call">
+
+    <title><emphasis>ibm,get-indices</emphasis> Call</title>
+
+    <para>The RTAS function
+    <emphasis>ibm,get-indices</emphasis> is used to obtain the indices and
+    location codes for a specified indicator or sensor token. It allows for
+    obtaining the list of indicators and sensors dynamically and therefore
+    assists in any Dynamic Reconfiguration operation that involves indicators
+    and sensors being added or deleted from the platform (unlike the
+    <emphasis role="bold"><literal>/rtas</literal></emphasis> node
+    <emphasis role="bold"><literal>&#8220;</literal></emphasis><emphasis><literal>&lt;vendor&gt;</literal></emphasis><emphasis role="bold"><literal>,indicator-</literal></emphasis><emphasis><literal>&lt;token&gt;</literal></emphasis><emphasis role="bold"><literal>&#8221;</literal></emphasis>,
+    <emphasis role="bold"><literal>&#8220;</literal></emphasis><emphasis><literal>&lt;vendor&gt;</literal></emphasis><emphasis role="bold"><literal>,sensor-</literal></emphasis><emphasis><literal>&lt;token&gt;</literal></emphasis><emphasis role="bold"><literal>&#8221;</literal></emphasis>,
+    and <emphasis role="bold"><literal>&#8220;ibm,environmental-sensor&#8221;</literal></emphasis> properties).
+    This call also allows discontiguous indices for a particular indicator or
+    sensor type (unlike the
+    <emphasis role="bold"><literal>&#8220;rtas-indicators&#8221;</literal></emphasis>,
+    <emphasis role="bold"><literal>&#8220;rtas-sensors&#8221;</literal></emphasis>, and
+    <emphasis role="bold"><literal>
+    &#8220;ibm,environmental-sensor&#8221;</literal></emphasis> properties).</para>
+    <para>This RTAS call is not used for DR indicators (9001, 9002, and 9003)
+    or DR sensors (9003). See the following sections in the DR chapter for more
+    information:
+    <xref linkend="LoPAR.Virtualization" /> and
+    <xref linkend="LoPAR.Virtualization" />.</para>
+    <para>It may require several calls to the
+    <emphasis>ibm,get-indices</emphasis> RTAS routine to get the entire list of
+    indicators or sensors of a particular type. Each call may specify a
+    different work area.</para>
+    <para>The OS may not interleave calls to
+    <emphasis>ibm,get-indices</emphasis> for different indicator or sensor
+    types. Other standard RTAS locking rules apply.</para>
+
+    <variablelist>
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_get_indices_rtas_call"
+        xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For all DR options:</emphasis> The RTAS function
+            <emphasis>ibm,get-indices</emphasis> must implement the argument call buffer
+            defined by
+            <xref linkend="dbdoclet.50569332_50675" />.</para>
+
+            <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_50675">
+              <title>Argument Call Buffer
+              <emphasis>ibm,get-indices</emphasis></title>
+              <tgroup cols="3">
+                <colspec colname="c1" colwidth="1*" />
+                <colspec colname="c2" colwidth="2*" />
+                <colspec colname="c3" colwidth="4*" />
+                <thead>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">Parameter Type</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">Name</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">Values</emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                </thead>
+                <tbody>
+                  <row>
+                    <entry morerows="7" valign="middle">
+                      <para>In</para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis>Token</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>Token for
+                      <emphasis>ibm,get-indices</emphasis></para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Number Inputs</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>5</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Number Outputs</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>2</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Indicator or Sensor</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>0: indicator of given type</para>
+                      <para>1: sensor of given type</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Indicator Type</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>Indicator or sensor type (for example, 9006, 9007)</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Work Area Address</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>Address of work area</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Work Area Size</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>Size of work area</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Starting Number</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>Integer representing first indicator number to
+                      return</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry morerows="1" valign="middle">
+                      <para>Out</para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis>Status</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>-1: Hardware error</para>
+                      <para>-3: Indicator type not supported</para>
+                      <para>-4: Optional: Indicator list changed, start again</para>
+                      <para>0: Success</para>
+                      <para>1: More data available; call again</para>
+                      <para>990x:Extended Delay where x is a number 0-5 (see text
+                      below)</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Next Starting Number</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>Integer to use as the Starting Number parameter on the next
+                      call, or 1 if no more calls are required</para>
+                    </entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
+            <para>When the 990x
+            <emphasis>Status</emphasis> is returned, it is suggested that software delay
+            for 10 raised to the x milliseconds (where x is the last digit of the 990x
+            return code), before calling
+            <emphasis>ibm,get-indices</emphasis> with the same Starting Number and
+            Indicator Type. However, software may issue the
+            <emphasis>ibm,get-indices</emphasis> call again either earlier or later than
+            this.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_get_indices_rtas_call"
+        xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+          <listitem>
+            <para>The OS must not interleave calls to
+            <emphasis>ibm,get-indices</emphasis> for different indicator or sensor
+            types.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_get_indices_rtas_call"
+        xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+          <listitem>
+            <para>On the first call to get a particular
+            <emphasis>Indicator Type</emphasis>, the caller must provide a Starting
+            Number of 1 (32-bit integer)</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_get_indices_rtas_call"
+        xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+          <listitem>
+            <para>When
+            <emphasis>ibm,get-indices</emphasis> is called with a Starting Number of 1,
+            firmware must refresh any stale data in previously cached firmware buffers
+            for that indicator (for example, data made stale by a Dynamic
+            Reconfiguration operation).</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_get_indices_rtas_call"
+        xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
+          <listitem>
+            <para>When calling
+            <emphasis>ibm,get-indices</emphasis> with a Starting Number of 1, a
+            previously returned
+            <emphasis>Next Starting Number</emphasis> value must be discarded.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_get_indices_rtas_call"
+        xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
+          <listitem>
+            <para>Optionally, if firmware detects a change in
+            the indicator list before the entire list is returned, the
+            <emphasis>ibm,get-indices</emphasis> call must return a -4 and the caller
+            must start again with a Starting Number of 1.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_get_indices_rtas_call"
+        xrefstyle="select: labelnumber nopage"/>-7.</emphasis></term>
+          <listitem>
+            <para>The return data format in the work area for
+            all sensors and indicators must be as follows:</para>
+
+            <itemizedlist>
+              <listitem>
+                <para>Number Returned: 32-bit integer representing the number of
+                indicator indices returned on this call</para>
+              </listitem>
+
+              <listitem>
+                <para>Sets of (32-bit integer index, 32-bit integer length of location
+                code including NULLs, location code string (NULL terminated and padded to
+                nearest 4 byte boundary)), one set per indicator or sensor, with the number
+                of sets indicated by the first integer in this work buffer</para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_get_indices_rtas_call"
+        xrefstyle="select: labelnumber nopage"/>-8.</emphasis></term>
+          <listitem>
+            <para>If the
+            <emphasis>Status</emphasis> returned is 1 (more data available, call again),
+            then the caller must call
+            <emphasis>ibm,get-indices</emphasis> again with the
+            <emphasis>Starting Number</emphasis> parameter set to the Next Starting
+            Number integer from the previously returned buffer.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_get_indices_rtas_call"
+        xrefstyle="select: labelnumber nopage"/>-9.</emphasis></term>
+          <listitem>
+            <para>The <emphasis>ibm,get-indices</emphasis> RTAS call must return the
+            <emphasis>Status</emphasis> value of -3 for the following conditions:</para>
+
+            <orderedlist numeration="loweralpha">
+              <listitem>
+                <para>Indicator type not supported</para>
+              </listitem>
+
+              <listitem>
+                <para>No indicators of specified Indicator Type available to
+                caller</para>
+              </listitem>
+            </orderedlist>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_get_indices_rtas_call"
+        xrefstyle="select: labelnumber nopage"/>-10.</emphasis></term>
+          <listitem>
+            <para>If the <emphasis>ibm,get-indices</emphasis> RTAS call returns a
+            <emphasis>Status</emphasis> of anything other than 0 or 1 is returned, the
+            caller must consider that the contents of the work area is not
+            defined.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_get_indices_rtas_call"
+        xrefstyle="select: labelnumber nopage"/>-11.</emphasis></term>
+          <listitem>
+            <para>The work area specified in the
+            <emphasis>ibm,get-indices</emphasis> RTAS call argument buffer must be
+            contiguous in logical real memory and must reside below 4GB.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_get_indices_rtas_call"
+        xrefstyle="select: labelnumber nopage"/>-12.</emphasis></term>
+          <listitem>
+            <para>The <emphasis>ibm,get-indices</emphasis> RTAS call must only return the
+            indicator or sensor indices to which the caller has authorized access at
+            the time of the call.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_get_indices_rtas_call"
+        xrefstyle="select: labelnumber nopage"/>-13.</emphasis></term>
+          <listitem>
+            <para>The <emphasis>ibm,get-indices</emphasis> RTAS call must make no assumptions
+            about the contents of the work area on the beginning of the call.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_get_indices_rtas_call"
+        xrefstyle="select: labelnumber nopage"/>-14.</emphasis></term>
+          <listitem>
+            <para>When the platform supports the
+            <emphasis>ibm,get-indices</emphasis> RTAS call, the device tree must include
+            the
+            <emphasis role="bold"><literal>&#8220;ibm,get-indicator-indices-types&#8221;</literal></emphasis> property
+            in the
+            <emphasis role="bold"><literal>/rtas</literal></emphasis> node if the call is to be used for getting
+            indicator information and must include the
+            <emphasis role="bold"><literal>&#8220;ibm,get-sensor-indices-types&#8221;</literal></emphasis> property in
+            the
+            <emphasis role="bold"><literal>/rtas</literal></emphasis> node if the call is to be used for getting sensor
+            information.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_get_indices_rtas_call"
+        xrefstyle="select: labelnumber nopage"/>-15.</emphasis></term>
+          <listitem>
+            <para>When an indicator token is provided in the
+            <emphasis role="bold"><literal>&#8220;ibm,get-indicator-indices-types&#8221;</literal></emphasis> property,
+            it must not be included in the
+            <emphasis role="bold"><literal>&#8220;</literal></emphasis><emphasis><literal>&lt;vendor&gt;</literal></emphasis><emphasis><literal>,indicator-</literal></emphasis><emphasis><literal>&lt;token&gt;</literal></emphasis><emphasis role="bold"><literal>&#8221;</literal></emphasis>
+            property and must not be included in the
+            <emphasis role="bold"><literal>&#8220;rtas-indicators&#8221;</literal></emphasis> property.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_get_indices_rtas_call"
+        xrefstyle="select: labelnumber nopage"/>-16.</emphasis></term>
+          <listitem>
+            <para>When a sensor token is provided in the
+            <emphasis role="bold"><literal>&#8220;ibm,get-sensor-indices-types&#8221;</literal></emphasis> property, it
+            must not be included in the
+            <emphasis role="bold"><literal>&#8220;</literal></emphasis><emphasis><literal>&lt;vendor&gt;</literal></emphasis><emphasis role="bold"><literal>,sensor-</literal></emphasis><emphasis><literal>&lt;token&gt;</literal></emphasis><emphasis role="bold"><literal>&#8221;</literal></emphasis>
+            property and must not be included in the
+            <emphasis role="bold"><literal>&#8220;rtas-sensors&#8221;</literal></emphasis> property.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_get_indices_rtas_call"
+        xrefstyle="select: labelnumber nopage"/>-17.</emphasis></term>
+          <listitem>
+            <para>When an environmental sensor token is
+            provided in the
+            <emphasis role="bold"><literal>&#8220;ibm,get-sensor-indices-types&#8221;</literal></emphasis> property,
+            users of data in the
+            <emphasis role="bold"><literal>&#8220;ibm,environmental-sensors&#8221;</literal></emphasis> property for
+            that sensor token must not assume that the indices are contiguous for that
+            sensor token (that is, any of the indices between 0 and the maxindex,
+            inclusive, may be missing).</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry xml:id="dbdoclet.50569332_80480">
+        <term><emphasis role="bold">R1-<xref linkend="sec_get_indices_rtas_call"
+        xrefstyle="select: labelnumber nopage"/>-18.</emphasis></term>
+          <listitem>
+            <para>When the value of
+            any index returned is 0xFFFFFFFF, the OS must use the
+            <emphasis>ibm,get-dynamic-sensor-state</emphasis> and
+            <emphasis>ibm,set-dynamic-indicator</emphasis> RTAS functions for this
+            sensor or indicator, using the location code to identify the sensor or
+            indicator.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="sec_get_indices_rtas_call"
+        xrefstyle="select: labelnumber nopage"/>-19.</emphasis></term>
+          <listitem>
+            <para>The OS must not call
+            <emphasis>get-sensor-state</emphasis> or
+            <emphasis>get-indicator</emphasis> with an index value of 0xFFFFFFFF.</para>
+          </listitem>
+     	</varlistentry>
+    </variablelist>
+</section>

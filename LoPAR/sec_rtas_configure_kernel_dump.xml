@@ -1,0 +1,621 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2016 OpenPOWER Foundation
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<section xmlns="http://docbook.org/ns/docbook"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         version="5.0"
+         xml:lang="en"
+         xml:id="dbdoclet.50569332_67111">
+    <title><emphasis>ibm,configure-kernel-dump</emphasis> RTAS Call</title>
+
+    <para>This RTAS call is used to register and unregister with the platform
+    a data structure describing kernel dump information. This dump
+    information is preserved as needed by the platform in support of a
+    platform assisted kernel dump option.</para>
+
+    <variablelist>
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_67111"
+        xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Configure Platform Assisted Kernel Dump
+            option:</emphasis> The platform must implement the
+            <emphasis>ibm,configure-kernel-dump</emphasis> RTAS call using the
+            argument call buffer defined by
+            <xref linkend="dbdoclet.50569332_24141" />.</para>
+
+            <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_24141">
+              <title>Argument Call Buffer
+              <emphasis>ibm,configure-kernel-dump</emphasis></title>
+              <tgroup cols="3">
+                <colspec colname="c1" colwidth="1*" />
+                <colspec colname="c2" colwidth="2*" />
+                <colspec colname="c3" colwidth="4*" />
+                <tbody>
+                  <row>
+                    <entry>
+                      <para>Parameter Type</para>
+                    </entry>
+                    <entry>
+                      <para>Name</para>
+                    </entry>
+                    <entry>
+                      <para>Values</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry morerows="5" valign="middle">
+                      <para>In</para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis>Token</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>Token for
+                      <emphasis>ibm,configure-kernel-dump</emphasis></para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Number Inputs</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>3</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Number Outputs</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>1</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Command</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>1: Register for future kernel dump</para>
+                      <para>2: Unregister for future kernel dump</para>
+                      <para>3: Complete/Invalidate current kernel dump</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Work_buffer_address</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>When command is 1: Register for future kernel dump,
+                      points to a structure as defined in
+                      <xref linkend="dbdoclet.50569332_76933" />.</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Work_buffer_length</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>Length of Kernel Dump Memory Structure when defined
+                      above</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>Out</para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis>Status</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>0: Success</para>
+                      <para>-1: Hardware Error</para>
+                      <para>-2: Busy</para>
+                      <para>-3: Parameter Error</para>
+                      <para>-9: Dump Already Registered</para>
+                      <para>-10: Dump Active</para>
+                      <para>990x:Extended Delay</para>
+                    </entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_67111"
+        xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Configure Platform Assisted Kernel Dump
+            option:</emphasis> The work-buffer address and work-buffer-length for the
+            <emphasis>ibm,configure-kernel-dump</emphasis> RTAS call must point to an
+            RMR-memory buffer that contains the structures described in
+            <xref linkend="dbdoclet.50569332_76933" />, whenever the command is 1,
+            register for future kernel dump; otherwise the call may return -3,
+            &#8220;Parameter Error.&#8221;</para>
+            <para>The Dump Memory Structure specified in
+            <xref linkend="dbdoclet.50569332_76933" /> is passed by the operating
+            system during a
+            <emphasis>ibm,configure-kernel-dump</emphasis> RTAS call. It is also
+            reported by the platform using the
+            <emphasis>ibm,kernel-dump</emphasis> RTAS property after a dump has been
+            initiated.</para>
+
+            <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_76933">
+              <title>Kernel Assisted Dump Memory Structure</title>
+              <tgroup cols="5">
+                <colspec colname="c1" colwidth="1*" />
+                <colspec colname="c2" colwidth="1*" />
+                <colspec colname="c3" colwidth="1*" />
+                <colspec colname="c4" colwidth="2*" />
+                <colspec colname="c5" colwidth="2*" />
+                <thead>
+                  <row>
+                    <entry nameend="c5" namest="c1">
+                      <para>
+                        <emphasis>Header</emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                </thead>
+                <tbody>
+                  <row>
+                    <entry>
+                      <para>Offset</para>
+                    </entry>
+                    <entry nameend="c3" namest="c2">
+                      <para>Number of Bytes</para>
+                    </entry>
+                    <entry nameend="c5" namest="c4">
+                      <para>Value</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>0x0</para>
+                    </entry>
+                    <entry nameend="c3" namest="c2">
+                      <para>4</para>
+                    </entry>
+                    <entry nameend="c5" namest="c4">
+                      <para>Dump Format Version = 0x00000001</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>0x4</para>
+                    </entry>
+                    <entry nameend="c3" namest="c2">
+                      <para>2</para>
+                    </entry>
+                    <entry nameend="c5" namest="c4">
+                      <para>Number of Kernel Dump Sections</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>0x6</para>
+                    </entry>
+                    <entry nameend="c3" namest="c2">
+                      <para>2</para>
+                    </entry>
+                    <entry nameend="c5" namest="c4">
+                      <para>Dump Status Flags</para>
+                      <para>A bit mask with value</para>
+                      <para>0x8000 = Dump performed (Set to 0 by caller of the
+                      ibm,configure-kernel-dump call)</para>
+                      <para>0x4000 = Dump was triggered by the previous system boot
+                      (set by platform)</para>
+                      <para>0x2000 = Dump error occurred (set by platform)</para>
+                      <para>All other bits reserved</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>0x8</para>
+                    </entry>
+                    <entry nameend="c3" namest="c2">
+                      <para>4</para>
+                    </entry>
+                    <entry nameend="c5" namest="c4">
+                      <para>Offset to first Kernel Dump Section, offset from the
+                      beginning of the Structure</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>0xc</para>
+                    </entry>
+                    <entry nameend="c3" namest="c2">
+                      <para>4</para>
+                    </entry>
+                    <entry nameend="c5" namest="c4">
+                      <para>Number of bytes in a block of the dump-disk, if data to
+                      be written to a dump-disk, If not, should be set to 0
+                      (indicating the no disk dump option.)</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>0x10</para>
+                    </entry>
+                    <entry nameend="c3" namest="c2">
+                      <para>8</para>
+                    </entry>
+                    <entry nameend="c5" namest="c4">
+                      <para>Starting block# offset on dump-disk (set to 0 for the no
+                      disk dump option)</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>0x18</para>
+                    </entry>
+                    <entry nameend="c3" namest="c2">
+                      <para>8</para>
+                    </entry>
+                    <entry nameend="c5" namest="c4">
+                      <para>Number of blocks on dump-disk usable for dump (set to 0
+                      for the no disk dump option)</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>0x20</para>
+                    </entry>
+                    <entry nameend="c3" namest="c2">
+                      <para>4</para>
+                    </entry>
+                    <entry nameend="c5" namest="c4">
+                      <para>Offset from start of structure to a Null-terminated
+                      Dump-disk path string (set to 0 for the no disk dump
+                      option)</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>0x24</para>
+                    </entry>
+                    <entry nameend="c3" namest="c2">
+                      <para>4</para>
+                    </entry>
+                    <entry nameend="c5" namest="c4">
+                      <para>Maximum time allowed (milliseconds) after
+                      Non-Maskable-Interrupt for the OS to call
+                      <emphasis>ibm,configure-kernel-dump</emphasis>
+                      <emphasis>Function</emphasis> 2 (unregister) to prevent an
+                      automatic dump-reboot (set to 0 to disable the automatic
+                      dump-reboot function)</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry nameend="c5" namest="c1">
+                      <para>
+                        <emphasis>Dump-disk Path String</emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>Offset specified above</para>
+                    </entry>
+                    <entry nameend="c3" namest="c2">
+                      <para>Varies</para>
+                    </entry>
+                    <entry nameend="c5" namest="c4">
+                      <para>Null-terminated Dump-disk path string specifying the
+                      dump-disk. If no disk dump option is indicated, this section is
+                      not included.</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry nameend="c5" namest="c1">
+                      <para>
+                        <emphasis>First Kernel Dump Section</emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>Offset specified above</para>
+                    </entry>
+                    <entry nameend="c3" namest="c2">
+                      <para>4</para>
+                    </entry>
+                    <entry nameend="c5" namest="c4">
+                      <para>Dump Request Flags:</para>
+                      <para>A bit-mask</para>
+                      <para>Bit 0x00000001 When set, firmware to copy source data to
+                      partition memory. This option must be selected if no disk dump
+                      option is indicated.</para>
+                      <para>All other bit values reserved</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>Section Start+4</para>
+                    </entry>
+                    <entry nameend="c3" namest="c2">
+                      <para>2</para>
+                    </entry>
+                    <entry nameend="c5" namest="c4">
+                      <para>Source Data type, describes section of dump memory being
+                      described</para>
+                      <para>0x0001 = CPU State Data</para>
+                      <para>0x0002 = Hardware Page Table for Real Mode Region</para>
+                      <para>0x0011 = Real Mode Region</para>
+                      <para>0x0012 = Dump OS identified string (identifies that the
+                      dump is for a particular OS type and version)</para>
+                      <para>0x0100 - 0xFFFF OS defined source types</para>
+                      <para>All Other values reserved</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>Section Start+6</para>
+                    </entry>
+                    <entry nameend="c3" namest="c2">
+                      <para>2</para>
+                    </entry>
+                    <entry nameend="c5" namest="c4">
+                      <para>Dump Error Flags (set by platform)</para>
+                      <para>Bit mask</para>
+                      <para>0x8000 = Invalid section data type</para>
+                      <para>0x4000 = Invalid source address</para>
+                      <para>0x2000 = Requested section length exceeds source</para>
+                      <para>0x1000 = Invalid partition destination address</para>
+                      <para>0x0800 = Partition memory destination too small</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>Section Start+8</para>
+                    </entry>
+                    <entry nameend="c3" namest="c2">
+                      <para>8</para>
+                    </entry>
+                    <entry nameend="c5" namest="c4">
+                      <para>Source address (logical address if section came from
+                      partition memory, or byte offset if section is platform
+                      memory)</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>Section Start+16</para>
+                    </entry>
+                    <entry nameend="c3" namest="c2">
+                      <para>8</para>
+                    </entry>
+                    <entry nameend="c5" namest="c4">
+                      <para>Requested data length, represents number of bytes to
+                      dump</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>Section Start+24</para>
+                    </entry>
+                    <entry nameend="c3" namest="c2">
+                      <para>8</para>
+                    </entry>
+                    <entry nameend="c5" namest="c4">
+                      <para>Actual data length, number of bytes dumped</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>Section Start+32</para>
+                    </entry>
+                    <entry nameend="c3" namest="c2">
+                      <para>8</para>
+                    </entry>
+                    <entry nameend="c5" namest="c4">
+                      <para>Destination address, logical address used for sections
+                      not written to disk by the platform, always required for a Real
+                      mode region section and for all sections when the no disk dump
+                      option is used.</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry nameend="c5" namest="c1">
+                      <para>
+                        <emphasis>Subsequent Sections</emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>Previous Section Start+40</para>
+                    </entry>
+                    <entry nameend="c3" namest="c2">
+                      <para>Start of Next Section</para>
+                    </entry>
+                    <entry nameend="c5" namest="c4">
+                      <para>A total of up to nine additional 40 bytes sections with
+                      values as described in the First Section may be specified so
+                      long as the entire structure does not exceed 512 bytes for
+                      version 1.</para>
+                    </entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_67111"
+        xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+          <listitem>
+            <para><emphasis>ibm,os-term</emphasis> RTAS call, or on a system reset without
+            an
+            <emphasis>ibm,nmi-interlock</emphasis> RTAS call, if the platform has a
+            dump structure registered through the
+            <emphasis>ibm,configure-kernel-dump</emphasis> call, the platform must
+            process each registered kernel dump section as required and, when
+            available, present the dump structure information to the operating system
+            through the
+            <emphasis role="bold"><literal>&#8220;ibm,kernel-dump&#8221;</literal></emphasis> property, updated with
+            status for each dump section, until the dump has been invalidated through
+            the
+            <emphasis>ibm,configure-kernel-dump</emphasis> RTAS call.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_67111"
+        xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+          <listitem>
+            <para>If <emphasis>ibm,configure-kernel-dump</emphasis> RTAS call is made to
+            register or unregister for a dump while a dump is currently active, the
+            platform must return a
+            <emphasis>Status</emphasis> of -9, &#8220;Dump Active&#8221; indicating
+            that a dump has been copied by the platform and a call must be made to
+            complete/invalidate the active dump before another call to register or
+            unregister a dump can be completed successfully.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_67111"
+        xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
+          <listitem>
+            <para>If <emphasis>ibm,configure-kernel-dump</emphasis> RTAS call is made to
+            register a dump after a dump has already been registered by a call, the
+            platform must return a
+            <emphasis>Status</emphasis> of -8, &#8220;Dump Already Registered&#8221;
+            unless an intervening call was made to invalidate the previously
+            registered dump.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_67111"
+        xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Configure Platform Assisted Kernel Dump
+            Option:</emphasis> Partition memory not specifically mentioned in the call
+            structure must be preserved by the platform at the same location as
+            existed prior to the os termination or platform reboot.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_67111"
+        xrefstyle="select: labelnumber nopage"/>-7.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Configure Platform Assisted Kernel Dump
+            Option:</emphasis> The platform must present the RTAS property,
+            <emphasis role="bold"><literal>&#8220;ibm,configure-kernel-dump-sizes&#8221;</literal></emphasis> in the
+            OF device tree, which describes how much space is required to store dump
+            data for the firmware provided dump sections, where the firmware defined
+            dump sections are:</para>
+
+            <itemizedlist>
+              <listitem>
+                <para>0x0001 = CPU State Data</para>
+              </listitem>
+
+              <listitem>
+                <para>0x0002 = Hardware Page Table for Real Mode Region</para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_67111"
+        xrefstyle="select: labelnumber nopage"/>-8.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Configure Platform Assisted Kernel Dump
+            Option:</emphasis> The platform must present the RTAS property,
+            <emphasis role="bold"><literal>&#8220;ibm-configure-kernel-dump-version&#8221;</literal></emphasis> in
+            the OF device tree.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_67111"
+        xrefstyle="select: labelnumber nopage"/>-9.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Configure Platform Assisted Kernel Dump
+            Option:</emphasis> After a dump registration is disabled (for example, by
+            a partition migration operation), calls to
+            <emphasis>ibm,os-term</emphasis> must return to the OS as though a dump
+            was not registered.</para>
+            <para>
+            <emphasis role="bold">Programming Note:</emphasis> The intended flow of interactions
+            that utilize this call is as follows:</para>
+
+            <orderedlist>
+              <listitem>
+                <para>The OS registers sections of memory for dump preservation during
+                OS initialization</para>
+              </listitem>
+
+              <listitem>
+                <para>The OS terminates abnormally</para>
+              </listitem>
+
+              <listitem>
+                <para>The Platform moves registered sections of memory as instructed
+                during dump registration.</para>
+              </listitem>
+
+              <listitem>
+                <para>The Partition reboots and provides the prior registration data
+                in the device tree.</para>
+              </listitem>
+
+              <listitem>
+                <para>The OS writes the preserved memory regions to disk before using
+                those memory regions for regular use</para>
+              </listitem>
+
+              <listitem>
+                <para>The OS completes/invalidates current dump status.</para>
+              </listitem>
+
+              <listitem>
+                <para>The OS must use H_CLEAR_HPT to clear the page table if running
+                  in XIVE Exploitation Mode, H_REMOVE is not a sufficient mechanism
+                  to clear the HPT. Failure to use H_CLEAR_HPT may result in H_READ
+                  returning invalid entries as valid.</para>
+              </listitem>
+            </orderedlist>
+          </listitem>
+     	</varlistentry>
+    </variablelist>
+
+  </section>

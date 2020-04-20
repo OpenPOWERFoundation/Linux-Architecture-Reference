@@ -1,0 +1,1101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2016 OpenPOWER Foundation
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<section xmlns="http://docbook.org/ns/docbook"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         version="5.0"
+         xml:lang="en"
+         xml:id="dbdoclet.50569332_14137">
+
+    <title>DMA Window Manipulation Calls</title>
+
+    <para>DMA windows for a PE can be changed by the OS when the platform
+    implements the Dynamic DMA Windows (DDW) option for a PE. The occurrence
+    of the
+    <emphasis role="bold"><literal>&#8220;ibm,ddw-applicable&#8221;</literal></emphasis> property in any node
+    of the OF Device Tree indicates that the platform implements the DDW
+    option, but that property is required to be in the bridge above a PE in
+    order for the DDW RTAS call to be applicable for the PE. That is, DDW may
+    be applicable to some PEs in a platform and not for others.</para>
+    <para>The platform may implement the DDW RTAS calls even when the OS does
+    not support these, because they are not required to be used by the OS,
+    because there is always a default window initially allocated below 4 GB,
+    as specified by the
+    <emphasis role="bold"><literal>&#8220;ibm,dma-window&#8221;</literal></emphasis> property. During
+    partition migration, these RTAS calls may come and go, but so will the
+    <emphasis role="bold"><literal>&#8220;ibm,ddw-applicable&#8221;</literal></emphasis> property as the
+    nodes in which those are supported come or go.</para>
+    <para>The following is an example of how an OS may grab all DMA window
+    resources allocated for a PE:</para>
+
+    <orderedlist>
+      <listitem>
+        <para>If the default window (as specified by the
+        <emphasis role="bold"><literal>&#8220;ibm,dma-window&#8221;</literal></emphasis> property for the PE) is
+        not needed, then call
+        <emphasis>ibm,remove-pe-dma-window</emphasis> for the PE, specifying the
+        default window LIOBN, to make the maximum resources available for the
+        <emphasis>ibm,create-pe-dma-window</emphasis> RTAS call.</para>
+      </listitem>
+
+      <listitem xml:id="dbdoclet.50569332_89344">
+        <para>Call
+        <emphasis>ibm,query-pe-dma-window</emphasis> for the PE to get the
+        <emphasis>Windows Available</emphasis> and
+        <emphasis>PE TCEs</emphasis> available for the PE. If the
+        <emphasis>Windows Available</emphasis> field indicates 1 or more and the
+        <emphasis>PE TCEs</emphasis> field is non-zero, then continue.</para>
+      </listitem>
+
+      <listitem>
+        <para>Call <emphasis>ibm,create-pe-dma-window</emphasis> for the PE, specifying the
+        size based on the
+        <emphasis>PE TCEs</emphasis> field obtained from the
+        <emphasis>ibm,query-pe-dma-window</emphasis> RTAS call in step
+        <xref linkend="dbdoclet.50569332_89344" /> and on the I/O page size being
+        specified.</para>
+      </listitem>
+
+      <listitem>
+        <para>If the <emphasis>Windows Available</emphasis> field indicated 2 or more in step
+        <xref linkend="dbdoclet.50569332_89344" />, then go back to step
+        <xref linkend="dbdoclet.50569332_89344" /> and repeat, otherwise
+        finished.</para>
+      </listitem>
+    </orderedlist>
+    <para>
+    <emphasis role="bold">Software Implementation Note:</emphasis> The general expectation
+    is that if the
+    <emphasis role="bold"><literal>&#8220;ibm,ddw-applicable&#8221;</literal></emphasis> property exists for
+    a PE, that the OS will be able to generate one or more windows whose
+    total size is larger than what is available via the default window. This
+    requires either additional TCEs being available or that I/O page sizes
+    other than 4 KB are available and the PE can use the largest I/O page
+    size (the default window using only the 4 KB I/O page size). If not, then
+    removing the default window would only allow re-allocation of the same
+    size window at a different bus address (that is, same number of TCEs and
+    same I/O page size). However, it may be possible for this to happen, in
+    which case the platform may indicate that DDW is available to a PE, but
+    removal of the default window will only allow creation of the same size
+    window. An example is when a larger I/O page size is available but only
+    the TCEs in the default window are available, and the PE cannot make use
+    of the larger page size.</para>
+
+    <variablelist>
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_14137"
+        xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Dynamic DMA Windows (DDW) option:</emphasis> The
+            platform must implement all of the following RTAS calls:
+            <emphasis>ibm,query-dma-window</emphasis>,
+            <emphasis>ibm,create-dma-window</emphasis>, and
+            <emphasis>ibm,remove-dma-window.</emphasis></para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_14137"
+        xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Dynamic DMA Windows (DDW) option:</emphasis> The
+            platform must provide the
+            <emphasis role="bold"><literal>&#8220;ibm,ddw-applicable&#8221;</literal></emphasis> property in the OF
+            Device Tree in the bridge above each PE for which the DDW option is
+            supported.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_14137"
+        xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Dynamic DMA Windows (DDW) option:</emphasis> The
+            software must not call the
+            <emphasis>ibm,query-dma-window</emphasis>,
+            <emphasis>ibm,create-dma-window</emphasis>, or
+            <emphasis>ibm,remove-dma-window</emphasis> RTAS calls in the absence of
+            the
+            <emphasis role="bold"><literal>&#8220;ibm,ddw-applicable&#8221;</literal></emphasis> property for the PE,
+            otherwise the call returns a
+            <emphasis>Status</emphasis> of -3 (Parameter error), and when the property
+            does exist, software must use the token values specified in the
+            <emphasis role="bold"><literal>&#8220;ibm,ddw-applicable&#8221;</literal></emphasis> property for these
+            RTAS calls.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_14137"
+        xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Dynamic DMA Windows (DDW) option:</emphasis> The
+            platform must provide a default DMA window for each PE, and all of the
+            following must be true:</para>
+
+            <orderedlist numeration="loweralpha">
+              <listitem>
+                <para>The window is defined by the
+                <emphasis role="bold"><literal>&#8220;ibm,dma-window&#8221;</literal></emphasis> property in the OF
+                device tree.</para>
+              </listitem>
+
+              <listitem>
+                <para>The window is defined with 4 KB I/O pages.</para>
+              </listitem>
+
+              <listitem>
+                <para>The window is located entirely below 4 GB.</para>
+              </listitem>
+            </orderedlist>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry xml:id="dbdoclet.50569332_79382">
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_14137"
+        xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Dynamic DMA Windows (DDW) option:</emphasis>
+            The platform must remove any DMA windows created by the
+            <emphasis>ibm,create-pe-dma-window</emphasis> RTAS call for a PE and must
+            restore the default DMA window (if it was removed) for the PE, as
+            originally defined by the
+            <emphasis role="bold"><literal>&#8220;ibm,dma-window&#8221;</literal></emphasis> properties for the PE,
+            in each of the following cases:</para>
+
+            <orderedlist numeration="loweralpha">
+              <listitem>
+                <para>On a reboot of the partition</para>
+              </listitem>
+
+              <listitem>
+                <para>On a DR isolate operation that encompasses the PE</para>
+              </listitem>
+            </orderedlist>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry xml:id="dbdoclet.50569332_72212">
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_14137"
+        xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Dynamic DMA Windows (DDW) option:</emphasis>
+            In Requirement
+            <xref linkend="dbdoclet.50569332_79382" />, the platform must provide the
+            same LIOBN, location, and size as specified in the
+            <emphasis role="bold"><literal>&#8220;ibm,dma-window&#8221;</literal></emphasis> property in the OF
+            Device Tree for the device.</para>
+          </listitem>
+     	</varlistentry>
+    </variablelist>
+
+    <section xml:id="dbdoclet.50569332_99826">
+      <title><emphasis>ibm,query-pe-dma-window</emphasis></title>
+
+      <para>This RTAS call allows for the discovery of the resources necessary
+      to make a successful subsequent call to
+      <emphasis>ibm,create-dma-window</emphasis>.</para>
+
+      <para>If the <emphasis>ibm,query-pe-dma-window</emphasis> RTAS call is made with Number Outputs
+      equal to 6, and the <emphasis role="bold"><literal>&#8220;ibm,ddw-extensions&#8221;</literal></emphasis>
+      property does not include list index of 3,
+      then the call will return a Status of -3 (Invalid Parameter).</para>
+
+      <variablelist>
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_99826"
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+            <listitem>
+              <para>RTAS must implement a
+              <emphasis>ibm,query-pe-dma-window</emphasis> call using the argument call
+              buffer defined by
+              <xref linkend="dbdoclet.50569332_53901" />.</para>
+
+              <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_53901">
+                <title>Argument Call Buffer
+                <emphasis>ibm,query-pe-dma-window</emphasis></title>
+                <tgroup cols="3">
+                  <colspec colname="c1" colwidth="1*" />
+                  <colspec colname="c2" colwidth="2*" />
+                  <colspec colname="c3" colwidth="4*" />
+                  <thead>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold">Parameter Type</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <emphasis role="bold">Name</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <emphasis role="bold">Values</emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                  </thead>
+                  <tbody>
+                    <row>
+                      <entry morerows="5" valign="middle">
+                        <para>In</para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <emphasis>Token</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Token for
+                        <emphasis>ibm,query-pe-dma-window</emphasis></para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis>Number Inputs</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>3</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis>Number Outputs</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>5 or 6. The value 6 may be used when the ibm,ddw-extensions property
+                        in the PHB node specified by this call indicates support for a 64-bit value of
+                        PE TCEs. See <xref linkend="dbdoclet.50569332_25585" />.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis>Config_addr</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>PE configuration address (Register fields set to
+                        0)</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis>PHB_Unit_ID_Hi</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Represents the most-significant 32-bits of the Unit ID of
+                        the PHB that corresponds to the
+                        <emphasis>config_addr</emphasis></para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis>PHB_Unit_ID_Low</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Represents the least-significant 32-bits of the Unit ID
+                        of the PHB that corresponds to the
+                        <emphasis>config_addr</emphasis></para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry morerows="5" valign="middle">
+                        <para>Out</para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <emphasis>Status</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>0: Success</para>
+                        <para>-1: Hardware Error</para>
+                        <para>-3: Parameter error</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Windows Available</para>
+                      </entry>
+                      <entry>
+                        <para>Number of additional DMA windows that can be created for
+                        this PE. If the value is 0 and the default window (as specified
+                        by the
+                        <emphasis role="bold"><literal>&#8220;ibm,dma-window&#8221;</literal></emphasis> property for
+                        the PE) has not been yet removed via the
+                        <emphasis>ibm,remove-pe-dma-window</emphasis> RTAS call for that
+                        window, and if the default window is not needed, then removal
+                        of the default window makes at least one window
+                        available.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>PE TCEs hi</para>
+                      </entry>
+                      <entry>
+                        <para>Represents the most-significant 32-bits of the largest contiguous
+                        block of TCEs allocated specifically for (that is, are reserved for) this PE.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>PE TCEs lo</para>
+                      </entry>
+                      <entry>
+                        <para>Represents the least-significant 32-bits of the largest contiguous block
+                        of TCEs allocated specifically for (that is, are reserved for) this PE. See also Requirement
+                        <xref linkend="dbdoclet.50569332_91197" />.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>IO Page Sizes</para>
+                      </entry>
+                      <entry>
+                        <para>I/O Page Size Support. I/O page sizes supported for this
+                        PE. This is a bit significant field, defined as follows:</para>
+                        <para>Bits 0 - 23 reserved</para>
+                        <para>24 = 16 GB page size supported</para>
+                        <para>25 = 256 MB page size supported</para>
+                        <para>26 = 128 MB pages supported</para>
+                        <para>27 = 64 MB page size supported</para>
+                        <para>28 = 32 MB page size supported</para>
+                        <para>29 = 16 MB page size supported</para>
+                        <para>30 = 64 KB page size supported</para>
+                        <para>31 = 4 KB page size supported</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Migration Capable</para>
+                      </entry>
+                      <entry>
+                        <para>H_MIGRATE_DMA Mask. Mask to indicate for which page sizes
+                        (as specified in the I/O Page Size Support field), that
+                        H_MIGRATE_DMA is supported (for this PE). This is a bit
+                        significant field, with the bits defined to align to the bits
+                        in the I/O Page Size Support field.</para>
+                      </entry>
+                    </row>
+                  </tbody>
+                </tgroup>
+              </table>
+            </listitem>
+       	</varlistentry>
+
+       	<varlistentry xml:id="dbdoclet.50569332_91197">
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_99826"
+          xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the Dynamic DMA Windows (DDW) option:</emphasis>
+              TCE resources returned in the
+              <emphasis>PE TCEs</emphasis> parameter of the
+              <emphasis>ibm,query-dma-window</emphasis> RTAS call must be allocated to
+              the PE specified by the PE configuration address specified in the call,
+              and must be available to a subsequent
+              <emphasis>ibm,create-dma-window</emphasis> RTAS call for that PE.</para>
+            </listitem>
+       	</varlistentry>
+      </variablelist>
+
+    </section>
+
+    <section xml:id="dbdoclet.50569332_49009">
+      <title><emphasis>ibm,create-pe-dma-window</emphasis></title>
+
+      <para>This call allows the creation of a new DMA window, given the size
+      of the DMA window, I/O page size, and the PE to which it is associated.
+      The return from the call includes the LIOBN of the new DMA window, the
+      starting I/O address of the DMA window, and size.</para>
+      <para>
+      <emphasis role="bold">Software Implementation Note:</emphasis> Software is expected to
+      not attempt to create a DMA window that is larger than possible, or
+      create more DMA windows than is possible, otherwise the
+      <emphasis>ibm,create-pe-dma-window</emphasis> will return a
+      <emphasis>Status</emphasis> of -3 (Parameter Error). Thus, the OS is
+      expected to use the
+      <emphasis>ibm,query-pe-dma-window</emphasis> first and not ask to create a
+      window that consumes more resources than those that are available to the
+      PE.</para>
+
+      <variablelist>
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_49009"
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the Dynamic DMA Windows (DDW) option:</emphasis> RTAS must
+              implement the
+              <emphasis>ibm,create-dma-window</emphasis> call using the argument call
+              buffer defined by
+              <xref linkend="dbdoclet.50569332_26269" />.</para>
+
+              <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_26269">
+                <title>Argument Call Buffer
+                <emphasis>ibm,create-pe-dma-window</emphasis></title>
+                <tgroup cols="3">
+                  <colspec colname="c1" colwidth="1*" />
+                  <colspec colname="c2" colwidth="2*" />
+                  <colspec colname="c3" colwidth="4*" />
+                  <thead>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold">Parameter Type</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <emphasis role="bold">Name</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <emphasis role="bold">Values</emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                  </thead>
+                  <tbody>
+                    <row>
+                      <entry morerows="7" valign="middle">
+                        <para>In</para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <emphasis>Token</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Token for
+                        <emphasis>ibm,create-pe-dma-window</emphasis></para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis>Number Inputs</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>5</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis>Number Outputs</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>4</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis>Config_addr</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>PE configuration address (Register fields set to
+                        0)</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis>PHB_Unit_ID_Hi</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Represents the most-significant 32-bits of the Unit ID of
+                        the PHB that corresponds to the
+                        <emphasis>config_addr</emphasis></para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis>PHB_Unit_ID_Low</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Represents the least-significant 32-bits of the Unit ID
+                        of the PHB that corresponds to the
+                        <emphasis>config_addr</emphasis></para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>I/O Page Size</para>
+                      </entry>
+                      <entry>
+                        <para>The value n, where 2
+                        <emphasis>n</emphasis> is the requested I/O page size. Only page
+                        sizes obtained from the
+                        <emphasis>ibm,query-pe-dma-window</emphasis> RTAS call for the
+                        PE are allowed. Values of n from 0-11 are invalid.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Requested Window Size</para>
+                      </entry>
+                      <entry>
+                        <para>The value n, where 2
+                        <emphasis>n</emphasis> is the requested DMA window size.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry morerows="3" valign="middle">
+                        <para>Out</para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <emphasis>Status</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>990x: Extended delay, where x is a number 0-5 (see
+                        text)</para>
+                        <para>0: Success (window created)</para>
+                        <para>-1: Hardware Error</para>
+                        <para>-2: Busy, try again later</para>
+                        <para>-3: Parameter Error</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis>LIOBN</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>LIOBN of the DMA window created by this call, if any. If
+                        no DMA window was created (that is, if the
+                        <emphasis>Status</emphasis> is not 0), then this field is
+                        present but not used.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>I/O Starting Address Hi</para>
+                      </entry>
+                      <entry>
+                        <para>Represents the most-significant 32-bits of the starting
+                        address on the I/O bus for the DMA window created by this call,
+                        if any. If no DMA window was created (that is, if the
+                        <emphasis>Status</emphasis> is not 0), then this field is
+                        present but not used.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>I/O Starting Address Low</para>
+                      </entry>
+                      <entry>
+                        <para>Represents the least-significant 32-bits of the starting
+                        address on the I/O bus for the DMA window created by this call,
+                        if any. If no DMA window was created (that is, if the
+                        <emphasis>Status</emphasis> is not 0), then this field is
+                        present but not used.</para>
+                      </entry>
+                    </row>
+                  </tbody>
+                </tgroup>
+              </table>
+            </listitem>
+       	</varlistentry>
+
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_49009"
+          xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the Dynamic DMA Windows (DDW) option:</emphasis> The
+              <emphasis>ibm,create-pe-dma-window</emphasis> RTAS call must return a
+              <emphasis>Status</emphasis> of 0 (Success) only if a window with the
+              requested attributes is created, and must not create a new window if a
+              non-0
+              <emphasis>Status</emphasis> is returned.</para>
+            </listitem>
+       	</varlistentry>
+      </variablelist>
+
+    </section>
+
+    <section xml:id="dbdoclet.50569332_60545">
+      <title><emphasis>ibm,remove-pe-dma-window</emphasis></title>
+
+      <para>This RTAS call allows for the removal of PE DMA windows, including
+      those created with the
+      <emphasis>ibm,create-pe-dma-window</emphasis> RTAS call as well as the
+      default window specified by the
+      <emphasis role="bold"><literal>&#8220;ibm,dma-window&#8221;</literal></emphasis> property for the PE. All
+      created DMA windows will be removed by the platform, and the default DMA
+      window restored, on a partition reboot, on a DR isolate operation (see
+      Requirement
+      <xref linkend="dbdoclet.50569332_79382" /> and
+      <xref linkend="dbdoclet.50569332_72212" />), or if the last remaining DMA
+      window for the PE is removed and that window is not the default DMA
+      window (see Requirements
+      <xref linkend="dbdoclet.50569332_40989" /> and
+      <xref linkend="dbdoclet.50569332_34916" />). After removal of a DMA
+      window, software needs to use the
+      <emphasis>ibm,query-pe-dma-window</emphasis> RTAS call to find out what
+      resources are available to the PE for subsequent
+      <emphasis>ibm,create-pe-dma-window</emphasis> RTAS call.</para>
+
+      <variablelist>
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_60545"
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the Dynamic DMA Windows (DDW) option:</emphasis> RTAS must
+              implement the
+              <emphasis>ibm,remove-dma-window</emphasis> call using the argument call
+              buffer defined by
+              <xref linkend="dbdoclet.50569332_36074" />.</para>
+
+              <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_36074">
+                <title>Argument Call Buffer
+                <emphasis>ibm,remove-pe-dma-window</emphasis></title>
+                <tgroup cols="3">
+                  <colspec colname="c1" colwidth="1*" />
+                  <colspec colname="c2" colwidth="2*" />
+                  <colspec colname="c3" colwidth="4*" />
+                  <thead>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis role="bold">Parameter Type</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <emphasis role="bold">Name</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <emphasis role="bold">Values</emphasis>
+                        </para>
+                      </entry>
+                    </row>
+                  </thead>
+                  <tbody>
+                    <row>
+                      <entry morerows="3" valign="middle">
+                        <para>In</para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <emphasis>Token</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>Token for
+                        <emphasis>ibm,remove-pe-dma-window</emphasis></para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis>Number Inputs</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>1</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis>Number Outputs</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>1</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>
+                          <emphasis>LIOBN</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>LIOBN of the DMA window to be removed.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Out</para>
+                      </entry>
+                      <entry>
+                        <para>
+                          <emphasis>Status</emphasis>
+                        </para>
+                      </entry>
+                      <entry>
+                        <para>0: Success</para>
+                        <para>-1: Hardware Error</para>
+                        <para>-3: Parameter error</para>
+                      </entry>
+                    </row>
+                  </tbody>
+                </tgroup>
+              </table>
+            </listitem>
+       	</varlistentry>
+
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_60545"
+          xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the Dynamic DMA Windows (DDW) option:</emphasis> The caller
+              of the
+              <emphasis>ibm,remove-pe-dma-window</emphasis> RTAS call must assure that
+              the TCE table specified by the
+              <emphasis>LIOBN</emphasis> field does not contain any valid mappings at
+              the time of the call (that is, that the window is not being used).</para>
+            </listitem>
+       	</varlistentry>
+
+       	<varlistentry xml:id="dbdoclet.50569332_40989">
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_60545"
+          xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the Dynamic DMA Windows (DDW) option:</emphasis>
+              The platform must
+              restore the default DMA window for the PE on a call to the
+              <emphasis>ibm,remove-pe-dma-window</emphasis> RTAS call when all of the
+              following are true:</para>
+
+              <orderedlist numeration="loweralpha">
+                <listitem>
+                  <para>The call removes the last DMA window remaining for the
+                  PE.</para>
+                </listitem>
+
+                <listitem>
+                  <para>The DMA window being removed is not the default window.</para>
+                </listitem>
+              </orderedlist>
+            </listitem>
+       	</varlistentry>
+
+       	<varlistentry xml:id="dbdoclet.50569332_34916">
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_60545"
+          xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For the Dynamic DMA Windows (DDW) option:</emphasis>
+              In Requirement
+              <xref linkend="dbdoclet.50569332_40989" />, the platform must provide the
+              same LIOBN, location, and size as specified in the
+              <emphasis role="bold"><literal>&#8220;ibm,dma-window&#8221;</literal></emphasis> property in the OF
+              Device Tree for the PE.</para>
+            </listitem>
+       	</varlistentry>
+      </variablelist>
+
+    </section>
+
+    <section xml:id="sec_ext_to_ddw">
+      <title>Extensions to Dynamic DMA Windows</title>
+
+      <para>Platforms supporting the DDW option implement extensions described
+      in this section. These extensions include: adding the
+      <emphasis role="bold"><literal>&#8220;ibm,ddw-extensions&#8221;</literal></emphasis> property see
+      <xref linkend="LoPAR.DeviceTree" /> to those nodes that include the
+      <emphasis role="bold"><literal>&#8220;ibm,ddw-applicable&#8221;</literal></emphasis> property, and
+      implementing the functional extensions specified for the architectural
+      level in
+      <xref linkend="dbdoclet.50569332_25585" />. The
+      <emphasis role="bold"><literal>&#8220;ibm,ddw-extensions&#8221;</literal></emphasis> property value is a
+      list of integers the first integer indicates the number of extensions
+      implemented and subsequent integers, one per extension, provide a value
+      associated with that extension. Thus the property value is designed to
+      grow over time in such a way as to enable earlier client programs to
+      ignore later firmware extensions and later client programs to operate on
+      back level firmware. For this level of compatibility to work, the client
+      code needs to ignore extensions beyond what were defined when the client
+      code was written, and be prepared to operate on back level platforms t at
+      do not implement all the extensions that were defined when the client
+      code was written.</para>
+
+      <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_25585">
+        <title>DDW Option Extensions</title>
+        <tgroup cols="3">
+          <colspec colname="c1" colwidth="33*" />
+          <colspec colname="c2" colwidth="33*" />
+          <colspec colname="c3" colwidth="33*" />
+          <thead>
+            <row>
+              <entry>
+                <para>
+                  <emphasis role="bold">DDW Option LoPAR or PAPR Level</emphasis>
+                </para>
+              </entry>
+              <entry>
+                <para>
+                  <emphasis role="bold">
+                  <emphasis role="bold"><literal>&#8220;ibm,ddw-extensions&#8221;</literal></emphasis> list
+                  index</emphasis>
+                </para>
+              </entry>
+              <entry>
+                <para>
+                  <emphasis role="bold">Value Definition</emphasis>
+                </para>
+              </entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>
+                <para>2.7</para>
+              </entry>
+              <entry>
+                <para>2</para>
+              </entry>
+              <entry>
+                <para>Token of the i
+                <emphasis>bm,reset-pe-dma-windows</emphasis> RTAS Call</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>2.7</para>
+              </entry>
+              <entry>
+                <para>3</para>
+              </entry>
+              <entry>
+                <para>Value of 1 indicates the OS may invoke RTAS <emphasis>ibm,query-pe-dma-window</emphasis>
+                with Number Outputs equal to 6.  Other values are reserved.</para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+
+      <variablelist>
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_ext_to_ddw"
+          xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For compatibility with changing extensions to the Dynamic DMA
+              Windows (DDW) option:</emphasis> The client program must ignore extensions
+              as represented by
+              <emphasis role="bold"><literal>&#8220;ibm,ddw-extensions&#8221;</literal></emphasis> value list integers
+              beyond those defined when the client code was written.</para>
+            </listitem>
+       	</varlistentry>
+
+       	<varlistentry>
+          <term><emphasis role="bold">R1-<xref linkend="sec_ext_to_ddw"
+          xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+            <listitem>
+              <para><emphasis role="bold">For compatibility with changing extensions to the Dynamic DMA
+              Windows (DDW) option:</emphasis> The client program must be prepared to
+              operate on back level platforms that do not implement all the extensions
+              that were defined when the client code was written, including no
+              extensions at all.</para>
+            </listitem>
+       	</varlistentry>
+      </variablelist>
+
+
+      <section xml:id="sec_reset_pe_dma_windows">
+        <title><emphasis>ibm,reset-pe-dma-windows</emphasis></title>
+        <para>The
+        <emphasis>ibm,reset-dma-windows</emphasis> call resets the TCE table
+        allocation for the PE to its boot time value as communicated in the
+        <emphasis role="bold"><literal>&#8220;ibm,dma-window&#8221;</literal></emphasis> OF Device Tree property
+        in the for the PE.</para>
+
+        <variablelist>
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_reset_pe_dma_windows"
+            xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For the Dynamic DMA Windows (DDW) option starting with
+                IBM <citetitle>Power Architecture Platform Requirements (PAPR)</citetitle>
+                level 2.7:</emphasis> RTAS must implement the
+                <emphasis>ibm,reset-dma-windows</emphasis> call using the argument call
+                buffer defined by
+                <xref linkend="dbdoclet.50569332_68052" />.</para>
+
+                <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_68052">
+                  <title>Argument Call Buffer
+                  <emphasis>ibm,reset-pe-dma-windows</emphasis></title>
+                  <tgroup cols="3">
+                    <colspec colname="c1" colwidth="1*" />
+                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c3" colwidth="4*" />
+                    <thead>
+                      <row>
+                        <entry>
+                          <para>
+                            <emphasis role="bold">Parameter Type</emphasis>
+                          </para>
+                        </entry>
+                        <entry>
+                          <para>
+                            <emphasis role="bold">Name</emphasis>
+                          </para>
+                        </entry>
+                        <entry>
+                          <para>
+                            <emphasis role="bold">Values</emphasis>
+                          </para>
+                        </entry>
+                      </row>
+                    </thead>
+                    <tbody>
+                      <row>
+                        <entry morerows="5" valign="middle">
+                          <para>In</para>
+                        </entry>
+                        <entry>
+                          <para>
+                            <emphasis>Token</emphasis>
+                          </para>
+                        </entry>
+                        <entry>
+                          <para>Token for
+                          </para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>
+                            <emphasis>Number Inputs</emphasis>
+                          </para>
+                        </entry>
+                        <entry>
+                          <para>3</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>
+                            <emphasis>Number Outputs</emphasis>
+                          </para>
+                        </entry>
+                        <entry>
+                          <para>1</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>
+                            <emphasis>config_addr</emphasis>
+                          </para>
+                        </entry>
+                        <entry>
+                          <para>PE configuration address</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>PHB_Unit_ID_HI</para>
+                        </entry>
+                        <entry>
+                          <para>Represents the most-significant 32-bits of the Unit ID of
+                          the PHB that corresponds to the config_addr</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>PHB_Unit_ID_Low</para>
+                        </entry>
+                        <entry>
+                          <para>Represents the least-significant 32-bits of the Unit ID
+                          of the PHB that corresponds to the config_addr</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>Out</para>
+                        </entry>
+                        <entry>
+                          <para>
+                            <emphasis>Status</emphasis>
+                          </para>
+                        </entry>
+                        <entry>
+                          <para>0: Success</para>
+                          <para>-1: Hardware Error</para>
+                          <para>-2: Busy, Try again later</para>
+                          <para>-3: Parameter error</para>
+                        </entry>
+                      </row>
+                    </tbody>
+                  </tgroup>
+                </table>
+              </listitem>
+         	</varlistentry>
+
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_reset_pe_dma_windows"
+            xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For the Dynamic DMA Windows (DDW) option starting with
+                IBM <citetitle>Power Architecture Platform Requirements (PAPR)</citetitle>
+                level 2.7:</emphasis> The caller of the
+                <emphasis>ibm,reset-pe-dma-windows</emphasis> RTAS call must assure that
+                the TCE table(s) assigned to the PE specified by the
+                <emphasis>config_addr</emphasis> field contain no valid mappings at the
+                time of the call (that is, that the window(s) is not being used).</para>
+              </listitem>
+         	</varlistentry>
+
+         	<varlistentry>
+            <term><emphasis role="bold">R1-<xref linkend="sec_reset_pe_dma_windows"
+            xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+              <listitem>
+                <para><emphasis role="bold">For the Dynamic DMA Windows (DDW) option starting with
+                IBM <citetitle>Power Architecture Platform Requirements (PAPR)</citetitle>
+                level 2.7:</emphasis> On a call to
+                <emphasis>ibm,restore-pe-dma-windows</emphasis>, the platform must
+                restore the default DMA window per the values provided in the
+                <emphasis role="bold"><literal>&#8220;ibm,dma-window&#8221;</literal></emphasis> Tree property
+                in the for the PE (same LIOBN, location, and size).</para>
+              </listitem>
+         	</varlistentry>
+       </variablelist>
+
+
+      </section>
+
+    </section>
+
+</section>

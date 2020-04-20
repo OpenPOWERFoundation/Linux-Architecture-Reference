@@ -1,0 +1,672 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2016 OpenPOWER Foundation
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<section xmlns="http://docbook.org/ns/docbook"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         version="5.0"
+         xml:lang="en"
+         xml:id="dbdoclet.50569332_45918">
+    <title><emphasis>ibm,suspend-me</emphasis> RTAS Call</title>
+    <para>The
+    <emphasis>ibm,suspend-me</emphasis> RTAS call provides the calling OS the
+    ability to suspend processing. Suspension of processing is required as
+    part of OS hibernation or migration to another platform. This RTAS call
+    is made by the last active processor thread of a partition. The OS uses
+    the H_JOIN hcall() (see
+    <xref linkend="LoPAR.Virtualization" />) to deactivate other
+    processing threads. Processing treads may exit H_JOIN due to an
+    unmaskable interrupt; if a thread has exited H_JOIN,
+    <emphasis>ibm,suspend-me</emphasis> fails with a status of &#8220;multiple
+    processor threads active&#8221;. The wake up from suspension is triggered
+    by partition state change (see
+    <xref linkend="LoPAR.Virtualization" /> sections on "Partition Migration"
+    and "Partition Hibernation"). The
+    <emphasis>ibm,suspend-me</emphasis> RTAS call returns only on the calling
+    virtual processor. Other virtual processors that were inactive when
+    <emphasis>ibm,suspend-me</emphasis> was called remain so until they are
+    proded by the OS.</para>
+    <para>While the logical configuration of a suspended partition remains
+    static, the physical properties may change; the OS may wish to issue
+    <emphasis>ibm,update-nodes</emphasis> (see
+    <emphasis>
+    <xref linkend="dbdoclet.50569332_84414" />) to determine if any device
+    tree nodes changed, and then</emphasis> refresh its view of the device
+    tree physical properties using
+    <emphasis>ibm,update-properties</emphasis> (see
+    <xref linkend="dbdoclet.50569332_40069" />) and/or
+    <emphasis>ibm,configure-connector</emphasis> (see
+    <xref linkend="LoPAR.Virtualization" />). Also during suspension, some
+    system parameters may have changed. See
+    <xref linkend="dbdoclet.50569332_10519" />, for details. The OS may want
+    to re-scan selected system parameters.</para>
+
+    <variablelist>
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_45918"
+        xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Partition Suspension option:</emphasis> The platform
+            must implement the Logical Partitioning option (see
+            <xref linkend="LoPAR.Virtualization" />)
+            <emphasis>.</emphasis></para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_45918"
+        xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Partition Suspension option:</emphasis> RTAS must
+            implement the
+            <emphasis>ibm,suspend-me</emphasis> call within a logical partition using
+            the argument call buffer defined by
+            <xref linkend="dbdoclet.50569332_91600" />.</para>
+
+            <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_91600">
+              <title>Argument Call Buffer
+              <emphasis>ibm,suspend-me</emphasis></title>
+              <tgroup cols="3">
+                <colspec colname="c1" colwidth="1*" />
+                <colspec colname="c2" colwidth="2*" />
+                <colspec colname="c3" colwidth="4*" />
+                <thead>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">Parameter Type</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">Name</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">Values</emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                </thead>
+                <tbody>
+                  <row>
+                    <entry morerows="2" valign="middle">
+                      <para>In</para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis>Token</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>Token for
+                      <emphasis>ibm,suspend-me</emphasis></para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Number Inputs</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>0</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis>Number Outputs</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>1</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>Out</para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis>Status</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>9000: Suspension Aborted</para>
+                      <para>0: Success -- expected return on function resume</para>
+                      <para>-1: Hardware Error</para>
+                      <para>&#160;</para>
+                      <para>-9004: Partition not suspendable</para>
+                      <para>-9005: Multiple processor threads active</para>
+                      <para>-9006: Outstanding COP Operations</para>
+                    </entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_45918"
+        xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Partition Suspension option:</emphasis> The
+            <emphasis>ibm,suspend-me</emphasis> RTAS call must determine that the
+            calling partition is in the &#8220;suspendable state&#8221;, else return
+            a status of -9004 &#8220;Partition not suspendable&#8221;.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_45918"
+        xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Partition Suspension option:</emphasis> The
+            <emphasis>ibm,suspend-me</emphasis> RTAS call must determine that the
+            calling partition has no other active processor thread, else return a
+            status of -9005 &#8220;Multiple processor threads active&#8221;.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_45918"
+        xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Partition Suspension option:</emphasis> The platform
+            must implement the Thread Join option (see
+            <xref linkend="LoPAR.Virtualization" />).</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_45918"
+        xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Partition Suspension option:</emphasis> The platform
+            must restore all partition state as of the time of the call to
+            <emphasis>ibm,suspend-me</emphasis> prior to returning from the
+            <emphasis>ibm,suspend-me</emphasis> RTAS call, except for the values of
+            those Open Firmware Device tree properties as reported using the Update
+            OF Tree option, and the system parameters given in
+            <xref linkend="dbdoclet.50569332_10519" />.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_45918"
+        xrefstyle="select: labelnumber nopage"/>-7.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Partition Suspension option:</emphasis> The platform
+            must be prepared to respond to OS requests for updated device tree
+            information immediately after returning from the
+            <emphasis>ibm,suspend-me</emphasis> RTAS call.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_45918"
+        xrefstyle="select: labelnumber nopage"/>-8.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Partition Suspension option:</emphasis> The platform
+            must support the &#8220;update OF tree&#8221; option.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_45918"
+        xrefstyle="select: labelnumber nopage"/>-9.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Partition Suspension option:</emphasis> The platform
+            must support the &#8220;Partner partition suspended&#8221; CRQ Transport
+            Event (See
+            <xref linkend="LoPAR.Virtualization" />).</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_45918"
+        xrefstyle="select: labelnumber nopage"/>-10.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Partition Suspension option:</emphasis> The
+            <emphasis>ibm,suspend-me</emphasis> RTAS call must cause the platform to
+            deliver &#8220;Partner partition suspended&#8221; CRQ Transport Events to
+            both CRQs of all CRQ connections associated with the partition calling
+            <emphasis>ibm,suspend-me.</emphasis></para>
+            <para><emphasis role="bold">Note:</emphasis> The transport events are visible to the partition calling
+            <emphasis>ibm,suspend-me</emphasis> after the subsequent resume from
+            suspension, while the transport events are immediately visible to the
+            partner partitions of the caller at the time of the suspend.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_45918"
+        xrefstyle="select: labelnumber nopage"/>-11.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Partition Suspension option:</emphasis> The
+            <emphasis>ibm,suspend-me</emphasis> RTAS call must cause the platform to
+            set the state of all of the caller&#8217;s CRQs to disabled.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_45918"
+        xrefstyle="select: labelnumber nopage"/>-12.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Partition Suspension option:</emphasis> The platform
+            must implement the H_ENABLE_CRQ hcall() using the syntax and semantics
+            described in
+            <xref linkend="LoPAR.Virtualization" />.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_45918"
+        xrefstyle="select: labelnumber nopage"/>-13.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For platforms that implement the Partition Suspension and VSCSI
+            options:</emphasis> The
+            <emphasis role="bold"><literal>&#8220;compatible&#8221;</literal></emphasis> property of the
+            platform&#8217;s
+            <emphasis>v-scsi</emphasis> and
+            <emphasis>v-scsi-host</emphasis> nodes must include
+            <emphasis role="bold"><literal>&#8220;IBM,v-scsi-2&#8221;</literal></emphasis> and
+            <emphasis role="bold"><literal>&#8220;IBM,v-scsi-host-2&#8221;</literal></emphasis> respectively
+            indicating the platform supports the &#8220;Partner partition
+            suspended&#8221; CRQ Transport Event.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_45918"
+        xrefstyle="select: labelnumber nopage"/>-14.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Partition Suspension option:</emphasis> If the OS is
+            participating in OS surveillance, to avoid a surveillance time out, the
+            OS must disable surveillance (see
+            <xref linkend="dbdoclet.50569332_60143" />) prior to calling
+            <emphasis>ibm,suspend-me</emphasis>.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_45918"
+        xrefstyle="select: labelnumber nopage"/>-15.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Partition Suspension option:</emphasis> The platform
+            must implement the LRDR option (See
+            <xref linkend="LoPAR.Virtualization" />).</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_45918"
+        xrefstyle="select: labelnumber nopage"/>-16.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Partition Suspension option:</emphasis> The logical
+            configuration of a partition, including its view of the
+            <emphasis>rtas-display-device</emphasis>, and rtas tone facility must not
+            change while a partition is suspended.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_45918"
+        xrefstyle="select: labelnumber nopage"/>-17.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Partition Suspension option:</emphasis> The platform
+            must not change the support for a system parameter during
+            suspension.</para>
+            <para>
+            <emphasis role="bold">NOTE:</emphasis> If RTAS returns a status of -3 (System
+            parameter not supported) prior to suspension, it returns a Status of -3
+            for accesses to that same system parameter after suspension. Similarly if
+            RTAS does not return a Status of -3 prior to suspension for a given
+            system parameter, it does not do so after suspension.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_45918"
+        xrefstyle="select: labelnumber nopage"/>-18.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Partition Suspension option:</emphasis> The platform
+            must limit the system parameters that change values during suspension to
+            those specified in
+            <xref linkend="dbdoclet.50569332_10519" /> (all system parameters not
+            specified are preserved).</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_45918"
+        xrefstyle="select: labelnumber nopage"/>-19.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Partition Suspension option:</emphasis> The platform
+            must preserve up to the first 32 SLB entries for each partition processor
+            during the suspension. Other SLB entries are subject to loss.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_45918"
+        xrefstyle="select: labelnumber nopage"/>-20.</emphasis></term>
+          <listitem>
+            <para><emphasis role="bold">For the Partition Suspension option with the Platform
+            Facilities Option:</emphasis> The
+            <emphasis>ibm,suspend-me</emphasis> RTAS call must determine that the
+            calling partition has no outstanding coprocessor operations else return a
+            status of -9005 &#8220;Outstanding COP Operations&#8221;.</para>
+
+            <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_10519">
+              <title>System Parameters that May Change During Partition
+              Migration and Hibernation</title>
+              <tgroup cols="3">
+                <colspec colname="c1" colwidth="33*" />
+                <colspec colname="c2" colwidth="33*" />
+                <colspec colname="c3" colwidth="33*" />
+                <thead>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">System Parameter Token</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">Name</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">&#160;</emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                </thead>
+                <tbody>
+                  <row>
+                    <entry>
+                      <para>0-15</para>
+                    </entry>
+                    <entry>
+                      <para>HMC</para>
+                    </entry>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>18-19</para>
+                    </entry>
+                    <entry>
+                      <para>Legacy processor CoD</para>
+                    </entry>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>20</para>
+                      <para>&#160;</para>
+                    </entry>
+                    <entry>
+                      <para>SPLPAR characteristics</para>
+                    </entry>
+                    <entry>
+                      <para>Only specified SPLPAR keywords may change value</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry morerows="6" valign="middle">
+                      <para>&#160;</para>
+                    </entry>
+                    <entry>
+                      <para>DesiredEntitledCapacity</para>
+                    </entry>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>DesiredMemory</para>
+                    </entry>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>DesiredNumberOfProcessors</para>
+                    </entry>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>DesiredVariableCapacityWeight</para>
+                    </entry>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>DispatchWheelRotationPeriod</para>
+                    </entry>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>MinimumEntitledCapacityPerVP</para>
+                    </entry>
+                    <entry>
+                      <para>Platform prevents migration where current Entitled
+                      Capacity/VCPU ratio would be below the target's minimum.</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>MaximumPlatformProcessors</para>
+                    </entry>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>22</para>
+                    </entry>
+                    <entry>
+                      <para>platform_auto_power_restart</para>
+                    </entry>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>23</para>
+                    </entry>
+                    <entry>
+                      <para>sp-remote-pon</para>
+                    </entry>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>24</para>
+                    </entry>
+                    <entry>
+                      <para>sp-rb4-pon</para>
+                    </entry>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>25</para>
+                    </entry>
+                    <entry>
+                      <para>sp-snoop-str</para>
+                    </entry>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>30</para>
+                    </entry>
+                    <entry>
+                      <para>sp-call-home</para>
+                    </entry>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>31</para>
+                    </entry>
+                    <entry>
+                      <para>sp-current-flash-image</para>
+                    </entry>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>33</para>
+                    </entry>
+                    <entry>
+                      <para>epow3-quiesce-time</para>
+                    </entry>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>34</para>
+                    </entry>
+                    <entry>
+                      <para>memory-preservation-boot-time</para>
+                    </entry>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>35</para>
+                    </entry>
+                    <entry>
+                      <para>SCSI initiator identifier</para>
+                    </entry>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>36</para>
+                    </entry>
+                    <entry>
+                      <para>AIX support</para>
+                    </entry>
+                    <entry>
+                      <para>The keyword &#8220;support&#8221; may not change to the
+                      value &#8220;no&#8221; for an AIX client.</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>37</para>
+                    </entry>
+                    <entry>
+                      <para>enhanced processor CoD</para>
+                    </entry>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>38</para>
+                    </entry>
+                    <entry>
+                      <para>enhanced memory CoD</para>
+                    </entry>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>39</para>
+                    </entry>
+                    <entry>
+                      <para>CoD Options</para>
+                    </entry>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>41</para>
+                    </entry>
+                    <entry>
+                      <para>firmware boot options</para>
+                    </entry>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>43</para>
+                    </entry>
+                    <entry>
+                      <para>processor module information</para>
+                    </entry>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
+          </listitem>
+     	</varlistentry>
+    </variablelist>
+
+  </section>

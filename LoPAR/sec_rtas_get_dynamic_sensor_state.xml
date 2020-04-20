@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2016 OpenPOWER Foundation
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<section xmlns="http://docbook.org/ns/docbook"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         version="5.0"
+         xml:lang="en"
+         xml:id="dbdoclet.50569332_61055">
+    <title><emphasis>ibm,get-dynamic-sensor-state</emphasis> RTAS Call</title>
+    <para>This RTAS call behaves as the RTAS
+    <emphasis>get-sensor-state</emphasis> call, except that the instance of
+    the sensor is identified by a location code instead of a index.</para>
+
+    <variablelist>
+     	<varlistentry xml:id="dbdoclet.50569332_54151">
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_61055"
+        xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
+          <listitem>
+            <para>Platforms that
+            implement any sensors that are identified by location code instead of
+            index (see Requirement
+            <xref linkend="dbdoclet.50569332_80480" />) must implement the
+            <emphasis>ibm,get-dynamic-sensor-state</emphasis> RTAS function.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_61055"
+        xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
+          <listitem>
+            <para>The RTAS function
+            <emphasis>ibm,get-dynamic-sensor-state</emphasis> must implement the
+            argument call buffer defined by
+            <xref linkend="dbdoclet.50569332_71500" />.</para>
+            <para>&#160;</para>
+            <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_71500">
+              <title>Argument Call Buffer
+              <emphasis>ibm,get-dynamic-sensor-state</emphasis></title>
+              <tgroup cols="3">
+                <colspec colname="c1" colwidth="1*" />
+                <colspec colname="c2" colwidth="2*" />
+                <colspec colname="c3" colwidth="4*" />
+                <thead>
+                  <row>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">Parameter Type</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">Name</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis role="bold">Values</emphasis>
+                      </para>
+                    </entry>
+                  </row>
+                </thead>
+                <tbody>
+                  <row>
+                    <entry>
+                      <para>In</para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis>Token</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>Token for
+                      <emphasis>ibm,get-dynamic-sensor-state</emphasis></para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis>Number Inputs</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>2</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis>Number Outputs</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>2</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis>Sensor</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>Token defining the sensor</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis>Location Code Address</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>Real or Logical address of a location code string, in the
+                      format defined by Requirement
+                      <xref linkend="dbdoclet.50569332_75857" /></para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>Out</para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis>Status</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>-1: Hardware error</para>
+                      <para>-2: Busy, try again later</para>
+                      <para>-3: No such indicator</para>
+                      <para>0: Success</para>
+                      <para>990x: Extended delay, where x is a number between 0 and
+                      5, as described below</para>
+                    </entry>
+                  </row>
+                  <row>
+                    <entry>
+                      <para>&#160;</para>
+                    </entry>
+                    <entry>
+                      <para>
+                        <emphasis>State</emphasis>
+                      </para>
+                    </entry>
+                    <entry>
+                      <para>Current state of the sensor as defined in the
+                      <emphasis>Defined Values</emphasis> column of
+                      <xref linkend="dbdoclet.50569332_23534" />.</para>
+                    </entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
+            <para>When 990x
+            <emphasis>Status</emphasis> is returned, it is suggested that software
+            delay for 10 raised to the power
+            <emphasis>x</emphasis> milliseconds (where
+            <emphasis>x</emphasis> is the last digit of the 990x return code), before
+            calling
+            <emphasis>ibm,get-dynamic-sensor-state</emphasis> with the same indicator
+            type and location code. However, software may call
+            <emphasis>ibm,get-dynamic-sensor-state</emphasis> again either earlier or
+            later than this.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_61055"
+        xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
+          <listitem>
+            <para>The OS must not call
+            <emphasis>ibm,get-dynamic-sensor-state</emphasis> with a different sensor
+            until a non-busy return
+            <emphasis>Status</emphasis> has been received from the previous
+            <emphasis>ibm,get-dynamic-sensor-state</emphasis> call.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_61055"
+        xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
+          <listitem>
+            <para>The work area must be contiguous in real
+            memory and must reside below 4GB.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry xml:id="dbdoclet.50569332_75857">
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_61055"
+        xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
+          <listitem>
+            <para>The input data
+            format in the work area must be as follows:</para>
+
+            <orderedlist numeration="loweralpha">
+              <listitem>
+                <para>32-bit integer length of the location code string, including
+                NULL</para>
+              </listitem>
+
+              <listitem>
+                <para>Location code string, NULL terminated, identifying the sensor to
+                be set.</para>
+              </listitem>
+            </orderedlist>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_61055"
+        xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
+          <listitem>
+            <para>The platform must not modify the location
+            code string.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_61055"
+        xrefstyle="select: labelnumber nopage"/>-7.</emphasis></term>
+          <listitem>
+            <para>The OS must only use this call with sensors
+            which have been provided by the
+            <emphasis>ibm,get-indices</emphasis> RTAS call with an index value of
+            0xFFFFFFFF.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_61055"
+        xrefstyle="select: labelnumber nopage"/>-8.</emphasis></term>
+          <listitem>
+            <para>The platform must use the
+            <emphasis>ibm,get-dynamic-sensor-state</emphasis> RTAS call only for
+            dynamic sensor types of 9004, 9006 and 9007.</para>
+          </listitem>
+     	</varlistentry>
+
+     	<varlistentry>
+        <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569332_61055"
+        xrefstyle="select: labelnumber nopage"/>-9.</emphasis></term>
+          <listitem>
+            <para>A <emphasis>Status</emphasis> of -3 must be returned for the following
+            conditions:</para>
+
+            <orderedlist numeration="loweralpha">
+              <listitem>
+                <para>Sensor type not supported</para>
+              </listitem>
+
+              <listitem>
+                <para>The specified location code does not identify a valid
+                sensor</para>
+              </listitem>
+            </orderedlist>
+          </listitem>
+     	</varlistentry>
+    </variablelist>
+
+  </section>

@@ -1,0 +1,1301 @@
+<appendix xmlns="http://docbook.org/ns/docbook"
+xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
+  <title>A Protocol for VMC Communications</title>
+
+  <section>
+    <title>Overview</title>
+    <para>The Virtual Management Channel (VMC) is a logical device which
+    provides an interface between the hypervisor and a management partition.
+    This management partition is intended to provide an alternative to
+    HMC-based system management. In the management partition, a Logical
+    Partition Manager (LPM) application exists which enables a system
+    administrator to configure the system&#8217;s partitioning characteristics
+    via a command line interface or web browser. Support for conventional HMC
+    management of the system may still be provided on a system; however, when
+    an HMC is attached to the system, the VMC interface is disabled by the
+    hypervisor.</para>
+    <section>
+      <title>Logical Partition Manager</title>
+      <para>The LPM is a browser based LPAR configuration tool provided by the
+      management partition. System configuration, maintenance, and control
+      functions which traditionally require an HMC can be implemented in the
+      LPM using a combination of HMC to hypervisor interfaces and existing
+      operating system methods. This tool provides a subset of the functions
+      implemented by the HMC and enables basic partition configuration. The set
+      of HMC to hypervisor messages supported by the LPM component are passed
+      to the hypervisor over a VMC interface, which is defined below. The
+      actual content of these messages is defined in other documentation. In
+      order to remain consistent with this existing HMC documentation, this
+      chapter generally uses the HMC terminology to refer to these messages
+      and the LPM to hypervisor connections.</para>
+    </section>
+    <section>
+      <title>Virtual Management Channel (VMC)</title>
+      <para>A logical device, called the virtual management channel (VMC), is
+      defined for communicating between the LPM application and the hypervisor.
+      This device, similar to a VSCSI server device, is presented to a
+      designated management partition as a virtual device and is only presented
+      when the system is not HMC managed.</para>
+      <para>This communication device borrows aspects from both VSCSI and ILLAN
+      devices and is implemented using the CRQ and the RDMA interfaces. The
+      initialization process for CRQs is defined in
+      <xref linkend="dbdoclet.50569348_71217" />, and is not duplicated here. A
+      three way handshake is defined that must take place to establish that
+      both the hypervisor and management partition sides of the channel are
+      running prior to sending/receiving any of the protocol messages defined
+      in this chapter.</para>
+      <para>Transport Event CRQs are also defined in
+      <xref linkend="dbdoclet.50569348_71217" />, and are not duplicated here.
+      They define the CRQ messages that are sent when the hypervisor detects
+      one of the peer partitions has abnormally terminated, or one side has
+      called H_FREE_CRQ to close their CRQ.</para>
+      <para>Two new classes of CRQ messages are introduced for the VMC device.
+      VMC Administrative messages are used for each partition using the VMC to
+      communicate capabilities to their partner. HMC Interface messages are
+      used for the actual flow of HMC messages between the management partition
+      and the hypervisor. As most HMC messages far exceed the size of a CRQ
+      bugger, a virtual DMA (RMDA) of the HMC message data is done prior to
+      each HMC Interface CRQ message. Only the management partition drives RDMA
+      operations; hypervisor never directly causes the movement of message
+      data.</para>
+    </section>
+  </section>
+  <section>
+    <title>VMC CRQ Message Definition</title>
+    <para>For the VMC interface, all CRQ messages are defined to use the
+    following base format:</para>
+
+    <table frame="all" pgwide="1">
+      <title>CRQ Message Base Format</title>
+      <?dbhtml table-width="75%" ?><?dbfo table-width="75%" ?>
+      <tgroup cols="3">
+        <colspec colname="c1" colwidth="15*" align="center" />
+        <colspec colname="c2" colwidth="15*" align="center" />
+        <colspec colname="c3" colwidth="70*" align="center" />
+        <tbody>
+          <row>
+            <entry>
+              <para>1 B</para>
+            </entry>
+            <entry>
+              <para>1 B</para>
+            </entry>
+            <entry>
+              <para>14 B</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>Header</para>
+            </entry>
+            <entry>
+              <para>Type</para>
+            </entry>
+            <entry>
+              <para>Data</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <para>Two general message formats are defined: administrative and HMC
+    Interface. These are defined in the following sections.</para>
+    <section>
+      <title>Administrative Messages</title>
+      <para>The administrative message format is used to configure a VMC
+      between the hypervisor and the management partition. The two messages
+      defined for this format are described in the following
+      subsections.</para>
+
+      <section>
+        <title>VMC Capabilities</title>
+
+        <table frame="all" pgwide="1">
+          <title>VMC Capabilities Message</title>
+          <?dbhtml table-width="90%" ?><?dbfo table-width="90%" ?>
+          <tgroup cols="9">
+            <colspec colname="c1" colwidth="11*" align="center" />
+            <colspec colname="c2" colwidth="11*" align="center" />
+            <colspec colname="c3" colwidth="11*" align="center" />
+            <colspec colname="c4" colwidth="11*" align="center" />
+            <colspec colname="c5" colwidth="11*" align="center" />
+            <colspec colname="c6" colwidth="11*" align="center" />
+            <colspec colname="c7" colwidth="11*" align="center" />
+            <colspec colname="c8" colwidth="11*" align="center" />
+            <colspec colname="c9" colwidth="11*" align="center" />
+            <tbody>
+              <row>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>2 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>2 B</para>
+                </entry>
+                <entry>
+                  <para>4 B</para>
+                </entry>
+                <entry>
+                  <para>2 B</para>
+                </entry>
+                <entry>
+                  <para>2 B</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>0x80</para>
+                </entry>
+                <entry>
+                  <para>0x01</para>
+                </entry>
+                <entry>
+                  <para>Reserved</para>
+                </entry>
+                <entry>
+                  <para>Reserved</para>
+                </entry>
+                <entry>
+                  <para># HMC&#8217;s</para>
+                </entry>
+                <entry>
+                  <para>Pool Size</para>
+                </entry>
+                <entry>
+                  <para>MTU</para>
+                </entry>
+                <entry>
+                  <para>CRQ Size</para>
+                </entry>
+                <entry>
+                  <para>Version (Major/Minor)</para>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <para>The capabilities message is an administrative message sent after
+        the CRQ initialization sequence of messages and is used to exchange VMC
+        capabilities between the management partition and the hypervisor. The
+        management partition must send this message and the hypervisor must
+        respond with a VMC Capabilities Response message before HMC interface
+        messages can begin. Any HMC interface messages received before the
+        exchange of capabilities has completed are dropped.</para>
+        <para>This message enables the management partition and the hypervisor to
+        trade the following interface parameters:</para>
+        <orderedlist>
+          <listitem>
+            <para># HMC&#8217;s. Maximum number of independent HMC connections
+            supported. Multiple connections would be required to support HMC pass
+            through mode.</para>
+          </listitem>
+
+          <listitem>
+            <para>Pool Size. Maximum number of buffers supported per HMC
+            connection.</para>
+          </listitem>
+
+          <listitem>
+            <para>MTU. Maximum message size supported (bytes).</para>
+          </listitem>
+
+          <listitem>
+            <para>CRQ Size. Number of entries available in the CRQ for the source
+            partition. The target partition must limit the number of outstanding
+            messages to one half or less.</para>
+          </listitem>
+
+          <listitem>
+            <para>Version. Indicates the code level of the management partition or
+            the hypervisor with the high-order byte indicating a major version and
+            the low-order byte indicating a minor version.</para>
+          </listitem>
+        </orderedlist>
+      </section>
+
+      <section>
+        <title>VMC Capabilities Response</title>
+
+        <table frame="all" pgwide="1">
+          <title>VMC Capabilities Response Message</title>
+          <?dbhtml table-width="90%" ?><?dbfo table-width="90%" ?>
+          <tgroup cols="9">
+            <colspec colname="c1" colwidth="11*" align="center" />
+            <colspec colname="c2" colwidth="11*" align="center" />
+            <colspec colname="c3" colwidth="11*" align="center" />
+            <colspec colname="c4" colwidth="11*" align="center" />
+            <colspec colname="c5" colwidth="11*" align="center" />
+            <colspec colname="c6" colwidth="11*" align="center" />
+            <colspec colname="c7" colwidth="11*" align="center" />
+            <colspec colname="c8" colwidth="11*" align="center" />
+            <colspec colname="c9" colwidth="11*" align="center" />
+            <tbody>
+              <row>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>2 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>2 B</para>
+                </entry>
+                <entry>
+                  <para>4 B</para>
+                </entry>
+                <entry>
+                  <para>2 B</para>
+                </entry>
+                <entry>
+                  <para>2 B</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>0x80</para>
+                </entry>
+                <entry>
+                  <para>0x81</para>
+                </entry>
+                <entry>
+                  <para>Status</para>
+                </entry>
+                <entry>
+                  <para>Reserved</para>
+                </entry>
+                <entry>
+                  <para># HMC&#8217;s</para>
+                </entry>
+                <entry>
+                  <para>Pool Size</para>
+                </entry>
+                <entry>
+                  <para>MTU</para>
+                </entry>
+                <entry>
+                  <para>CRQ Size</para>
+                </entry>
+                <entry>
+                  <para>Version (Major/Minor)</para>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <para>This command is sent by the hypervisor in response to the VMC
+        Capabilities message. This command enables the hypervisor to inform the
+        management partition of the values it supports. Parameters are identical
+        to the VMC Capabilities message, with the addition of the following
+        field:</para>
+        <para>Status. Zero is success. On failure, one of the following is
+        returned:</para>
+        <para>1 - General failure</para>
+        <para>2 - Invalid version</para>
+        <para>The hypervisor and the management partition use the minimum value
+        supported by each side for the parameters negotiated with the
+        capabilities message exchange.</para>
+      </section>
+    </section>
+
+    <section>
+      <title>HMC Interface Buffers</title>
+      <para>Buffers are used to transfer data between the management partition
+      and the hypervisor. Many of the HMC Interface messages defined in
+      following sections indicate buffers that contain data that must be
+      transferred. Note the following:</para>
+      <orderedlist>
+        <listitem>
+          <para>All buffers exist in the hypervisor memory, and data is moved
+          between the hypervisor and the management partition by the management
+          partition issuing H_COPY_RDMA.</para>
+        </listitem>
+
+        <listitem>
+          <para>To enable the management partition to access each buffer, the
+          hypervisor must allocate virtual TCEs as well as the actual buffer
+          storage.</para>
+        </listitem>
+
+        <listitem>
+          <para>Each buffer is at least the minimum negotiated MTU bytes
+          long.</para>
+        </listitem>
+
+        <listitem>
+          <para>Buffers are always owned by either the management partition or
+          the hypervisor. Management partition-owned buffers are used for messages
+          (both commands and responses) sent to the hypervisor from the management
+          partition. The hypervisor-owned buffers are used for messages (both
+          responses and asynchronous events) sent from the hypervisor to the
+          management partition.</para>
+        </listitem>
+
+        <listitem>
+          <para>Each LPM interface message carrying HMC protocol (either
+          direction) also carries a buffer, and the ownership of this buffer
+          transfers from sender to receiver.</para>
+        </listitem>
+
+        <listitem>
+          <para>There are no CRQ responses to the CRQ messages carrying HMC
+          protocol. The HMC protocol responses are carried in a message sent from
+          the other direction.</para>
+        </listitem>
+
+        <listitem>
+          <para>The maximum depth of the buffer pool is the minimum value
+          negotiated via the capabilities exchange.</para>
+        </listitem>
+
+        <listitem>
+          <para>For each of the HMC interface commands, Buffer ID is used to
+          identify the transfer buffer and ranges from 0 to the minimum negotiated
+          pool size - 1.</para>
+        </listitem>
+
+        <listitem>
+          <para>There is a separate buffer pool for each LPM connection, each
+          with the negotiated number of buffers.</para>
+        </listitem>
+      </orderedlist>
+    </section>
+
+    <section>
+      <title>HMC Interface Messages</title>
+      <para>There are several different HMC Interface messages, as defined in
+      the following sections. Each CRQ message has a unique HMC Interface
+      message type, and the HMC Interface message type defines the format for
+      the remaining 14 bytes of data.</para>
+
+      <section>
+        <title>Interface Open</title>
+
+        <table frame="all" pgwide="1">
+          <title>Interface Open Command Message</title>
+          <?dbhtml table-width="90%" ?><?dbfo table-width="90%" ?>
+          <tgroup cols="8">
+            <colspec colname="c1" colwidth="12*" align="center" />
+            <colspec colname="c2" colwidth="12*" align="center" />
+            <colspec colname="c3" colwidth="12*" align="center" />
+            <colspec colname="c4" colwidth="12*" align="center" />
+            <colspec colname="c5" colwidth="12*" align="center" />
+            <colspec colname="c6" colwidth="12*" align="center" />
+            <colspec colname="c7" colwidth="12*" align="center" />
+            <colspec colname="c8" colwidth="12*" align="center" />
+            <tbody>
+              <row>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>2 B</para>
+                </entry>
+                <entry>
+                  <para>8 B</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>0x80</para>
+                </entry>
+                <entry>
+                  <para>0x02</para>
+                </entry>
+                <entry>
+                  <para>Reserved</para>
+                </entry>
+                <entry>
+                  <para>Reserved</para>
+                </entry>
+                <entry>
+                  <para>HMC Sn</para>
+                </entry>
+                <entry>
+                  <para>HMC Idx</para>
+                </entry>
+                <entry>
+                  <para>Buffer ID</para>
+                </entry>
+                <entry>
+                  <para>Reserved</para>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <para>This command is sent by the management partition as the result of a
+        management partition device request. It causes the hypervisor to prepare
+        a set of data buffers for the LPM connection indicated by HMC Idx (HMC
+        index). A unique HMC Idx would be used if multiple management
+        applications running concurrently were desired. Before responding to this
+        command, the hypervisor must provide the management partition with at
+        least one of these new buffers (see the Add Buffer message defined
+        below). The HMC Sn (HMC Session) field is used as a session identifier
+        for the current VMC connection. If the management partition disconnects
+        (for example as the result of a crash in the LPM application), the next
+        open of the VMC device will result in the next HMC Sn value in the range
+        from 1 to 255 being used.</para>
+        <para>This message is issued after the capabilities exchange has
+        successfully completed and the hypervisor has issued an Add Buffer
+        command to create a buffer for the management partition for use in
+        establishing an LPM connection. The management partition sends the unique
+        32-byte HMC ID to the hypervisor via an RDMA using the buffer established
+        by the hypervisor.</para>
+      </section>
+      <section>
+        <title>Interface Open Response</title>
+
+        <table frame="all" pgwide="1">
+          <title>Interface Open Response Message</title>
+          <?dbhtml table-width="90%" ?><?dbfo table-width="90%" ?>
+          <tgroup cols="8">
+            <colspec colname="c1" colwidth="12*" align="center" />
+            <colspec colname="c2" colwidth="12*" align="center" />
+            <colspec colname="c3" colwidth="12*" align="center" />
+            <colspec colname="c4" colwidth="12*" align="center" />
+            <colspec colname="c5" colwidth="12*" align="center" />
+            <colspec colname="c6" colwidth="12*" align="center" />
+            <colspec colname="c7" colwidth="12*" align="center" />
+            <colspec colname="c8" colwidth="12*" align="center" />
+            <tbody>
+              <row>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>2 B</para>
+                </entry>
+                <entry>
+                  <para>8 B</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>0x80</para>
+                </entry>
+                <entry>
+                  <para>0x82</para>
+                </entry>
+                <entry>
+                  <para>Status</para>
+                </entry>
+                <entry>
+                  <para>Reserved</para>
+                </entry>
+                <entry>
+                  <para>HMC Sn</para>
+                </entry>
+                <entry>
+                  <para>HMC Idx</para>
+                </entry>
+                <entry>
+                  <para>Buffer ID</para>
+                </entry>
+                <entry>
+                  <para>Reserved</para>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <para>This command is sent by the hypervisor in response to the Interface
+        Open message. The status of the open command is returned in the Status
+        field. Zero is success. On failure, the following is returned:</para>
+        <para>1 - General failure</para>
+        <para>When this message is received, the indicated buffer is again
+        available for management partition use.</para>
+      </section>
+      <section>
+        <title>Interface Close</title>
+
+        <table frame="all" pgwide="1">
+          <title>Interface Close Message</title>
+          <?dbhtml table-width="90%" ?><?dbfo table-width="90%" ?>
+          <tgroup cols="8">
+            <colspec colname="c1" colwidth="12*" align="center" />
+            <colspec colname="c2" colwidth="12*" align="center" />
+            <colspec colname="c3" colwidth="12*" align="center" />
+            <colspec colname="c4" colwidth="12*" align="center" />
+            <colspec colname="c5" colwidth="12*" align="center" />
+            <colspec colname="c6" colwidth="12*" align="center" />
+            <colspec colname="c7" colwidth="12*" align="center" />
+            <colspec colname="c8" colwidth="12*" align="center" />
+            <tbody>
+              <row>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>2 B</para>
+                </entry>
+                <entry>
+                  <para>8 B</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>0x80</para>
+                </entry>
+                <entry>
+                  <para>0x03</para>
+                </entry>
+                <entry>
+                  <para>Reserved</para>
+                </entry>
+                <entry>
+                  <para>Reserved</para>
+                </entry>
+                <entry>
+                  <para>HMC Sn</para>
+                </entry>
+                <entry>
+                  <para>HMC Idx</para>
+                </entry>
+                <entry>
+                  <para>Reserved</para>
+                </entry>
+                <entry>
+                  <para>Reserved</para>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <para>This command is sent by the management partition to terminate an
+        LPM to hypervisor connection. When this command is sent, the management
+        partition has quiesced all I/O operations to all buffers associated with
+        this LPM connection, and has freed any storage for those buffers.</para>
+      </section>
+      <section>
+        <title>Interface Close Response</title>
+
+        <table frame="all" pgwide="1">
+          <title>Interface Close Response Message</title>
+          <?dbhtml table-width="80%" ?><?dbfo table-width="80%" ?>
+          <tgroup cols="8">
+            <colspec colname="c1" colwidth="12*" align="center" />
+            <colspec colname="c2" colwidth="12*" align="center" />
+            <colspec colname="c3" colwidth="12*" align="center" />
+            <colspec colname="c4" colwidth="12*" align="center" />
+            <colspec colname="c5" colwidth="12*" align="center" />
+            <colspec colname="c6" colwidth="12*" align="center" />
+            <colspec colname="c7" colwidth="12*" align="center" />
+            <colspec colname="c8" colwidth="12*" align="center" />
+            <tbody>
+              <row>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>2 B</para>
+                </entry>
+                <entry>
+                  <para>8 B</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>0x80</para>
+                </entry>
+                <entry>
+                  <para>0x83</para>
+                </entry>
+                <entry>
+                  <para>Status</para>
+                </entry>
+                <entry>
+                  <para>Reserved</para>
+                </entry>
+                <entry>
+                  <para>HMC Sn</para>
+                </entry>
+                <entry>
+                  <para>HMC Idx</para>
+                </entry>
+                <entry>
+                  <para>Reserved</para>
+                </entry>
+                <entry>
+                  <para>Reserved</para>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <para>This command is sent by the hypervisor in response to the LPM
+        Interface Close message. The status of the close command is returned in
+        the Status field. Zero is success. On failure, the following is
+        returned:</para>
+        <para>1 - General failure</para>
+      </section>
+      <section>
+        <title>Add Buffer</title>
+
+        <table frame="all" pgwide="1">
+          <title>Add Buffer Message</title>
+          <tgroup cols="9">
+            <colspec colname="c1" colwidth="11*" align="center" />
+            <colspec colname="c2" colwidth="11*" align="center" />
+            <colspec colname="c3" colwidth="11*" align="center" />
+            <colspec colname="c4" colwidth="11*" align="center" />
+            <colspec colname="c5" colwidth="11*" align="center" />
+            <colspec colname="c6" colwidth="11*" align="center" />
+            <colspec colname="c7" colwidth="11*" align="center" />
+            <colspec colname="c8" colwidth="11*" align="center" />
+            <colspec colname="c9" colwidth="11*" align="center" />
+            <tbody>
+              <row>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>2 B</para>
+                </entry>
+                <entry>
+                  <para>4 B</para>
+                </entry>
+                <entry>
+                  <para>4 B</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>0x80</para>
+                </entry>
+                <entry>
+                  <para>0x04</para>
+                </entry>
+                <entry>
+                  <para>Reserved</para>
+                </entry>
+                <entry>
+                  <para>hypervisor</para>
+                </entry>
+                <entry>
+                  <para>HMC Sn</para>
+                </entry>
+                <entry>
+                  <para>HMC Idx</para>
+                </entry>
+                <entry>
+                  <para>Buffer ID</para>
+                </entry>
+                <entry>
+                  <para>Reserved</para>
+                </entry>
+                <entry>
+                  <para>Buffer LIOBA</para>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <para>This message transfers a buffer from hypervisor ownership to
+        management partition ownership. The LIOBA is obtained from the virtual
+        TCE table associated with the hypervisor side of the VMC device, and
+        points to a buffer of size MTU (as established in the capabilities
+        exchange).</para>
+        <para>The hypervisor field is set to 0 if the buffer being added is to be
+        used by the management partition for messages inbound to the hypervisor,
+        and to 1 if the buffer being added is to be used for messages outbound
+        from the hypervisor.</para>
+        <para>The typical flow for adding buffers:</para>
+        <orderedlist>
+          <listitem>
+            <para>A new LPM connection is opened by the management
+            partition.</para>
+          </listitem>
+
+          <listitem>
+            <para>The hypervisor assigns new buffers for the traffic associated
+            with that connection.</para>
+          </listitem>
+
+          <listitem>
+            <para>The hypervisor sends VMC Add Buffer messages to the management
+            partition, informing it of the new buffers.</para>
+          </listitem>
+
+          <listitem>
+            <para>The hypervisor sends an HMC protocol message (to the LPM
+            application) notifying it of the new buffers. This informs the
+            application that it has buffers available for sending HMC
+            commands.</para>
+          </listitem>
+        </orderedlist>
+      </section>
+      <section>
+        <title>Add Buffer Response</title>
+
+        <table frame="all" pgwide="1">
+          <title>Add Buffer Response Message</title>
+          <?dbhtml table-width="80%" ?><?dbfo table-width="80%" ?>
+          <tgroup cols="8">
+            <colspec colname="c1" colwidth="12*" align="center" />
+            <colspec colname="c2" colwidth="12*" align="center" />
+            <colspec colname="c3" colwidth="12*" align="center" />
+            <colspec colname="c4" colwidth="12*" align="center" />
+            <colspec colname="c5" colwidth="12*" align="center" />
+            <colspec colname="c6" colwidth="12*" align="center" />
+            <colspec colname="c7" colwidth="12*" align="center" />
+            <colspec colname="c8" colwidth="12*" align="center" />
+            <tbody>
+              <row>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>2 B</para>
+                </entry>
+                <entry>
+                  <para>8 B</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>0x80</para>
+                </entry>
+                <entry>
+                  <para>0x84</para>
+                </entry>
+                <entry>
+                  <para>Status</para>
+                </entry>
+                <entry>
+                  <para>Reserved</para>
+                </entry>
+                <entry>
+                  <para>HMC Sn</para>
+                </entry>
+                <entry>
+                  <para>HMC Idx</para>
+                </entry>
+                <entry>
+                  <para>Buffer ID</para>
+                </entry>
+                <entry>
+                  <para>Reserved</para>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <para>This command is sent by the management partition to the hypervisor
+        in response to the Add Buffer message. The Status field indicates the
+        result of the command. Zero is success. On failure, one of the following
+        is returned:</para>
+        <para>1 - General failure</para>
+        <para>2 - Invalid HMC Index</para>
+        <para>3 - Invalid Buffer ID</para>
+        <para>4 - HMC connection has closed</para>
+      </section>
+      <section>
+        <title>Remove Buffer</title>
+
+        <table frame="all" pgwide="1">
+          <title>Remove Buffer Message</title>
+          <?dbhtml table-width="80%" ?><?dbfo table-width="80%" ?>
+          <tgroup cols="8">
+            <colspec colname="c1" colwidth="12*" align="center" />
+            <colspec colname="c2" colwidth="12*" align="center" />
+            <colspec colname="c3" colwidth="12*" align="center" />
+            <colspec colname="c4" colwidth="12*" align="center" />
+            <colspec colname="c5" colwidth="12*" align="center" />
+            <colspec colname="c6" colwidth="12*" align="center" />
+            <colspec colname="c7" colwidth="12*" align="center" />
+            <colspec colname="c8" colwidth="12*" align="center" />
+            <tbody>
+              <row>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>2 B</para>
+                </entry>
+                <entry>
+                  <para>8 B</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>0x80</para>
+                </entry>
+                <entry>
+                  <para>0x05</para>
+                </entry>
+                <entry>
+                  <para>Reserved</para>
+                </entry>
+                <entry>
+                  <para>Reserved</para>
+                </entry>
+                <entry>
+                  <para>HMC Sn</para>
+                </entry>
+                <entry>
+                  <para>HMC Idx</para>
+                </entry>
+                <entry>
+                  <para>Reserved</para>
+                </entry>
+                <entry>
+                  <para>Reserved</para>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <para>This message requests an HMC buffer to be transferred from
+        management partition ownership to hypervisor ownership. The management
+        partition may not be able to satisfy the request at a particular point in
+        time if all its buffers are in use. The management partition requires a
+        depth of at least one inbound buffer to allow LPM commands to flow to the
+        hypervisor. It is, therefore, an interface error for the hypervisor to
+        attempt to remove the management partition's last buffer.</para>
+        <para>The hypervisor is expected to manage buffer usage with the LPM
+        application directly and inform the management partition when buffers may
+        be removed. The typical flow for removing buffers:</para>
+        <orderedlist>
+          <listitem>
+            <para>The LPM application no longer needs a communication path to a
+            particular hypervisor function. That function is closed.</para>
+          </listitem>
+
+          <listitem>
+            <para>The hypervisor and the LPM application quiesce all traffic to
+            that function. The hypervisor requests a reduction in buffer pool
+            size.</para>
+          </listitem>
+
+          <listitem>
+            <para>The LPM application acknowledges the reduction in buffer pool
+            size.</para>
+          </listitem>
+
+          <listitem>
+            <para>The hypervisor sends a Remove Buffer message to the management
+            partition, informing it of the reduction in buffers.</para>
+          </listitem>
+
+          <listitem>
+            <para>The management partition verifies it can remove the buffer. This
+            is possible if buffers have been quiesced.</para>
+          </listitem>
+        </orderedlist>
+      </section>
+      <section>
+        <title>Remove Buffer Response</title>
+
+        <table frame="all" pgwide="1">
+          <title>Remove Buffer Response Message</title>
+          <tgroup cols="8">
+            <colspec colname="c1" colwidth="12*" align="center" />
+            <colspec colname="c2" colwidth="12*" align="center" />
+            <colspec colname="c3" colwidth="12*" align="center" />
+            <colspec colname="c4" colwidth="12*" align="center" />
+            <colspec colname="c5" colwidth="12*" align="center" />
+            <colspec colname="c6" colwidth="12*" align="center" />
+            <colspec colname="c7" colwidth="12*" align="center" />
+            <colspec colname="c8" colwidth="12*" align="center" />
+            <tbody>
+              <row>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>2 B</para>
+                </entry>
+                <entry>
+                  <para>8 B</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>0x80</para>
+                </entry>
+                <entry>
+                  <para>0x85</para>
+                </entry>
+                <entry>
+                  <para>Status</para>
+                </entry>
+                <entry>
+                  <para>Reserved</para>
+                </entry>
+                <entry>
+                  <para>HMC Sn</para>
+                </entry>
+                <entry>
+                  <para>HMC Idx</para>
+                </entry>
+                <entry>
+                  <para>Buffer ID</para>
+                </entry>
+                <entry>
+                  <para>Reserved</para>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <para>This command is sent by the management partition to the hypervisor
+        in response to the Remove Buffer message. The Buffer ID field indicates
+        which buffer the management partition selected to remove. The Status
+        field indicates the result of the command. Zero is success. On failure,
+        the following is returned:</para>
+        <para>1 - General failure</para>
+        <para>2 - Invalid HMC Index</para>
+        <para>3 - No buffer found</para>
+      </section>
+      <section>
+        <title>Signal Message</title>
+
+        <table frame="all" pgwide="1">
+          <title>Signal Message</title>
+          <tgroup cols="9">
+            <colspec colname="c1" colwidth="11*" align="center" />
+            <colspec colname="c2" colwidth="11*" align="center" />
+            <colspec colname="c3" colwidth="11*" align="center" />
+            <colspec colname="c4" colwidth="11*" align="center" />
+            <colspec colname="c5" colwidth="11*" align="center" />
+            <colspec colname="c6" colwidth="11*" align="center" />
+            <colspec colname="c7" colwidth="11*" align="center" />
+            <colspec colname="c8" colwidth="11*" align="center" />
+            <colspec colname="c9" colwidth="11*" align="center" />
+            <tbody>
+              <row>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>1B</para>
+                </entry>
+                <entry>
+                  <para>1 B</para>
+                </entry>
+                <entry>
+                  <para>2 B</para>
+                </entry>
+                <entry>
+                  <para>4 B</para>
+                </entry>
+                <entry>
+                  <para>4 B</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>0x80</para>
+                </entry>
+                <entry>
+                  <para>0x06</para>
+                </entry>
+                <entry>
+                  <para>Reserved</para>
+                </entry>
+                <entry>
+                  <para>Reserved</para>
+                </entry>
+                <entry>
+                  <para>HMC Sn</para>
+                </entry>
+                <entry>
+                  <para>HMC Idx</para>
+                </entry>
+                <entry>
+                  <para>Buffer ID</para>
+                </entry>
+                <entry>
+                  <para>Reserved</para>
+                </entry>
+                <entry>
+                  <para>Msg Len</para>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <para>This command is sent between the management partition and the
+        hypervisor in order to signal the arrival of an HMC protocol message. The
+        command can be sent by both the management partition and the hypervisor.
+        It is used for all traffic between the LPM application and the
+        hypervisor, regardless of who initiated the communication.</para>
+        <para>There is no response to this message.</para>
+      </section>
+    </section>
+  </section>
+
+  <section>
+    <title>Example Management Partition VMC Driver Interface</title>
+    <para>This section provides an example for the LPM implementation where a
+    device driver is used to interface to the VMC device. This driver consists
+    of a new device, for example /dev/lparvmc, which provides interfaces to
+    open, close, read, write, and perform ioctl&#8217;s against the VMC
+    device.</para>
+    <section>
+      <title>VMC Interface Initialization</title>
+      <para>The device driver is responsible for initializing the VMC when the
+      driver is loaded. It first creates and initializes the CRQ. Next, an
+      exchange of VMC capabilities is performed to indicate the code version
+      and number of resources available in both the management partition and
+      the hypervisor. Finally, the hypervisor requests that the management
+      partition create an initial pool of VMC buffers, one buffer for each
+      possible HMC connection, which will be used for LPM session
+      initialization. Prior to completion of this initialization sequence, the
+      device returns EBUSY to open() calls. EIO is returned for all open()
+      failures.</para>
+
+      <figure>
+        <title>VMC Interface Initialization</title>
+        <mediaobject>
+          <imageobject role="html">
+            <imagedata fileref="figures/PAPR-68.gif" format="GIF"
+            scalefit="1" />
+          </imageobject>
+          <imageobject role="fo">
+            <imagedata contentdepth="100%" fileref="figures/PAPR-68.gif"
+            format="GIF" scalefit="1" width="100%" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+    </section>
+    <section>
+      <title>VMC Interface Open</title>
+      <para>After the basic VMC channel
+      has been initialized, an HMC session level connection can be established.
+      The application layer performs an open() to the VMC device and executes
+      an ioctl() against it, indicating the HMC ID (32 bytes of data) for this
+      session. If the VMC device is in an invalid state, EIO will be returned
+      for the ioctl(). The device driver creates a new HMC session value
+      (ranging from 1 to 255) and HMC index value (starting at index 0 and
+      potentially ranging to 254 in future releases) for this HMC ID. The
+      driver then does an RDMA of the HMC ID to the hypervisor, and then sends
+      an Interface Open message to the hypervisor to establish the session over
+      the VMC. After the hypervisor receives this information, it sends Add
+      Buffer messages to the management partition to seed an initial pool of
+      buffers for the new HMC connection. Finally, the hypervisor sends an
+      Interface Open Response message, to indicate that it is ready for normal
+      runtime messaging. The following illustrates this VMC flow:</para>
+
+      <figure>
+        <title>VMC Interface Open</title>
+        <mediaobject>
+          <imageobject role="html">
+            <imagedata fileref="figures/PAPR-70.gif" format="GIF"
+            scalefit="1" />
+          </imageobject>
+          <imageobject role="fo">
+            <imagedata contentdepth="100%" fileref="figures/PAPR-70.gif"
+            format="GIF" scalefit="1" width="86%" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+    </section>
+
+    <section>
+      <title>VMC Interface Runtime</title>
+      <para>During normal runtime, the LPM
+      application and the hypervisor exchange HMC messages via the Signal VMC
+      message and RDMA operations. When sending data to the hypervisor, the LPM
+      application performs a write() to the VMC device, and the driver
+      RDMA&#8217;s the data to the hypervisor and then sends a Signal Message.
+      If a write() is attempted before VMC device buffers have been made
+      available by the hypervisor, or no buffers are currently available, EBUSY
+      is returned in response to the write(). A write() will return EIO for all
+      other errors, such as an invalid device state. When the hypervisor sends
+      a message to the LPM, the data is put into a VMC buffer and an Signal
+      Message is sent to the VMC driver in the management partition. The driver
+      RDMA&#8217;s the buffer into the partition and passes the data up to the
+      appropriate LPM application via a read() to the VMC device. The read()
+      request blocks if there is no buffer available to read. The LPM
+      application may use select() to wait for the VMC device to become ready
+      with data to read.</para>
+
+      <figure>
+        <title>VMC Interface Runtime</title>
+        <mediaobject>
+          <imageobject role="html">
+            <imagedata fileref="figures/PAPR-71.gif" format="GIF"
+            scalefit="1" />
+          </imageobject>
+          <imageobject role="fo">
+            <imagedata fileref="figures/PAPR-71.gif"
+            format="GIF" contentdepth="100%" scalefit="1" width="55%" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+    </section>
+    <section>
+      <title>VMC Interface Close</title>
+      <para>HMC session level connections are
+      closed by the management partition when the application layer performs a
+      close() against the device. This action results in an Interface Close
+      message flowing to the hypervisor, which causes the session to be
+      terminated. The device driver must free any storage allocated for buffers
+      for this HMC connection.</para>
+
+      <figure>
+        <title>VMC Interface Close</title>
+        <mediaobject>
+          <imageobject role="html">
+            <imagedata fileref="figures/PAPR-72.gif" format="GIF"
+            scalefit="1" />
+          </imageobject>
+          <imageobject role="fo">
+            <imagedata contentdepth="100%" fileref="figures/PAPR-72.gif"
+            format="GIF" scalefit="1" width="53%" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+    </section>
+  </section>
+</appendix>
