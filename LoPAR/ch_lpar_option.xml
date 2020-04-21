@@ -211,7 +211,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
     <title>I/O Sub-System Requirements</title>
     <para>The platform divides the I/O subsystem up into Partitionable
     Endpoints (PEs). See
-    <xref linkend="LoPAR.Platform" /> for more information on PEs. Each PE has
+    <xref linkend="dbdoclet.50569330_34831" /> for more information on PEs. Each PE has
     its own (separate) error, addressing, and interrupt domains which allows
     the assignment of separate PEs to different LPAR partitions.</para>
     <para>The following are the requirements for I/O subsystems when the
@@ -2034,7 +2034,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
             <listitem>
               <para><emphasis role="bold">For the LPAR option:</emphasis> If a platform reports in its
               <emphasis role="bold"><literal>&#8220;ibm,hypertas-functions&#8221;</literal></emphasis> property (see
-              <xref linkend="LoPAR.RTAS" />) that it supports a function set, then it
+              <xref linkend="dbdoclet.50569368_41461" />) that it supports a function set, then it
               must support all hcall()s of that function set as defined in
               <xref linkend="dbdoclet.50569344_49986" />.</para>
             </listitem>
@@ -6190,7 +6190,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
         using 64 bit linkage conventions and apply to all page sizes that the
         platform supports as specified by the
         <emphasis role="bold"><literal>&#8220;ibm,processor-page-sizes&#8221;</literal></emphasis> property. (See
-        <xref linkend="LoPAR.DeviceTree" /> for more details.)
+        <xref linkend="dbdoclet.50569374_59715" /> for more details.)
         The Page actual size is encoded in the PFT entry
         per the <xref linkend="dbdoclet.50569387_99718" /> architecture Book IIIs along with the
         segment base page size per the <xref linkend="dbdoclet.50569387_99718" />
@@ -6463,7 +6463,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
                 logical region supports (see
                 <emphasis role="bold"><literal>&#8220;ibm,dynamic-memory&#8221;</literal></emphasis> and
                 <emphasis role="bold"><literal>&#8220;ibm,lmb-page-sizes&#8221;</literal></emphasis> in
-                <xref linkend="LoPAR.DeviceTree" /> as well as
+                <xref linkend="dbdoclet.50569368_91814" /> as well as
                 <xref linkend="dbdoclet.50569344_65610" /> for more details).</para>
               </listitem>
          	</varlistentry>
@@ -6487,7 +6487,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
                 <para><emphasis role="bold">For the LPAR option:</emphasis>
                 Each logical region must support all page sizes presented in the
                 <emphasis role="bold"><literal>&#8220;ibm,processor-page-sizes&#8221;</literal></emphasis> property in
-                <xref linkend="LoPAR.DeviceTree" /> that are less than or equal to the
+                <xref linkend="dbdoclet.50569374_59715" /> that are less than or equal to the
                 size of the logical region as specified by either the OF standard
                 <emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis> property of the logical
                 region&#8217;s OF
@@ -6495,7 +6495,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
                 <emphasis role="bold"><literal>&#8220;ibm,lmb-size&#8221;</literal></emphasis> property of the logical
                 region&#8217;s
                 <emphasis role="bold"><literal>/ibm,dynamic-reconfiguration-memory</literal></emphasis> node in
-                <xref linkend="LoPAR.DeviceTree" />.</para>
+                <xref linkend="dbdoclet.50569368_91814" />.</para>
 
                 <para><emphasis role="bold">Implementation Note:</emphasis> 32 bit versions of AIX only support 36 bit
                 logical address memory spaces. Providing such a partition with a larger
@@ -7883,7 +7883,7 @@ hcall ( const int64 H_BULK_REMOVE, /* Function Code */
           fewer than 8 entries for a given actual page size / base page
           size combination as communicated by the “Block Invalidate
           Characteristics” system parameter (see
-          <xref linkend="LoPAR.RTAS" />).
+          <xref linkend="sec_tlb_block_invalidate" />).
           The virtual pages are all within
           the same naturally aligned 8 page virtual address block and
           have the same page and segment size encodings. The AVA parameter,
@@ -8648,7 +8648,7 @@ hcall ( const int64 H_RESIZE_HPT_COMMIT, /* Function Code */
         <emphasis role="bold"><literal>&#8220;ibm,dma-window&#8221;</literal></emphasis> property associated with
         the particular IOA. For the format of the
         <emphasis role="bold"><literal>&#8220;ibm,dma-window&#8221;</literal></emphasis> property, reference
-        <xref linkend="LoPAR.DeviceTree" />.</para>
+        <xref linkend="dbdoclet.50569368_91814" />.</para>
 
         <section xml:id="dbdoclet.50569344_38645">
           <title>H_GET_TCE</title>
@@ -8710,7 +8710,7 @@ hcall ( const uint64 H_GET_TCE, /* Return the contents of the specified TCE */
 
               <listitem>
                 <para>If specified TCE&#8217;s Page Mapping and Control bits (see
-                <xref linkend="LoPAR.Platform" />) specify &#8220;Page Fault&#8221; then
+                <xref linkend="dbdoclet.50569328_76588" />) specify &#8220;Page Fault&#8221; then
                 return H_Success</para>
               </listitem>
 
@@ -8783,7 +8783,7 @@ hcall ( const uint64 H_PUT_TCE, /* Function Token */
               <listitem>
                 <para>If the Page Mapping and Control field of the TCE is not
                 &#8220;Page Fault&#8221; (see
-                <xref linkend="LoPAR.Platform" />)</para>
+                <xref linkend="dbdoclet.50569328_76588" />)</para>
 
                 <itemizedlist>
                   <listitem>
@@ -8882,7 +8882,7 @@ hcall ( const uint64 H_STUFF_TCE, /* Function Token */
               <listitem>
                 <para>If the Page Mapping and Control field of the TCE is not
                 &#8220;Page Fault&#8221; (see
-                <xref linkend="LoPAR.Platform" />)</para>
+                <xref linkend="dbdoclet.50569328_76588" />)</para>
 
                 <itemizedlist>
                   <listitem>
@@ -9136,7 +9136,7 @@ hcall ( const uint64 H_PUT_TCE_INDIRECT, /* Function Token */
                   <listitem>
                     <para>If the Page Mapping and Control field of the 8 byte entry
                     &#8220;T&#8221; is not &#8220;Page Fault&#8221; (see
-                    <xref linkend="LoPAR.Platform" />) then do</para>
+                    <xref linkend="dbdoclet.50569328_91476" />) then do</para>
 
                     <itemizedlist>
                       <listitem>
@@ -10314,7 +10314,7 @@ hcall ( const uint64 H_CLEAR_HPT);]]></programlisting>
                     <literal>/chosen</literal>
                     <emphasis role="bold"><literal>&#8220;ibm,architecture-vec&#8221;</literal></emphasis> Byte 23 bits 0-1 undefined or 0b00<footnote xml:id="fn_cas_option_vec_p9">
                       <para>See ibm,architecture vector 5, byte 23 in
-                        <xref linkend="LoPAR.DeviceTree" />
+                        <xref linkend="dbdoclet.50569368_10077" />
                         for more details.
                       </para>
                     </footnote>
@@ -12314,7 +12314,7 @@ hcall ( const uint64 H_INT_RESET,   /* Reset all interrupt structures */
         returns; this requires that the OS not reuse/modify the data within the
         old page until the worst case DMA read access time has expired. The
         <emphasis role="bold"><literal>&#8220;ibm,dma-delay-time&#8221;</literal></emphasis> property (see
-        <xref linkend="LoPAR.DeviceTree" />) gives the OS this implementation
+        <xref linkend="dbdoclet.50569368_41461" />) gives the OS this implementation
         dependent delay value. Failure to observe this delay time may result in
         data corruption as seen by the caller&#8217;s I/O adapter(s).</para>
 
@@ -15913,7 +15913,7 @@ hcall ( const uint64 H_GET_DMA_XLATES_LIMITED, /*Return I/O Bus and correspondin
         performed, resulting in a constrained return from such a request.</para>
         <para>System Parameters readable via the
         <emphasis>ibm,get-system-parameter</emphasis> RTAS call (see
-        <xref linkend="LoPAR.RTAS" />)
+        <xref linkend="dbdoclet.50569332_62190" />)
          communicate a variety of configuration and
         constraint parameters among which are determined by the partition
         definition.</para>
@@ -16742,7 +16742,7 @@ hcall ( const uint64 H_PROD, /* Mark the target processor runable */
           <listitem>
             <para>When the value of the
             <emphasis role="bold"><literal>&#8220;ibm,partition-performance-parameters-level&#8221;</literal></emphasis> see
-            <xref linkend="LoPAR.DeviceTree" />) is &gt;=1 then register R8 contains
+            <xref linkend="dbdoclet.50569368_54493" />) is &gt;=1 then register R8 contains
             the processor virtualization resource allocations. In the case of a
             dedicated processor partition R8 contains 0:</para>
 
@@ -16922,7 +16922,7 @@ hcall ( const uint64 H_SET_PPP, /* Modifies the specified partition’s performa
         running on processors that do not implement the register in hardware,
         firmware simulates the function. On platforms that present the property
         <emphasis role="bold"><literal>&#8220;ibm,rks-hcalls&#8221;</literal></emphasis> with bit 2 set (see
-        <xref linkend="LoPAR.DeviceTree" />), this call provides a reduced
+        <xref linkend="dbdoclet.50569368_41461" />), this call provides a reduced
         &#8220;kill set&#8221; of volatile registers, GPRs r0 and r5-r13 are
         preserved.</para>
 
@@ -17086,7 +17086,7 @@ hcall ( const uint64 H_PIC ); /*Returns in R4 the value of the Pool Idle Count *
             <listitem>
               <para>When the value of the
               <emphasis role="bold"><literal>&#8220;ibm,partition-performance-parameters-level&#8221;</literal></emphasis> (see
-              <xref linkend="LoPAR.DeviceTree" />) is &gt;=1 then:</para>
+              <xref linkend="dbdoclet.50569368_54493" />) is &gt;=1 then:</para>
 
               <itemizedlist>
                 <listitem>
@@ -17338,7 +17338,7 @@ hcall ( const uint64 H_JOIN /* Join active threads and return H_CONTINUE to fina
               <para><emphasis role="bold">For the Virtual Processor Home Node option:</emphasis> The
               platform must support the &#8220;Form 1&#8221; of the
               <emphasis role="bold"><literal>&#8220;ibm,associativity-reference-points&#8221;</literal></emphasis> property per
-              <xref linkend="LoPAR.Platform" />. The client program may call
+              <xref linkend="dbdoclet.50569346_82008" />. The client program may call
               H_HOME_NODE_ASSOCIATIVITY hcall() with a valid identifier input parameter
               (such as from the device tree or from the
               <emphasis>ibm,configure-connector</emphasis> RTAS call) even if the
@@ -17581,7 +17581,7 @@ hcall ( const uint64 H_HOME_NODE_ASSOCIATIVITY), /* Returns in R4-R9 the home no
               <para><emphasis role="bold">For the Partition Migration and Partition Hibernation
               options:</emphasis> The platform must implement the Partition Suspension
               option (See
-              <xref linkend="LoPAR.RTAS" />).</para>
+              <xref linkend="dbdoclet.50569332_45918" />).</para>
             </listitem>
        	</varlistentry>
 
@@ -17613,7 +17613,7 @@ hcall ( const uint64 H_HOME_NODE_ASSOCIATIVITY), /* Returns in R4-R9 the home no
               <para><emphasis role="bold">For the Partition Migration and Partition Hibernation
               options:</emphasis> The platform must implement the Version 6 Extensions
               of Event Log Format for all reported events (See
-              <xref linkend="LoPAR.Error" />).</para>
+              <xref linkend="dbdoclet.50569337_79682" />).</para>
             </listitem>
        	</varlistentry>
 
@@ -17658,7 +17658,7 @@ hcall ( const uint64 H_HOME_NODE_ASSOCIATIVITY), /* Returns in R4-R9 the home no
               <para><emphasis role="bold">For the Partition Migration and Partition Hibernation
               options:</emphasis> The platform must present the
               <emphasis role="bold"><literal>&#8220;ibm,nominal-tbf&#8221;</literal></emphasis> property (See
-              <xref linkend="LoPAR.DeviceTree" />) with the value of 512 MHz.</para>
+              <xref linkend="dbdoclet.50569374_89868" />) with the value of 512 MHz.</para>
             </listitem>
        	</varlistentry>
 
@@ -17668,7 +17668,7 @@ hcall ( const uint64 H_HOME_NODE_ASSOCIATIVITY), /* Returns in R4-R9 the home no
             <listitem>
               <para><emphasis role="bold">For the Partition Suspension option:</emphasis> The platform
               must present the properties from
-              <xref linkend="LoPAR.DeviceTree" />, as specified by
+              <xref linkend="dbdoclet.50569374_59715" />, as specified by
               <xref linkend="dbdoclet.50569344_83870" />, to a partition.</para>
             </listitem>
        	</varlistentry>
@@ -17681,7 +17681,7 @@ hcall ( const uint64 H_HOME_NODE_ASSOCIATIVITY), /* Returns in R4-R9 the home no
               value of all properties in
               <xref linkend="dbdoclet.50569344_83870" /> must not change while a
               partition is suspended except for those properties described by
-              <xref linkend="LoPAR.DeviceTree" />.</para>
+              <xref linkend="dbdoclet.50569332_40069" />.</para>
             </listitem>
        	</varlistentry>
       </variablelist>
@@ -18300,7 +18300,7 @@ hcall ( const uint64 H_HOME_NODE_ASSOCIATIVITY), /* Returns in R4-R9 the home no
               <listitem>
                 <para><emphasis role="bold">For the VRMA option:</emphasis> The platform must include the
                 <emphasis role="bold"><literal>&#8220;ibm,vrma-page-sizes&#8221;</literal></emphasis> property (See
-                <xref linkend="LoPAR.DeviceTree" />) in the
+                <xref linkend="dbdoclet.50569374_59715" />) in the
                 <emphasis role="bold"><literal>/cpu</literal></emphasis> node.</para>
               </listitem>
          	</varlistentry>
@@ -18450,7 +18450,7 @@ hcall ( const uint64 H_VRMASD, /* Change the page mapping characteristics of the
               (except for time delays) handle all effects of any memory expropriation
               that it may introduce unless the CMO option is explicitly enabled by the
               setting of architecture.vec option vector 5 byte 4 bit 0 (See
-              <xref linkend="LoPAR.DeviceTree" /> for details).</para>
+              <xref linkend="dbdoclet.50569368_10077" /> for details).</para>
               <para>The CMO option consists of the following LoPAR extensions:</para>
 
               <itemizedlist>
@@ -19977,7 +19977,7 @@ hcall ( const H_GET_MPP_X /* Returns in R4-R10 extended Memory Performance */
                 Check Interrupt by returning to the partition&#8217;s interrupt vector at
                 location 0x0200. Note the subsequent firmware assisted NMI and check
                 exception processing returns a VPM SUE error log (See
-                <xref linkend="LoPAR.Error" />).</para>
+                <xref linkend="dbdoclet.50569337_54366" />).</para>
               </listitem>
          	</varlistentry>
         </variablelist>
@@ -21604,7 +21604,7 @@ hcall ( const uint64 H_REGISTER_PROCESS_TABLE, /* Set translation mode */
       the value 1) cede latency specifier settings. Platforms that implement
       cede latency specifier settings greater than the value of 1 implement the
       cede latency settings system parameter see
-      <xref linkend="LoPAR.RTAS" />. The hypervisor is then free to take energy
+      <xref linkend="dbdoclet.50569332_63170" />. The hypervisor is then free to take energy
       management actions with this hint in mind.</para>
 
       <variablelist>
@@ -21666,7 +21666,7 @@ hcall ( const uint64 H_REGISTER_PROCESS_TABLE, /* Set translation mode */
               <para><emphasis role="bold">For the PEM option:</emphasis> If the platform implements cede
               latency specifier values greater than 1 it must implement the cede
               latency settings system parameter see
-              <xref linkend="LoPAR.RTAS" />.</para>
+              <xref linkend="dbdoclet.50569332_63170" />.</para>
             </listitem>
        	</varlistentry>
       </variablelist>

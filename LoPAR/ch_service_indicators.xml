@@ -431,7 +431,7 @@
 			      <para>Dynamic Reconfiguration (LoPAR indicator type 9002) to indicate
 			      the status of DR operations on a Field Replacable Unit (FRU). More
 			      information on DR indicators can be found in
-			      <xref linkend="LoPAR.Virtualization" />. This indicator is amber
+			      <xref linkend="dbdoclet.50569342_75822" />. This indicator is amber
 			      <footnote xml:id="pgfId-630879">
 			        <para>The term &#8220;amber&#8221; will be used in this chapter to mean
 			        any wavelength between yellow and amber.</para>

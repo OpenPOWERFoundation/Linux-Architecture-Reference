@@ -25,7 +25,7 @@
 
     <para>Platforms may optionally preserve selected regions of storage
     (LMBs) across client program boot cycles.
-    <xref linkend="LoPAR.Platform" /> for more information.</para>
+    <xref linkend="dbdoclet.50569327_70628" /> for more information.</para>
 
     <variablelist>
      	<varlistentry>

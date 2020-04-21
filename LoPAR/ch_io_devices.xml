@@ -1,104 +1,104 @@
 <?xml version="1.0"?>
-<chapter xmlns="http://docbook.org/ns/docbook" 
+<chapter xmlns="http://docbook.org/ns/docbook"
 xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
   <title>I/O Devices</title>
 
-  <para>This chapter describes requirements for IOAs. It adds detail to areas 
-  of the PCI architectures (conventional PCI, PCI-X and PCI Express) that are 
-  either unaddressed or optional. It also places some requirements on firmware 
-  and the OS for IOA support. It provides references to specifications to which 
-  IOAs must comply and gives design notes for IOAs that run on LoPAR systems. 
+  <para>This chapter describes requirements for IOAs. It adds detail to areas
+  of the PCI architectures (conventional PCI, PCI-X and PCI Express) that are
+  either unaddressed or optional. It also places some requirements on firmware
+  and the OS for IOA support. It provides references to specifications to which
+  IOAs must comply and gives design notes for IOAs that run on LoPAR systems.
   </para>
-  
+
   <section xml:id="sec_pci_ioas">
     <title>PCI IOAs</title>
 
 
     <variablelist>
      	<varlistentry>
-        <term><emphasis role="bold">R1-<xref linkend="sec_pci_ioas" 
+        <term><emphasis role="bold">R1-<xref linkend="sec_pci_ioas"
         xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
           <listitem>
-            <para>All PCI IOAs must be capable of decoding and 
+            <para>All PCI IOAs must be capable of decoding and
             generating either a full 32-bit address or a full 64-bit address.</para>
           </listitem>
      	</varlistentry>
-     	
+
      	<varlistentry xml:id="dbdoclet.50569335_14547">
-        <term><emphasis role="bold">R1-<xref linkend="sec_pci_ioas" 
+        <term><emphasis role="bold">R1-<xref linkend="sec_pci_ioas"
         xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
           <listitem>
-            <para>IOAs that implement conventional PCI must be compliant with the 
-            most recent version of the <xref linkend="dbdoclet.50569387_65468"/> at the 
-            time of their design, including any approved Engineering Change Requests (ECRs) 
+            <para>IOAs that implement conventional PCI must be compliant with the
+            most recent version of the <xref linkend="dbdoclet.50569387_65468"/> at the
+            time of their design, including any approved Engineering Change Requests (ECRs)
             against that document. </para>
           </listitem>
      	</varlistentry>
 
      	<varlistentry>
-        <term><emphasis role="bold">R1-<xref linkend="sec_pci_ioas" 
+        <term><emphasis role="bold">R1-<xref linkend="sec_pci_ioas"
         xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
           <listitem>
-            <para>IOAs that implement PCI-X must be compliant 
-            with the most recent version of the <xref linkend="dbdoclet.50569387_26550"/> 
-            at the time of their design, including any approved Engineering Change Requests 
+            <para>IOAs that implement PCI-X must be compliant
+            with the most recent version of the <xref linkend="dbdoclet.50569387_26550"/>
+            at the time of their design, including any approved Engineering Change Requests
             (ECRs) against that document. </para>
           </listitem>
      	</varlistentry>
 
      	<varlistentry>
-        <term><emphasis role="bold">R1-<xref linkend="sec_pci_ioas" 
+        <term><emphasis role="bold">R1-<xref linkend="sec_pci_ioas"
         xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
           <listitem>
-            <para>IOAs that implement PCI Express must be 
-            compliant with the most recent version of the <xref 
-            linkend="dbdoclet.50569387_66784"/> at the time of their design, including any 
+            <para>IOAs that implement PCI Express must be
+            compliant with the most recent version of the <xref
+            linkend="dbdoclet.50569387_66784"/> at the time of their design, including any
             approved Engineering Change Requests (ECRs) against that document</para>
           </listitem>
      	</varlistentry>
     </variablelist>
 
-    <para><emphasis role="bold">Architecture Note:</emphasis> Revision 2.1 and later of 
-    the <emphasis>PCI Local Bus Specification</emphasis> requires that PCI masters 
-    which receive a Retry target termination to unconditionally repeat the same 
-    request until it completes. The master may perform other bus transactions, but 
-    cannot require those to complete before repeating the original transaction 
-    which was previously target terminated with Retry. Revision 2.1 of the 
-    specification (page 49) also includes an example which describes how the 
-    requirement above applies to a multi-function IOA. See page 48-49 of the 2.1 
-    revision of the <emphasis>PCI Local Bus Specification</emphasis> for more 
-    detail. Revision 2.0 of the <emphasis>PCI Local Bus Specification</emphasis> 
-    includes a definition of target termination via Retry, but did not spell out 
-    the requirement described above for masters, as does the 2.1 revision of the 
-    specification. Masters which are designed based on revision 2.0 of the 
-    specification that perform other transactions following target termination with 
-    Retry, may cause live-locks and/or deadlocks when installed in a system that 
-    utilizes bridges (host bridge or PCI-PCI bridges) that implement Retry, delayed 
-    transactions, and/or TCEs, when those masters require following transactions to 
-    complete before the original transaction that was terminated with the target 
-    Retry. This revision 2.0 to revision 2.1 compatibility problem has been 
-    observed on several IOAs that have asked for deviations to Requirement <xref 
-    linkend="dbdoclet.50569335_14547"/>. Wording was added to the revision 2.2 of 
-    the <emphasis>PCI Local Bus Specification</emphasis> which makes a statement 
+    <para><emphasis role="bold">Architecture Note:</emphasis> Revision 2.1 and later of
+    the <emphasis>PCI Local Bus Specification</emphasis> requires that PCI masters
+    which receive a Retry target termination to unconditionally repeat the same
+    request until it completes. The master may perform other bus transactions, but
+    cannot require those to complete before repeating the original transaction
+    which was previously target terminated with Retry. Revision 2.1 of the
+    specification (page 49) also includes an example which describes how the
+    requirement above applies to a multi-function IOA. See page 48-49 of the 2.1
+    revision of the <emphasis>PCI Local Bus Specification</emphasis> for more
+    detail. Revision 2.0 of the <emphasis>PCI Local Bus Specification</emphasis>
+    includes a definition of target termination via Retry, but did not spell out
+    the requirement described above for masters, as does the 2.1 revision of the
+    specification. Masters which are designed based on revision 2.0 of the
+    specification that perform other transactions following target termination with
+    Retry, may cause live-locks and/or deadlocks when installed in a system that
+    utilizes bridges (host bridge or PCI-PCI bridges) that implement Retry, delayed
+    transactions, and/or TCEs, when those masters require following transactions to
+    complete before the original transaction that was terminated with the target
+    Retry. This revision 2.0 to revision 2.1 compatibility problem has been
+    observed on several IOAs that have asked for deviations to Requirement <xref
+    linkend="dbdoclet.50569335_14547"/>. Wording was added to the revision 2.2 of
+    the <emphasis>PCI Local Bus Specification</emphasis> which makes a statement
     similar to this Architecture Note.</para>
-    
+
     <section xml:id="dbdoclet.50569335_36981">
       <title>Resource Locking</title>
 
       <variablelist>
        	<varlistentry xml:id="dbdoclet.50569335_16015">
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569335_36981" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569335_36981"
           xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
             <listitem>
-              <para>PCI IOAs, excepting bridges, must not depend on the PCI LOCK# 
-              signal for correct operation nor require any other PCI IOA to assert LOCK# for 
+              <para>PCI IOAs, excepting bridges, must not depend on the PCI LOCK#
+              signal for correct operation nor require any other PCI IOA to assert LOCK# for
               correct operation.</para>
             </listitem>
        	</varlistentry>
       </variablelist>
 
-      <para>There are some legacy IOAs on legacy buses which require LOCK#. 
-      Additionally, LOCK# is used in some implementations to resolve deadlocks 
+      <para>There are some legacy IOAs on legacy buses which require LOCK#.
+      Additionally, LOCK# is used in some implementations to resolve deadlocks
       between bridges under a single PHB. These uses of LOCK# are permitted. </para>
     </section>
 
@@ -107,30 +107,30 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
       <variablelist>
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569335_12219" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569335_12219"
           xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
             <listitem>
-              <para>PCI expansion ROMs must have a ROM image 
-              with a code type of 1 for OF as provided in the <xref 
-              linkend="dbdoclet.50569387_65468"/>. This ROM image must abide by the ROM image 
-              format for OF as documented in the <xref 
+              <para>PCI expansion ROMs must have a ROM image
+              with a code type of 1 for OF as provided in the <xref
+              linkend="dbdoclet.50569387_65468"/>. This ROM image must abide by the ROM image
+              format for OF as documented in the <xref
               linkend="dbdoclet.50569387_22451"/>.</para>
             </listitem>
        	</varlistentry>
       </variablelist>
 
-      <para>LoPAR systems rely on OF - not BIOS - to boot. This is why strong 
+      <para>LoPAR systems rely on OF - not BIOS - to boot. This is why strong
       requirements for OF device support are made.</para>
-      <para>Vital Product Data (VPD) is an optional feature for PCI adapters 
-      and it is strongly recommended that VPD be included in all PCI expansion ROMs. 
-      If it is put in the PCI expansion ROM in accordance with the <xref 
-      linkend="dbdoclet.50569387_65468"/>, VPD will be reported in the OF device 
-      tree. If the VPD information is formatted as defined in Revision 2.2 with the 
-      new capabilities feature, or in any other format, firmware will not read the 
-      VPD, and the device driver for the IOA will have to reformat any provided VPD 
-      into an OS specified format. It is still required that the keywords and their 
-      values must conform to those specified by either PCI 2.1 or PCI 2.2, no matter 
-      how they are formatted. Refer to Requirement <xref 
+      <para>Vital Product Data (VPD) is an optional feature for PCI adapters
+      and it is strongly recommended that VPD be included in all PCI expansion ROMs.
+      If it is put in the PCI expansion ROM in accordance with the <xref
+      linkend="dbdoclet.50569387_65468"/>, VPD will be reported in the OF device
+      tree. If the VPD information is formatted as defined in Revision 2.2 with the
+      new capabilities feature, or in any other format, firmware will not read the
+      VPD, and the device driver for the IOA will have to reformat any provided VPD
+      into an OS specified format. It is still required that the keywords and their
+      values must conform to those specified by either PCI 2.1 or PCI 2.2, no matter
+      how they are formatted. Refer to Requirement <xref
       linkend="dbdoclet.50569341_65980"/>. </para>
     </section>
 
@@ -139,33 +139,33 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
       <variablelist>
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569335_35146" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569335_35146"
           xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
             <listitem>
-              <para>All PCI IOAs must use the PowerPC 
-              interrupt controller, except when made transparent to the OS by the platform 
+              <para>All PCI IOAs must use the PowerPC
+              interrupt controller, except when made transparent to the OS by the platform
               through the architected hcall()s. </para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569335_35146" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569335_35146"
           xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
             <listitem>
-              <para>PCI IOAs that do not reside in the 
-              Peripheral Memory Space and Peripheral I/O Space of the same PHB must not share 
+              <para>PCI IOAs that do not reside in the
+              Peripheral Memory Space and Peripheral I/O Space of the same PHB must not share
               the same LSI source.</para>
             </listitem>
        	</varlistentry>
       </variablelist>
-      <para>For further information on the interrupt controller refer to <xref 
+      <para>For further information on the interrupt controller refer to <xref
       linkend="dbdoclet.50569331_37856"/>. </para>
-      <para>It is strongly advised that system board designers assign one 
-      interrupt for each interrupt source. Additionally, multi-function PCI IOAs 
-      should have multiple interrupt sources. For restrictions on sharing interrupts 
-      with the LPAR option, see Requirement <xref linkend="LoPAR.Virtualization"/>. 
-      For restrictions on sharing MSIs, see Requirement <xref 
-      linkend="dbdoclet.50569331_84312"/> and Requirement <xref 
+      <para>It is strongly advised that system board designers assign one
+      interrupt for each interrupt source. Additionally, multi-function PCI IOAs
+      should have multiple interrupt sources. For restrictions on sharing interrupts
+      with the LPAR option, see Requirement <xref linkend="dbdoclet.50569344_19261"/>.
+      For restrictions on sharing MSIs, see Requirement <xref
+      linkend="dbdoclet.50569331_84312"/> and Requirement <xref
       linkend="dbdoclet.50569331_63544"/>.</para>
     </section>
 
@@ -174,46 +174,46 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
       <variablelist>
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_pci_bridges" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_pci_bridges"
           xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
             <listitem>
-              <para>Firmware must initialize all PCI-to-PCI 
+              <para>Firmware must initialize all PCI-to-PCI
               bridges. See <xref linkend="dbdoclet.50569387_22451"/>.</para>
             </listitem>
        	</varlistentry>
       </variablelist>
-      <para>All bridges and switches are required to comply with the bus 
-      specification(s) of the buses to which they are attached. See Requirement <xref 
+      <para>All bridges and switches are required to comply with the bus
+      specification(s) of the buses to which they are attached. See Requirement <xref
       linkend="dbdoclet.50569330_95825"/>.</para>
     </section>
 
     <section xml:id="sec_graphics">
       <title>Graphics Controller and Monitor Requirements for Clients</title>
-      
-      <para>The graphics requirements for servers are different from those for 
+
+      <para>The graphics requirements for servers are different from those for
       portable and personal systems. </para>
 
       <variablelist>
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_graphics" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_graphics"
           xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
             <listitem>
-              <para>Plug-in graphics controllers for portable 
-              and personal platforms must provide graphics mode sets in the OF PCI expansion 
+              <para>Plug-in graphics controllers for portable
+              and personal platforms must provide graphics mode sets in the OF PCI expansion
               ROM image in accordance with the
               <xref linkend="dbdoclet.50569387_22451"/>.</para>
             </listitem>
        	</varlistentry>
       </variablelist>
 
-      <para>Portable and personal platforms are strongly urged to support some 
-      mechanism which allows the platform to electronically sense the display 
+      <para>Portable and personal platforms are strongly urged to support some
+      mechanism which allows the platform to electronically sense the display
       capabilities of monitors. </para>
 
-      <para>For graphics controllers that are placed on the system board, the 
-      graphics mode sets can be put in system ROM. The mode set software put in the 
-      system ROM in this case would be FCode and would be largely or entirely the 
-      same as the FCode that would be in the PCI expansion ROM if the same graphics 
+      <para>For graphics controllers that are placed on the system board, the
+      graphics mode sets can be put in system ROM. The mode set software put in the
+      system ROM in this case would be FCode and would be largely or entirely the
+      same as the FCode that would be in the PCI expansion ROM if the same graphics
       controller was put on a plug-in PCI card.</para>
     </section>
 
@@ -222,42 +222,42 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
       <variablelist>
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569335_21614" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569335_21614"
           xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
             <listitem>
-              <para><emphasis>(Requirement Number Reserved 
+              <para><emphasis>(Requirement Number Reserved
               For Compatibility)</emphasis></para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569335_21614" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569335_21614"
           xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
             <listitem>
-              <para>PCI plug-in graphics cards which are 
-              going to be the primary display IOA during the time prior to the OS device 
+              <para>PCI plug-in graphics cards which are
+              going to be the primary display IOA during the time prior to the OS device
               driver being loaded must contain an OF display driver on the IOA.</para>
             </listitem>
        	</varlistentry>
       </variablelist>
     </section>
-    
+
     <section xml:id="sec_pci_cache">
       <title>PCI Cache Support Protocol</title>
-      <para>The PCI architecture allows for the optional implementation of 
-      caching of data. This architecture basically assumes that the data in I/O 
-      memory is non-coherent. As such, platforms are not required to implement the 
-      optional PCI Cache Support protocol using the SBO# and SDONE signals. 
-      Therefore, IOAs used in LoPAR platforms should not count on those signals for 
+      <para>The PCI architecture allows for the optional implementation of
+      caching of data. This architecture basically assumes that the data in I/O
+      memory is non-coherent. As such, platforms are not required to implement the
+      optional PCI Cache Support protocol using the SBO# and SDONE signals.
+      Therefore, IOAs used in LoPAR platforms should not count on those signals for
       proper operations.</para>
 
       <variablelist>
        	<varlistentry xml:id="dbdoclet.50569335_39614">
-          <term><emphasis role="bold">R1-<xref linkend="sec_pci_cache" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_pci_cache"
           xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
             <listitem>
-              <para>IOAs used in LoPAR platforms 
-              and their device drivers must not require the use of the PCI signals SBO# and 
+              <para>IOAs used in LoPAR platforms
+              and their device drivers must not require the use of the PCI signals SBO# and
               SDONE for proper operations. </para>
             </listitem>
        	</varlistentry>
@@ -266,18 +266,18 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
     <section xml:id="sec_pci_config_space">
       <title>PCI Configuration Space for IOAs</title>
-      <para>There are several writable fields in the PCI Configuration Header. 
-      Some of these are written by the firmware and should never be changed by the 
+      <para>There are several writable fields in the PCI Configuration Header.
+      Some of these are written by the firmware and should never be changed by the
       device driver. </para>
 
       <variablelist>
        	<varlistentry xml:id="dbdoclet.50569335_13568">
-          <term><emphasis role="bold">R1-<xref linkend="sec_pci_config_space" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_pci_config_space"
           xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
             <listitem>
-              <para>All registers and bits in the PCI Configuration Header must be 
-              set to a platform specific value by firmware and preserved by software, except 
-              that software is responsible for setting the configuration space as indicated 
+              <para>All registers and bits in the PCI Configuration Header must be
+              set to a platform specific value by firmware and preserved by software, except
+              that software is responsible for setting the configuration space as indicated
               in <xref linkend="dbdoclet.50569335_27772"/>.</para>
 
               <table frame="all" pgwide="1" xml:id="dbdoclet.50569335_27772">
@@ -308,7 +308,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                         <para> Bus Master</para>
                       </entry>
                       <entry>
-                        <para> Must write to a 1 before the first DMA operation after a 
+                        <para> Must write to a 1 before the first DMA operation after a
                         reset. Must write to a 0 before unconfiguring device driver.</para>
                       </entry>
                     </row>
@@ -317,8 +317,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                         <para> Memory Space</para>
                       </entry>
                       <entry>
-                        <para> Must write to a 1 before the first MMIO operation to 
-                        IOA&#x2019;s memory space (if any) after a reset. Must write to a 0 before 
+                        <para> Must write to a 1 before the first MMIO operation to
+                        IOA&#x2019;s memory space (if any) after a reset. Must write to a 0 before
                         unconfiguring device driver.</para>
                       </entry>
                     </row>
@@ -327,8 +327,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                         <para> IO Space</para>
                       </entry>
                       <entry>
-                        <para> Must write to a 1 before the first MMIO operation to 
-                        IOA&#x2019;s I/O space (if any) after a reset. Must write to a 0 before 
+                        <para> Must write to a 1 before the first MMIO operation to
+                        IOA&#x2019;s I/O space (if any) after a reset. Must write to a 0 before
                         unconfiguring device driver.</para>
                       </entry>
                     </row>
@@ -337,9 +337,9 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                         <para> all other bits</para>
                       </entry>
                       <entry>
-                        <para> Must restore to previous value after any reset operation 
-                        (for example, via <emphasis>ibm,set-slot-reset Function</emphasis> 1 or 3). 
-                        The <emphasis>ibm,configure-bridge</emphasis> RTAS call is available to assist 
+                        <para> Must restore to previous value after any reset operation
+                        (for example, via <emphasis>ibm,set-slot-reset Function</emphasis> 1 or 3).
+                        The <emphasis>ibm,configure-bridge</emphasis> RTAS call is available to assist
                         in restoring values, where appropriate.</para>
                       </entry>
                     </row>
@@ -356,16 +356,16 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                     </row>
                     <row>
                       <entry>
-                        <para> all other PCI header registers that may be modified by 
+                        <para> all other PCI header registers that may be modified by
                         firmware after initial reset or by <emphasis>ibm,configure-connector</emphasis> for DR operations</para>
                       </entry>
                       <entry>
                         <para> all</para>
                       </entry>
                       <entry>
-                        <para> Must restore to previous value after any reset operation 
-                        (for example, via <emphasis>ibm,set-slot-reset-state Function</emphasis> 1). 
-                        The <emphasis>ibm,configure-bridge</emphasis> RTAS call is available to assist 
+                        <para> Must restore to previous value after any reset operation
+                        (for example, via <emphasis>ibm,set-slot-reset-state Function</emphasis> 1).
+                        The <emphasis>ibm,configure-bridge</emphasis> RTAS call is available to assist
                         in configuring PCI bridges and switches, where appropriate.</para>
                       </entry>
                     </row>
@@ -374,25 +374,25 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               </table>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry xml:id="dbdoclet.50569335_17839">
-          <term><emphasis role="bold">R1-<xref linkend="sec_pci_config_space" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_pci_config_space"
           xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
             <listitem>
-              <para>All IOAs that implement PCI-X Mode 2 or PCI Express must supply 
-              the <emphasis role="bold"><literal>&#x201C;ibm,pci-config-space-type&#x201D;</literal></emphasis> property 
-              (see <xref linkend="LoPAR.RTAS"/>).</para>
-              <para><emphasis role="bold">Implementation Note:</emphasis> The 
-              <emphasis role="bold"><literal>&#x201C;ibm,pci-config-space-type&#x201D;</literal></emphasis> 
-              property in Requirement <xref linkend="dbdoclet.50569335_17839"/> is added for platforms that support 
-              I/O fabric and IOAs that implement PCI-X Mode 2, and PCI Express. To access the 
-              extended configuration space provided by PCI-X Mode 2 and PCI Express, all I/O 
-              fabric leading up to an IOA must support a 12-bit register number. In other 
-              words, if a platform implementation has a conventional PCI bridge leading up to 
-              an IOA that implements PCI-X Mode 2, the platform will not be able to provide 
-              access to the extended configuration space of that IOA. The 
-              <emphasis role="bold"><literal>&#x201C;ibm,config-space-type&#x201D;</literal></emphasis> property in the IOA's OF node 
-              is used by device drivers to determine if an IOA&#x2019;s extended 
+              <para>All IOAs that implement PCI-X Mode 2 or PCI Express must supply
+              the <emphasis role="bold"><literal>&#x201C;ibm,pci-config-space-type&#x201D;</literal></emphasis> property
+              (see <xref linkend="dbdoclet.50569368_69645"/>).</para>
+              <para><emphasis role="bold">Implementation Note:</emphasis> The
+              <emphasis role="bold"><literal>&#x201C;ibm,pci-config-space-type&#x201D;</literal></emphasis>
+              property in Requirement <xref linkend="dbdoclet.50569335_17839"/> is added for platforms that support
+              I/O fabric and IOAs that implement PCI-X Mode 2, and PCI Express. To access the
+              extended configuration space provided by PCI-X Mode 2 and PCI Express, all I/O
+              fabric leading up to an IOA must support a 12-bit register number. In other
+              words, if a platform implementation has a conventional PCI bridge leading up to
+              an IOA that implements PCI-X Mode 2, the platform will not be able to provide
+              access to the extended configuration space of that IOA. The
+              <emphasis role="bold"><literal>&#x201C;ibm,config-space-type&#x201D;</literal></emphasis> property in the IOA's OF node
+              is used by device drivers to determine if an IOA&#x2019;s extended
               configuration space can be accessed. </para>
             </listitem>
        	</varlistentry>
@@ -401,85 +401,85 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
     <section xml:id="sec_ioa_bus_memory_space">
       <title>PCI IOA Use of PCI Bus Memory Space Address 0</title>
-      <para>Some PCI IOAs will fail when given a bus address of 0. In the PC 
-      world, address 0 would not be a good address, so some PCI IOA designs which 
-      were designed for the PC arena will check for an address of 0, and fail the 
+      <para>Some PCI IOAs will fail when given a bus address of 0. In the PC
+      world, address 0 would not be a good address, so some PCI IOA designs which
+      were designed for the PC arena will check for an address of 0, and fail the
       operation if it is 0. </para>
 
       <variablelist>
        	<varlistentry xml:id="dbdoclet.50569335_30300">
-          <term><emphasis role="bold">R1-<xref linkend="sec_ioa_bus_memory_space" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_ioa_bus_memory_space"
           xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
             <listitem>
-              <para>For systems that use PCI IOAs 
-              which will fail when given a bus address of 0 for DMA operations, and when the 
-              operations for which those IOAs are used are other than system memory dump 
-              operations, then the OS must prevent the mapping of PCI bus address 0 for PCI 
+              <para>For systems that use PCI IOAs
+              which will fail when given a bus address of 0 for DMA operations, and when the
+              operations for which those IOAs are used are other than system memory dump
+              operations, then the OS must prevent the mapping of PCI bus address 0 for PCI
               DMA operation for such IOAs.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_ioa_bus_memory_space" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_ioa_bus_memory_space"
           xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
             <listitem>
-              <para>PCI IOAs used for dumping contents of 
-              system memory must operate properly with a PCI bus address of 0 for PCI DMA 
+              <para>PCI IOAs used for dumping contents of
+              system memory must operate properly with a PCI bus address of 0 for PCI DMA
               operations.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_ioa_bus_memory_space" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_ioa_bus_memory_space"
           xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
             <listitem>
-              <para>The firmware must not map an IOA used for 
-              loading a boot image to an address of 0, when loading a boot image, if that IOA 
+              <para>The firmware must not map an IOA used for
+              loading a boot image to an address of 0, when loading a boot image, if that IOA
               cannot accept an address of 0.</para>
             </listitem>
        	</varlistentry>
       </variablelist>
-      <para><emphasis role="bold">Implementation Note:</emphasis> A reasonable 
-      implementation of Requirement <xref linkend="dbdoclet.50569335_30300"/> would 
-      be to have an interface between the device driver and the kernel to allow the 
-      device driver to indicate to the kernel that the restriction is required for 
+      <para><emphasis role="bold">Implementation Note:</emphasis> A reasonable
+      implementation of Requirement <xref linkend="dbdoclet.50569335_30300"/> would
+      be to have an interface between the device driver and the kernel to allow the
+      device driver to indicate to the kernel that the restriction is required for
       that IOA, so that all IOAs for that kernel image are not affected.</para>
     </section>
 
     <section xml:id="sec_pcie_comp_timeout">
       <title>PCI Express Completion Timeout</title>
-      <para>Prior to the implementation of the PCI Express additional 
-      capability to set the Completion Timeout Value and Completion Timeout Disable 
-      in the PCI Express Device Control 2 register of an IOA, the IOAs need 
-      device-specific way to provide the disable capability. In addition, the 
-      platforms need to provide a way for the OSs and device drivers to know when to 
-      disable the completion timeout of these devices that only provide a 
+      <para>Prior to the implementation of the PCI Express additional
+      capability to set the Completion Timeout Value and Completion Timeout Disable
+      in the PCI Express Device Control 2 register of an IOA, the IOAs need
+      device-specific way to provide the disable capability. In addition, the
+      platforms need to provide a way for the OSs and device drivers to know when to
+      disable the completion timeout of these devices that only provide a
       device-specific way of doing so.</para>
 
       <variablelist>
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_pcie_comp_timeout" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_pcie_comp_timeout"
           xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
             <listitem>
-              <para>PCI Express IOAs must either provide a 
-              device-specific way to disable their DMA Completion Timeout timer or must 
-              provide the Completion Timeout Disable or Completion Timeout Value capability 
-              in the PCI Express Device Control 2 register, and device drivers for IOAs that 
-              provide a device-specific way must disable their DMA Completion Timeout timer 
-              if it is either unknown whether the IOA provides a sufficiently long timer 
-              value for the platform, or if it is known that they do not provide a sufficient 
-              timeout value (for example, if the 
-              <emphasis role="bold"><literal>&#x201C;ibm,max-completion-latency&#x201D;</literal></emphasis> property is not 
+              <para>PCI Express IOAs must either provide a
+              device-specific way to disable their DMA Completion Timeout timer or must
+              provide the Completion Timeout Disable or Completion Timeout Value capability
+              in the PCI Express Device Control 2 register, and device drivers for IOAs that
+              provide a device-specific way must disable their DMA Completion Timeout timer
+              if it is either unknown whether the IOA provides a sufficiently long timer
+              value for the platform, or if it is known that they do not provide a sufficient
+              timeout value (for example, if the
+              <emphasis role="bold"><literal>&#x201C;ibm,max-completion-latency&#x201D;</literal></emphasis> property is not
               provided).</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry xml:id="dbdoclet.50569335_65475">
-          <term><emphasis role="bold">R1-<xref linkend="sec_pcie_comp_timeout" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_pcie_comp_timeout"
           xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
             <listitem>
-              <para>Platforms must provide the 
-              <emphasis role="bold"><literal>&#x201C;ibm,max-completion-latency&#x201D;</literal></emphasis> property in 
+              <para>Platforms must provide the
+              <emphasis role="bold"><literal>&#x201C;ibm,max-completion-latency&#x201D;</literal></emphasis> property in
               each PCI Express PHB node of the OF Device Tree.</para>
             </listitem>
        	</varlistentry>
@@ -489,67 +489,67 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
     <section xml:id="sec_pcie_iov">
       <title>PCI Express I/O Virtualized (IOV) Adapters</title>
-      <para>PCI Express defines I/O Virtualized (IOV) adapters, where such an 
-      adapter has separate resources for each virtual instance, called a Virtual 
-      Function (VF). There are two PCI specifications that exist to define such 
+      <para>PCI Express defines I/O Virtualized (IOV) adapters, where such an
+      adapter has separate resources for each virtual instance, called a Virtual
+      Function (VF). There are two PCI specifications that exist to define such
       adapters:</para>
 
-      <itemizedlist>		      
+      <itemizedlist>
         <listitem>
-          <para><xref linkend="dbdoclet.50569387_94229"/> defines the 
+          <para><xref linkend="dbdoclet.50569387_94229"/> defines the
           requirements for SR-IOV adapters.</para>
         </listitem>
-        
+
         <listitem>
-          <para><xref linkend="dbdoclet.50569387_42471"/> defines the 
+          <para><xref linkend="dbdoclet.50569387_42471"/> defines the
           requirements for MR-IOV adapters.</para>
         </listitem>
       </itemizedlist>
 
-      <para>The interface presented to an OS from an MR-IOV adapter will look 
-      the same as an SR-IOV adapters, and therefore will not be described separately 
+      <para>The interface presented to an OS from an MR-IOV adapter will look
+      the same as an SR-IOV adapters, and therefore will not be described separately
       here.</para>
-      <para>IOV adapters and/or the VFs of an IOV adapter that has IOV enabled, 
-      are assigned to OSs as follows (see also <xref 
-      linkend="dbdoclet.50569335_70133"/> for a full set of characteristics of these 
+      <para>IOV adapters and/or the VFs of an IOV adapter that has IOV enabled,
+      are assigned to OSs as follows (see also <xref
+      linkend="dbdoclet.50569335_70133"/> for a full set of characteristics of these
       environments):</para>
-        
-      <itemizedlist>		      
+
+      <itemizedlist>
         <listitem>
-          <para>For the <emphasis>Legacy Dedicated</emphasis> environment, the 
-          entire adapter is assigned to one LPAR, with the IOV functionality not enabled. 
-          In this mode, the OS provides device driver(s) for the adapter Function(s). VFs 
-          do not exist, because IOV is not enabled. The OS is given the capability to do 
-          Hot Plug add, remove, and replace in a non-managed environment (without an 
+          <para>For the <emphasis>Legacy Dedicated</emphasis> environment, the
+          entire adapter is assigned to one LPAR, with the IOV functionality not enabled.
+          In this mode, the OS provides device driver(s) for the adapter Function(s). VFs
+          do not exist, because IOV is not enabled. The OS is given the capability to do
+          Hot Plug add, remove, and replace in a non-managed environment (without an
           HMC), and may be given that capability in a managed environment. </para>
         </listitem>
-        
+
         <listitem>
-          <para>For the <emphasis>SR-IOV Non-shared</emphasis> environment, the 
-          entire adapter is assigned to one LPAR, with IOV functionality enabled, but 
-          with the Physical Function(s) (PFs) of the adapter hosted by the platform. Only 
-          VFs are presented to the OS. The OS is given the capability to do Hot Plug add, 
-          remove, and replace in a non-managed environment (without an HMC), and may be 
+          <para>For the <emphasis>SR-IOV Non-shared</emphasis> environment, the
+          entire adapter is assigned to one LPAR, with IOV functionality enabled, but
+          with the Physical Function(s) (PFs) of the adapter hosted by the platform. Only
+          VFs are presented to the OS. The OS is given the capability to do Hot Plug add,
+          remove, and replace in a non-managed environment (without an HMC), and may be
           given that capability in a managed environment. </para>
         </listitem>
-        
+
         <listitem>
-          <para>For the <emphasis>SR-IOV Shared</emphasis> environment, the 
-          adapter is assigned to the platform, with IOV functionality enabled. The 
-          platform then assigns VF(s) to OS(s). Only the managed environment applies, and 
-          add/remove/replace operations are controlled by DLPAR operations to the OS(s) 
+          <para>For the <emphasis>SR-IOV Shared</emphasis> environment, the
+          adapter is assigned to the platform, with IOV functionality enabled. The
+          platform then assigns VF(s) to OS(s). Only the managed environment applies, and
+          add/remove/replace operations are controlled by DLPAR operations to the OS(s)
           from the management console.</para>
         </listitem>
-      </itemizedlist>		      
+      </itemizedlist>
 
-      <para>For all environments except the SR-IOV Shared, multiple functions 
-      will appear as a multi-function IOA with possible sharing of a single PE. For 
-      example, the multi-function adapters may have a shared EEH domain and shared 
+      <para>For all environments except the SR-IOV Shared, multiple functions
+      will appear as a multi-function IOA with possible sharing of a single PE. For
+      example, the multi-function adapters may have a shared EEH domain and shared
       DMA window.</para>
-      <para>Determination of which of the above environments is supported for a 
-      given platform and partition or OS type is beyond the scope of this 
+      <para>Determination of which of the above environments is supported for a
+      given platform and partition or OS type is beyond the scope of this
       architecture.</para>
-      <para><xref linkend="dbdoclet.50569335_70133"/> defines the 
+      <para><xref linkend="dbdoclet.50569335_70133"/> defines the
       characteristics of these environments.</para>
 
       <table frame="all" pgwide="1" xml:id="dbdoclet.50569335_70133">
@@ -727,10 +727,10 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
             </row>
             <row>
               <entry>
-                <para>All functions under separate PHBs in the OF Device Tree 
-                for the same adapter<footnote xml:id="pgfId-545449"><para>The adapter is 
-                physically under one PHB, but the platform creates separate 
-                &#x201C;virtual&#x201D; PHBs in the OF Device Tree and virtualizes the PCI 
+                <para>All functions under separate PHBs in the OF Device Tree
+                for the same adapter<footnote xml:id="pgfId-545449"><para>The adapter is
+                physically under one PHB, but the platform creates separate
+                &#x201C;virtual&#x201D; PHBs in the OF Device Tree and virtualizes the PCI
                 Express configuration space for the various functions.</para></footnote>?</para>
               </entry>
               <entry>
@@ -745,9 +745,9 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
             </row>
             <row>
               <entry>
-                <para><emphasis>config_addr</emphasis> translation 
-                (virtualization) by the platform (that is, the bus/device/function of the 
-                <emphasis>config_addr</emphasis> does not necessarily correspond to what the 
+                <para><emphasis>config_addr</emphasis> translation
+                (virtualization) by the platform (that is, the bus/device/function of the
+                <emphasis>config_addr</emphasis> does not necessarily correspond to what the
                 device has programmed)</para>
               </entry>
               <entry>
@@ -780,31 +780,31 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
       <variablelist>
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_pcie_iov" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_pcie_iov"
           xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
             <listitem>
-              <para>PCI Express Single Root IOV (SR-IOV) 
+              <para>PCI Express Single Root IOV (SR-IOV)
               adapters must comply to the <xref linkend="dbdoclet.50569387_94229"/>.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_pcie_iov" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_pcie_iov"
           xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
             <listitem>
-              <para>PCI Express Multi-Root IOV (MR-IOV) 
+              <para>PCI Express Multi-Root IOV (MR-IOV)
               adapters must comply to the <xref linkend="dbdoclet.50569387_42471"/>.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_pcie_iov" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_pcie_iov"
           xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
             <listitem>
-              <para>The platform must present within the 
-              device tree nodes for all PCI Express adapters configured to operate in IOV 
-              mode the <emphasis role="bold"><literal>"ibm,is-vf"</literal></emphasis> property as defined in section 
-              <xref linkend="LoPAR.RTAS"/>. </para>
+              <para>The platform must present within the
+              device tree nodes for all PCI Express adapters configured to operate in IOV
+              mode the <emphasis role="bold"><literal>"ibm,is-vf"</literal></emphasis> property as defined in section
+              <xref linkend="dbdoclet.50569368_94451"/>. </para>
             </listitem>
        	</varlistentry>
       </variablelist>
@@ -817,12 +817,12 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
     <variablelist>
      	<varlistentry>
-        <term><emphasis role="bold">R1-<xref linkend="sec_multi_init_scsi" 
+        <term><emphasis role="bold">R1-<xref linkend="sec_multi_init_scsi"
         xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
           <listitem>
-            <para><emphasis role="bold">Platform Implementation:</emphasis> 
+            <para><emphasis role="bold">Platform Implementation:</emphasis>
             Platforms must support the <emphasis role="bold"><literal>&#x201C;scsi-initiator-id&#x201D;</literal></emphasis>
-            property as described in <xref linkend="LoPAR.DeviceTree"/> and <xref linkend="dbdoclet.50569387_27008"/>.</para>
+            property as described in <xref linkend="dbdoclet.50569368_91814"/> and <xref linkend="dbdoclet.50569387_27008"/>.</para>
           </listitem>
      	</varlistentry>
     </variablelist>
@@ -830,23 +830,23 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
   <section xml:id="sec_contig_mem">
     <title>Contiguous Memory </title>
-    <para>I/O devices that require contiguous memory pages (either real or via 
-    contiguous TCEs) cannot reasonably be accommodated in LoPAR platforms. When 
-    TCEs are turned off, that would require that real physical memory addresses be 
-    allocated. When TCEs are on, that would require contiguous TCEs be assigned, 
-    and although that is the first attempt by the OS&#x2019;s TCE assignment 
-    algorithm, the algorithm will assign non-contiguous ones if contiguous ones 
-    cannot be assigned. Dynamic Reconfiguration complicates the contiguous problem 
+    <para>I/O devices that require contiguous memory pages (either real or via
+    contiguous TCEs) cannot reasonably be accommodated in LoPAR platforms. When
+    TCEs are turned off, that would require that real physical memory addresses be
+    allocated. When TCEs are on, that would require contiguous TCEs be assigned,
+    and although that is the first attempt by the OS&#x2019;s TCE assignment
+    algorithm, the algorithm will assign non-contiguous ones if contiguous ones
+    cannot be assigned. Dynamic Reconfiguration complicates the contiguous problem
     even further.</para>
 
     <variablelist>
      	<varlistentry>
-        <term><emphasis role="bold">R1-<xref linkend="sec_contig_mem" 
+        <term><emphasis role="bold">R1-<xref linkend="sec_contig_mem"
         xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
           <listitem>
-            <para>I/O devices and/or their device drivers used 
-            in LoPAR platforms must implement scatter/gather capability for DMA operations 
-            such that they do not require contiguous memory pages to be allocated for 
+            <para>I/O devices and/or their device drivers used
+            in LoPAR platforms must implement scatter/gather capability for DMA operations
+            such that they do not require contiguous memory pages to be allocated for
             proper operation. </para>
           </listitem>
      	</varlistentry>
@@ -855,34 +855,34 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
   <section xml:id="sec_redirect_serial_ports">
     <title>Re-directed Serial Ports</title>
-    <para>The <emphasis role="bold"><literal>&#x201C;ibm,vty-wrap-capable&#x201D;</literal></emphasis> OF 
-    device tree property will be present in an OF device tree of a serial port node 
-    when the OS data communication with that serial port controller can be 
-    redirected, or wrapped, away from the physical serial port connector to an 
-    <emphasis>ibm,vty</emphasis> device, which is often a virtual terminal session 
-    of the Hardware Management Console (HMC). This property indicates to serial 
-    port diagnostic programs that additional end user information should be 
-    displayed during the serial port diagnostic test indicating that it is possible 
-    that serial port data could be redirected away from the physical serial port 
-    preventing the execution of wrap tests with physical wrap plugs. The end user 
-    information should describe that initiating a virtual terminal session causes 
-    the serial port controller's data to be wrapped away from the physical serial 
-    port connection and that terminating a virtual terminal session causes the 
-    serial port controller's data to be returned to the physical serial port 
-    connection. The <emphasis role="bold"><literal>&#x201C;ibm,vty-wrap-capable&#x201D;</literal></emphasis> 
-    property is present with a value of null when this re-direction capability 
+    <para>The <emphasis role="bold"><literal>&#x201C;ibm,vty-wrap-capable&#x201D;</literal></emphasis> OF
+    device tree property will be present in an OF device tree of a serial port node
+    when the OS data communication with that serial port controller can be
+    redirected, or wrapped, away from the physical serial port connector to an
+    <emphasis>ibm,vty</emphasis> device, which is often a virtual terminal session
+    of the Hardware Management Console (HMC). This property indicates to serial
+    port diagnostic programs that additional end user information should be
+    displayed during the serial port diagnostic test indicating that it is possible
+    that serial port data could be redirected away from the physical serial port
+    preventing the execution of wrap tests with physical wrap plugs. The end user
+    information should describe that initiating a virtual terminal session causes
+    the serial port controller's data to be wrapped away from the physical serial
+    port connection and that terminating a virtual terminal session causes the
+    serial port controller's data to be returned to the physical serial port
+    connection. The <emphasis role="bold"><literal>&#x201C;ibm,vty-wrap-capable&#x201D;</literal></emphasis>
+    property is present with a value of null when this re-direction capability
     exists and is absent when this capability does not exist. </para>
 
     <variablelist>
      	<varlistentry>
-        <term><emphasis role="bold">R1-<xref linkend="sec_redirect_serial_ports" 
+        <term><emphasis role="bold">R1-<xref linkend="sec_redirect_serial_ports"
         xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
           <listitem>
-            <para>The <emphasis role="bold"><literal>&#x201C;ibm,vty-wrap-capable&#x201D;</literal></emphasis> 
-            OF device tree property must 
-            be present in an OF device tree of a serial port node when the OS data 
-            communication with that serial port controller can be redirected, or wrapped, 
-            away from the physical serial port connector to an ibm,vty device, and must not 
+            <para>The <emphasis role="bold"><literal>&#x201C;ibm,vty-wrap-capable&#x201D;</literal></emphasis>
+            OF device tree property must
+            be present in an OF device tree of a serial port node when the OS data
+            communication with that serial port controller can be redirected, or wrapped,
+            away from the physical serial port connector to an ibm,vty device, and must not
             be present if this capability does not exist.</para>
           </listitem>
      	</varlistentry>
@@ -891,95 +891,95 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
   <section xml:id="sec_sys_bus_ioas">
     <title>System Bus IOAs</title>
-    <para>This section lists the requirements for the systems to support IOAs 
+    <para>This section lists the requirements for the systems to support IOAs
     connected to the system bus or main I/O expansion bus.</para>
 
     <variablelist>
      	<varlistentry>
-        <term><emphasis role="bold">R1-<xref linkend="sec_sys_bus_ioas" 
+        <term><emphasis role="bold">R1-<xref linkend="sec_sys_bus_ioas"
         xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
           <listitem>
-            <para>Each system bus IOA must be a bus 
+            <para>Each system bus IOA must be a bus
             master.</para>
           </listitem>
      	</varlistentry>
-     	
+
      	<varlistentry>
-        <term><emphasis role="bold">R1-<xref linkend="sec_sys_bus_ioas" 
+        <term><emphasis role="bold">R1-<xref linkend="sec_sys_bus_ioas"
         xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
           <listitem>
-            <para>Firmware must assign unique addresses to all 
+            <para>Firmware must assign unique addresses to all
             system bus IOA facilities. </para>
           </listitem>
      	</varlistentry>
-     	
+
      	<varlistentry>
-        <term><emphasis role="bold">R1-<xref linkend="sec_sys_bus_ioas" 
+        <term><emphasis role="bold">R1-<xref linkend="sec_sys_bus_ioas"
         xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
           <listitem>
-            <para>Addresses assigned to system bus IOA 
-            facilities must not conflict with the addresses mapped by any host bridge on 
+            <para>Addresses assigned to system bus IOA
+            facilities must not conflict with the addresses mapped by any host bridge on
             the system bus.</para>
           </listitem>
      	</varlistentry>
-     	
+
      	<varlistentry>
-        <term><emphasis role="bold">R1-<xref linkend="sec_sys_bus_ioas" 
+        <term><emphasis role="bold">R1-<xref linkend="sec_sys_bus_ioas"
         xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
           <listitem>
-            <para>System bus IOAs must be assigned interrupt 
+            <para>System bus IOAs must be assigned interrupt
             sources for their interrupt requirements by firmware. </para>
           </listitem>
      	</varlistentry>
-     	
+
      	<varlistentry>
-        <term><emphasis role="bold">R1-<xref linkend="sec_sys_bus_ioas" 
+        <term><emphasis role="bold">R1-<xref linkend="sec_sys_bus_ioas"
         xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
           <listitem>
-            <para>A system bus IOA&#x2019;s OF 
-            <emphasis role="bold"><literal>&#x201C;interrupts&#x201D;</literal></emphasis> property must reflect 
+            <para>A system bus IOA&#x2019;s OF
+            <emphasis role="bold"><literal>&#x201C;interrupts&#x201D;</literal></emphasis> property must reflect
             the interrupt source and type allocation for the device.</para>
           </listitem>
      	</varlistentry>
-     	
+
      	<varlistentry>
-        <term><emphasis role="bold">R1-<xref linkend="sec_sys_bus_ioas" 
+        <term><emphasis role="bold">R1-<xref linkend="sec_sys_bus_ioas"
         xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
           <listitem>
-            <para>All system bus IOA interrupts must be low 
+            <para>All system bus IOA interrupts must be low
             true level sensitive (referred to as level sensitive).</para>
           </listitem>
      	</varlistentry>
-     	
+
      	<varlistentry>
-        <term><emphasis role="bold">R1-<xref linkend="sec_sys_bus_ioas" 
+        <term><emphasis role="bold">R1-<xref linkend="sec_sys_bus_ioas"
         xrefstyle="select: labelnumber nopage"/>-7.</emphasis></term>
           <listitem>
-            <para>Interrupts assigned to system bus IOAs must 
+            <para>Interrupts assigned to system bus IOAs must
             not be shared with other IOAs.</para>
           </listitem>
      	</varlistentry>
-     	
+
      	<varlistentry>
-        <term><emphasis role="bold">R1-<xref linkend="sec_sys_bus_ioas" 
+        <term><emphasis role="bold">R1-<xref linkend="sec_sys_bus_ioas"
         xrefstyle="select: labelnumber nopage"/>-8.</emphasis></term>
           <listitem>
-            <para> The OF unit address (first entry of the 
-            <emphasis role="bold"><literal>&#x201C;reg&#x201D;</literal></emphasis> property) of a system 
+            <para> The OF unit address (first entry of the
+            <emphasis role="bold"><literal>&#x201C;reg&#x201D;</literal></emphasis> property) of a system
             bus IOA must stay the same from boot to boot.</para>
           </listitem>
      	</varlistentry>
-     	
+
      	<varlistentry>
-        <term><emphasis role="bold">R1-<xref linkend="sec_sys_bus_ioas" 
+        <term><emphasis role="bold">R1-<xref linkend="sec_sys_bus_ioas"
         xrefstyle="select: labelnumber nopage"/>-9.</emphasis></term>
           <listitem>
-            <para>Each system bus IOA must have documentation 
-            for programming the IOA and an OF binding which describes at least the 
-            <emphasis role="bold"><literal>&#x201C;name&#x201D;</literal></emphasis>, 
-            <emphasis role="bold"><literal>&#x201C;reg&#x201D;</literal></emphasis>, 
-            <emphasis role="bold"><literal>&#x201C;interrupts&#x201D;</literal></emphasis>, and 
-            <emphasis role="bold"><literal>&#x201C;interrupt-parent&#x201D;</literal></emphasis> 
+            <para>Each system bus IOA must have documentation
+            for programming the IOA and an OF binding which describes at least the
+            <emphasis role="bold"><literal>&#x201C;name&#x201D;</literal></emphasis>,
+            <emphasis role="bold"><literal>&#x201C;reg&#x201D;</literal></emphasis>,
+            <emphasis role="bold"><literal>&#x201C;interrupts&#x201D;</literal></emphasis>, and
+            <emphasis role="bold"><literal>&#x201C;interrupt-parent&#x201D;</literal></emphasis>
             properties for the device.</para>
           </listitem>
      	</varlistentry>

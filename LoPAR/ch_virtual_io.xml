@@ -193,7 +193,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
                 access modes, like writing to a read only page). More
                 information on TCEs and TCE tables, which are used for physical
                 IOAs, can be found in
-                <xref linkend="LoPAR.Platform" />. The RTCE table for Remote
+                <xref linkend="dbdoclet.50569328_76588" />. The RTCE table for Remote
                 DMA (RDMA) is analogous to the TCE table for physical IOAs. The
                 RTCE table does, however, have a little more information in it
                 (as placed there by the hypervisor) in order to, among other
@@ -728,7 +728,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
                 </entry>
                 <entry>
                   <para>The virtual location code (see
-                  <xref linkend="LoPAR.Platform" />)</para>
+                  <xref linkend="dbdoclet.50569341_32742" />)</para>
                 </entry>
               </row>
               <row>
@@ -953,7 +953,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdo
         assignment number is uniquely generated when the virtual IOA is assigned
         to the partition and remains invariably associated with that virtual IOA
         for the duration of the partition definition. For more information, see
-        <xref linkend="LoPAR.Platform" />.</para>
+        <xref linkend="dbdoclet.50569341_32742" />.</para>
       </section>
 
       <section xml:id="dbdoclet.50569348_27549">
@@ -1153,7 +1153,7 @@ hcall ( const int64 H_VIO_SIGNAL, /* Function Code */
               <emphasis role="bold"><literal>root</literal></emphasis> node, a node of type
               <emphasis role="bold"><literal>vdevice</literal></emphasis> as the parent of a sub-tree representing the
               virtual IOAs assigned to the partition (see
-              <xref linkend="LoPAR.DeviceTree" /> for details).</para>
+              <xref linkend="dbdoclet.50569368_91814" /> for details).</para>
             </listitem>
          	</varlistentry>
 
@@ -1252,7 +1252,7 @@ hcall ( const int64 H_VIO_SIGNAL, /* Function Code */
             <listitem>
               <para><emphasis role="bold">For all VIO options:</emphasis> The platform must assign an
               invariant virtual location code to each virtual IOA as described in
-              <xref linkend="LoPAR.Platform" />.
+              <xref linkend="dbdoclet.50569341_32742" />.
               </para>
             </listitem>
          	</varlistentry>
@@ -3326,7 +3326,7 @@ hcall ( const unit64 H_VIOCTL, /* Query/Set behaviors for the virtual IOA */
               <para>Transfer into registers R4 (High order 8 bytes) and R5 (low order
               8 bytes) of the UUID of the client partition that owns the virtual device
               (
-              <xref linkend="LoPAR.DeviceTree" /> for the format of the UUID string.</para>
+              <xref linkend="dbdoclet.50569332_20419" /> for the format of the UUID string.</para>
             </listitem>
 
             <listitem>
@@ -8852,7 +8852,7 @@ hcall ( const int64 H_SEND_SUB_CRQ, /* Function Code */
                 <para>Property name specifying the unique and persistent
                 location code associated with this virtual IOA, the value shall
                 be of the form defined in
-                <xref linkend="LoPAR.Platform" />.</para>
+                <xref linkend="dbdoclet.50569341_32742" />.</para>
               </entry>
             </row>
             <row>
@@ -9108,7 +9108,7 @@ hcall ( const int64 H_SEND_SUB_CRQ, /* Function Code */
                 definition for the
                 <emphasis role="bold"><literal>&#8220;ibm,#dma-size-cells&#8221;</literal></emphasis> property
                 in
-                <xref linkend="LoPAR.DeviceTree" />.</para>
+                <xref linkend="dbdoclet.50569368_91814" />.</para>
               </entry>
             </row>
             <row>
@@ -9128,7 +9128,7 @@ hcall ( const int64 H_SEND_SUB_CRQ, /* Function Code */
                 format cannot be derived using the method described in the
                 definition for the
                 <emphasis role="bold"><literal>&#8220;ibm,#dma-address-cells&#8221;</literal></emphasis> property in
-                <xref linkend="LoPAR.DeviceTree" />.</para>
+                <xref linkend="dbdoclet.50569368_91814" />.</para>
               </entry>
             </row>
           </tbody>
@@ -12455,7 +12455,7 @@ hcall ( const uint64 H_ILLAN_ATTRIBUTES,/* Returns in R4 the resulting ILLAN */
                         encoded array as with
                         <emphasis role="bold"><literal>encode-string</literal></emphasis>. The value shall be of the
                         form specified in
-                        <xref linkend="LoPAR.Platform" />.</para>
+                        <xref linkend="dbdoclet.50569341_32742" />.</para>
                       </entry>
                     </row>
                     <row>
@@ -12552,7 +12552,7 @@ hcall ( const uint64 H_ILLAN_ATTRIBUTES,/* Returns in R4 the resulting ILLAN */
                         definition for the
                         <emphasis role="bold"><literal>&#8220;ibm,#dma-size-cells&#8221;</literal></emphasis> property
                         in
-                        <xref linkend="LoPAR.DeviceTree" />.</para>
+                        <xref linkend="dbdoclet.50569368_91814" />.</para>
                       </entry>
                     </row>
                     <row>
@@ -12572,7 +12572,7 @@ hcall ( const uint64 H_ILLAN_ATTRIBUTES,/* Returns in R4 the resulting ILLAN */
                         format cannot be derived using the method described in the
                         definition for the
                         <emphasis role="bold"><literal>&#8220;ibm,#dma-address-cells&#8221;</literal></emphasis> property in
-                        <xref linkend="LoPAR.DeviceTree" />.</para>
+                        <xref linkend="dbdoclet.50569368_91814" />.</para>
                       </entry>
                     </row>
                   </tbody>
@@ -12750,7 +12750,7 @@ hcall ( const uint64 H_ILLAN_ATTRIBUTES,/* Returns in R4 the resulting ILLAN */
                   encoded array as with
                   <emphasis role="bold"><literal>encode-string</literal></emphasis>. The value shall be of the
                   form
-                  <xref linkend="LoPAR.Platform" />.</para>
+                  <xref linkend="dbdoclet.50569341_32742" />.</para>
                 </entry>
               </row>
               <row>
@@ -12872,7 +12872,7 @@ hcall ( const uint64 H_ILLAN_ATTRIBUTES,/* Returns in R4 the resulting ILLAN */
                   definition for the
                   <emphasis role="bold"><literal>&#8220;ibm,#dma-size-cells&#8221;</literal></emphasis> property
                   in
-                  <xref linkend="LoPAR.DeviceTree" />.</para>
+                  <xref linkend="dbdoclet.50569368_91814" />.</para>
                 </entry>
               </row>
               <row>
@@ -12892,7 +12892,7 @@ hcall ( const uint64 H_ILLAN_ATTRIBUTES,/* Returns in R4 the resulting ILLAN */
                   format cannot be derived using the method described in the
                   definition for the
                   <emphasis role="bold"><literal>&#8220;ibm,#dma-address-cells&#8221;</literal></emphasis> property in
-                  <xref linkend="LoPAR.DeviceTree" />.</para>
+                  <xref linkend="dbdoclet.50569368_91814" />.</para>
                 </entry>
               </row>
             </tbody>
@@ -13467,7 +13467,7 @@ hcall ( const uint64 H_ILLAN_ATTRIBUTES,/* Returns in R4 the resulting ILLAN */
                         encoded array as with
                         <emphasis role="bold"><literal>encode-string</literal></emphasis>. The value shall be of the
                         form specified in
-                        <xref linkend="LoPAR.Platform" />.</para>
+                        <xref linkend="dbdoclet.50569341_32742" />.</para>
                       </entry>
                     </row>
                     <row>
@@ -13720,7 +13720,7 @@ hcall ( const uint64 H_ILLAN_ATTRIBUTES,/* Returns in R4 the resulting ILLAN */
                     encoded array as with
                     <emphasis role="bold"><literal>encode-string</literal></emphasis>. The value shall be of the
                     form
-                    <xref linkend="LoPAR.Platform" />.</para>
+                    <xref linkend="dbdoclet.50569341_32742" />.</para>
                   </entry>
                 </row>
                 <row>
@@ -15231,8 +15231,7 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
                     presented as an encoded array as with
                     <emphasis role="bold"><literal>encode-string</literal></emphasis>.
                     The value shall be of the form specified in
-                    <xref linkend="LoPAR.Platform" /> information on
-                    Virtual Card Connector Location Codes.</para>
+                    <xref linkend="dbdoclet.50569341_32742" />.</para>
                   </entry>
                 </row>
                 <row>
@@ -15317,7 +15316,7 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
                     the method described in the definition for the
                     <emphasis role="bold"><literal>&#8220;ibm,#dma-size-cells&#8221;</literal></emphasis>
                     property in
-                    <xref linkend="LoPAR.DeviceTree" /> section on System Bindings.</para>
+                    <xref linkend="dbdoclet.50569368_91814" />.</para>
                   </entry>
                 </row>
                 <row>
@@ -15336,7 +15335,7 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
                     the method described in the definition for the
                     <emphasis role="bold"><literal>&#8220;ibm,#dma-address-cells&#8221;</literal></emphasis>
                     property in
-                    <xref linkend="LoPAR.DeviceTree" /> section on System Bindings.</para>
+                    <xref linkend="dbdoclet.50569368_91814" />.</para>
                   </entry>
                 </row>
               </tbody>
@@ -15542,8 +15541,7 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
                 presented as an encoded array as with
                 <emphasis role="bold"><literal>encode-string</literal></emphasis>.
                 The value shall be of the form specified in
-                <xref linkend="LoPAR.Platform" /> information on
-                Virtual Card Connector Location Codes.</para>
+                <xref linkend="dbdoclet.50569341_32742" />.</para>
               </entry>
             </row>
             <row>
@@ -15633,7 +15631,7 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
                 the method described in the definition for the
                 <emphasis role="bold"><literal>&#8220;ibm,#dma-size-cells&#8221;</literal></emphasis>
                 property in
-                <xref linkend="LoPAR.DeviceTree" /> section on System Bindings.</para>
+                <xref linkend="dbdoclet.50569368_91814" />.</para>
               </entry>
             </row>
             <row>
@@ -15652,7 +15650,7 @@ hcall ( const uint64 H_FREE_VTERM, /* Break connection between server and partne
                 the method described in the definition for the
                 <emphasis role="bold"><literal>&#8220;ibm,#dma-address-cells&#8221;</literal></emphasis>
                 property in
-                <xref linkend="LoPAR.DeviceTree" /> section on System Bindings.</para>
+                <xref linkend="dbdoclet.50569368_91814" />.</para>
               </entry>
             </row>
           </tbody>
@@ -18503,8 +18501,7 @@ able 252‚ “VASI Reliable CRQ Response Status Values‚” on page 721.
                 presented as an encoded array as with
                 <emphasis role="bold"><literal>encode-string</literal></emphasis>.
                 The value shall be of the form specified in
-                <xref linkend="LoPAR.Platform" /> information on
-                Virtual Card Connector Location Codes.</para>
+                <xref linkend="dbdoclet.50569341_32742" />.</para>
               </entry>
             </row>
             <row>
@@ -20749,7 +20746,7 @@ hcall ( const uint64 H_VASI_STATE, /* Return the state of the VASI service */
                         encoded array as with
                         <emphasis role="bold"><literal>encode-string</literal></emphasis>. The value shall be of the
                         form specified in
-                        <xref linkend="LoPAR.Platform" />.</para>
+                        <xref linkend="dbdoclet.50569341_32742" />.</para>
                       </entry>
                     </row>
                     <row>
@@ -20846,7 +20843,7 @@ hcall ( const uint64 H_VASI_STATE, /* Return the state of the VASI service */
                         definition for the
                         <emphasis role="bold"><literal>&#8220;ibm,#dma-size-cells&#8221;</literal></emphasis> property
                         in
-                        <xref linkend="LoPAR.DeviceTree" />.</para>
+                        <xref linkend="dbdoclet.50569368_91814" />.</para>
                       </entry>
                     </row>
                     <row>
@@ -20866,7 +20863,7 @@ hcall ( const uint64 H_VASI_STATE, /* Return the state of the VASI service */
                         format cannot be derived using the method described in the
                         definition for the
                         <emphasis role="bold"><literal>&#8220;ibm,#dma-address-cells&#8221;</literal></emphasis> property in
-                        <xref linkend="LoPAR.DeviceTree" />.</para>
+                        <xref linkend="dbdoclet.50569368_91814" />.</para>
                       </entry>
                     </row>
                     <row>
@@ -21101,7 +21098,7 @@ hcall ( const uint64 H_VASI_STATE, /* Return the state of the VASI service */
                   encoded array as with
                   <emphasis role="bold"><literal>encode-string</literal></emphasis>. The value shall be of the
                   form
-                  <xref linkend="LoPAR.Platform" />.</para>
+                  <xref linkend="dbdoclet.50569341_32742" />.</para>
                 </entry>
               </row>
               <row>
@@ -21223,7 +21220,7 @@ hcall ( const uint64 H_VASI_STATE, /* Return the state of the VASI service */
                   definition for the
                   <emphasis role="bold"><literal>&#8220;ibm,#dma-size-cells&#8221;</literal></emphasis> property
                   in
-                  <xref linkend="LoPAR.DeviceTree" />.</para>
+                  <xref linkend="dbdoclet.50569368_91814" />.</para>
                 </entry>
               </row>
               <row>
@@ -21243,7 +21240,7 @@ hcall ( const uint64 H_VASI_STATE, /* Return the state of the VASI service */
                   format cannot be derived using the method described in the
                   definition for the
                   <emphasis role="bold"><literal>&#8220;ibm,#dma-address-cells&#8221;</literal></emphasis> property in
-                  <xref linkend="LoPAR.DeviceTree" />.</para>
+                  <xref linkend="dbdoclet.50569368_91814" />.</para>
                 </entry>
               </row>
               <row>
@@ -21717,7 +21714,7 @@ hcall ( const uint64 H_VASI_STATE, /* Return the state of the VASI service */
                 definition for the
                 <emphasis role="bold"><literal>&#8220;ibm,#dma-size-cells&#8221;</literal></emphasis> property
                 in
-                <xref linkend="LoPAR.DeviceTree" />.</para>
+                <xref linkend="dbdoclet.50569368_91814" />.</para>
               </entry>
             </row>
             <row>
@@ -21740,7 +21737,7 @@ hcall ( const uint64 H_VASI_STATE, /* Return the state of the VASI service */
                 format cannot be derived using the method described in the
                 definition for the
                 <emphasis role="bold"><literal>&#8220;ibm,#dma-address-cells&#8221;</literal></emphasis> property in
-                <xref linkend="LoPAR.DeviceTree" />.</para>
+                <xref linkend="dbdoclet.50569368_91814" />.</para>
               </entry>
             </row>
             <row>
@@ -22208,7 +22205,7 @@ hcall ( const uint64 H_VASI_STATE, /* Return the state of the VASI service */
                   using the method described in the definition for the
                   <emphasis role="bold"><literal>&#8220;ibm,#dma-address-cells&#8221;</literal></emphasis> property
                   in
-                  <xref linkend="LoPAR.DeviceTree" />.</para>
+                  <xref linkend="dbdoclet.50569368_91814" />.</para>
                 </entry>
               </row>
               <row>
@@ -22229,7 +22226,7 @@ hcall ( const uint64 H_VASI_STATE, /* Return the state of the VASI service */
                   definition for the
                   <emphasis role="bold"><literal>&#8220;ibm,#dma-size-cells&#8221;</literal></emphasis> property
                   in
-                  <xref linkend="LoPAR.DeviceTree" />.</para>
+                  <xref linkend="dbdoclet.50569368_91814" />.</para>
                 </entry>
               </row>
               <row>
@@ -22270,7 +22267,7 @@ hcall ( const uint64 H_VASI_STATE, /* Return the state of the VASI service */
                 </entry>
                 <entry>
                   <para>Vendor unique property name indicating ranges of the client program virtual address space that are used by the virtual device serving partition adjunct.
-                  See <xref linkend="LoPAR.DeviceTree" /> information about the children
+                  See <xref linkend="dbdoclet.50569368_26956" /> information about the children
                   of the <literal>/vdevice</literal> node.</para>
                 </entry>
               </row>

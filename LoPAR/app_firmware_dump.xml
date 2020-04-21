@@ -23,8 +23,8 @@
   <title>Firmware Assisted Dump Data Format</title>
 
   <para>This appendix documents the dump data format, in support of the
-  Configure Platform Assisted Kernel Dump option in
-  <xref linkend="LoPAR.Virtualization" />.</para>
+  Configure Platform Assisted Kernel Dump option
+  ()<xref linkend="dbdoclet.50569332_67111" />).</para>
 
   <section xml:id="dbdoclet.50569380__Ref135446652">
     <title>Register Save Area</title>

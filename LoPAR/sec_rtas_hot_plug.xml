@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   Copyright (c) 2016 OpenPOWER Foundation
-  
+
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
@@ -13,34 +13,34 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-  
+
 -->
-<section xmlns="http://docbook.org/ns/docbook" 
+<section xmlns="http://docbook.org/ns/docbook"
          xmlns:xi="http://www.w3.org/2001/XInclude"
-         xmlns:xlink="http://www.w3.org/1999/xlink" 
-         version="5.0" 
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         version="5.0"
          xml:id="Hot_Plug_Events">
-         
+
   <title>Hot Plug Events</title>
-  
-  <para>Hot Plug Events, when implemented, are reported through 
+
+  <para>Hot Plug Events, when implemented, are reported through
   either the event-scan RTAS call or a hotplug interrupt.</para>
 
-  <para>An OS that wants to be notified of hotplug events will need to 
-  set the appropriate arch-vector bit.  Look for the hot-plug-events 
-  node in the /event-sources node of the OF device tree (see 
-  <xref linkend="LoPAR.DeviceTree" />), enable the interrupts listed 
-  in its “interrupts” property and provide an interrupt handler to call 
+  <para>An OS that wants to be notified of hotplug events will need to
+  set the appropriate arch-vector bit.  Look for the hot-plug-events
+  node in the /event-sources node of the OF device tree (see
+  <xref linkend="sec_papr_bindings_hot_plug_events" />), enable the interrupts listed
+  in its “interrupts” property and provide an interrupt handler to call
   check-exception when one of those interrupts are received.</para>
 
-  <para>When a hotplug event occurs, whether reported by check-exception 
-  or event-scan, RTAS will directly pass back the Hotplug Event Log as 
+  <para>When a hotplug event occurs, whether reported by check-exception
+  or event-scan, RTAS will directly pass back the Hotplug Event Log as
   described in <xref linkend="table.error.hotplug" />.</para>
-  
+
   <variablelist>
-  
+
   	<varlistentry>
-  		<term><emphasis role="bold">R1-<xref linkend="Hot_Plug_Events" 
+  		<term><emphasis role="bold">R1-<xref linkend="Hot_Plug_Events"
 			xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
   			<listitem>
 		      <para>If FRUs can be hot plugged in the system
@@ -48,7 +48,7 @@
 		      signaling the OS about the event.</para>
   			</listitem>
   	</varlistentry>
-  
+
   </variablelist>
-  
+
 </section>

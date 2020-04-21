@@ -36,8 +36,8 @@
   OSs know which interrupts may be handled by calling
   <emphasis>check-exception</emphasis>. The OF structure for describing these
   interrupts is defined in
-  <xref linkend="LoPAR.DeviceTree"/>.
-  This document also defines the mask parameter for the
+  <xref linkend="dbdoclet.50569368_91814"/>.
+  <xref linkend="dbdoclet.50569337_82470"/> also defines the mask parameter for the
 
   <emphasis>check-exception</emphasis> and
   <emphasis>event-scan</emphasis> RTAS functions which limits the search for

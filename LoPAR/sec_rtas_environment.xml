@@ -43,7 +43,7 @@
     <para>If the LPAR option is enabled, multiple partitions may exist, each
     with its own OS instance. This requires some changes to the RTAS
     environment. These changes are discussed in
-    <xref linkend="LoPAR.Virtualization" />.</para>
+    <xref linkend="dbdoclet.50569344_14591" />.</para>
 
     <section xml:id="sec_machine_state">
       <title>Machine State</title>
@@ -1059,7 +1059,7 @@
                       </entry>
                       <entry morerows="1">
                         <para>Required for DR operations (see
-                        <xref linkend="LoPAR.Virtualization" />)</para>
+                        <xref linkend="dbdoclet.50569342_75822" />)</para>
                       </entry>
                       <entry>
                         <para>&#160;</para>
@@ -1327,7 +1327,7 @@
                           <emphasis role="bold"><literal>&#8220;ibm,configure-connector&#8221;</literal></emphasis>
                         </para>
                         <para>
-                          <xref linkend="LoPAR.Virtualization" />
+                          <xref linkend="dbdoclet.50569342_39636" />
                         </para>
                       </entry>
                       <entry>
@@ -1335,7 +1335,7 @@
                       </entry>
                       <entry>
                         <para>See
-                        <xref linkend="LoPAR.Virtualization" />.</para>
+                        <xref linkend="dbdoclet.50569342_75822" />.</para>
                       </entry>
                     </row>
                     <row>
@@ -1546,7 +1546,7 @@
                       </entry>
                       <entry>
                         <para>Sometimes (see
-                        <xref linkend="LoPAR.Error" />)</para>
+                        <xref linkend="dbdoclet.50569347_31867" />)</para>
                       </entry>
                       <entry>
                         <para>&#160;</para>
@@ -1924,8 +1924,8 @@
           (9003). DR indicators and sensors are required to be there based on the
           DR entity being supported. Their indices are specified by the DR index
           for the DR entity. See
-          <xref linkend="LoPAR.Virtualization" /> and
-          <xref linkend="LoPAR.Virtualization" /> for more information.</para>
+          <xref linkend="dbdoclet.50569342_92542" /> and
+          <xref linkend="dbdoclet.50569342_34333" /> for more information.</para>
         </footnote>are static since they represent the base hardware, others are
         dynamic coming and going with extensions to the base hardware. Indices
         for DR indicators and sensors are obtained from the DRC index for the DRC
@@ -1964,7 +1964,7 @@
         contiguous, and any of the indices between 0 and
         <emphasis>maxindex</emphasis> may be missing.</para>
         <para>The formats for location codes are defined in
-        <xref linkend="LoPAR.Platform" />. For indicators and sensors,
+        <xref linkend="dbdoclet.50569341_35066" />. For indicators and sensors,
         these location codes are for the location of the device being manipulated
         or measured, not the location of the specific controller or sensor. The
         location code for an abstracted indicator or sensor is a NULL
@@ -1985,9 +1985,9 @@
           <para>For static indicators, except DR indicators, the extension
           property,
           <emphasis role="bold"><literal>&#8220;</literal></emphasis><emphasis><literal>&lt;vendor&gt;</literal></emphasis><emphasis role="bold"><literal>,indicator-</literal></emphasis><emphasis><literal>&lt;token&gt;</literal></emphasis><emphasis role="bold"><literal>&#8221;</literal></emphasis>
-          (see <xref linkend="LoPAR.DeviceTree" />), provides an array of strings
+          (see <xref linkend="dbdoclet.50569368_41461" />), provides an array of strings
           containing the FRU location codes associated with each indicator. See
-          <xref linkend="LoPAR.Platform" />. Here, &#8220;
+          <xref linkend="dbdoclet.50569341_35066" />. Here, &#8220;
           <emphasis>&lt;vendor&gt;</emphasis>&#8221; corresponds to the
           &#8220;&lt;vendor&gt;&#8221; column of
           <emphasis>
@@ -2007,7 +2007,7 @@
           <emphasis role="bold"><literal>/rtas</literal></emphasis> node.</para>
           <para>Indices for DR indicators 9001, 9002, and 9003 are obtained from
           the DRC index for the DRC connector. See Requirement
-          <xref linkend="LoPAR.Virtualization" />.</para>
+          <xref linkend="dbdoclet.50569342_16260" />.</para>
 
           <variablelist>
            	<varlistentry xml:id="dbdoclet.50569332_74895">
@@ -2082,9 +2082,9 @@
           platform provides.</para>
           <para>For static sensors, except DR sensors, the extension property,
           <emphasis role="bold"><literal>&#8220;</literal></emphasis><emphasis><literal>&lt;vendor&gt;</literal></emphasis><emphasis role="bold"><literal>,sensor-</literal></emphasis><emphasis><literal>&lt;token&gt;</literal></emphasis><emphasis role="bold"><literal>&#8221;</literal></emphasis>
-          (see <xref linkend="LoPAR.DeviceTree" />), provides an array of strings
+          (see <xref linkend="dbdoclet.50569368_41461" />), provides an array of strings
           containing the FRU location codes associated with each sensor. See
-          <xref linkend="LoPAR.Platform" />. Here, &#8220;
+          <xref linkend="dbdoclet.50569341_35066" />. Here, &#8220;
           <emphasis>&lt;vendor&gt;</emphasis>&#8221; corresponds to the
           &#8220;&lt;vendor&gt;&#8221; column of
           <emphasis>
@@ -2102,7 +2102,7 @@
           <emphasis role="bold"><literal>/rtas</literal></emphasis> node.</para>
           <para>Indices for DR sensors 9003 are obtained from the DRC index for the
           DRC connector. See Requirement
-          <xref linkend="LoPAR.Virtualization" />.</para>
+          <xref linkend="dbdoclet.50569342_43470" />.</para>
 
           <variablelist>
            	<varlistentry xml:id="dbdoclet.50569332_29762">
@@ -2493,7 +2493,7 @@
                       </entry>
                       <entry>
                         <para>Multi-level isolation error (see
-                        <xref linkend="LoPAR.Virtualization" />).</para>
+                        <xref linkend="dbdoclet.50569342_11827" />).</para>
                       </entry>
                     </row>
                     <row>

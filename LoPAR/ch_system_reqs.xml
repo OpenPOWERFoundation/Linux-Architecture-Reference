@@ -331,7 +331,7 @@ xml:lang="en">
       <section xml:id="dbdoclet.50569327_28943">
         <title>Locate an OS Boot Image </title>
         <para>The OS boot image is located as described in
-        <xref linkend="LoPAR.DeviceTree"/>. A device and filename can be specified directly
+        <xref linkend="dbdoclet.50569368_91814"/>. A device and filename can be specified directly
         from the command interpreter (the <emphasis>boot</emphasis> command) or OF
         will locate the image through an automatic boot process controlled by
         configuration variables. Once a boot image is located, the device path is set
@@ -345,7 +345,7 @@ xml:lang="en">
         <emphasis role="bold"><literal>boot-device</literal></emphasis> entries that the platform processes.</para>
         <para>If multi-boot (multiple bootable OSs residing on the same platform) is supported,
         a configuration variable instructs the firmware to display a multi-boot menu
-        from which the OS and bootpath are selected. See <xref linkend="LoPAR.DeviceTree"/>
+        from which the OS and bootpath are selected. See <xref linkend="dbdoclet.50569368_91814"/>
         for information relating to the multiboot process.</para>
 
         <variablelist>
@@ -368,10 +368,10 @@ xml:lang="en">
 
       <section xml:id="dbdoclet.50569327_26247">
         <title>Boot Process</title>
-        <para>The boot process is described in <xref linkend="LoPAR.DeviceTree"/>.
+        <para>The boot process is described in <xref linkend="dbdoclet.50569368_91814"/>.
         Steps in the process are reviewed here, but the
         authoritative and complete description of the process is included in
-        <xref linkend="LoPAR.DeviceTree"/>. <xref linkend="dbdoclet.50569327_17087"/> is a
+        <xref linkend="dbdoclet.50569368_91814"/>. <xref linkend="dbdoclet.50569327_17087"/> is a
         depiction of the boot flow showing the action of the f1, f5, and f6 function
         keys. The figure should only be used as an aid in understanding the
         requirements for LoPAR systems.</para>
@@ -431,7 +431,7 @@ xml:lang="en">
           <para>Once the boot prompt is displayed, the System Management Services
           (SMS) menu can be invoked. SMS provides a user interface for utilities,
           configuration, and the Multiboot Menu (as introduced in
-          <xref linkend="LoPAR.DeviceTree"/>) for boot/install and the OF command
+          <xref linkend="dbdoclet.50569368_91814"/>) for boot/install and the OF command
           interpreter.</para>
           <para>The Multiboot menu is formatted so that block devices that
           currently contain boot information are most easily selected by the user.
@@ -721,7 +721,7 @@ xml:lang="en">
                   <emphasis role="bold"><literal>diag-device</literal></emphasis>
                   configuration variables must include the standard block device
                   <literal>bootinfo.txt</literal> file specification as documented in
-                  <xref linkend="LoPAR.DeviceTree"/> (<literal>\ppc\bootinfo.txt</literal>).</para>
+                  <xref linkend="dbdoclet.50569368_91814"/> (<literal>\ppc\bootinfo.txt</literal>).</para>
                 </listitem>
            	</varlistentry>
           </variablelist>
@@ -729,7 +729,7 @@ xml:lang="en">
 
         <section xml:id="dbdoclet.50569327_20641">
           <title>Tape Boot</title>
-          <para>Boot from tape is defined in <xref linkend="LoPAR.DeviceTree"/>.</para>
+          <para>Boot from tape is defined in <xref linkend="dbdoclet.50569368_91814"/>.</para>
         </section>
 
         <section xml:id="sec_network_boot">
@@ -897,7 +897,7 @@ ELSE
           the platform using the <emphasis>ibm,manage-storage-preservation</emphasis>
           RTAS call if it wants the contents of the storage preserved across client boot
           cycles (see also "Managing Storage Preservations" in
-          <xref linkend="LoPAR.RTAS"/> specification). The architectural intent of this
+          <xref linkend="dbdoclet.50569332_28221"/> specification). The architectural intent of this
           facility is to enable client programs to emulate persistent storage. This is
           done by a client program registering preservable LMBs. Then, after a subsequent
           boot cycle (perhaps due to error or impending power loss) the presence of the
@@ -1029,7 +1029,7 @@ ELSE
         <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569327_22507"
         xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
           <listitem>
-            <para>Platforms must implement OF as defined in <xref linkend="LoPAR.DeviceTree"/>.</para>
+            <para>Platforms must implement OF as defined in <xref linkend="dbdoclet.50569368_91814"/>.</para>
           </listitem>
      	</varlistentry>
 
@@ -1053,7 +1053,7 @@ ELSE
         xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
           <listitem>
             <para>Platforms must implement the Run-Time Abstraction Services (RTAS) as described in
-            <xref linkend="LoPAR.RTAS"/>.</para>
+            <xref linkend="dbdoclet.50569332_13537"/>.</para>
           </listitem>
      	</varlistentry>
 
@@ -1138,7 +1138,7 @@ ELSE
     <section>
       <title>Tape Install</title>
       <para>The OF definition of installation from tape is defined in
-      <xref linkend="LoPAR.DeviceTree"/>.</para>
+      <xref linkend="dbdoclet.50569368_91814"/>.</para>
     </section>
 
     <section xml:id="sec_network_install">
@@ -1167,7 +1167,7 @@ ELSE
     will run on other vendors&#x2019; platforms which might not have permission to
     use AIX diagnostics, the <emphasis role="bold"><literal>&#x201C;ibm,aix-diagnostics&#x201D;</literal></emphasis>
     property indicates that AIX diagnostics are permitted (see "Root
-    Node Properties" in <xref linkend="LoPAR.DeviceTree"/>).</para>
+    Node Properties" in <xref linkend="dbdoclet.50569337_42315"/>).</para>
 
     <variablelist>
      	<varlistentry>
@@ -1184,15 +1184,14 @@ ELSE
 
     <para><emphasis role="bold">Software Implementation Note:</emphasis> Each OS may implement an OS-specific
     run-time diagnostics package, but should, for purposes of consistency, adhere
-    to the error log formats in <xref linkend="LoPAR.Error"/>.</para>
+    to the error log formats in <xref linkend="dbdoclet.50569337_42315"/>.</para>
   </section>
 
   <section xml:id="sec_platform_class">
     <title>Platform Class</title>
     <para>The <emphasis role="bold"><literal>&#x201C;ibm,model-class&#x201D;</literal></emphasis> OF property
     is defined to classify platforms for planning, marketing, licensing, and
-    service purposes (see "Root Node Properties" in
-    <xref linkend="LoPAR.DeviceTree"/>).</para>
+    service purposes (see <xref linkend="dbdoclet.50569368_54493"/>).</para>
 
     <variablelist>
      	<varlistentry>
@@ -1696,7 +1695,7 @@ ELSE
               <para> OR</para>
             </entry>
             <entry>
-              <para> See <xref linkend="LoPAR.Virtualization"/> for more information. </para>
+              <para> See <xref linkend="dbdoclet.50569342_75822"/> for more information. </para>
             </entry>
           </row>
           <row>
@@ -1710,7 +1709,7 @@ ELSE
               <para> OR</para>
             </entry>
             <entry>
-              <para><xref linkend="LoPAR.Virtualization"/>.</para>
+              <para><xref linkend="dbdoclet.50569342_75053"/>.</para>
             </entry>
           </row>
           <row>
@@ -1726,8 +1725,8 @@ ELSE
             <entry>
               <para> See <xref linkend="dbdoclet.50569330_34831"/> and
               <xref linkend="dbdoclet.50569330_17337"/>. Requirements for platforms that implement
-              LPAR, regardless of the number of partitions, are contained in
-              <xref linkend="LoPAR.Virtualization"/>.</para>
+              LPAR, regardless of the number of partitions (Requirements <xref linkend="dbdoclet.50569344_47137"/>
+              and <xref linkend="dbdoclet.50569344_28369"/>).</para>
             </entry>
           </row>
           <row>
@@ -1755,7 +1754,7 @@ ELSE
               <para> R</para>
             </entry>
             <entry>
-              <para> See <xref linkend="LoPAR.Virtualization"/>.</para>
+              <para> See <xref linkend="dbdoclet.50569344_14591"/>.</para>
             </entry>
           </row>
           <row>
@@ -1801,7 +1800,7 @@ ELSE
               <para> O</para>
             </entry>
             <entry>
-              <para> See <xref linkend="LoPAR.RTAS"/> for more information on
+              <para> See <xref linkend="dbdoclet.50569332_19739"/> for more information on
               support of I<superscript>2</superscript>C buses.</para>
             </entry>
           </row>
@@ -1816,7 +1815,7 @@ ELSE
               <para> R</para>
             </entry>
             <entry>
-              <para><xref linkend="LoPAR.RTAS"/>. </para>
+              <para><xref linkend="dbdoclet.50569332_12478"/>. </para>
             </entry>
           </row>
           <row>
@@ -1830,7 +1829,7 @@ ELSE
               <para> R</para>
             </entry>
             <entry>
-              <para><xref linkend="LoPAR.RTAS"/>.</para>
+              <para><xref linkend="dbdoclet.50569332_24237"/>.</para>
             </entry>
           </row>
           <row>
@@ -1844,7 +1843,7 @@ ELSE
               <para> O</para>
             </entry>
             <entry>
-              <para><xref linkend="LoPAR.RTAS"/>.</para>
+              <para><xref linkend="dbdoclet.50569332_41873"/>.</para>
             </entry>
           </row>
           <row>
@@ -1858,7 +1857,7 @@ ELSE
               <para> O</para>
             </entry>
             <entry>
-              <para><xref linkend="LoPAR.RTAS"/>.</para>
+              <para><xref linkend="dbdoclet.50569332_61466"/>.</para>
             </entry>
           </row>
           <row>
@@ -1888,7 +1887,7 @@ ELSE
               <para> O</para>
             </entry>
             <entry>
-              <para><xref linkend="LoPAR.Virtualization"/>.</para>
+              <para><xref linkend="dbdoclet.50569344_27067"/>.</para>
             </entry>
           </row>
           <row>
@@ -1902,7 +1901,7 @@ ELSE
               <para> O</para>
             </entry>
             <entry>
-              <para><xref linkend="LoPAR.Virtualization"/>.</para>
+              <para><xref linkend="dbdoclet.50569348_48491"/>.</para>
             </entry>
           </row>
           <row>
@@ -1916,7 +1915,7 @@ ELSE
               <para> O</para>
             </entry>
             <entry>
-              <para><xref linkend="LoPAR.Virtualization"/>.</para>
+              <para><xref linkend="dbdoclet.50569348_61656"/>.</para>
             </entry>
           </row>
           <row>
@@ -1930,7 +1929,7 @@ ELSE
               <para> O</para>
             </entry>
             <entry>
-              <para><xref linkend="LoPAR.Virtualization"/>.</para>
+              <para><xref linkend="dbdoclet.50569350_23147"/>.</para>
             </entry>
           </row>
           <row>
@@ -1944,7 +1943,7 @@ ELSE
               <para> O</para>
             </entry>
             <entry>
-              <para><xref linkend="LoPAR.Virtualization"/>.</para>
+              <para><xref linkend="dbdoclet.50569350_17923"/>.</para>
             </entry>
           </row>
           <row>
@@ -1958,7 +1957,7 @@ ELSE
               <para> O</para>
             </entry>
             <entry>
-              <para><xref linkend="LoPAR.Virtualization"/>.</para>
+              <para><xref linkend="dbdoclet.50569350_53238"/>.</para>
             </entry>
           </row>
           <row>
@@ -1972,7 +1971,7 @@ ELSE
               <para> O</para>
             </entry>
             <entry>
-              <para> See <xref linkend="LoPAR.Virtualization"/>.</para>
+              <para> See <xref linkend="dbdoclet.50569350_39278"/>.</para>
             </entry>
           </row>
           <row>
@@ -1986,7 +1985,7 @@ ELSE
               <para> O</para>
             </entry>
             <entry>
-              <para><xref linkend="LoPAR.Virtualization"/>.</para>
+              <para><xref linkend="dbdoclet.50569351_35753"/>.</para>
             </entry>
           </row>
           <row>
@@ -2000,7 +1999,7 @@ ELSE
               <para> O</para>
             </entry>
             <entry>
-              <para> See <xref linkend="LoPAR.Virtualization"/>.</para>
+              <para> See <xref linkend="dbdoclet.50569364_64078"/>.</para>
             </entry>
           </row>
           <row>
@@ -2014,8 +2013,7 @@ ELSE
               <para> NS</para>
             </entry>
             <entry>
-              <para><xref linkend="dbdoclet.50569327_70628"/> and "Managing
-              Storage Preservations" in <xref linkend="LoPAR.RTAS"/> specification.</para>
+              <para><xref linkend="dbdoclet.50569327_70628"/> and <xref linkend="dbdoclet.50569332_28221"/>.</para>
             </entry>
           </row>
           <row>
@@ -2032,7 +2030,7 @@ ELSE
               <para> Required of all platforms that support LPAR, otherwise not
               implemented. Provides a virtual &#x201C;Asynchronous&#x201D; IOA for connecting
               to a server Vterm IOA, the hypervisor, or HMC (for example, to a virtual
-              console). See <xref linkend="LoPAR.Virtualization"/> for more
+              console). See <xref linkend="dbdoclet.50569352_15379"/> for more
               information.</para>
             </entry>
           </row>
@@ -2068,7 +2066,7 @@ ELSE
           </row>
           <row>
             <entry>
-              <para> Performance Tool Support</para>
+              <para>Performance Tool Support</para>
             </entry>
             <entry>
               <para> O</para>
@@ -2078,8 +2076,9 @@ ELSE
             </entry>
             <entry>
               <para> Provides access to platform-level facilities for
-              performance tools running in a partition on an LPAR system. See
-              <xref linkend="LoPAR.Virtualization"/>.</para>
+              performance tools running in a partition on an LPAR system.
+              See
+              <xref linkend="dbdoclet.50569332_26596"/>.></para>
             </entry>
           </row>
           <row>
@@ -2107,7 +2106,7 @@ ELSE
               <para> O</para>
             </entry>
             <entry>
-              <para> See <xref linkend="LoPAR.Virtualization"/>.</para>
+              <para> See <xref linkend="dbdoclet.50569350_39077"/>.</para>
             </entry>
           </row>
           <row>
@@ -2121,7 +2120,7 @@ ELSE
               <para> O</para>
             </entry>
             <entry>
-              <para> See <xref linkend="LoPAR.Virtualization"/>.</para>
+              <para> See <xref linkend="sec_vmc"/>.</para>
             </entry>
           </row>
           <row>
@@ -2216,7 +2215,7 @@ ELSE
             <entry>
               <para> Allows an authorized virtual server partition (VSP) to
               safely access the internal state of a specific partition. See
-              <xref linkend="LoPAR.Virtualization"/> for more details. Requires the Reliable
+              <xref linkend="sec_vasi"/> for more details. Requires the Reliable
               Command/Response Transport option.</para>
             </entry>
           </row>
@@ -2248,7 +2247,7 @@ ELSE
             <entry>
               <para> Allows the OS to indicate that there is no need to search
               secondary page table entry groups to determine a page table search has failed.
-              See <xref linkend="LoPAR.Virtualization"/> for more details.</para>
+              See <xref linkend="dbdoclet.50569344_39908"/> for more details.</para>
             </entry>
           </row>
           <row>
@@ -2292,7 +2291,7 @@ ELSE
             </entry>
             <entry>
               <para> Support for the Subordinate CRQs as needed by some Virtual
-              IOAs. See <xref linkend="LoPAR.Virtualization"/>.</para>
+              IOAs. See <xref linkend="dbdoclet.50569348_28179"/>.</para>
             </entry>
           </row>
           <row>
@@ -2308,7 +2307,7 @@ ELSE
             <entry>
               <para> The CMO option allows for partition participation in the
               over-commitment of logical memory by the platform. See
-              <xref linkend="LoPAR.Virtualization"/>.</para>
+              <xref linkend="dbdoclet.50569344_44716"/>.</para>
             </entry>
           </row>
           <row>
@@ -2323,7 +2322,7 @@ ELSE
             </entry>
             <entry>
               <para> Allows the OS to cooperate with platform energy
-              management. See <xref linkend="LoPAR.Virtualization"/>.</para>
+              management. See <xref linkend="dbdoclet.50569344_18587"/>.</para>
             </entry>
           </row>
           <row>
@@ -2338,7 +2337,7 @@ ELSE
             </entry>
             <entry>
               <para> Support for the Multi-TCE-Table Option. See
-              <xref linkend="LoPAR.Virtualization"/>.</para>
+              <xref linkend="dbdoclet.50569344_50921"/>.</para>
             </entry>
           </row>
           <row>
@@ -2354,7 +2353,7 @@ ELSE
             <entry>
               <para> Provides substantially consistent virtual processor
               associativity in a shared processor LPAR environment. See
-              <xref linkend="LoPAR.Virtualization"/>.</para>
+              <xref linkend="dbdoclet.50569344_56450"/>.</para>
             </entry>
           </row>
           <row>
@@ -2382,7 +2381,7 @@ ELSE
               <para> O</para>
             </entry>
             <entry>
-              <para> See <xref linkend="LoPAR.Virtualization"/>.</para>
+              <para> See <xref linkend="dbdoclet.50569366_19541"/>.</para>
             </entry>
           </row>
           <row>
@@ -2397,7 +2396,7 @@ ELSE
             </entry>
             <entry>
               <para> Allows OS notification of a cooperative memory
-              overcommitment page fault see <xref linkend="LoPAR.Virtualization"/>.</para>
+              overcommitment page fault see <xref linkend="dbdoclet.50569344_20827"/>.</para>
             </entry>
           </row>
           <row>
@@ -2413,7 +2412,7 @@ ELSE
             <entry>
               <para> Allows the platform to communicate and the availability of
               performance boost modes along with any ability to manage the same. See
-              <xref linkend="LoPAR.RTAS"/></para>
+              <xref linkend="dbdoclet.50569332_57301"/></para>
             </entry>
           </row>
           <row>
@@ -2445,7 +2444,7 @@ ELSE
             </entry>
             <entry>
               <para> Allows the creation of DMA Windows above 4 GB. See
-              <xref linkend="LoPAR.RTAS"/>.</para>
+              <xref linkend="dbdoclet.50569332_14137"/>.</para>
             </entry>
           </row>
           <row>
@@ -2460,7 +2459,7 @@ ELSE
             </entry>
             <entry>
               <para>
-                <xref linkend="LoPAR.DeviceTree"/> for information on ibm,partition-uuid.
+                <xref linkend="dbdoclet.50569368_54493"/> for information on ibm,partition-uuid.
               </para>
             </entry>
           </row>
@@ -2475,7 +2474,9 @@ ELSE
               <para> O</para>
             </entry>
             <entry>
-              <para> See <xref linkend="LoPAR.Virtualization"/> for more information.</para>
+              <para> See <xref linkend="dbdoclet.50569344_80550"/>,
+              <xref linkend="dbdoclet.50569344_61580"/>, and
+              <xref linkend="dbdoclet.50569344_93738"/> for more information.</para>
             </entry>
           </row>
           <row>
@@ -2490,7 +2491,7 @@ ELSE
             </entry>
             <entry>
               <para> Introduces additional cooperative memory overcommitment
-              functions see <xref linkend="LoPAR.Virtualization"/></para>
+              functions see <xref linkend="dbdoclet.50569344_44716"/></para>
             </entry>
           </row>
           <row>
@@ -2504,7 +2505,7 @@ ELSE
               <para> O</para>
             </entry>
             <entry>
-              <para> See <xref linkend="LoPAR.Virtualization"/>.</para>
+              <para> See <xref linkend="sec_mui_opt"/>.</para>
             </entry>
           </row>
           <row>
@@ -2563,7 +2564,7 @@ ELSE
             </entry>
             <entry>
               <para>Allows partitions to resize their HPT.  See
-                <xref linkend="LoPAR.Virtualization"/>.</para>
+                <xref linkend="sec_hash_page_table_resize_option"/>.</para>
             </entry>
           </row>
           <row>
@@ -2577,8 +2578,8 @@ ELSE
               <para>O</para>
             </entry>
             <entry>
-              <para>Allows partitions to resize their HPT.  See
-                <xref linkend="LoPAR.Virtualization"/>.</para>
+              <para>See
+                <xref linkend="sec_coherent_platform_facilities"/>.</para>
             </entry>
           </row>
         </tbody>

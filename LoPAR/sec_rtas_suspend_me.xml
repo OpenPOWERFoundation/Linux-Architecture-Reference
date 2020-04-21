@@ -28,14 +28,14 @@
     part of OS hibernation or migration to another platform. This RTAS call
     is made by the last active processor thread of a partition. The OS uses
     the H_JOIN hcall() (see
-    <xref linkend="LoPAR.Virtualization" />) to deactivate other
+    <xref linkend="dbdoclet.50569344_15933" />) to deactivate other
     processing threads. Processing treads may exit H_JOIN due to an
     unmaskable interrupt; if a thread has exited H_JOIN,
     <emphasis>ibm,suspend-me</emphasis> fails with a status of &#8220;multiple
     processor threads active&#8221;. The wake up from suspension is triggered
     by partition state change (see
-    <xref linkend="LoPAR.Virtualization" /> sections on "Partition Migration"
-    and "Partition Hibernation"). The
+    <xref linkend="sec_vasi_partition_migration" /> and
+    <xref linkend="sec_vasi_partition_hibernation" />). The
     <emphasis>ibm,suspend-me</emphasis> RTAS call returns only on the calling
     virtual processor. Other virtual processors that were inactive when
     <emphasis>ibm,suspend-me</emphasis> was called remain so until they are
@@ -50,7 +50,7 @@
     <emphasis>ibm,update-properties</emphasis> (see
     <xref linkend="dbdoclet.50569332_40069" />) and/or
     <emphasis>ibm,configure-connector</emphasis> (see
-    <xref linkend="LoPAR.Virtualization" />). Also during suspension, some
+    <xref linkend="dbdoclet.50569342_39636" />). Also during suspension, some
     system parameters may have changed. See
     <xref linkend="dbdoclet.50569332_10519" />, for details. The OS may want
     to re-scan selected system parameters.</para>
@@ -62,7 +62,7 @@
           <listitem>
             <para><emphasis role="bold">For the Partition Suspension option:</emphasis> The platform
             must implement the Logical Partitioning option (see
-            <xref linkend="LoPAR.Virtualization" />)
+            <xref linkend="dbdoclet.50569344_14591" />)
             <emphasis>.</emphasis></para>
           </listitem>
      	</varlistentry>
@@ -191,7 +191,7 @@
           <listitem>
             <para><emphasis role="bold">For the Partition Suspension option:</emphasis> The platform
             must implement the Thread Join option (see
-            <xref linkend="LoPAR.Virtualization" />).</para>
+            <xref linkend="dbdoclet.50569344_90755" />).</para>
           </listitem>
      	</varlistentry>
 
@@ -236,7 +236,7 @@
             <para><emphasis role="bold">For the Partition Suspension option:</emphasis> The platform
             must support the &#8220;Partner partition suspended&#8221; CRQ Transport
             Event (See
-            <xref linkend="LoPAR.Virtualization" />).</para>
+            <xref linkend="dbdoclet.50569348_93265" />).</para>
           </listitem>
      	</varlistentry>
 
@@ -273,7 +273,7 @@
             <para><emphasis role="bold">For the Partition Suspension option:</emphasis> The platform
             must implement the H_ENABLE_CRQ hcall() using the syntax and semantics
             described in
-            <xref linkend="LoPAR.Virtualization" />.</para>
+            <xref linkend="dbdoclet.50569348_43427" />.</para>
           </listitem>
      	</varlistentry>
 
@@ -312,7 +312,7 @@
           <listitem>
             <para><emphasis role="bold">For the Partition Suspension option:</emphasis> The platform
             must implement the LRDR option (See
-            <xref linkend="LoPAR.Virtualization" />).</para>
+            <xref linkend="dbdoclet.50569342_75053" />).</para>
           </listitem>
      	</varlistentry>
 

@@ -833,7 +833,7 @@
       <para>Platforms supporting the DDW option implement extensions described
       in this section. These extensions include: adding the
       <emphasis role="bold"><literal>&#8220;ibm,ddw-extensions&#8221;</literal></emphasis> property see
-      <xref linkend="LoPAR.DeviceTree" /> to those nodes that include the
+      <xref linkend="dbdoclet.50569368_69645" /> to those nodes that include the
       <emphasis role="bold"><literal>&#8220;ibm,ddw-applicable&#8221;</literal></emphasis> property, and
       implementing the functional extensions specified for the architectural
       level in

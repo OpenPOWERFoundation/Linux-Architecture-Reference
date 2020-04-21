@@ -1,344 +1,344 @@
 <?xml version="1.0"?>
-<chapter xmlns="http://docbook.org/ns/docbook" 
+<chapter xmlns="http://docbook.org/ns/docbook"
 xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
   <title>Processor and Memory</title>
 
-  <para>The purpose of this chapter is to specify the processor and memory 
-  requirements of this architecture. The processor architecture section addresses 
-  differences between the processors in the PA family as well as their interface 
-  variations and features of note. The memory architecture section addresses 
-  coherency, minimum system memory requirements, memory controller requirements, 
+  <para>The purpose of this chapter is to specify the processor and memory
+  requirements of this architecture. The processor architecture section addresses
+  differences between the processors in the PA family as well as their interface
+  variations and features of note. The memory architecture section addresses
+  coherency, minimum system memory requirements, memory controller requirements,
   and cache requirements.</para>
-  
+
   <section xml:id="dbdoclet.50569329_20555">
     <title>Processor Architecture</title>
-    <para>The Processor Architecture (PA) governs software compatibility at an 
-    instruction set and environment level. However, each processor implementation 
-    has unique characteristics which are described in its user&#x2019;s manual. To 
-    facilitate shrink-wrapped software, this architecture places some limitations 
-    on the variability in processor implementations. Nonetheless, evolution of the 
-    PA and implementations creates a need for both software and hardware developers 
-    to stay current with its progress. The following material highlights areas 
-    deserving special attention and provides pointers to the latest 
+    <para>The Processor Architecture (PA) governs software compatibility at an
+    instruction set and environment level. However, each processor implementation
+    has unique characteristics which are described in its user&#x2019;s manual. To
+    facilitate shrink-wrapped software, this architecture places some limitations
+    on the variability in processor implementations. Nonetheless, evolution of the
+    PA and implementations creates a need for both software and hardware developers
+    to stay current with its progress. The following material highlights areas
+    deserving special attention and provides pointers to the latest
     information.</para>
-    
+
     <section>
       <title>Processor Architecture Compliance</title>
       <para>The PA is defined in <xref linkend="dbdoclet.50569387_99718"/>.</para>
 
       <variablelist>
        	<varlistentry xml:id="dbdoclet.50569329_26424">
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_20555" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_20555"
           xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
             <listitem>
-              <para>Platforms must incorporate only processors which comply fully 
+              <para>Platforms must incorporate only processors which comply fully
               with <xref linkend="dbdoclet.50569387_99718"/>.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry xml:id="dbdoclet.50569329_10712">
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_20555" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_20555"
           xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
             <listitem>
               <para><emphasis role="bold">For the Symmetric Multiprocessor option:</emphasis>
-              Multiprocessing platforms must use only processors which 
+              Multiprocessing platforms must use only processors which
               implement the processor identification register. </para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry xml:id="dbdoclet.50569329_25146">
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_20555" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_20555"
           xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
             <listitem>
-              <para>Platforms must incorporate only processors which implement 
-              <emphasis>tlbie</emphasis> and <emphasis>tlbsync</emphasis>, and 
-              <emphasis>slbie</emphasis> and <emphasis>slbia</emphasis> for 
+              <para>Platforms must incorporate only processors which implement
+              <emphasis>tlbie</emphasis> and <emphasis>tlbsync</emphasis>, and
+              <emphasis>slbie</emphasis> and <emphasis>slbia</emphasis> for
               64-bit implementations.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_20555" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_20555"
           xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
             <listitem>
-              <para>Except where specifically noted otherwise 
-              in <xref linkend="dbdoclet.50569329_37082"/>, platforms must support all 
+              <para>Except where specifically noted otherwise
+              in <xref linkend="dbdoclet.50569329_37082"/>, platforms must support all
               functions specified by the PA.</para>
             </listitem>
        	</varlistentry>
       </variablelist>
-      <para><emphasis role="bold">Hardware and Software Implementation Note:</emphasis> The PA and this 
-      architecture view tlbia 
-      as an optional performance enhancement. Processors need not 
-      implement tlbia. Software that needs to purge the TLB should provide a sequence 
-      of instructions that is functionally equivalent to tlbia and use the content of 
-      the OF device tree to choose the software implementation or the hardware 
+      <para><emphasis role="bold">Hardware and Software Implementation Note:</emphasis> The PA and this
+      architecture view tlbia
+      as an optional performance enhancement. Processors need not
+      implement tlbia. Software that needs to purge the TLB should provide a sequence
+      of instructions that is functionally equivalent to tlbia and use the content of
+      the OF device tree to choose the software implementation or the hardware
       instruction. See <xref linkend="dbdoclet.50569329_27369"/> for details.</para>
     </section>
-    
+
     <section xml:id="dbdoclet.50569329_27369">
       <title>PA Processor Differences</title>
-      <para>A complete understanding of processor differences may be obtained 
-      by studying <xref linkend="dbdoclet.50569387_99718"/> and the user&#x2019;s 
+      <para>A complete understanding of processor differences may be obtained
+      by studying <xref linkend="dbdoclet.50569387_99718"/> and the user&#x2019;s
       manuals for the various processors. </para>
-      <para>The creators of this architecture cooperate with processor 
-      designers to maintain a list of supported differences, to be used by the OS 
-      instead of the processor 
-      version number (PVN), 
-      enabling execution on future processors. OF communicates these differences via properties of the 
-      <emphasis role="bold"><literal>cpu</literal></emphasis> node of the OF device tree. Examples of OF device 
-      tree properties which support these differences include <emphasis role="bold"><literal>&#x201C;64-bit&#x201D;</literal></emphasis> 
-      and <emphasis role="bold"><literal>&#x201C;performance-monitor&#x201D;</literal></emphasis>. See 
-      <xref linkend="LoPAR.RTAS"/> for a complete listing and more details. </para>
+      <para>The creators of this architecture cooperate with processor
+      designers to maintain a list of supported differences, to be used by the OS
+      instead of the processor
+      version number (PVN),
+      enabling execution on future processors. OF communicates these differences via properties of the
+      <emphasis role="bold"><literal>cpu</literal></emphasis> node of the OF device tree. Examples of OF device
+      tree properties which support these differences include <emphasis role="bold"><literal>&#x201C;64-bit&#x201D;</literal></emphasis>
+      and <emphasis role="bold"><literal>&#x201C;performance-monitor&#x201D;</literal></emphasis>. See
+      <xref linkend="dbdoclet.50569374_59715"/> for a complete listing and more details. </para>
 
       <variablelist>
        	<varlistentry xml:id="dbdoclet.50569329_14931">
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_27369" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_27369"
           xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
             <listitem>
-              <para>The OS must use the properties of the <emphasis role="bold"><literal>cpu</literal></emphasis> 
-              node of the OF device tree to determine the programming model of the processor 
+              <para>The OS must use the properties of the <emphasis role="bold"><literal>cpu</literal></emphasis>
+              node of the OF device tree to determine the programming model of the processor
               implementation.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_27369" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_27369"
           xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
             <listitem>
-              <para>The OS must provide an execution path 
-              which uses the properties of the <emphasis role="bold"><literal>cpu</literal></emphasis> node of the OF 
-              device. The PVN 
-              is available to the platform aware OS for exceptional cases such as performance 
+              <para>The OS must provide an execution path
+              which uses the properties of the <emphasis role="bold"><literal>cpu</literal></emphasis> node of the OF
+              device. The PVN
+              is available to the platform aware OS for exceptional cases such as performance
               optimization and errata handling.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry xml:id="dbdoclet.50569329_26541">
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_27369" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_27369"
           xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
             <listitem>
-              <para>The OS must 
-              support the 64-bit page table formats defined by 
+              <para>The OS must
+              support the 64-bit page table formats defined by
               <xref linkend="dbdoclet.50569387_99718"/>. </para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry xml:id="dbdoclet.50569329_18405">
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_27369" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_27369"
           xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
             <listitem>
-              <para>Processors which exhibit the 
-              <emphasis role="bold"><literal>&#x201C;64-bit&#x201D;</literal></emphasis> property of the 
-              <emphasis role="bold"><literal>cpu</literal></emphasis> node of the OF device tree must also implement the 
-              &#x201C;bridge architecture,&#x201D; an option in <xref linkend="dbdoclet.50569387_99718"/>. 
+              <para>Processors which exhibit the
+              <emphasis role="bold"><literal>&#x201C;64-bit&#x201D;</literal></emphasis> property of the
+              <emphasis role="bold"><literal>cpu</literal></emphasis> node of the OF device tree must also implement the
+              &#x201C;bridge architecture,&#x201D; an option in <xref linkend="dbdoclet.50569387_99718"/>.
               </para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry xml:id="dbdoclet.50569329_15696">
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_27369" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_27369"
           xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
             <listitem>
-              <para>Platforms must restrict their choice of processors to those whose 
-              programming models may be described by the properties defined for the 
-              <emphasis role="bold"><literal>cpu</literal></emphasis> node of the OF device tree in 
-              <xref linkend="LoPAR.RTAS"/>.</para>
+              <para>Platforms must restrict their choice of processors to those whose
+              programming models may be described by the properties defined for the
+              <emphasis role="bold"><literal>cpu</literal></emphasis> node of the OF device tree in
+              <xref linkend="dbdoclet.50569374_59715"/>.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_27369" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_27369"
           xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
             <listitem>
-              <para>Platform firmware must initialize the 
-              second and third pages above <emphasis>Base</emphasis> correctly for the 
+              <para>Platform firmware must initialize the
+              second and third pages above <emphasis>Base</emphasis> correctly for the
               processor in the platform prior to giving control to the OS.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_27369" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_27369"
           xrefstyle="select: labelnumber nopage"/>-7.</emphasis></term>
             <listitem>
-              <para>OS and application software must not 
+              <para>OS and application software must not
               alter the state of the second and third pages above <emphasis>Base</emphasis>.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_27369" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_27369"
           xrefstyle="select: labelnumber nopage"/>-8.</emphasis></term>
             <listitem>
-              <para>Platforms must implement the 
-              <emphasis role="bold"><literal>&#x201C;ibm,platform-hardware-notification&#x201D;</literal></emphasis> property (see 
-              <xref linkend="LoPAR.DeviceTree"/>) and include all PVRs that the platform may 
+              <para>Platforms must implement the
+              <emphasis role="bold"><literal>&#x201C;ibm,platform-hardware-notification&#x201D;</literal></emphasis> property (see
+              <xref linkend="dbdoclet.50569368_91814"/>) and include all PVRs that the platform may
               contain.</para>
             </listitem>
        	</varlistentry>
       </variablelist>
-    
+
       <section xml:id="dbdoclet.50569329_40499">
         <title>64-bit Implementations</title>
-        
-        <para>Some 64-bit processor implementations will not support the full 
-        virtual address allowed by <xref linkend="dbdoclet.50569387_99718"/>. As a 
-        result, this architecture adds a 64-bit virtual address subset to the PA and 
-        the corresponding <emphasis role="bold"><literal>cpu</literal></emphasis> node property 
+
+        <para>Some 64-bit processor implementations will not support the full
+        virtual address allowed by <xref linkend="dbdoclet.50569387_99718"/>. As a
+        result, this architecture adds a 64-bit virtual address subset to the PA and
+        the corresponding <emphasis role="bold"><literal>cpu</literal></emphasis> node property
         <emphasis role="bold"><literal>&#x201C;64-bit-virtual-address&#x201D;</literal></emphasis> to OF. </para>
-        <para>In order for an OS to make use of the increased addressability of 
+        <para>In order for an OS to make use of the increased addressability of
         64-bit processor implementations:</para>
 
-        <itemizedlist>		      
+        <itemizedlist>
           <listitem>
-            <para>The memory subsystem must support the addressing of memory 
+            <para>The memory subsystem must support the addressing of memory
             located at or beyond 4 GB, and</para>
           </listitem>
-          
+
           <listitem>
-            <para>Any system memory located at or beyond 4 GB must be reported via 
+            <para>Any system memory located at or beyond 4 GB must be reported via
             the OF device tree.</para>
           </listitem>
-        </itemizedlist>		      
+        </itemizedlist>
 
-        <para>At an abstract level, the effort to support 64-bit architecture in 
+        <para>At an abstract level, the effort to support 64-bit architecture in
         platforms is modest. The requirements follow.</para>
 
         <variablelist>
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_40499" 
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_40499"
             xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
               <listitem>
-                <para>The OS must support the 64-bit virtual 
-                address subset, but may defer support of the full 80-bit virtual address until 
+                <para>The OS must support the 64-bit virtual
+                address subset, but may defer support of the full 80-bit virtual address until
                 such time as it is required.</para>
               </listitem>
          	</varlistentry>
-         	
+
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_40499" 
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_40499"
             xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
               <listitem>
-                <para>Firmware must report the 
+                <para>Firmware must report the
                 <emphasis role="bold"><literal>&#x201C;64-bit-virtual-address&#x201D;</literal></emphasis>
                 property for processors which implement the 64-bit virtual address subset.</para>
               </listitem>
          	</varlistentry>
-         	
+
          	<varlistentry>
-            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_40499" 
+            <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_40499"
             xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
               <listitem>
-                <para>RTAS must be capable of being 
-                instantiated in either a 32-bit or 64-bit mode on a platform with addressable 
+                <para>RTAS must be capable of being
+                instantiated in either a 32-bit or 64-bit mode on a platform with addressable
                 memory above 4 GB.</para>
               </listitem>
          	</varlistentry>
         </variablelist>
 
-        <para><emphasis role="bold">Software Implementation Note:</emphasis> A 64-bit OS need not require 64-bit 
-        client interface services in order to boot. Because of the problems that might 
-        be introduced by dynamically switching between 32-bit and 64-bit modes in OF, 
-        the configuration variable <emphasis role="bold"><literal>64-bit-mode?</literal></emphasis> is provided so 
+        <para><emphasis role="bold">Software Implementation Note:</emphasis> A 64-bit OS need not require 64-bit
+        client interface services in order to boot. Because of the problems that might
+        be introduced by dynamically switching between 32-bit and 64-bit modes in OF,
+        the configuration variable <emphasis role="bold"><literal>64-bit-mode?</literal></emphasis> is provided so
         that OF can statically configure itself to the needs of the OS.</para>
       </section>
     </section>
-    
+
     <section>
       <title>Processor Interface Variations</title>
-      <para>Individual processor interface implementations are described in 
+      <para>Individual processor interface implementations are described in
       their respective user&#x2019;s manuals.</para>
     </section>
-    
+
     <section xml:id="dbdoclet.50569329_37082">
       <title>PA Features Deserving Comment</title>
-      <para>Some PA features are optional, and need not be implemented in a 
-      platform. Usage of others may be discouraged due to their potential for poor 
-      performance. The following sections elaborate on the disposition of these 
+      <para>Some PA features are optional, and need not be implemented in a
+      platform. Usage of others may be discouraged due to their potential for poor
+      performance. The following sections elaborate on the disposition of these
       features in regard to compliance with the PA.</para>
-    
+
       <section>
         <title>Multiple Scalar Operations</title>
-        <para>The PA supports multiple scalar operations. The multiple scalar 
-        operations are Load and Store String and Load and Store Multiple. 
-        Due to the long-term performance disadvantage associated with multiple scalar 
+        <para>The PA supports multiple scalar operations. The multiple scalar
+        operations are Load and Store String and Load and Store Multiple.
+        Due to the long-term performance disadvantage associated with multiple scalar
         operations, their use by software is not recommended. </para>
       </section>
-      
+
       <section>
         <title>External Control Instructions (Optional)</title>
-        <para>The external control instructions 
-        (eciwx and ecowx) are not supported 
+        <para>The external control instructions
+        (eciwx and ecowx) are not supported
         by this architecture.</para>
       </section>
     </section>
-    
+
     <section>
       <title><emphasis role="bold"><literal>cpu</literal></emphasis> Node <emphasis role="bold"><literal>&#x201C;Status&#x201D;</literal></emphasis> Property</title>
-      <para>See <xref linkend="LoPAR.RTAS"/> for the values of the 
-      <emphasis role="bold"><literal>&#x201C;status&#x201D;</literal></emphasis> property of the <emphasis role="bold"><literal>cpu</literal></emphasis> 
+      <para>See <xref linkend="dbdoclet.50569374_59715"/> for the values of the
+      <emphasis role="bold"><literal>&#x201C;status&#x201D;</literal></emphasis> property of the <emphasis role="bold"><literal>cpu</literal></emphasis>
       node.</para>
     </section>
-    
+
     <section xml:id="sec_proc_mem_smt">
       <title>Multi-Threading Processor Option</title>
       <para>Power processors may optionally support multi-threading.</para>
 
       <variablelist>
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_proc_mem_smt" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_proc_mem_smt"
           xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
             <listitem>
-              <para><emphasis role="bold">For the Multi-threading 
-              Processor option:</emphasis> The platform must supply one entry in the 
-              <emphasis role="bold"><literal>ibm,ppc-interrupt-server#s</literal></emphasis> property associated with the 
+              <para><emphasis role="bold">For the Multi-threading
+              Processor option:</emphasis> The platform must supply one entry in the
+              <emphasis role="bold"><literal>ibm,ppc-interrupt-server#s</literal></emphasis> property associated with the
               processor for each thread that the processor supports.</para>
             </listitem>
        	</varlistentry>
       </variablelist>
-      <para>Refer to <xref linkend="LoPAR.DeviceTree"/> for the definition of 
+      <para>Refer to <xref linkend="dbdoclet.50569368_31401"/> for the definition of
       the <emphasis role="bold"><literal>ibm,ppc-interrupt-server#s</literal></emphasis> property.</para>
     </section>
   </section>
-  
+
   <section xml:id="dbdoclet.50569329_37207">
     <title>Memory Architecture</title>
-    <para>The Memory Architecture of an LoPAR implementation is defined by 
-    <xref linkend="dbdoclet.50569387_99718"/> and 
-    <xref linkend="dbdoclet.50569328_Address-Map"/>, which defines what platform elements 
-    are accessed by each real (physical) system address, as well as the sections 
+    <para>The Memory Architecture of an LoPAR implementation is defined by
+    <xref linkend="dbdoclet.50569387_99718"/> and
+    <xref linkend="dbdoclet.50569328_Address-Map"/>, which defines what platform elements
+    are accessed by each real (physical) system address, as well as the sections
     which follow.</para>
-    <para>The PA allows implementations to incorporate such performance 
-    enhancing features as write-back caching, non-coherent instruction caches, 
-    pipelining, and out-of-order and speculative execution. These features 
-    introduce the concepts of <emphasis>coherency</emphasis> (the apparent order 
-    of storage operations to a single memory location as observed by other 
-    processors and DMA) and <emphasis>consistency</emphasis> (the order of storage 
-    accesses among multiple locations). In most cases, these features are 
-    transparent to software. However, in certain circumstances, OS software 
-    explicitly manages the order and buffering of storage operations. By 
-    selectively eliminating ordering options, either via storage access mode bits 
-    or the introduction of storage barrier instructions, software can force 
-    increasingly restrictive ordering semantics upon its storage operations. Refer 
+    <para>The PA allows implementations to incorporate such performance
+    enhancing features as write-back caching, non-coherent instruction caches,
+    pipelining, and out-of-order and speculative execution. These features
+    introduce the concepts of <emphasis>coherency</emphasis> (the apparent order
+    of storage operations to a single memory location as observed by other
+    processors and DMA) and <emphasis>consistency</emphasis> (the order of storage
+    accesses among multiple locations). In most cases, these features are
+    transparent to software. However, in certain circumstances, OS software
+    explicitly manages the order and buffering of storage operations. By
+    selectively eliminating ordering options, either via storage access mode bits
+    or the introduction of storage barrier instructions, software can force
+    increasingly restrictive ordering semantics upon its storage operations. Refer
     to <xref linkend="dbdoclet.50569387_99718"/> for further details.</para>
-    <para>PA processor designs usually allow, under certain conditions, for 
-    caching, buffering, combining, and reordering in the platform&#x2019;s memory 
-    and I/O subsystems. The platform&#x2019;s memory subsystem, system 
-    interconnect, and processors, which cooperate through a platform implementation 
-    specific protocol to meet the PA specified memory coherence, consistency, and 
-    caching rules, are said to be within the platform&#x2019;s <emphasis>coherency 
+    <para>PA processor designs usually allow, under certain conditions, for
+    caching, buffering, combining, and reordering in the platform&#x2019;s memory
+    and I/O subsystems. The platform&#x2019;s memory subsystem, system
+    interconnect, and processors, which cooperate through a platform implementation
+    specific protocol to meet the PA specified memory coherence, consistency, and
+    caching rules, are said to be within the platform&#x2019;s <emphasis>coherency
     domain</emphasis>.</para>
-    <para><xref linkend="dbdoclet.50569329_30591"/> shows an example system. 
-    The shaded portion is the PA coherency domain. Buses 1 through 3 lie outside 
-    this domain. The figure shows two 
-    I/O subsystems, each interfacing with the host system via a Host Bridge. Notice that 
-    the domain includes portions of the Host Bridges. This symbolizes the role of 
-    the bridge to apply PA semantics to reference streams as they enter or leave 
-    the coherency domain, while implementing the ordering rules of the I/O bus 
+    <para><xref linkend="dbdoclet.50569329_30591"/> shows an example system.
+    The shaded portion is the PA coherency domain. Buses 1 through 3 lie outside
+    this domain. The figure shows two
+    I/O subsystems, each interfacing with the host system via a Host Bridge. Notice that
+    the domain includes portions of the Host Bridges. This symbolizes the role of
+    the bridge to apply PA semantics to reference streams as they enter or leave
+    the coherency domain, while implementing the ordering rules of the I/O bus
     architecture.</para>
-    <para>Memory, other than System Memory, is not required to be coherent. 
+    <para>Memory, other than System Memory, is not required to be coherent.
     Such memory may include memory in IOAs.</para>
-    
+
     <figure xml:id="dbdoclet.50569329_30591" xreflabel="">
       <title>Example System Diagram Showing the PA Coherency Domain</title>
       <mediaobject>
@@ -351,238 +351,238 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
       </mediaobject>
     </figure>
 
-    <para><emphasis role="bold">Hardware Implementation Note:</emphasis> Components of the platform within the 
-    coherency domain (memory controllers and in-line caches, for example) 
-    collectively implement the PA memory model, including the ordering of 
-    operations. Special care should be given to configurations for which multiple 
-    paths exist between a component that accesses memory and the memory itself, if 
+    <para><emphasis role="bold">Hardware Implementation Note:</emphasis> Components of the platform within the
+    coherency domain (memory controllers and in-line caches, for example)
+    collectively implement the PA memory model, including the ordering of
+    operations. Special care should be given to configurations for which multiple
+    paths exist between a component that accesses memory and the memory itself, if
     accesses for which ordering is required are permitted to use different paths.</para>
-  
+
     <section xml:id="dbdoclet.50569329_19178">
       <title>System Memory</title>
-      <para>System Memory normally consists of dynamic read/write random access 
-      memory which is used for the temporary storage of programs and data being 
-      operated on by the processor(s). A platform usually provides for the expansion 
+      <para>System Memory normally consists of dynamic read/write random access
+      memory which is used for the temporary storage of programs and data being
+      operated on by the processor(s). A platform usually provides for the expansion
       of System Memory via plug-in memory modules and/or memory boards.</para>
 
       <variablelist>
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_19178" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_19178"
           xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
             <listitem>
-              <para>Platforms must provide at least 128 MB of 
-              System Memory. (Also see <xref linkend="dbdoclet.50569328_Address-Map"/> for 
-              other requirements which apply to memory within the first 32MB of System 
+              <para>Platforms must provide at least 128 MB of
+              System Memory. (Also see <xref linkend="dbdoclet.50569328_Address-Map"/> for
+              other requirements which apply to memory within the first 32MB of System
               Memory.)</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_19178" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_19178"
           xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
             <listitem>
-              <para>Platforms must support the expansion of 
+              <para>Platforms must support the expansion of
               System Memory to 2 GB or more.</para>
             </listitem>
        	</varlistentry>
       </variablelist>
 
-      <para><emphasis role="bold">Hardware Implementation Note:</emphasis> These requirements are minimum 
-      requirements. Each OS has its own recommended configuration which may be 
+      <para><emphasis role="bold">Hardware Implementation Note:</emphasis> These requirements are minimum
+      requirements. Each OS has its own recommended configuration which may be
       greater.</para>
 
-      <para><emphasis role="bold">Software Implementation Note:</emphasis> System Memory will be described by 
-      the properties of the <emphasis role="bold"><literal>memory</literal></emphasis> node(s) of the OF 
+      <para><emphasis role="bold">Software Implementation Note:</emphasis> System Memory will be described by
+      the properties of the <emphasis role="bold"><literal>memory</literal></emphasis> node(s) of the OF
       device tree.</para>
     </section>
-    
+
     <section xml:id="dbdoclet.50569329_40286">
       <title>Memory Mapped I/O (MMIO) and DMA Operations</title>
-      <para>Storage operations which cross the coherency domain boundary are 
-      referred to as Memory Mapped I/O (MMIO) operations if they are initiated within 
-      the coherency domain, and DMA operations 
-      if they are initiated outside the coherency domain 
-      and target storage within it. Accesses with targets outside the coherency 
-      domain are assumed to be made to IOAs. These accesses are considered performed 
+      <para>Storage operations which cross the coherency domain boundary are
+      referred to as Memory Mapped I/O (MMIO) operations if they are initiated within
+      the coherency domain, and DMA operations
+      if they are initiated outside the coherency domain
+      and target storage within it. Accesses with targets outside the coherency
+      domain are assumed to be made to IOAs. These accesses are considered performed
       (or complete) when they complete at the IOA&#x2019;s I/O bus interface.</para>
-      <para>Bus bridges translate between bus operations on the initiator and 
-      target buses. In some cases, there may not be a one-to-one correspondence 
-      between initiator and target bus transactions. In these cases, the bridge 
-      selects one or a sequence of transactions which most closely matches the 
-      meaning of the transaction on the source bus. See also 
-      <xref linkend="dbdoclet.50569330_13240"/> for more details and the appropriate PCI 
+      <para>Bus bridges translate between bus operations on the initiator and
+      target buses. In some cases, there may not be a one-to-one correspondence
+      between initiator and target bus transactions. In these cases, the bridge
+      selects one or a sequence of transactions which most closely matches the
+      meaning of the transaction on the source bus. See also
+      <xref linkend="dbdoclet.50569330_13240"/> for more details and the appropriate PCI
       specifications.</para>
-      <para>For MMIO <emphasis>Load</emphasis> and <emphasis>Store</emphasis> 
-      instructions, the software needs to set up the WIMG bits 
-      appropriately to control <emphasis>Load</emphasis> and <emphasis>Store</emphasis> caching, 
-      <emphasis>Store</emphasis> combining, and 
-      speculative <emphasis>Load</emphasis> execution to I/O addresses. This 
-      architecture does not require platform support of caching of MMIO 
-      <emphasis>Load</emphasis> and <emphasis>Store</emphasis> instructions. 
+      <para>For MMIO <emphasis>Load</emphasis> and <emphasis>Store</emphasis>
+      instructions, the software needs to set up the WIMG bits
+      appropriately to control <emphasis>Load</emphasis> and <emphasis>Store</emphasis> caching,
+      <emphasis>Store</emphasis> combining, and
+      speculative <emphasis>Load</emphasis> execution to I/O addresses. This
+      architecture does not require platform support of caching of MMIO
+      <emphasis>Load</emphasis> and <emphasis>Store</emphasis> instructions.
       See the PA for more information.</para>
 
       <variablelist>
        	<varlistentry xml:id="dbdoclet.50569329_61703">
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_40286" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_40286"
           xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
             <listitem>
-              <para>For MMIO <emphasis>Load</emphasis> and <emphasis>Store</emphasis> instructions, 
-               the hardware outside of the processor must not 
-              introduce any reordering of the MMIO instructions for a processor or processor 
-              thread which would not be allowed by the PA for the instruction stream executed 
+              <para>For MMIO <emphasis>Load</emphasis> and <emphasis>Store</emphasis> instructions,
+               the hardware outside of the processor must not
+              introduce any reordering of the MMIO instructions for a processor or processor
+              thread which would not be allowed by the PA for the instruction stream executed
               by the processor or processor thread. </para>
-              <para><emphasis role="bold">Hardware Implementation Note:</emphasis> Requirement 
-              <xref linkend="dbdoclet.50569329_61703"/> may imply that hardware outside of 
-              the processor cannot reorder MMIO instructions from the same processor or 
-              processor thread, but this depends on the processor implementation. For 
-              example, some processor implementations will not allow multiple 
-              <emphasis>Loads</emphasis> to be issued when those <emphasis>Loads</emphasis> are to 
-              Cache Inhibited and Guarded space (as are MMIO <emphasis>Loads</emphasis> ) or 
-              allow multiple <emphasis>Stores</emphasis> to be issued when those 
-              <emphasis>Stores</emphasis> are to Cache Inhibited and Guarded space (as are MMIO 
-              <emphasis>Stores</emphasis>). In this example, hardware external to the 
-              processors could re-order <emphasis>Load</emphasis> instructions with respect 
-              to other <emphasis>Load</emphasis> instructions or re-order 
-              <emphasis>Store</emphasis> instructions with respect to other <emphasis>Store</emphasis> 
-              instructions since they would not be from the same processor or thread. 
-              However, hardware outside of the processor must still take care not to re-order 
-              <emphasis>Loads</emphasis> with respect to <emphasis>Stores</emphasis> or 
-              vice versa, unless the hardware has access to the entire instruction stream to 
-              see explicit ordering instructions, like eieio. Hardware outside of the 
-              processor includes, but is not limited to, buses, interconnects, bridges, and 
-              switches, and includes hardware inside and outside of the coherency 
+              <para><emphasis role="bold">Hardware Implementation Note:</emphasis> Requirement
+              <xref linkend="dbdoclet.50569329_61703"/> may imply that hardware outside of
+              the processor cannot reorder MMIO instructions from the same processor or
+              processor thread, but this depends on the processor implementation. For
+              example, some processor implementations will not allow multiple
+              <emphasis>Loads</emphasis> to be issued when those <emphasis>Loads</emphasis> are to
+              Cache Inhibited and Guarded space (as are MMIO <emphasis>Loads</emphasis> ) or
+              allow multiple <emphasis>Stores</emphasis> to be issued when those
+              <emphasis>Stores</emphasis> are to Cache Inhibited and Guarded space (as are MMIO
+              <emphasis>Stores</emphasis>). In this example, hardware external to the
+              processors could re-order <emphasis>Load</emphasis> instructions with respect
+              to other <emphasis>Load</emphasis> instructions or re-order
+              <emphasis>Store</emphasis> instructions with respect to other <emphasis>Store</emphasis>
+              instructions since they would not be from the same processor or thread.
+              However, hardware outside of the processor must still take care not to re-order
+              <emphasis>Loads</emphasis> with respect to <emphasis>Stores</emphasis> or
+              vice versa, unless the hardware has access to the entire instruction stream to
+              see explicit ordering instructions, like eieio. Hardware outside of the
+              processor includes, but is not limited to, buses, interconnects, bridges, and
+              switches, and includes hardware inside and outside of the coherency
               domain.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_40286" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_40286"
           xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
             <listitem>
-              <para><emphasis>(Requirement Number Reserved 
+              <para><emphasis>(Requirement Number Reserved
               For Compatibility)</emphasis></para>
             </listitem>
        	</varlistentry>
       </variablelist>
 
-      <para>Apart from the ordering disciplines stated in Requirements 
-      <xref linkend="dbdoclet.50569329_61703"/> and, for PCI the ordering of MMIO 
-      <emphasis>Load</emphasis> data return versus buffered DMA data, as defined by 
-      Requirement <xref linkend="dbdoclet.50569330_63508"/>, no other ordering 
-      discipline is guaranteed by the system hardware for <emphasis>Load</emphasis> 
-      and <emphasis>Store</emphasis> instructions performed by a processor to 
-      locations outside the PA coherency domain. Any other ordering discipline, if 
+      <para>Apart from the ordering disciplines stated in Requirements
+      <xref linkend="dbdoclet.50569329_61703"/> and, for PCI the ordering of MMIO
+      <emphasis>Load</emphasis> data return versus buffered DMA data, as defined by
+      Requirement <xref linkend="dbdoclet.50569330_63508"/>, no other ordering
+      discipline is guaranteed by the system hardware for <emphasis>Load</emphasis>
+      and <emphasis>Store</emphasis> instructions performed by a processor to
+      locations outside the PA coherency domain. Any other ordering discipline, if
       necessary, must be enforced by software via programming means.</para>
-      <para>The elements of a system outside its coherency domain are not 
-      expected to issue explicit PA ordering operations. System hardware must 
-      therefore take appropriate action to impose ordering disciplines on storage 
-      accesses entering the coherency domain. In general, a strong-ordering rule is 
-      enforced on an IOA&#x2019;s accesses to the same location, and write operations 
-      from the same source are completed in a sequentially consistent manner. The 
-      exception to this rule is for the special protocol ordering modifiers that may 
-      exist in certain I/O bus protocols. An example of such a protocol ordering 
-      modifier is the PCI Relaxed Ordering bit<footnote xml:id="pgfId-1015959"><para>The PCI 
-        Relaxed Ordering bit is an optional 
-        implementation, from both the IOA and platform perspective. </para></footnote>, 
+      <para>The elements of a system outside its coherency domain are not
+      expected to issue explicit PA ordering operations. System hardware must
+      therefore take appropriate action to impose ordering disciplines on storage
+      accesses entering the coherency domain. In general, a strong-ordering rule is
+      enforced on an IOA&#x2019;s accesses to the same location, and write operations
+      from the same source are completed in a sequentially consistent manner. The
+      exception to this rule is for the special protocol ordering modifiers that may
+      exist in certain I/O bus protocols. An example of such a protocol ordering
+      modifier is the PCI Relaxed Ordering bit<footnote xml:id="pgfId-1015959"><para>The PCI
+        Relaxed Ordering bit is an optional
+        implementation, from both the IOA and platform perspective. </para></footnote>,
         as indicated in the requirements, below.</para>
-       	
+
       <variablelist>
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_40286" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_40286"
           xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
             <listitem>
-              <para>Platforms must guarantee that accesses 
-              entering the PA coherency domain that are from the same IOA and to the same 
-              location are completed in a sequentially consistent manner, except transactions 
-              from PCI-X and PCI Express masters may be reordered when the Relaxed Ordering 
-              bit in the transaction is set, as specified in the 
-              <emphasis><xref linkend="dbdoclet.50569387_26550"/></emphasis> and 
+              <para>Platforms must guarantee that accesses
+              entering the PA coherency domain that are from the same IOA and to the same
+              location are completed in a sequentially consistent manner, except transactions
+              from PCI-X and PCI Express masters may be reordered when the Relaxed Ordering
+              bit in the transaction is set, as specified in the
+              <emphasis><xref linkend="dbdoclet.50569387_26550"/></emphasis> and
               <emphasis><xref linkend="dbdoclet.50569387_66784"/></emphasis>. </para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry xml:id="dbdoclet.50569329_22857">
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_40286" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_40286"
           xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
             <listitem>
-              <para>Platforms must guarantee that multiple write operations entering 
-              the PA coherency domain that are issued by the same IOA are completed in a 
-              sequentially consistent manner, except transactions from PCI-X and PCI Express 
-              masters may be reordered when the Relaxed Ordering bit in the transaction is 
-              set, as specified in the 
-              <emphasis><xref linkend="dbdoclet.50569387_26550"/></emphasis> and 
+              <para>Platforms must guarantee that multiple write operations entering
+              the PA coherency domain that are issued by the same IOA are completed in a
+              sequentially consistent manner, except transactions from PCI-X and PCI Express
+              masters may be reordered when the Relaxed Ordering bit in the transaction is
+              set, as specified in the
+              <emphasis><xref linkend="dbdoclet.50569387_26550"/></emphasis> and
               <emphasis><xref linkend="dbdoclet.50569387_66784"/></emphasis>.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry xml:id="dbdoclet.50569329_41040">
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_40286" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_40286"
           xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
             <listitem>
-              <para>Platforms must be designed to present I/O DMA writes to the coherency domain in the order required by 
-              <xref linkend="dbdoclet.50569387_99718"/>, except transactions from PCI-X and PCI 
-              Express masters may be reordered when the Relaxed Ordering bit in the 
-              transaction is set, as specified in the 
-              <emphasis><xref linkend="dbdoclet.50569387_26550"/></emphasis> and 
+              <para>Platforms must be designed to present I/O DMA writes to the coherency domain in the order required by
+              <xref linkend="dbdoclet.50569387_99718"/>, except transactions from PCI-X and PCI
+              Express masters may be reordered when the Relaxed Ordering bit in the
+              transaction is set, as specified in the
+              <emphasis><xref linkend="dbdoclet.50569387_26550"/></emphasis> and
               <emphasis><xref linkend="dbdoclet.50569387_66784"/></emphasis>.</para>
             </listitem>
        	</varlistentry>
       </variablelist>
     </section>
-    
+
     <section>
       <title>Storage Ordering and I/O Interrupts</title>
-      <para>The conclusion of I/O operations is often communicated to 
-      processors via interrupts. For example, at the end of a DMA operation that 
-      deposits data in the System Memory, the IOA performing the operation might send 
-      an interrupt to the processor. Arrival of the interrupt, however, may be no 
-      guarantee that all the data has actually been deposited; some might be on its 
-      way. The receiving program must not attempt to read the data from the memory 
-      before ensuring that all the data has indeed been deposited. There may be 
-      system and I/O subsystem specific method for guaranteeing this. See <xref 
+      <para>The conclusion of I/O operations is often communicated to
+      processors via interrupts. For example, at the end of a DMA operation that
+      deposits data in the System Memory, the IOA performing the operation might send
+      an interrupt to the processor. Arrival of the interrupt, however, may be no
+      guarantee that all the data has actually been deposited; some might be on its
+      way. The receiving program must not attempt to read the data from the memory
+      before ensuring that all the data has indeed been deposited. There may be
+      system and I/O subsystem specific method for guaranteeing this. See <xref
       linkend="dbdoclet.50569330_35877"/>.</para>
     </section>
-    
+
     <section xml:id="sec_proc_mem_atomic_update">
       <title>Atomic Update Model</title>
-      <para>An update of a memory location by a processor, involving a 
-      <emphasis>Load</emphasis> followed by a <emphasis>Store</emphasis>, can be 
-      considered &#x201C;atomic&#x201D; if there are no intervening 
-      <emphasis>Store</emphasis>s to that location from another processor or mechanism. The PA 
-      provides primitives in the form of Load 
-      And Reserve and Store 
-      Conditional instructions which can be used to determine if the update was 
-      indeed atomic. These primitives can be used to emulate operations such as 
-      &#x201C;atomic read-modify-write&#x201D; and &#x201C;atomic 
-      fetch-and-add.&#x201D; Operation of the atomic update primitives is based on 
-      the concept of &#x201C;Reservation,&#x201D;<footnote xml:id="pgfId-128426"><para>See 
-        Book I and II of <xref linkend="dbdoclet.50569387_99718"/>.</para></footnote> 
+      <para>An update of a memory location by a processor, involving a
+      <emphasis>Load</emphasis> followed by a <emphasis>Store</emphasis>, can be
+      considered &#x201C;atomic&#x201D; if there are no intervening
+      <emphasis>Store</emphasis>s to that location from another processor or mechanism. The PA
+      provides primitives in the form of Load
+      And Reserve and Store
+      Conditional instructions which can be used to determine if the update was
+      indeed atomic. These primitives can be used to emulate operations such as
+      &#x201C;atomic read-modify-write&#x201D; and &#x201C;atomic
+      fetch-and-add.&#x201D; Operation of the atomic update primitives is based on
+      the concept of &#x201C;Reservation,&#x201D;<footnote xml:id="pgfId-128426"><para>See
+        Book I and II of <xref linkend="dbdoclet.50569387_99718"/>.</para></footnote>
       which is supported in an LoPAR system via the coherence mechanism.</para>
 
       <variablelist>
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_proc_mem_atomic_update" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_proc_mem_atomic_update"
           xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
             <listitem>
-              <para><emphasis>Load And Reserve</emphasis> and 
-              <emphasis>Store Conditional</emphasis> instructions 
+              <para><emphasis>Load And Reserve</emphasis> and
+              <emphasis>Store Conditional</emphasis> instructions
               must not be assumed to be supported for Write-Through storage.</para>
-              <para><emphasis role="bold">Software Implementation Note:</emphasis> To emulate an 
-              atomic read-modify-write operation, the instruction pair must access the same 
-              storage location, and the location must have the Memory Coherence Required 
+              <para><emphasis role="bold">Software Implementation Note:</emphasis> To emulate an
+              atomic read-modify-write operation, the instruction pair must access the same
+              storage location, and the location must have the Memory Coherence Required
               attribute.</para>
-              <para><emphasis role="bold">Hardware Implementation Note:</emphasis> The reservation 
-              protocol is defined in Book II of the <xref linkend="dbdoclet.50569387_99718"/> 
+              <para><emphasis role="bold">Hardware Implementation Note:</emphasis> The reservation
+              protocol is defined in Book II of the <xref linkend="dbdoclet.50569387_99718"/>
               for atomic updates to locations in the same coherency domain.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_proc_mem_atomic_update" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_proc_mem_atomic_update"
           xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
             <listitem>
-              <para>The <emphasis>Load And 
-              Reserve</emphasis> and <emphasis>Store Conditional</emphasis> instructions 
+              <para>The <emphasis>Load And
+              Reserve</emphasis> and <emphasis>Store Conditional</emphasis> instructions
               must not be assumed to be supported for Caching-Inhibited storage.</para>
             </listitem>
        	</varlistentry>
@@ -591,116 +591,116 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
     <section xml:id="sec_proc_mem_memory_controller">
       <title>Memory Controllers</title>
-      <para>A Memory Controller responds to the real (physical) addresses 
-      produced by a processor or a host bridge for accesses to System Memory. It is 
-      responsible for handling the translation from these addresses to the physical 
+      <para>A Memory Controller responds to the real (physical) addresses
+      produced by a processor or a host bridge for accesses to System Memory. It is
+      responsible for handling the translation from these addresses to the physical
       memory modules within its configured domain of control.</para>
 
       <variablelist>
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_proc_mem_memory_controller" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_proc_mem_memory_controller"
           xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
             <listitem>
-              <para>Memory controller(s) must support the 
+              <para>Memory controller(s) must support the
               accessing of System Memory as defined in <xref linkend="dbdoclet.50569328_Address-Map"/>.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_proc_mem_memory_controller" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_proc_mem_memory_controller"
           xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
             <listitem>
-              <para>Memory controller(s) must be fully initialized and 
+              <para>Memory controller(s) must be fully initialized and
               set to full power mode prior to the transfer of control to the OS. </para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_proc_mem_memory_controller" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_proc_mem_memory_controller"
           xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
             <listitem>
-              <para>All allocations of System Memory space 
-              among memory controllers must have been done prior to the transfer of control 
+              <para>All allocations of System Memory space
+              among memory controllers must have been done prior to the transfer of control
               to the OS.</para>
             </listitem>
        	</varlistentry>
       </variablelist>
-      <para><emphasis role="bold">Software Implementation Note:</emphasis> Memory controller(s) are described by 
-      properties of the <emphasis role="bold"><literal>memory-controller</literal></emphasis> node(s) of the OF device 
+      <para><emphasis role="bold">Software Implementation Note:</emphasis> Memory controller(s) are described by
+      properties of the <emphasis role="bold"><literal>memory-controller</literal></emphasis> node(s) of the OF device
       tree.</para>
     </section>
-    
+
     <section xml:id="dbdoclet.50569329_10945">
       <title>Cache Memory</title>
-      
-      <para>All of the PA processors include some amount of on-chip or 
-      internal cache memory. 
-      This architecture allows for cache memory which is external to the processor 
-      chip, and this external 
+
+      <para>All of the PA processors include some amount of on-chip or
+      internal cache memory.
+      This architecture allows for cache memory which is external to the processor
+      chip, and this external
       cache memory forms an extension to internal cache memory. </para>
 
       <variablelist>
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_10945" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_10945"
           xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
             <listitem>
-              <para>If a platform implementation elects not 
-              to cache portions of the address map in all external levels of the cache 
-              hierarchy, the result of not doing so must be transparent to the operation of 
+              <para>If a platform implementation elects not
+              to cache portions of the address map in all external levels of the cache
+              hierarchy, the result of not doing so must be transparent to the operation of
               the software, other than as a difference in performance.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry xml:id="dbdoclet.50569329_35915">
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_10945" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_10945"
           xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
             <listitem>
-              <para>All caches must be fully 
-              initialized and enabled, and they must have 
+              <para>All caches must be fully
+              initialized and enabled, and they must have
               accurate state bits prior to the transfer of control to the OS.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_10945" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_10945"
           xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
             <listitem>
-              <para>If an in-line external 
-              cache is used, it must support one reservation as 
-              defined for the <emphasis>Load And Reserve</emphasis> and 
+              <para>If an in-line external
+              cache is used, it must support one reservation as
+              defined for the <emphasis>Load And Reserve</emphasis> and
               <emphasis>Store Conditional</emphasis> instructions.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_10945" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_10945"
           xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
             <listitem>
-              <para><emphasis role="bold">For the Symmetric 
-              Multiprocessor option:</emphasis> Platforms must implement their cache 
-              hierarchy such that all caches at a given level in the cache hierarchy can be 
-              flushed and disabled before any caches at the next level which may cache the 
-              same data are flushed and disabled (that is, L1 first, then L2, and so 
+              <para><emphasis role="bold">For the Symmetric
+              Multiprocessor option:</emphasis> Platforms must implement their cache
+              hierarchy such that all caches at a given level in the cache hierarchy can be
+              flushed and disabled before any caches at the next level which may cache the
+              same data are flushed and disabled (that is, L1 first, then L2, and so
               on).</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_10945" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_10945"
           xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
             <listitem>
-              <para><emphasis role="bold">For the Symmetric 
-              Multiprocessor option:</emphasis> If a cache implements snarfing, 
-              then the cache must be capable of disabling the snarfing during flushing in order to implement 
+              <para><emphasis role="bold">For the Symmetric
+              Multiprocessor option:</emphasis> If a cache implements snarfing,
+              then the cache must be capable of disabling the snarfing during flushing in order to implement
               the RTAS <emphasis>stop-self</emphasis> function in an atomic way.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_10945" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_10945"
           xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
             <listitem>
-              <para>Software must not depend on being able to 
+              <para>Software must not depend on being able to
               change a cache from copy-back to write-through.</para>
             </listitem>
        	</varlistentry>
@@ -708,94 +708,94 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
       <para><emphasis  role="bold">Software Implementation Notes:</emphasis> </para>
 
-      <orderedlist>		      
+      <orderedlist>
         <listitem>
-          <para>Each first level cache will be defined via properties of the 
-          <emphasis role="bold"><literal>cpu</literal></emphasis> node(s) of the OF device tree. Each higher level cache will be 
-          defined via properties of the <emphasis role="bold"><literal>l2-cache</literal></emphasis> node(s) 
-          of the OF device tree. See <xref linkend="LoPAR.RTAS"/> for more details.</para>
+          <para>Each first level cache will be defined via properties of the
+          <emphasis role="bold"><literal>cpu</literal></emphasis> node(s) of the OF device tree. Each higher level cache will be
+          defined via properties of the <emphasis role="bold"><literal>l2-cache</literal></emphasis> node(s)
+          of the OF device tree. See <xref linkend="dbdoclet.50569374_59715"/> for more details.</para>
         </listitem>
 
         <listitem>
-          <para>To ensure proper operation, cache(s) at the same level in the 
-          cache hierarchy should be flushed and disabled before cache(s) at the next 
+          <para>To ensure proper operation, cache(s) at the same level in the
+          cache hierarchy should be flushed and disabled before cache(s) at the next
           level (that is, L1 first, then L2, and so on).</para>
         </listitem>
-      </orderedlist>		      
+      </orderedlist>
 
     </section>
-    
+
     <section xml:id="sec_proc_mem_memory_info">
       <title>Memory Status information</title>
-      <para>New OF properties are defined to support the identification and 
+      <para>New OF properties are defined to support the identification and
       contain the status information on good and bad system memory.</para>
 
       <variablelist>
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="sec_proc_mem_memory_info" 
+          <term><emphasis role="bold">R1-<xref linkend="sec_proc_mem_memory_info"
           xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
             <listitem>
-              <para>Firmware must implement all of the 
-              properties for memory modules, as specified by <xref linkend="LoPAR.DeviceTree"/>, 
+              <para>Firmware must implement all of the
+              properties for memory modules, as specified by <xref linkend="dbdoclet.50569368_91814"/>,
               and any other properties defined by this document which apply to memory modules.</para>
             </listitem>
        	</varlistentry>
       </variablelist>
     </section>
-    
+
     <section xml:id="dbdoclet.50569329_41706">
       <title>Reserved Memory</title>
-      <para>Sections of System Memory may be reserved for usage by OS 
-      extensions, with the restrictions detailed below. Memory nodes marked with the 
-      special value of the <emphasis role="bold"><literal>&#x201C;status&#x201D;</literal></emphasis> property of 
-      &#x201C;reserved&#x201D; is not to be used or altered by the base OS. Several 
-      different ranges of memory may be marked as &#x201C;reserved&#x201D;. If DLPAR 
-      of memory is to be supported and growth is expected, then, an address range 
-      must be unused between these areas in order to allow growth of these areas. 
-      Each area has its own DRC Type (starting at 0, MEM, MEM-1, MEM-2, and so on). 
-      Each area has a current and a maximum size, with the current size being the sum 
-      of the sizes of the populated DRCs for the area and the max being the sum total 
-      of the sizes of all the DRCs for that area. The logical address space allocated 
-      is the size of the sum of the all the areas' maximum sizes. Starting with 
-      logical real address 0, the address areas are allocated in the following order: 
-      OS, DLPAR growth space for OS (if DLPAR is supported), reserved area (if any) 
-      followed by the DLPAR growth space for that reserved area (if DLPAR is 
-      supported), followed by the next reserved space (if any), and so on. The 
-      current memory allocation for each area is allocated contiguously from the 
-      beginning of the area. On a boot or reboot, including hypervisor reboot, if 
-      there is any data to be preserved (that is, the 
-      <emphasis role="bold"><literal>&#x201C;ibm,preserved-storage&#x201D;</literal></emphasis> 
-      property exists in the RTAS 
-      node), then the starting logical real address of each LMB is maintained through 
-      the reboot. The memory in each region can be independently increased or 
-      decreased using DLPAR memory functions, when DLPAR is supported. Changes to the 
-      current memory allocation for an area results in the addition or removal of 
+      <para>Sections of System Memory may be reserved for usage by OS
+      extensions, with the restrictions detailed below. Memory nodes marked with the
+      special value of the <emphasis role="bold"><literal>&#x201C;status&#x201D;</literal></emphasis> property of
+      &#x201C;reserved&#x201D; is not to be used or altered by the base OS. Several
+      different ranges of memory may be marked as &#x201C;reserved&#x201D;. If DLPAR
+      of memory is to be supported and growth is expected, then, an address range
+      must be unused between these areas in order to allow growth of these areas.
+      Each area has its own DRC Type (starting at 0, MEM, MEM-1, MEM-2, and so on).
+      Each area has a current and a maximum size, with the current size being the sum
+      of the sizes of the populated DRCs for the area and the max being the sum total
+      of the sizes of all the DRCs for that area. The logical address space allocated
+      is the size of the sum of the all the areas' maximum sizes. Starting with
+      logical real address 0, the address areas are allocated in the following order:
+      OS, DLPAR growth space for OS (if DLPAR is supported), reserved area (if any)
+      followed by the DLPAR growth space for that reserved area (if DLPAR is
+      supported), followed by the next reserved space (if any), and so on. The
+      current memory allocation for each area is allocated contiguously from the
+      beginning of the area. On a boot or reboot, including hypervisor reboot, if
+      there is any data to be preserved (that is, the
+      <emphasis role="bold"><literal>&#x201C;ibm,preserved-storage&#x201D;</literal></emphasis>
+      property exists in the RTAS
+      node), then the starting logical real address of each LMB is maintained through
+      the reboot. The memory in each region can be independently increased or
+      decreased using DLPAR memory functions, when DLPAR is supported. Changes to the
+      current memory allocation for an area results in the addition or removal of
       memory to the end of the existing memory allocation.</para>
-      <para><emphasis role="bold">Implementation Note:</emphasis> if the shared memory 
-      regions are not accessed by the programs, and are just used for DMA most of the 
-      time, then the same HPFT hit rate could be achieved with a far lower ration of 
+      <para><emphasis role="bold">Implementation Note:</emphasis> if the shared memory
+      regions are not accessed by the programs, and are just used for DMA most of the
+      time, then the same HPFT hit rate could be achieved with a far lower ration of
       HPFT entries to logical storage space.</para>
 
       <variablelist>
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_41706" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_41706"
           xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
             <listitem>
-              <para><emphasis role="bold">For the Reserved Memory option:</emphasis> 
-              Memory nodes marked with the special value of the <emphasis role="bold"><literal>&#x201C;status&#x201D;</literal></emphasis> 
+              <para><emphasis role="bold">For the Reserved Memory option:</emphasis>
+              Memory nodes marked with the special value of the <emphasis role="bold"><literal>&#x201C;status&#x201D;</literal></emphasis>
               property of &#x201C;reserved&#x201D; must not be used or altered by the base OS</para>
-              <para><emphasis role="bold">Implementation Note:</emphasis> How areas get chosen to 
+              <para><emphasis role="bold">Implementation Note:</emphasis> How areas get chosen to
               be marked as reserved is beyond the scope of this architecture.</para>
             </listitem>
        	</varlistentry>
-       	
+
        	<varlistentry>
-          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_41706" 
+          <term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569329_41706"
           xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
             <listitem>
-              <para><emphasis role="bold">For the Reserved Memory option 
-              with the LRDR option:</emphasis> Each unique memory area that is to be changed 
-              independently via DLPAR must have different DRC Types (for example, MEM, MEM-1, 
+              <para><emphasis role="bold">For the Reserved Memory option
+              with the LRDR option:</emphasis> Each unique memory area that is to be changed
+              independently via DLPAR must have different DRC Types (for example, MEM, MEM-1,
               and so on).</para>
             </listitem>
        	</varlistentry>
@@ -804,9 +804,9 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 
     <section xml:id="dbdoclet.50569329_70628">
       <title>Persistent Memory</title>
-      <para>Selected regions of storage (LMBs) may be optionally preserved 
-      across client program boot cycles. See <xref linkend="dbdoclet.50569327_70628"/> and 
-      "Managing Storage Preservations" in <xref linkend="LoPAR.RTAS"/> specification.</para>
+      <para>Selected regions of storage (LMBs) may be optionally preserved
+      across client program boot cycles. See <xref linkend="dbdoclet.50569327_70628"/>
+      and <xref linkend="dbdoclet.50569332_28221"/>.</para>
     </section>
   </section>
 

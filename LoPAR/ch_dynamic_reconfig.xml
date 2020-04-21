@@ -1,6 +1,9 @@
 <chapter xmlns="http://docbook.org/ns/docbook"
-xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
-  <title xml:id="dbdoclet.50569342_75822">Dynamic Reconfiguration (DR) Architecture</title>
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         version="5.0"
+         xml:lang="en"
+         xml:id="dbdoclet.50569342_75822">
+  <title>Dynamic Reconfiguration (DR) Architecture</title>
 
   <para>Dynamic Reconfiguration (DR) is the capability of a system to adapt to
   changes in the hardware/firmware physical or logical configuration, and to be
@@ -283,7 +286,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
             <entry>
               <para>A DR entity which does not have to be physically plugged or
               unplugged during a DR operation on that entity. See
-              <xref linkend="LoPAR.DeviceTree" /> for a list of the supported
+              <xref linkend="dbdoclet.50569368_97022" /> for a list of the supported
               Logical DR types.</para>
             </entry>
           </row>
@@ -317,7 +320,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
             <entry>
               <para>A DR entity which may need to be physically plugged or
               unplugged during a DR operation on that entity. See
-              <xref linkend="LoPAR.DeviceTree" /> for a list of the supported
+              <xref linkend="dbdoclet.50569368_97022" /> for a list of the supported
               physical DR types.</para>
             </entry>
           </row>
@@ -448,7 +451,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
            these operations. In this case, the OS may ignore
            those errors if the operation is a DLPAR to remove the
            hardware. See also the <emphasis role="bold"><literal>&#8220;ibm,ignore-hp-po-fails-for-dlpar&#8221;</literal></emphasis>
-           property in <xref linkend="LoPAR.DeviceTree" />.</para>
+           property in <xref linkend="dbdoclet.50569368_54493" />.</para>
          </listitem>
       </orderedlist>
     </para>
@@ -1127,7 +1130,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
         connector an index to be passed between the OS and RTAS to identify the
         DR connector to be operated upon. This property is in the parent node of
         the DR connector to which the property applies. See
-        <xref linkend="LoPAR.DeviceTree" /> for the definition of this
+        <xref linkend="dbdoclet.50569368_13582" /> for the definition of this
         property.  See <xref linkend="sec_ibmdrcinfo_property" /> for additional information.</para>
 
         <variablelist>
@@ -1151,7 +1154,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
         entry in the
         <emphasis role="bold"><literal>&#8220;ibm,drc-indexes&#8221;</literal></emphasis> property for that
         connector. This property is used for correlation purposes. See
-        <xref linkend="LoPAR.DeviceTree" /> for the definition of this
+        <xref linkend="dbdoclet.50569368_13582" /> for the definition of this
         property.</para>
 
         <variablelist>
@@ -1172,7 +1175,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
         <title><emphasis role="bold"><literal>&#8220;ibm,drc-names&#8221;</literal></emphasis> Property</title>
         <para>This property is added for the DR option to specify for each DR
         connector a user-readable location code for the connector. See
-        <xref linkend="LoPAR.DeviceTree" /> for the definition of this
+        <xref linkend="dbdoclet.50569368_13582" /> for the definition of this
         property.  See <xref linkend="sec_ibmdrcinfo_property" /> for additional information.</para>
 
         <variablelist>
@@ -1299,7 +1302,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
         <title><emphasis role="bold"><literal>&#8220;ibm,drc-power-domains&#8221;</literal></emphasis> Property</title>
         <para>This property is added for the DR option to specify for each DR
         connector the power domain in which the connector resides. See
-        <xref linkend="LoPAR.DeviceTree" /> for the definition of this
+        <xref linkend="dbdoclet.50569368_13582" /> for the definition of this
         property.  See <xref linkend="sec_ibmdrcinfo_property" /> for additional information.</para>
 
         <variablelist>
@@ -1339,7 +1342,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
         <title><emphasis role="bold"><literal>&#8220;ibm,drc-types&#8221;</literal></emphasis> Property</title>
         <para>This property is added for the DR option to specify for each DR
         connector a user-readable connector type for the connector. See
-        <xref linkend="LoPAR.DeviceTree" /> for the definition of this
+        <xref linkend="dbdoclet.50569368_13582" /> for the definition of this
         property.  See <xref linkend="sec_ibmdrcinfo_property" /> for additional information.</para>
         <para>
         <emphasis role="bold">Architecture Note:</emphasis> The logical connectors (CPU, MEM
@@ -1369,7 +1372,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
         <title><emphasis role="bold"><literal>&#8220;ibm,phandle&#8221;</literal></emphasis> Property</title>
         <para>This property is added for the DR option to specify the phandle for
         each OF device tree node returned by ibm,configure-connector. See
-        <xref linkend="LoPAR.DeviceTree" /> for the definition of this
+        <xref linkend="dbdoclet.50569368_13582" /> for the definition of this
         property.</para>
 
         <variablelist>
@@ -1473,7 +1476,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
       <section xml:id="sec_set_power_level">
         <title><emphasis>set-power-level</emphasis></title>
         <para>This RTAS call is defined in
-        <xref linkend="LoPAR.RTAS" />. Several additional requirements are placed
+        <xref linkend="dbdoclet.50569332_45884" />. Several additional requirements are placed
         on this call when the platform implements DR along with PM.</para>
         <para>This RTAS call is used in DR to power up or power down a DR
         connector, if necessary (that is, if there is a non-zero power domain
@@ -1497,7 +1500,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                 <para><emphasis role="bold">For all DR options:</emphasis> the
                 <emphasis>set-power-level</emphasis> RTAS call must be implemented as
                 specified in
-                <xref linkend="LoPAR.RTAS" /> and the further requirements of this DR
+                <xref linkend="dbdoclet.50569332_45884" /> and the further requirements of this DR
                 option.</para>
               </listitem>
          	</varlistentry>
@@ -1859,7 +1862,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
       <section xml:id="dbdoclet.50569342_61130">
         <title><emphasis>set-indicator</emphasis></title>
         <para>This RTAS call is defined as shown in
-        <xref linkend="LoPAR.RTAS" />. This RTAS call is used in DR to transition
+        <xref linkend="dbdoclet.50569332_27587" />. This RTAS call is used in DR to transition
         between isolation states, allocation states, and control DR indicators.
         In some cases, a state transition fails due to various conditions,
         however, a null transition (commanding that the new state be what it
@@ -2015,7 +2018,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                           connector, then they are used to indicate the state of the DR
                           connector to the user. Usage of these states are as defined in
                           <xref linkend="dbdoclet.50569342_42695" /> and
-                          <xref linkend="LoPAR.Error" />.</para>
+                          <xref linkend="dbdoclet.50569347_31867" />.</para>
                         </entry>
                       </row>
                       <row>
@@ -2074,7 +2077,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                 <emphasis>set-indicator</emphasis> call must return a -2 status, or
                 optionally for indicator type 9001 the 990x status, for each call until
                 the operation is complete; where the 990x status is defined in
-                <xref linkend="LoPAR.Error" />.</para>
+                <xref linkend="dbdoclet.50569332_10584" />.</para>
               </listitem>
          	</varlistentry>
 
@@ -2512,7 +2515,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
         requirement, in order to provide for a consistent user interface across
         platforms. Information on implementation dependent aspects of the DR
         indicators can be found in
-        <xref linkend="LoPAR.Error" />.</para>
+        <xref linkend="dbdoclet.50569347_31867" />.</para>
 
         <variablelist>
          	<varlistentry>
@@ -2557,7 +2560,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                   power off at the connector, then the caller of
                   <emphasis>set-indicator</emphasis> must turn power off prior to
                   setting the indicator to this state. See also
-                  <xref linkend="LoPAR.Error" />.</para>
+                  <xref linkend="dbdoclet.50569347_31867" />.</para>
                 </entry>
               </row>
               <row>
@@ -2569,7 +2572,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                   identify the physical location of the DR connector. This state
                   may map to the same visual state (for example, blink rate) as
                   the Action state, or may map to a different state. See also
-                  <xref linkend="LoPAR.Error" />.</para>
+                  <xref linkend="dbdoclet.50569347_31867" />.</para>
                 </entry>
               </row>
               <row>
@@ -2581,7 +2584,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                   the user is to perform the current DR operation. This state may
                   map to the same visual state (for example, blink rate) as the
                   Identify state, or may map to a different state. See also
-                  <xref linkend="LoPAR.Error" />.</para>
+                  <xref linkend="dbdoclet.50569347_31867" />.</para>
                 </entry>
               </row>
               <row>
@@ -2591,7 +2594,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                 <entry>
                   <para>The DR connector is active and entity removal may disrupt
                   system operation. See also
-                  <xref linkend="LoPAR.Error" />.</para>
+                  <xref linkend="dbdoclet.50569347_31867" />.</para>
                 </entry>
               </row>
             </tbody>
@@ -2671,7 +2674,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               <listitem>
                 <para>When bringing a DR entity online that
                 utilizes TCEs (see
-                <xref linkend="LoPAR.Platform" />), the OS must initialize the DR
+                <xref linkend="dbdoclet.50569328_76588" />), the OS must initialize the DR
                 entity's TCEs.</para>
               </listitem>
          	</varlistentry>
@@ -2743,7 +2746,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                     <para>The other indicator must be amber and must be controllable by
                     RTAS, separately from all other indicators, and must be used as a slot
                     Identify indicator, as defined in
-                    <xref linkend="LoPAR.Error" />.</para>
+                    <xref linkend="dbdoclet.50569347_31867" />.</para>
                 </listitem>
               </orderedlist>
               </para>
@@ -3295,7 +3298,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                         <para>Always present for sub-systems and for PCI IOAs which
                         follow the PCI VPD proposed standard. See
                         <!-- FIXME: Requirement R1-12.4.2-1-->
-                        <xref linkend="LoPAR.Platform" /> and note to see the effect of
+                        <xref linkend="dbdoclet.50569341_65980" /> and note to see the effect of
                         using different PCI versions.</para>
                       </entry>
                     </row>
@@ -3735,7 +3738,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
                 <para>Shall be one of the values &#8220;CPU&#8221;,
                 &#8220;MEM&#8221;, &#8220;PHB&#8221;, or &#8220;SLOT&#8221; as
                 defined in
-                <xref linkend="LoPAR.DeviceTree" />.</para>
+                <xref linkend="dbdoclet.50569368_97022" />.</para>
               </entry>
             </row>
             <row>
@@ -3865,7 +3868,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
               <emphasis role="bold"><literal>&#8220;ibm,lrdr-capacity&#8221;</literal></emphasis> property must be
               included in the
               <emphasis role="bold"><literal>/rtas</literal></emphasis> node of the partition device tree (see
-              <xref linkend="LoPAR.DeviceTree" />).</para>
+              <xref linkend="dbdoclet.50569368_41461" />).</para>
             </listitem>
        	</varlistentry>
       </variablelist>

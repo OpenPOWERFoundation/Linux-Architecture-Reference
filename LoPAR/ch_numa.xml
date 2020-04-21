@@ -72,7 +72,7 @@ xml:lang="en">
     (processor, memory region, and IO slot) conveys information about the resources
     statically assigned to the client program; and contains the
     <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis>
-    property (see <xref linkend="LoPAR.RTAS"/>). This property allows the client
+    property (see <xref linkend="dbdoclet.50569368_10192"/>). This property allows the client
     program to determine the associativity between any two of it&#x2019;s
     resources. The greater the associativity the greater the expected performance
     when using those two resources in a given operation.</para>
@@ -96,7 +96,7 @@ xml:lang="en">
     information for the resources is not provided to prevent erroneous operation.
     If the long term mapping changes the client program can be made aware of the
     new associativity information using the <emphasis>ibm,update-properties</emphasis> RTAS call (See
-    <xref linkend="LoPAR.RTAS"/>).</para>
+    <xref linkend="dbdoclet.50569332_40069"/>).</para>
 
     <variablelist>
      	<varlistentry xml:id="dbdoclet.50569346_19785">
@@ -221,7 +221,7 @@ xml:lang="en">
       property byte 5 bit 0 has the value of zero, the
       <emphasis role="bold"><literal>&#x201C;ibm,associativity-reference-points&#x201D;</literal></emphasis> property defines
       reference points in the <emphasis role="bold"><literal>&#x201C;ibm,associativity&#x201D;</literal></emphasis>
-      property (see <xref linkend="LoPAR.DeviceTree"/>) which roughly correspond to
+      property (see <xref linkend="dbdoclet.50569368_41461"/>) which roughly correspond to
       traditional notions of platform topology constructs. It is important for the
       user to realize that these reference points are not exact and their
       characteristics vary among implementations. </para>
@@ -281,7 +281,7 @@ xml:lang="en">
     <title>Dynamic Reconfiguration with Cross CEC I/O Drawers</title>
     <para>Should the configuration change in such a way that the associativity
     between an OS image&#x2019;s resources changes, the platform notifies the OS
-    via an event scan log. See <xref linkend="LoPAR.Error"/>. </para>
+    via an event scan log. See <xref linkend="dbdoclet.50569337_37595"/>. </para>
 
     <variablelist>
      	<varlistentry>
@@ -307,7 +307,7 @@ xml:lang="en">
     and the
     <emphasis role="bold"><literal>&#x201C;ibm,current-associativity-domains&#x201D;</literal></emphasis>
     properties in the <emphasis role="bold"><literal>/rtas</literal></emphasis> node of the device tree (see
-    <xref linkend="LoPAR.DeviceTree"/>).</para>
+    <xref linkend="dbdoclet.50569368_41461"/>).</para>
 
     <variablelist>
      	<varlistentry>
@@ -319,7 +319,7 @@ xml:lang="en">
             <emphasis role="bold"><literal>&#x201C;ibm,max-associativity-domains&#x201D;</literal></emphasis>
             and the
             <emphasis role="bold"><literal>&#x201C;ibm,current-associativity-domains&#x201D;</literal></emphasis>
-            properties in 
+            properties in
             the <emphasis role="bold"><literal>/rtas</literal></emphasis> node of the device tree.</para>
           </listitem>
      	</varlistentry>
@@ -343,7 +343,7 @@ xml:lang="en">
     preferred.</para>
     <para>The OS and platform firmware negotiate their mutual support of the
     PRRN option via the <emphasis role="bold"><literal>ibm,client-architecture-support</literal></emphasis>
-    interface (See <xref linkend="LoPAR.DeviceTree"/>). Should a partition be
+    interface (See <xref linkend="dbdoclet.50569368_13649"/>). Should a partition be
     migrated from a platform that did not support the PRRN option, the target
     platform does not notify the partition&#x2019;s OS of any PRRN events and, when
     possible avoids changing the affinity among the partition&#x2019;s resources.
@@ -353,7 +353,7 @@ xml:lang="en">
     events.</para>
     <para>A PRRN event is signaled via the RTAS <emphasis>event-scan</emphasis>
     mechanism, which returns a Hot Plug Event message &#x201C;fixed
-    part&#x201D; (See <xref linkend="LoPAR.Error"/>) indicating &#x201C;Platform
+    part&#x201D; (See <xref linkend="dbdoclet.50569337_28848"/>) indicating &#x201C;Platform
     Resource Reassignment&#x201D;. In response to the Hot Plug Event message, the
     OS may call <emphasis>ibm,update-nodes</emphasis> to determine which resources
     were reassigned, and then <emphasis>ibm,update-properties</emphasis> to obtain
@@ -443,7 +443,7 @@ xml:lang="en">
             </entry>
             <entry align="center">
               <para>
-                <emphasis role="bold">Description, Values (Described in <xref linkend="LoPAR.RTAS"/>)</emphasis>
+                <emphasis role="bold">Description, Values (Described in <xref linkend="dbdoclet.50569337_75663"/>)</emphasis>
               </para>
             </entry>
           </row>

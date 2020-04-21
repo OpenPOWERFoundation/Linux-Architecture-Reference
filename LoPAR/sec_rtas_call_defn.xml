@@ -33,7 +33,7 @@
       to hold OF options, RTAS information, machine configuration state, OS
       state, diagnostic logs, etc. The type and size of NVRAM is specified in
       the OF device tree. The format of NVRAM is detailed in
-      <xref linkend="LoPAR.Platform" />.</para>
+      <xref linkend="dbdoclet.50569333_15433" />.</para>
       <para>In order to give the OS the ability to access
       NVRAM on
       different platforms that may use different implementations or locations
@@ -346,7 +346,7 @@
                 <para>The caller of the
                 <emphasis>nvram-store</emphasis> RTAS call must maintain the NVRAM
                 partitions as specified in
-                <xref linkend="LoPAR.Platform" />.</para>
+                <xref linkend="dbdoclet.50569333_15433" />.</para>
               </listitem>
          	</varlistentry>
         </variablelist>
@@ -362,7 +362,7 @@
       clock which maintains the time of day even if power to the machine is
       removed. Minimum requirements for this clock are described in Requirement
 
-      <xref linkend="LoPAR.Platform" />.</para>
+      <xref linkend="dbdoclet.50569327_71913" />.</para>
 
       <section xml:id="sec_TOD">
         <title>Time of Day Inputs/Outputs</title>
@@ -785,7 +785,7 @@
                 <para><emphasis role="bold">Software Implementation Note:</emphasis> The OS maintains the clock in UTC.
                 This allows the OS and diagnostics to co-exist with each other and
                 provide uniform handling of time. Refer to Requirement
-                <xref linkend="LoPAR.Platform" /> for further details on the time
+                <xref linkend="dbdoclet.50569327_71913" /> for further details on the time
                 of day clock.</para>
               </listitem>
          	</varlistentry>
@@ -1232,7 +1232,7 @@
               <listitem>
                 <para>The <emphasis>event-scan</emphasis> call must fill in the error log with a
                 single error log formatted as specified in
-                <xref linkend="LoPAR.Error" />. If necessary, the data placed
+                <xref linkend="dbdoclet.50569337_22801" />. If necessary, the data placed
                 into the error log must be truncated to
                 <emphasis>length</emphasis> bytes.</para>
               </listitem>
@@ -1246,7 +1246,7 @@
                 that are within the classes defined by the
                 <emphasis>Event mask. Event mask</emphasis> is a bit mask of error and
                 event classes. Refer to
-                <xref linkend="LoPAR.Error" /> for the definition of the bit
+                <xref linkend="dbdoclet.50569337_82470" /> for the definition of the bit
                 positions.</para>
               </listitem>
          	</varlistentry>
@@ -1602,7 +1602,7 @@
               <listitem>
                 <para>The <emphasis>check-exception</emphasis> call must fill in the error log with
                 a single error log formatted as specified in
-                <xref linkend="LoPAR.Error" />. The data in the error log
+                <xref linkend="dbdoclet.50569337_22801" />. The data in the error log
                 must be truncated to
                 <emphasis>length</emphasis> bytes.</para>
               </listitem>
@@ -1636,7 +1636,7 @@
                 that are within the classes defined by the
                 <emphasis>Event mask. Event mask</emphasis> is a bit mask of error and
                 event classes. Refer to
-                <xref linkend="LoPAR.Error" /> for the definition of the bit
+                <xref linkend="dbdoclet.50569337_82470" /> for the definition of the bit
                 positions.</para>
               </listitem>
          	</varlistentry>
@@ -1655,7 +1655,7 @@
             <para>The
             <emphasis>interrupt number</emphasis> for external device interrupts is
             provided in the OF device tree as specified in
-            <xref linkend="LoPAR.Platform" />.</para>
+            <xref linkend="dbdoclet.50569368_91814" />.</para>
           </listitem>
 
           <listitem>
@@ -1789,7 +1789,7 @@
               <listitem>
                 <para>The <emphasis>rtas-last-error</emphasis> call must fill in the error log with
                 a single error log formatted as specified in
-                <xref linkend="LoPAR.Error" />. If necessary, the data placed
+                <xref linkend="dbdoclet.50569337_22801" />. If necessary, the data placed
                 into the error log must be truncated to &#8216;length&#8221;
                 bytes.</para>
               </listitem>
@@ -2689,7 +2689,7 @@
       <para>Device drivers and system software need access to
       PCI
       configuration space.
-      <xref linkend="LoPAR.Platform" /> section on "Address Map" defines
+      <xref linkend="dbdoclet.50569328_Address-Map" /> defines
       system address spaces for PCI memory and PCI I/O spaces. It does not
       define an address space for PCI configuration. Different PCI bridges may
       implement the mechanisms for accessing PCI configuration space in
@@ -2842,7 +2842,7 @@
           xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
             <listitem>
               <para>RTAS must follow the rules of
-              <xref linkend="LoPAR.Platform" /> when accessing PCI
+              <xref linkend="dbdoclet.50569330_49381" /> when accessing PCI
               configuration space.</para>
             </listitem>
        	</varlistentry>
@@ -2866,7 +2866,7 @@
           PCI-X Mode 2 and PCI Express devices, an IOA device driver is responsible
           for checking if the
           <emphasis role="bold"><literal>&#8220;ibm,pci-config-space-type&#8221;</literal></emphasis> property (see
-          <xref linkend="LoPAR.DeviceTree" />) of the IOA's node exists and
+          <xref linkend="dbdoclet.50569368_43390" />) of the IOA's node exists and
           is set to a non-zero value.</para>
         </listitem>
       </orderedlist>
@@ -3677,7 +3677,7 @@
         control characters carriage-return (CR) (0x0D) and line-feed (LF)
         (0x0A).</para>
         <para>The following OF properties are defined in
-        <xref linkend="LoPAR.DeviceTree" />:</para>
+        <xref linkend="dbdoclet.50569368_41461" />:</para>
 
         <itemizedlist>
           <listitem>
@@ -4993,7 +4993,7 @@
                 </entry>
                 <entry>
                   <para>When tone is required. See Requirement
-                  <xref linkend="LoPAR.Platform" />.</para>
+                  <xref linkend="dbdoclet.50569327_91037" />.</para>
                 </entry>
                 <entry>
                   <para>ibm</para>
@@ -5023,7 +5023,7 @@
                 </entry>
                 <entry>
                   <para>When tone is required. See Requirement
-                  <xref linkend="LoPAR.Platform" />.</para>
+                  <xref linkend="dbdoclet.50569327_91037" />.</para>
                 </entry>
                 <entry>
                   <para>ibm</para>
@@ -5170,7 +5170,7 @@
                   <para>Isolate refers to the DR action to logically disconnect
                   from the platform and/or OS (for example, for PCI, isolate from
                   the bus and from the OS). See
-                  <xref linkend="LoPAR.Virtualization" /> for more
+                  <xref linkend="dbdoclet.50569342_61130" /> for more
                   details.</para>
                 </entry>
               </row>
@@ -5206,8 +5206,8 @@
                   or just an Identify/Action indicator. Identify and Action may
                   map to the same visual state (for example, the same blink
                   rate). See
-                  <xref linkend="LoPAR.Error" /> and
-                  <xref linkend="LoPAR.Virtualization" /> for more
+                  <xref linkend="dbdoclet.50569347_31867" /> and
+                  <xref linkend="dbdoclet.50569342_42695" /> for more
                   information.</para>
                 </entry>
               </row>
@@ -5240,7 +5240,7 @@
                   <para>Allows an OS image to assign (usable, exchange, or
                   recover) resources from the firmware or, release resources from
                   the OS to the firmware. See
-                  <xref linkend="LoPAR.Virtualization" /> for more
+                  <xref linkend="dbdoclet.50569342_61130" /> for more
                   details.</para>
                 </entry>
               </row>
@@ -5321,7 +5321,7 @@
                 <entry>
                   <para>Yes</para>
                   <para>See
-                  <xref linkend="LoPAR.Error" />.</para>
+                  <xref linkend="dbdoclet.50569347_31867" />.</para>
                 </entry>
                 <entry>
                   <para>ibm</para>
@@ -5335,8 +5335,8 @@
                   system or a partition requires operator intervention for
                   another reason. The Error Log indicator is located only on the
                   Primary Enclosure. See
-                  <xref linkend="LoPAR.Error" /> and
-                  <xref linkend="LoPAR.Virtualization" /> for more
+                  <xref linkend="dbdoclet.50569347_31867" /> and
+                  <xref linkend="dbdoclet.50569342_42695" /> for more
                   information.</para>
                 </entry>
               </row>
@@ -5360,7 +5360,7 @@
                 <entry>
                   <para>Yes</para>
                   <para>See
-                  <xref linkend="LoPAR.Error" />.</para>
+                  <xref linkend="dbdoclet.50569347_31867" />.</para>
                 </entry>
                 <entry>
                   <para>ibm</para>
@@ -5377,8 +5377,8 @@
                   protect against the use of multiple 9007 indicators
                   simultaneously or multiple uses of the same 9007 indicator
                   simultaneously. See
-                  <xref linkend="LoPAR.Error" /> and
-                  <xref linkend="LoPAR.Virtualization" /> for more
+                  <xref linkend="dbdoclet.50569347_31867" /> and
+                  <xref linkend="dbdoclet.50569342_42695" /> for more
                   information.</para>
                 </entry>
               </row>
@@ -5696,8 +5696,7 @@
                           <para>-1: Hardware Error</para>
                           <para>-2: Hardware Busy, Try again later</para>
                           <para>-3: No such sensor implemented</para>
-                          <para>-9000: DR Entity isolated (
-                          <xref linkend="LoPAR.Virtualization" />)</para>
+                          <para>-9000: DR Entity isolated (<xref linkend="dbdoclet.50569342_75822" />)</para>
                         </entry>
                       </row>
                       <row>
@@ -5774,7 +5773,7 @@
           <listitem>
             <para>Critical High - The sensor value is greater than or equal to this
             limit. The platform may take some action and may initiate an EPOW (see
-            <xref linkend="LoPAR.Error" />). The OS may take some action
+            <xref linkend="dbdoclet.50569337_17513" />). The OS may take some action
             to correct this situation or to perform an orderly shutdown.</para>
           </listitem>
 
@@ -6260,8 +6259,8 @@
                   <para>Used in Dynamic Reconfiguration operations to determine
                   if connector is available and whether the user performed a
                   particular DR operation correctly. See
-                  <xref linkend="LoPAR.Virtualization" /> and
-                  <xref linkend="LoPAR.Virtualization" />.</para>
+                  <xref linkend="dbdoclet.50569342_75822" /> and
+                  <xref linkend="dbdoclet.50569342_85040" />.</para>
                 </entry>
               </row>
               <row>
@@ -6331,7 +6330,7 @@
                 <entry>
                   <para>Yes</para>
                   <para>See
-                  <xref linkend="LoPAR.Error" />.</para>
+                  <xref linkend="dbdoclet.50569347_31867" />.</para>
                 </entry>
                 <entry>
                   <para>ibm</para>
@@ -6359,7 +6358,7 @@
                 <entry>
                   <para>Yes</para>
                   <para>See
-                  <xref linkend="LoPAR.Error" />.</para>
+                  <xref linkend="dbdoclet.50569347_31867" />.</para>
                 </entry>
                 <entry>
                   <para>ibm</para>
@@ -6743,7 +6742,7 @@
             sensor. For example, the first entry of
             <emphasis role="bold"><literal>&#8220;ibm,sensor-9001&#8221;</literal></emphasis> contains the location
             code for fan#1. Location codes are shown in
-            <xref linkend="LoPAR.Platform" />. Of course, since it is an
+            <xref linkend="dbdoclet.50569341_35066" />. Of course, since it is an
             abstracted sensor, the entry for
             <emphasis role="bold"><literal>&#8220;ibm,sensor-9000&#8221;</literal></emphasis> is NULL.</para>
           </section>
@@ -6853,7 +6852,7 @@
                     property
                     <emphasis role="bold"><literal>&#8220;ibm,environmental-sensors&#8221;</literal></emphasis> in the
                     <emphasis role="bold"><literal>/rtas</literal></emphasis> node (see
-                    <xref linkend="LoPAR.DeviceTree" />).</para>
+                    <xref linkend="dbdoclet.50569368_41461" />).</para>
                   </listitem>
              	</varlistentry>
             </variablelist>
@@ -7749,7 +7748,7 @@
             under a UPS would be given by the platform as an EPOW event with EPOW
             event modifier being given as, 0x02 = Loss of utility power, system is
             running on UPS/Battery, as described in section
-            <xref linkend="LoPAR.Error" />.</para>
+            <xref linkend="dbdoclet.50569337_81250" />.</para>
           </listitem>
 
           <listitem>
@@ -7786,7 +7785,7 @@
                 <emphasis>system-reboot</emphasis> call which resets all processors and
                 all attached devices. After reset, the system must be booted with the
                 current settings of the System Environment Variables (refer to
-                <xref linkend="LoPAR.Platform" /> for more information).</para>
+                <xref linkend="dbdoclet.50569333_25869" /> for more information).</para>
               </listitem>
          	</varlistentry>
 
@@ -7894,7 +7893,7 @@
         in this section. It does not return to the OS if successful. This call
         supports RTAS instantiated in 32 bit mode to access storage at addresses
         above 4GB. In an exception to the LPAR Requirement
-        <xref linkend="LoPAR.Virtualization" /> this call supports block lists
+        <xref linkend="dbdoclet.50569344_48079" /> this call supports block lists
         being outside of the Real Mode Area (RMA) as long as the initial block
         list is at an address below the limits of the cell size of the
         <emphasis>Block_list</emphasis> argument.</para>
@@ -8213,7 +8212,7 @@
         <title>Flash Update with Discontiguous Block Lists</title>
         <para>The property
         <emphasis role="bold"><literal>&#8220;ibm,flash-block-version&#8221;</literal></emphasis> (see
-        <xref linkend="LoPAR.DeviceTree" />) is defined to describe the
+        <xref linkend="dbdoclet.50569368_41461" />) is defined to describe the
         following definition and operation of the
         <emphasis>Block_list</emphasis> shown in
         <xref linkend="dbdoclet.50569332_71043" />.</para>
@@ -9014,7 +9013,7 @@
           xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
             <listitem>
               <para><emphasis>(Merged into Requirement
-              <xref linkend="LoPAR.Platform" />)</emphasis></para>
+              <xref linkend="dbdoclet.50569340_88608" />)</emphasis></para>
             </listitem>
        	</varlistentry>
 
@@ -9023,7 +9022,7 @@
           xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
             <listitem>
               <para><emphasis>(Merged into Requirement
-              <xref linkend="LoPAR.Platform" />)</emphasis></para>
+              <xref linkend="dbdoclet.50569340_88608" />)</emphasis></para>
             </listitem>
        	</varlistentry>
       </variablelist>
@@ -9363,7 +9362,7 @@
 
         <para>
         <emphasis role="bold">Note:</emphasis> Requirement
-        <xref linkend="LoPAR.Platform" /> applies to the start-cpu RTAS
+        <xref linkend="dbdoclet.50569329_35915" /> applies to the start-cpu RTAS
         call. At the completion of start-cpu, the caches to be used by the
         specified processor must have been initialized and the state bits made
         accurate prior to beginning execution at the start address.</para>
@@ -10593,7 +10592,7 @@
                 favored level by firmware at boot), of the External Interrupt Vector
                 Entry associated with the interrupt number provided as an input argument
                 unless prevented by Requirement
-                <xref linkend="LoPAR.Virtualization" />.</para>
+                <xref linkend="dbdoclet.50569344_75733" />.</para>
               </listitem>
          	</varlistentry>
 
@@ -10789,7 +10788,7 @@
                 <emphasis>ibm,int-on</emphasis> call since boot), associated with the
                 interrupt number provided as an input argument unless prevented by
                 Requirement
-                <xref linkend="LoPAR.Virtualization" />.</para>
+                <xref linkend="dbdoclet.50569344_35543" />.</para>
               </listitem>
          	</varlistentry>
 
@@ -10978,7 +10977,7 @@
                 <emphasis>ibm,int-off</emphasis> call must disable interrupts from the
                 interrupt source associated with the interrupt number provided as an
                 input argument unless prevented by Requirement
-                <xref linkend="LoPAR.Virtualization" />.</para>
+                <xref linkend="dbdoclet.50569344_77100" />.</para>
               </listitem>
          	</varlistentry>
 
@@ -10997,7 +10996,7 @@
                 <emphasis>ibm,get-xive</emphasis> call and set the priority value of the
                 XIVE to the least favored priority value (0xFF), unless prevented by
                 Requirement
-                <xref linkend="LoPAR.Virtualization" />.</para>
+                <xref linkend="dbdoclet.50569344_77100" />.</para>
               </listitem>
          	</varlistentry>
 
@@ -11150,7 +11149,7 @@
                 <emphasis>ibm,int-on</emphasis> call must enable interrupts from the
                 interrupt source associated with the interrupt number provided as an
                 input argument unless prevented by Requirement
-                <xref linkend="LoPAR.Virtualization" />.</para>
+                <xref linkend="dbdoclet.50569344_77846" />.</para>
               </listitem>
          	</varlistentry>
 
@@ -11167,7 +11166,7 @@
                 saved by the previous
                 <emphasis>ibm,int-off</emphasis> call (initialized by the firmware to the
                 least favored level at boot) unless prevented by Requirement
-                <xref linkend="LoPAR.Virtualization" />.</para>
+                <xref linkend="dbdoclet.50569344_77100" />.</para>
               </listitem>
          	</varlistentry>
 
@@ -11280,7 +11279,7 @@
         <title>MSI Support</title>
         <para>This section describes the RTAS calls required when the MSI option
         is implemented. See
-        <xref linkend="LoPAR.Platform" /> for other platform requirements
+        <xref linkend="dbdoclet.50569331_33067" /> for other platform requirements
         for the MSI option.</para>
         <para>The Message Signaled Interrupt (MSI) and Enhanced MSI (MSI-X)
         capability of PCI IOAs in many cases allows for greater flexibility in
@@ -11371,7 +11370,7 @@
           interrupts from the IOA function. It is permissible to use LSI, MSI and
           MSI-X on different IOA functions.</para>
           <para>The default (initial) assignment of interrupts is defined in
-          <xref linkend="LoPAR.Platform" />.</para>
+          <xref linkend="dbdoclet.50569331_33067" />.</para>
 
           <variablelist>
            	<varlistentry>
@@ -11818,7 +11817,7 @@
 
             <listitem>
               <para>MSIs and MSI source numbers are not shared (see Requirement
-              <xref linkend="LoPAR.Platform" />).</para>
+              <xref linkend="dbdoclet.50569331_84312" />).</para>
             </listitem>
 
             <listitem>
@@ -11859,8 +11858,7 @@
             <listitem>
               <para>The platform will return a status -2 or 990x only when the OS
               indicates support. The OS indicates support via ibm,client-architecture-support,
-              vector 4. See <xref linkend="LoPAR.DeviceTree" /> section on "Root Node Methods"
-              for more information.</para>
+              vector 4. See <xref linkend="dbdoclet.50569368_13649" />.</para>
             </listitem>
           </orderedlist>
 
@@ -12121,7 +12119,7 @@
       order to be able to test device driver code that implements recovery
       based on the EEH option.</para>
       <para>See also,
-      <xref linkend="LoPAR.Platform" />, for additional information
+      <xref linkend="dbdoclet.50569381_46906" />, for additional information
       about implementing EEH error recovery.</para>
 
       <variablelist>
@@ -13212,15 +13210,14 @@
         </tgroup>
       </table>
 
-      <para>The PE configuration address (
-      <emphasis>PHB_Unit_ID_Hi, PHB_Unit_ID_Low, and config_addr</emphasis>)
+      <para>The PE configuration address (<emphasis>PHB_Unit_ID_Hi, PHB_Unit_ID_Low, and config_addr</emphasis>)
       for the domain is the PCI configuration address for the PE primary bus
       and is the same format as used for the ibm,read-pci-config and
       ibm,write-pci-config calls (see Requirement
       <xref linkend="dbdoclet.50569332_13648" />), except that the Register
       field is set to 0. The PE configuration address is obtained as indicated
       in
-      <xref linkend="LoPAR.Platform" />.</para>
+      <xref linkend="dbdoclet.50569330_40070" />.</para>
 
       <section xml:id="dbdoclet.50569332_27269">
         <title><emphasis>ibm,set-eeh-option</emphasis></title>
@@ -13386,7 +13383,7 @@
                 <emphasis>ibm,set-eeh-option Function</emphasis> 1 (enable EEH) is still
                 required as a signalling method from the device driver to the platform
                 that the device driver is at least EEH aware (see Requirement
-                <xref linkend="LoPAR.Platform" />).</para>
+                <xref linkend="dbdoclet.50569330_49770" />).</para>
               </listitem>
          	</varlistentry>
 
@@ -13910,7 +13907,7 @@
         that call can be used instead of this one to determine the PE
         configuration address. See
         <xref linkend="dbdoclet.50569332_68098" /> and
-        <xref linkend="LoPAR.Platform" />.</para>
+        <xref linkend="dbdoclet.50569330_40070" />.</para>
 
         <variablelist>
          	<varlistentry>
@@ -13986,7 +13983,7 @@
                           &#8220;ibm,read-slot-reset-state-functions&#8221;</literal></emphasis> property
                           in the
                           <emphasis>RTAS</emphasis> node of the device tree (
-                          <xref linkend="LoPAR.DeviceTree" />).</para>
+                          <xref linkend="dbdoclet.50569368_41461" />).</para>
                         </entry>
                       </row>
                       <row>
@@ -14345,7 +14342,7 @@
 
         <para>This call is used obtain information about fabric configuration
         addresses, given the PCI configuration address. See
-        <xref linkend="LoPAR.Platform" /> for more information on PEs and
+        <xref linkend="dbdoclet.50569330_34831" /> for more information on PEs and
         determining PE configuration addresses.</para>
         <para>The PCI configuration address (
         <emphasis>PHB_Unit_ID_Hi, PHB_Unit_ID_Low, and config_addr</emphasis>)
@@ -14617,7 +14614,7 @@
         log version used, the data in the
         <emphasis>Returned_Error_Buffer</emphasis> is in an extended log format as
         defined in
-        <xref linkend="LoPAR.Error" />. When the call returns data
+        <xref linkend="dbdoclet.50569337_22801" />. When the call returns data
         for version 6 or greater, the device driver error buffer data is included
         as the last User Data section. The device driver data in the return
         buffer may be truncated from what is passed by the device driver or
@@ -14932,7 +14929,7 @@
                 <emphasis>Device_Driver_Error_Buffer_Length</emphasis> argument is
                 non-zero, indicating the existence of optional device driver error data,
                 the referenced buffer must contain an extended event log as defined in
-                <xref linkend="LoPAR.Error" />.</para>
+                <xref linkend="dbdoclet.50569337_22801" />.</para>
               </listitem>
          	</varlistentry>
 
@@ -16023,7 +16020,7 @@
                     device driver or OS from the restoration of non-interrupts the PCI
                     configuration space for changes that were made to the configuration space
                     after boot (see Requirement
-                    <xref linkend="LoPAR.Platform" />).</para>
+                    <xref linkend="dbdoclet.50569335_13568" />).</para>
                   </listitem>
                 </orderedlist>
               </listitem>
@@ -16596,7 +16593,7 @@
               <emphasis role="bold"><literal>&#8220;ibm,errinjct-tokens&#8221;</literal></emphasis> property as defined
               below in the
               <emphasis role="bold"><literal>/rtas</literal></emphasis> node (see
-              <xref linkend="LoPAR.DeviceTree" />) of the OF device tree with a
+              <xref linkend="dbdoclet.50569368_41461" />) of the OF device tree with a
               specification for each implemented error injection class.</para>
             </listitem>
        	</varlistentry>
@@ -17173,7 +17170,7 @@
                           <para>For PHB implementations that do not allow injection of
                           a TLP ECRC error into the request, or for the case where the
                           injection would be in violation of Requirement
-                          <xref linkend="LoPAR.Platform" /> due to the hardware
+                          <xref linkend="dbdoclet.50569330_20501" /> due to the hardware
                           configuration, the platform should emulate the error by
                           setting the appropriate error state in the PHB when EEH is
                           enabled.</para>
@@ -17486,7 +17483,7 @@
       should the hardware signal a machine check or system reset interrupt. The
       results of an error analysis are reported via a standard error log
       structure as defined in
-      <xref linkend="LoPAR.Error" />. The storage containing the
+      <xref linkend="dbdoclet.50569337_21249" />. The storage containing the
       error log structure is subsequently released back to firmware use by the
       OS after it has completed its event handling by the issuance, from the
       interrupted processor, of the
@@ -17819,7 +17816,7 @@
               contains the real address of a 16 byte memory buffer containing the
               original contents of GPR R3 in the first 8 bytes and the RTAS Error Log
               (fixed part) (per
-              <xref linkend="LoPAR.Error" />) in the second 8 bytes.</para>
+              <xref linkend="dbdoclet.50569337_21249" />) in the second 8 bytes.</para>
             </listitem>
        	</varlistentry>
 
@@ -17841,7 +17838,7 @@
               <para><emphasis role="bold">For the FWNMI option:</emphasis> Once the firmware has reported
               a &#8220;fatal&#8221; machine check event to an OS image it must only
               report &#8220;fatal error previously reported&#8221; (see
-              <xref linkend="LoPAR.Error" />) in response to machine checks
+              <xref linkend="dbdoclet.50569337_37595" />) in response to machine checks
               on any processor belonging to that image.</para>
             </listitem>
        	</varlistentry>
@@ -19012,7 +19009,7 @@
         <listitem>
           <para>The format of the SPLPAR string is beyond the scope of this
           architecture. See also,
-          <xref linkend="LoPAR.Virtualization" />.</para>
+          <xref linkend="dbdoclet.50569367_15730" />.</para>
         </listitem>
 
         <listitem>

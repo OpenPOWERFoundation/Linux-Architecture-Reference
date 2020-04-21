@@ -28,38 +28,6 @@
         revision, the revision shall apply.</para>
     <orderedlist>
 
-    <!-- TODO: Uncomment documents needing referencing and comment out local document -->
-	  <listitem>
-        <para><anchor xml:id="LoPAR.Platform"
-        xreflabel="Linux on Power Architecture Reference: Platform"/><citetitle>
-        Linux on Power Architecture Reference: Platform and Device Tree</citetitle></para>
-	  </listitem>
-
-	  <listitem>
-        <para><anchor xml:id="LoPAR.DeviceTree"
-        xreflabel="Linux on Power Architecture Reference: Device Tree"/><citetitle>
-        Linux on Power Architecture Reference: Device Tree</citetitle></para>
-	  </listitem>
-
-	  <listitem>
-        <para><anchor xml:id="LoPAR.Error"
-        xreflabel="Linux on Power Architecture Reference: Error Recovery and Logging"/><citetitle>
-        Linux on Power Architecture Reference: Error Recovery and Logging</citetitle></para>
-	  </listitem>
-
-	  <listitem>
-        <para><anchor xml:id="LoPAR.Virtualization"
-        xreflabel="Linux on Power Architecture Reference: Virtualization"/><citetitle>
-        Linux on Power Architecture Reference: Virtualization</citetitle></para>
-	  </listitem>
-
-	  <listitem>
-        <para><anchor xml:id="LoPAR.RTAS"
-        xreflabel="Linux on Power Architecture Reference: Runtime Abstraction Services (RTAS)"/><citetitle>
-        Linux on Power Architecture Reference: Runtime Abstraction Services (RTAS)</citetitle></para>
-	  </listitem>
-    <!-- End TODO list -->
-
 	  <listitem>
         <para><citetitle>Power ISA</citetitle><anchor xml:id="dbdoclet.50569387_99718"
         xreflabel="Power ISA specification"/></para>

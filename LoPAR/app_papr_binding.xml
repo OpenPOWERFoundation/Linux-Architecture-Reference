@@ -1711,387 +1711,6 @@
   			  </varlistentry>
 
           <varlistentry>
-            <term><emphasis role="bold"><literal>&#8220;ibm,platform-hardware-notification&#8221;</literal></emphasis></term>
-              <listitem>
-                <para>
-                <emphasis>property name</emphasis> indicating to the OS the presence of
-                hardware for which the OS may need to take action. This property exists
-                to notify the OS of hardware elements on the platform which may require
-                special handling by the OS, such as in response to a hardware
-                errata.</para>
-                <para>
-                <emphasis>prop-encoded-array</emphasis>: An integer encoded as with
-                <emphasis role="bold"><literal>encode-int</literal></emphasis> followed by a list of strings encoded as
-                with
-                <emphasis role="bold"><literal>encode-string</literal></emphasis>.</para>
-                <para>The first element represents the number of strings to follow in the
-                property. Each string in the array names a hardware element that may
-                require the OS to take specific action. The intention is that the string
-                is to name the hardware element being reported. It is not the intention
-                to define (or even hint at) the action that the OS must take. It is
-                expected that some source outside this document will contain a cross
-                reference between these strings and documentation such as hardware errata
-                notes which define the action the OS must take.</para>
-                <para>If the
-                <emphasis role="bold"><literal>&#8220;ibm,platform-hardware-notification&#8221;</literal></emphasis>
-                property is provided and a string begins with the &lt;name&gt; field of the
-                <emphasis role="bold"><literal>&#8220;name&#8221;</literal></emphasis> (see
-                <xref linkend="dbdoclet.50569374_59715" />) property in the
-                <emphasis>CPU</emphasis> nodes followed by an underscore, the characters
-                following the underscore are a hexadecimal representation of the contents
-                of a Processor Version Register that the platform may contain.</para>
-              </listitem>
-  			  </varlistentry>
-
-          <varlistentry>
-            <term><emphasis role="bold"><literal>&#8220;ibm,fault-behavior&#8221;</literal></emphasis></term>
-              <listitem>
-                <para>
-                <emphasis>property name</emphasis> to define the behavior of the Error Log
-                indicator relative to FRU faults.</para>
-                <para>
-                <emphasis>prop-encoded-array</emphasis>: An integer encoded as with
-                encode-int that represents how the Error Log indicator should be handled
-                when a FRU fault is detected.</para>
-                <para>Property non-existent -- The OS may set FRU Fault and Error Log
-                indicators for all errors (those it detected and those that the platform
-                reports to the OS).</para>
-                <para>Property exists with a value of 1 -- The OS only sets FRU Fault and
-                Error Log indicators for errors it detects.</para>
-              </listitem>
-  			  </varlistentry>
-
-          <varlistentry>
-            <term><emphasis role="bold"><literal>&#8220;ibm,fru-9006-deactivate&#8221;</literal></emphasis></term>
-              <listitem>
-                <para>
-                <emphasis>property name</emphasis> to define whether or not the OS should
-                deactivate 9006 indicators that it has activated.</para>
-                <para>
-                <emphasis>prop-encoded-array</emphasis>: An integer encoded as with
-                encode-int that represents how the OS should behave relative to FRU Fault
-                indicator deactivation.</para>
-                <para>Property non-existent -- The OS is responsible for deactivating FRU
-                level 9006 indicators that it has activated.</para>
-                <para>Property exists with a value of 1 -- The OS should not deactivate
-                FRU level 9006 indicators that it has activated, but is allowed to do so
-                (firmware does not block). The deactivation of the FRU level 9006
-                indicators is platform and service procedure dependent.</para>
-              </listitem>
-  			  </varlistentry>
-
-          <varlistentry>
-            <term><emphasis role="bold"><literal>&#8220;compatible&#8221; [S]</literal></emphasis></term>
-              <listitem>
-                <para>Standard
-                <emphasis>property name</emphasis> that conveys the platform architecture
-                identifiers.</para>
-                <para>
-                <emphasis>prop-encoded-array</emphasis>: The concatenation, with
-                <emphasis role="bold"><literal>encode+</literal></emphasis>, of an arbitrary number of text strings,
-                each encoded with
-                <emphasis role="bold"><literal>encode-string</literal></emphasis>.</para>
-                <para>Specifies a list of platform architectures with which this platform
-                is compatible. This is used by a client program when it is trying to
-                determine the appropriate support for this platform. This property shall
-                include the substring &#8220;LoPAR-&lt;LoPAR
-                version&gt;-&lt;Manufacturer&gt;-&lt;Manufacturer Version&gt;&#8221;
-                where &lt;LoPAR version&gt; is the text (without blanks) after the word
-                &#8220;Version&#8221; on the cover page of the LoPAR specification that
-                the platform adheres to, &lt;Manufacturer&gt; is a unique string
-                identifying the manufacturer of the platform (see the OF standard
-                description of the
-                <emphasis role="bold"><literal>&#8220;name&#8221;</literal></emphasis> property for suggestions), and
-                &lt;Manufacturer_Version&gt; is defined by the manufacturer of the
-                platform.</para>
-                <para>
-                <emphasis role="bold">Note:</emphasis> In order to comply with the OF Standard
-                description of the
-                <emphasis role="bold"><literal>&#8220;compatible&#8221;</literal></emphasis> property, implementations
-                should place the &#8220;LoPAR-&lt;LoPPR
-                version&gt;-&lt;Manufacturer&gt;-&lt;Manufacturer Version&gt;&#8221;
-                substring after values that were present in the
-                <emphasis role="bold"><literal>&#8220;compatible&#8221;</literal></emphasis> property prior to the
-                inclusion of the &#8220;LoPAR-&lt;LoPAR
-                version&gt;-&lt;Manufacturer&gt;-&lt;Manufacturer Version&gt;&#8221;
-                substring.</para>
-              </listitem>
-  			  </varlistentry>
-
-          <varlistentry>
-            <term><emphasis role="bold"><literal>&#8220;ibm,max-vios-function-level&#8221;</literal></emphasis></term>
-              <listitem>
-                <para>
-                <emphasis>property name</emphasis> to define the maximum vios function
-                level that a client shall permit.</para>
-                <para>
-                <emphasis>prop-encoded-array</emphasis>: An integer encoded as with
-                <emphasis role="bold"><literal>encode-int</literal></emphasis> that represents the maximum VIOS level
-                that the client shall negotiate. See
-                <xref linkend="LoPAR.Virtualization" /> for the definition of the
-                values of this property.</para>
-              </listitem>
-  			  </varlistentry>
-
-          <varlistentry>
-            <term><emphasis role="bold"><literal>&#8220;ibm,partition-performance-parameters-level&#8221;</literal></emphasis></term>
-              <listitem>
-                <para>
-                <emphasis>property name</emphasis> to define the level of partition
-                performance parameter reporting supported by the platform.</para>
-                <para>
-                <emphasis>prop-encoded-array</emphasis>: An integer encoded as with
-                encode-int that represents the level of partition performance parameter
-                reporting supported by the platform (See
-                <xref linkend="dbdoclet.50569368_69425" />).</para>
-
-                <table frame="all" pgwide="1" xml:id="dbdoclet.50569368_69425">
-                  <title>Level of Partition Performance Parameter Reporting
-                  Supported</title>
-                  <?dbhtml table-width="75%" ?>
-                  <?dbfo table-width="75%" ?>
-                  <tgroup cols="2">
-                    <colspec colname="c1" colwidth="30*" align="center" />
-                    <colspec colname="c2" colwidth="70*" />
-                    <thead>
-                      <row>
-                        <entry>
-                          <para>
-                            <emphasis role="bold">Partition Performance Parameter
-                            Level</emphasis>
-                          </para>
-                        </entry>
-                        <entry align="center">
-                          <para>
-                            <emphasis role="bold">Description</emphasis>
-                          </para>
-                        </entry>
-                      </row>
-                    </thead>
-                    <tbody>
-                      <row>
-                        <entry>
-                          <para>0</para>
-                        </entry>
-                        <entry>
-                          <para>Base Level</para>
-                        </entry>
-                      </row>
-                      <row>
-                        <entry>
-                          <para>1</para>
-                        </entry>
-                        <entry>
-                          <para>Addition of Processor Virtualization Resource Allocations
-                          to H_GET_PPP and Virtualization Processor idle count to
-                          H_PIC</para>
-                        </entry>
-                      </row>
-                    </tbody>
-                  </tgroup>
-                </table>
-              </listitem>
-  			  </varlistentry>
-
-          <varlistentry>
-            <term><emphasis role="bold"><literal>&#8220;ibm,preconfigure-usb-kvm&#8221;</literal></emphasis></term>
-              <listitem>
-                <para>
-                <emphasis>property name</emphasis> the presence of which indicates that
-                the platform requires the operating system to force configuration of the
-                USB keyboard/mouse nodes during its configuration phase.</para>
-                <para>
-                <emphasis>prop-encoded-array</emphasis>: &lt;NULL&gt;</para>
-                <para>This property, when present in the root node, indicates that the
-                platform requires the operating system to force pre-configuration of USB
-                keyboard/mouse nodes internally during its configuration phase. This
-                property is presented only by platforms with a KVM switch that desire to
-                force configuration by one or more target operating systems that do not
-                fully support dynamic addition of USB keyboard and mouse unless the USB
-                keyboard and mouse are actually seen during the operating system
-                configuration phase, but may be present even if the KVM switch is not
-                present when the device tree is inspected. Forced pre-configuration is
-                needed since the operating system may not actually see the USB keyboard
-                and mouse during its configuration phase due to the KVM switch that the
-                platform uses only shows USB keyboard and mouse when those devices are
-                actually switched to the appropriate KVM switch port.</para>
-              </listitem>
-  			  </varlistentry>
-
-          <varlistentry>
-            <term><emphasis role="bold"><literal>&#8220;ibm,enable-ci64-capable&#8221;</literal></emphasis></term>
-              <listitem>
-                <para>
-                <emphasis>property name</emphasis> to define the platform supports the
-                <emphasis role="bold"><literal>&#8220;ibm,enable-ci64&#8221;</literal></emphasis> method in the Client
-                Interface.</para>
-                <para>
-                <emphasis>prop-encoded-array</emphasis>: None, this is a name only
-                property.</para>
-              </listitem>
-  			  </varlistentry>
-
-          <varlistentry>
-            <term><emphasis role="bold"><literal>&#8220;ibm,migratable-partition&#8221;</literal></emphasis></term>
-              <listitem>
-                <para>
-                <emphasis>property name</emphasis> indicating that the platform supports
-                the potential migration of this partition.</para>
-                <para>
-                <emphasis>prop-encoded-array</emphasis>: &lt;NULL&gt;</para>
-              </listitem>
-  			  </varlistentry>
-
-          <varlistentry>
-            <term><emphasis role="bold"><literal>&#8220;ibm,extended-address&#8221;</literal></emphasis> [S]</term>
-              <listitem>
-                <para>
-                <emphasis>property name</emphasis> indicates this platform supports
-                Peripheral Memory Spaces, Peripheral I/O Spaces, and SCA spaces above 4
-                GB.</para>
-                <para>
-                <emphasis>prop-encoded-array</emphasis>: &lt;none&gt;</para>
-                <para>This property must be present.</para>
-              </listitem>
-  			  </varlistentry>
-
-          <varlistentry>
-            <term><emphasis role="bold"><literal>&#8220;ibm,ignore-hp-po-fails-for-dlpar&#8221;</literal></emphasis></term>
-              <listitem>
-                <para>
-                <emphasis>property name</emphasis> to define that the OS may ignore
-                failures of Hot Plug power off and isolate operations during a DLPAR
-                remove operation. See also Note 2 in
-                <xref linkend="LoPAR.Virtualization" />.</para>
-                <para>
-                <emphasis>prop-encoded-array</emphasis>: None, this is a name only
-                property.</para>
-              </listitem>
-  			  </varlistentry>
-
-          <varlistentry>
-            <term><emphasis role="bold"><literal>&#8220;ibm,managed-address-types&#8221;</literal></emphasis></term>
-              <listitem>
-                <para>
-                <emphasis>property name</emphasis> that conveys the platform's supported
-                types of external addresses that are reprogrammable.</para>
-                <para>
-                <emphasis>prop-encoded-array</emphasis>: The concatenation, with
-                <emphasis role="bold"><literal>encode+</literal></emphasis>, of an arbitrary number of text strings as
-                described in
-                <xref linkend="dbdoclet.50569368_71702" />, each encoded with
-                <emphasis role="bold"><literal>encode-string</literal></emphasis>.</para>
-
-                <table frame="all" pgwide="1" xml:id="dbdoclet.50569368_71702">
-                  <title>Address types supported in
-                  <emphasis role="bold"><literal>&#8220;ibm,managed-address-types&#8221;</literal></emphasis>
-                  property</title>
-                  <?dbhtml table-width="75%" ?>
-                  <?dbfo table-width="75%" ?>
-                  <tgroup cols="2">
-                    <colspec colname="c1" colwidth="40*" align="center" />
-                    <colspec colname="c2" colwidth="60*" align="center" />
-                    <thead>
-                      <row>
-                        <entry>
-                          <para>
-                            <emphasis role="bold">Text String</emphasis>
-                          </para>
-                        </entry>
-                        <entry>
-                          <para>
-                            <emphasis role="bold">Description</emphasis>
-                          </para>
-                        </entry>
-                      </row>
-                    </thead>
-                    <tbody>
-                      <row>
-                        <entry>
-                          <para>ethernet_mac</para>
-                        </entry>
-                        <entry>
-                          <para>Ethernet MAC address</para>
-                        </entry>
-                      </row>
-                      <row>
-                        <entry>
-                          <para>ethernet_vlan</para>
-                        </entry>
-                        <entry>
-                          <para>Ethernet VLAN ID (for default traffic)</para>
-                        </entry>
-                      </row>
-                      <row>
-                        <entry>
-                          <para>san_wwn</para>
-                        </entry>
-                        <entry>
-                          <para>Fibre Channel World Wide Name (covers both Port &amp;
-                          Node names)</para>
-                        </entry>
-                      </row>
-                      <row>
-                        <entry>
-                          <para>sas_wwid</para>
-                        </entry>
-                        <entry>
-                          <para>SAS IOA's WWID value</para>
-                        </entry>
-                      </row>
-                    </tbody>
-                  </tgroup>
-                </table>
-              </listitem>
-  			  </varlistentry>
-
-          <varlistentry>
-            <term><emphasis role="bold"><literal>&#8220;ibm,service-indicator-mode&#8221;</literal></emphasis></term>
-              <listitem>
-                <para>
-                <emphasis>property name</emphasis> indicates in which service indicator
-                mode the platform is operating.</para>
-                <para>
-                <emphasis>prop-encoded-array</emphasis>: an integer encoded as with
-                <emphasis role="bold"><literal>encode-int</literal></emphasis> that represents the mode. Defined values
-                are:</para>
-
-
-                <itemizedlist>
-                  <listitem>
-                    <para>0 = Platform is operating in the Guiding Light mode.</para>
-                  </listitem>
-
-                  <listitem>
-                    <para>1 = Platform is operating in the Lightpath mode.</para>
-                  </listitem>
-                </itemizedlist>
-              </listitem>
-  			  </varlistentry>
-
-          <varlistentry>
-            <term><emphasis role="bold"><literal>&#8220;ibm,guid-partition-table&#8221;</literal></emphasis></term>
-              <listitem>
-                <para>
-                <emphasis>property name</emphasis> indicates that the partition supports disks
-                with the GUID Partition Table.</para>
-                <para>
-                <emphasis>prop-encoded-array</emphasis>: &lt;NULL&gt;</para>
-              </listitem>
-  			  </varlistentry>
-
-          <varlistentry>
-            <term><emphasis role="bold"><literal>&#8220;ibm,linux-le-capable&#8221;</literal></emphasis></term>
-              <listitem>
-                <para>
-                <emphasis>property name</emphasis> indicates that the partition is capable of
-                supporting boot of Little Endian Linux.</para>
-                <para>
-                <emphasis>prop-encoded-array</emphasis>: &lt;NULL&gt;</para>
-              </listitem>
-  			  </varlistentry>
-
-          <varlistentry>
             <term><emphasis role="bold"><literal>&#8220;ibm,partition-uuid&#8221;</literal></emphasis></term>
               <listitem>
                 <para>
@@ -2232,7 +1851,7 @@
                 </table>
 
 
-                <para>For the GET_PARTNER_UUID subfunction (See <xref linkend="LoPAR.Virtualization"/>), the data is
+                <para>For the GET_PARTNER_UUID subfunction (See <xref linkend="dbdoclet.50569348_62564"/>), the data is
                 represented as 16 bytes as described in <xref linkend="dbdoclet.50569332_20419"/>.</para>
                 <para>For the ibm,partition-uuid property, the data is represented as a string of
                 hexadecimal characters, with hyphens added for readability.
@@ -2240,31 +1859,410 @@
                 representation of the UUID is 648a9ca6-1fb4-4f7e-9436-14d015f3dd74</para>
               </listitem>
   			  </varlistentry>
+
+          <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;ibm,platform-hardware-notification&#8221;</literal></emphasis></term>
+              <listitem>
+                <para>
+                <emphasis>property name</emphasis> indicating to the OS the presence of
+                hardware for which the OS may need to take action. This property exists
+                to notify the OS of hardware elements on the platform which may require
+                special handling by the OS, such as in response to a hardware
+                errata.</para>
+                <para>
+                <emphasis>prop-encoded-array</emphasis>: An integer encoded as with
+                <emphasis role="bold"><literal>encode-int</literal></emphasis> followed by a list of strings encoded as
+                with
+                <emphasis role="bold"><literal>encode-string</literal></emphasis>.</para>
+                <para>The first element represents the number of strings to follow in the
+                property. Each string in the array names a hardware element that may
+                require the OS to take specific action. The intention is that the string
+                is to name the hardware element being reported. It is not the intention
+                to define (or even hint at) the action that the OS must take. It is
+                expected that some source outside this document will contain a cross
+                reference between these strings and documentation such as hardware errata
+                notes which define the action the OS must take.</para>
+                <para>If the
+                <emphasis role="bold"><literal>&#8220;ibm,platform-hardware-notification&#8221;</literal></emphasis>
+                property is provided and a string begins with the &lt;name&gt; field of the
+                <emphasis role="bold"><literal>&#8220;name&#8221;</literal></emphasis> (see
+                <xref linkend="dbdoclet.50569374_59715" />) property in the
+                <emphasis>CPU</emphasis> nodes followed by an underscore, the characters
+                following the underscore are a hexadecimal representation of the contents
+                of a Processor Version Register that the platform may contain.</para>
+              </listitem>
+  			  </varlistentry>
+
+          <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;ibm,fault-behavior&#8221;</literal></emphasis></term>
+              <listitem>
+                <para>
+                <emphasis>property name</emphasis> to define the behavior of the Error Log
+                indicator relative to FRU faults.</para>
+                <para>
+                <emphasis>prop-encoded-array</emphasis>: An integer encoded as with
+                encode-int that represents how the Error Log indicator should be handled
+                when a FRU fault is detected.</para>
+                <para>Property non-existent -- The OS may set FRU Fault and Error Log
+                indicators for all errors (those it detected and those that the platform
+                reports to the OS).</para>
+                <para>Property exists with a value of 1 -- The OS only sets FRU Fault and
+                Error Log indicators for errors it detects.</para>
+              </listitem>
+  			  </varlistentry>
+
+          <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;ibm,fru-9006-deactivate&#8221;</literal></emphasis></term>
+              <listitem>
+                <para>
+                <emphasis>property name</emphasis> to define whether or not the OS should
+                deactivate 9006 indicators that it has activated.</para>
+                <para>
+                <emphasis>prop-encoded-array</emphasis>: An integer encoded as with
+                encode-int that represents how the OS should behave relative to FRU Fault
+                indicator deactivation.</para>
+                <para>Property non-existent -- The OS is responsible for deactivating FRU
+                level 9006 indicators that it has activated.</para>
+                <para>Property exists with a value of 1 -- The OS should not deactivate
+                FRU level 9006 indicators that it has activated, but is allowed to do so
+                (firmware does not block). The deactivation of the FRU level 9006
+                indicators is platform and service procedure dependent.</para>
+              </listitem>
+  			  </varlistentry>
+
+          <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;compatible&#8221; [S]</literal></emphasis></term>
+              <listitem>
+                <para>Standard
+                <emphasis>property name</emphasis> that conveys the platform architecture
+                identifiers.</para>
+                <para>
+                <emphasis>prop-encoded-array</emphasis>: The concatenation, with
+                <emphasis role="bold"><literal>encode+</literal></emphasis>, of an arbitrary number of text strings,
+                each encoded with
+                <emphasis role="bold"><literal>encode-string</literal></emphasis>.</para>
+                <para>Specifies a list of platform architectures with which this platform
+                is compatible. This is used by a client program when it is trying to
+                determine the appropriate support for this platform. This property shall
+                include the substring &#8220;LoPAR-&lt;LoPAR
+                version&gt;-&lt;Manufacturer&gt;-&lt;Manufacturer Version&gt;&#8221;
+                where &lt;LoPAR version&gt; is the text (without blanks) after the word
+                &#8220;Version&#8221; on the cover page of the LoPAR specification that
+                the platform adheres to, &lt;Manufacturer&gt; is a unique string
+                identifying the manufacturer of the platform (see the OF standard
+                description of the
+                <emphasis role="bold"><literal>&#8220;name&#8221;</literal></emphasis> property for suggestions), and
+                &lt;Manufacturer_Version&gt; is defined by the manufacturer of the
+                platform.</para>
+                <para>
+                <emphasis role="bold">Note:</emphasis> In order to comply with the OF Standard
+                description of the
+                <emphasis role="bold"><literal>&#8220;compatible&#8221;</literal></emphasis> property, implementations
+                should place the &#8220;LoPAR-&lt;LoPPR
+                version&gt;-&lt;Manufacturer&gt;-&lt;Manufacturer Version&gt;&#8221;
+                substring after values that were present in the
+                <emphasis role="bold"><literal>&#8220;compatible&#8221;</literal></emphasis> property prior to the
+                inclusion of the &#8220;LoPAR-&lt;LoPAR
+                version&gt;-&lt;Manufacturer&gt;-&lt;Manufacturer Version&gt;&#8221;
+                substring.</para>
+              </listitem>
+  			  </varlistentry>
+
+          <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;ibm,max-vios-function-level&#8221;</literal></emphasis></term>
+              <listitem>
+                <para>
+                <emphasis>property name</emphasis> to define the maximum vios function
+                level that a client shall permit.</para>
+                <para>
+                <emphasis>prop-encoded-array</emphasis>: An integer encoded as with
+                <emphasis role="bold"><literal>encode-int</literal></emphasis> that represents the maximum VIOS level
+                that the client shall negotiate. See
+                <xref linkend="dbdoclet.50569379_75285" /> for the definition of the
+                values of this property.</para>
+              </listitem>
+  			  </varlistentry>
+
+          <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;ibm,partition-performance-parameters-level&#8221;</literal></emphasis></term>
+              <listitem>
+                <para>
+                <emphasis>property name</emphasis> to define the level of partition
+                performance parameter reporting supported by the platform.</para>
+                <para>
+                <emphasis>prop-encoded-array</emphasis>: An integer encoded as with
+                encode-int that represents the level of partition performance parameter
+                reporting supported by the platform (See
+                <xref linkend="dbdoclet.50569368_69425" />).</para>
+
+                <table frame="all" pgwide="1" xml:id="dbdoclet.50569368_69425">
+                  <title>Level of Partition Performance Parameter Reporting
+                  Supported</title>
+                  <?dbhtml table-width="75%" ?>
+                  <?dbfo table-width="75%" ?>
+                  <tgroup cols="2">
+                    <colspec colname="c1" colwidth="30*" align="center" />
+                    <colspec colname="c2" colwidth="70*" />
+                    <thead>
+                      <row>
+                        <entry>
+                          <para>
+                            <emphasis role="bold">Partition Performance Parameter
+                            Level</emphasis>
+                          </para>
+                        </entry>
+                        <entry align="center">
+                          <para>
+                            <emphasis role="bold">Description</emphasis>
+                          </para>
+                        </entry>
+                      </row>
+                    </thead>
+                    <tbody>
+                      <row>
+                        <entry>
+                          <para>0</para>
+                        </entry>
+                        <entry>
+                          <para>Base Level</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>1</para>
+                        </entry>
+                        <entry>
+                          <para>Addition of Processor Virtualization Resource Allocations
+                          to H_GET_PPP and Virtualization Processor idle count to
+                          H_PIC</para>
+                        </entry>
+                      </row>
+                    </tbody>
+                  </tgroup>
+                </table>
+              </listitem>
+  			  </varlistentry>
+
+          <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;ibm,preconfigure-usb-kvm&#8221;</literal></emphasis></term>
+              <listitem>
+                <para>
+                <emphasis>property name</emphasis> the presence of which indicates that
+                the platform requires the operating system to force configuration of the
+                USB keyboard/mouse nodes during its configuration phase.</para>
+                <para>
+                <emphasis>prop-encoded-array</emphasis>: &lt;NULL&gt;</para>
+                <para>This property, when present in the root node, indicates that the
+                platform requires the operating system to force pre-configuration of USB
+                keyboard/mouse nodes internally during its configuration phase. This
+                property is presented only by platforms with a KVM switch that desire to
+                force configuration by one or more target operating systems that do not
+                fully support dynamic addition of USB keyboard and mouse unless the USB
+                keyboard and mouse are actually seen during the operating system
+                configuration phase, but may be present even if the KVM switch is not
+                present when the device tree is inspected. Forced pre-configuration is
+                needed since the operating system may not actually see the USB keyboard
+                and mouse during its configuration phase due to the KVM switch that the
+                platform uses only shows USB keyboard and mouse when those devices are
+                actually switched to the appropriate KVM switch port.</para>
+              </listitem>
+  			  </varlistentry>
+
+          <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;ibm,enable-ci64-capable&#8221;</literal></emphasis></term>
+              <listitem>
+                <para>
+                <emphasis>property name</emphasis> to define the platform supports the
+                <emphasis role="bold"><literal>&#8220;ibm,enable-ci64&#8221;</literal></emphasis> method in the Client
+                Interface.</para>
+                <para>
+                <emphasis>prop-encoded-array</emphasis>: None, this is a name only
+                property.</para>
+              </listitem>
+  			  </varlistentry>
+
+          <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;ibm,migratable-partition&#8221;</literal></emphasis></term>
+              <listitem>
+                <para>
+                <emphasis>property name</emphasis> indicating that the platform supports
+                the potential migration of this partition.</para>
+                <para>
+                <emphasis>prop-encoded-array</emphasis>: &lt;NULL&gt;</para>
+              </listitem>
+  			  </varlistentry>
+
+          <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;ibm,extended-address&#8221;</literal></emphasis> [S]</term>
+              <listitem>
+                <para>
+                <emphasis>property name</emphasis> indicates this platform supports
+                Peripheral Memory Spaces, Peripheral I/O Spaces, and SCA spaces above 4
+                GB.</para>
+                <para>
+                <emphasis>prop-encoded-array</emphasis>: &lt;none&gt;</para>
+                <para>This property must be present.</para>
+              </listitem>
+  			  </varlistentry>
+
+          <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;ibm,ignore-hp-po-fails-for-dlpar&#8221;</literal></emphasis></term>
+              <listitem>
+                <para>
+                <emphasis>property name</emphasis> to define that the OS may ignore
+                failures of Hot Plug power off and isolate operations during a DLPAR
+                remove operation. See also Note 2 in
+                <xref linkend="dbdoclet.50569342_17600" />.</para>
+                <para>
+                <emphasis>prop-encoded-array</emphasis>: None, this is a name only
+                property.</para>
+              </listitem>
+  			  </varlistentry>
+
+          <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;ibm,managed-address-types&#8221;</literal></emphasis></term>
+              <listitem>
+                <para>
+                <emphasis>property name</emphasis> that conveys the platform's supported
+                types of external addresses that are reprogrammable.</para>
+                <para>
+                <emphasis>prop-encoded-array</emphasis>: The concatenation, with
+                <emphasis role="bold"><literal>encode+</literal></emphasis>, of an arbitrary number of text strings as
+                described in
+                <xref linkend="dbdoclet.50569368_71702" />, each encoded with
+                <emphasis role="bold"><literal>encode-string</literal></emphasis>.</para>
+
+                <table frame="all" pgwide="1" xml:id="dbdoclet.50569368_71702">
+                  <title>Address types supported in
+                  <emphasis role="bold"><literal>&#8220;ibm,managed-address-types&#8221;</literal></emphasis>
+                  property</title>
+                  <?dbhtml table-width="75%" ?>
+                  <?dbfo table-width="75%" ?>
+                  <tgroup cols="2">
+                    <colspec colname="c1" colwidth="40*" align="center" />
+                    <colspec colname="c2" colwidth="60*" align="center" />
+                    <thead>
+                      <row>
+                        <entry>
+                          <para>
+                            <emphasis role="bold">Text String</emphasis>
+                          </para>
+                        </entry>
+                        <entry>
+                          <para>
+                            <emphasis role="bold">Description</emphasis>
+                          </para>
+                        </entry>
+                      </row>
+                    </thead>
+                    <tbody>
+                      <row>
+                        <entry>
+                          <para>ethernet_mac</para>
+                        </entry>
+                        <entry>
+                          <para>Ethernet MAC address</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>ethernet_vlan</para>
+                        </entry>
+                        <entry>
+                          <para>Ethernet VLAN ID (for default traffic)</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>san_wwn</para>
+                        </entry>
+                        <entry>
+                          <para>Fibre Channel World Wide Name (covers both Port &amp;
+                          Node names)</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>sas_wwid</para>
+                        </entry>
+                        <entry>
+                          <para>SAS IOA's WWID value</para>
+                        </entry>
+                      </row>
+                    </tbody>
+                  </tgroup>
+                </table>
+              </listitem>
+  			  </varlistentry>
+
+          <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;ibm,service-indicator-mode&#8221;</literal></emphasis></term>
+              <listitem>
+                <para>
+                <emphasis>property name</emphasis> indicates in which service indicator
+                mode the platform is operating.</para>
+                <para>
+                <emphasis>prop-encoded-array</emphasis>: an integer encoded as with
+                <emphasis role="bold"><literal>encode-int</literal></emphasis> that represents the mode. Defined values
+                are:</para>
+
+
+                <itemizedlist>
+                  <listitem>
+                    <para>0 = Platform is operating in the Guiding Light mode.</para>
+                  </listitem>
+
+                  <listitem>
+                    <para>1 = Platform is operating in the Lightpath mode.</para>
+                  </listitem>
+                </itemizedlist>
+
+                <para>
+                  <emphasis role="bold">Implementation Notes:</emphasis>
+                </para>
+
+                <orderedlist>
+                  <listitem>
+                    <para>In the absence of this property, the determination of how the OS
+                    is to behave is made by the platform presenting or not presenting FRU
+                    Fault indicators to the OS see chapter
+                    <xref linkend="dbdoclet.50569347_31867" />. In the case where there are
+                    no FRUs owned by the partition, the OS will not observe any FRU Fault
+                    indicators assigned, even when the platform is operating in the Lightpath
+                    mode.</para>
+                  </listitem>
+
+                  <listitem>
+                    <para>Presenting this property does not imply any relaxation of the
+                    requirements specified in chapter
+                    <xref linkend="dbdoclet.50569347_31867" />.</para>
+                  </listitem>
+                </orderedlist>
+              </listitem>
+  			  </varlistentry>
+
+          <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;ibm,guid-partition-table&#8221;</literal></emphasis></term>
+              <listitem>
+                <para>
+                <emphasis>property name</emphasis> indicates that the partition supports disks
+                with the GUID Partition Table.</para>
+                <para>
+                <emphasis>prop-encoded-array</emphasis>: &lt;NULL&gt;</para>
+              </listitem>
+  			  </varlistentry>
+
+          <varlistentry>
+            <term><emphasis role="bold"><literal>&#8220;ibm,linux-le-capable&#8221;</literal></emphasis></term>
+              <listitem>
+                <para>
+                <emphasis>property name</emphasis> indicates that the partition is capable of
+                supporting boot of Little Endian Linux.</para>
+                <para>
+                <emphasis>prop-encoded-array</emphasis>: &lt;NULL&gt;</para>
+              </listitem>
+  			  </varlistentry>
         </variablelist>
-
-        <para>
-          <emphasis role="bold">Implementation Notes:</emphasis>
-        </para>
-
-
-        <orderedlist>
-          <listitem>
-            <para>In the absence of this property, the determination of how the OS
-            is to behave is made by the platform presenting or not presenting FRU
-            Fault indicators to the OS see chapter
-            <xref linkend="LoPAR.Error" />. In the case where there are
-            no FRUs owned by the partition, the OS will not observe any FRU Fault
-            indicators assigned, even when the platform is operating in the Lightpath
-            mode.</para>
-          </listitem>
-
-          <listitem>
-            <para>Presenting this property does not imply any relaxation of the
-            requirements spe3cified in chapter
-            <xref linkend="LoPAR.Error" />.</para>
-          </listitem>
-        </orderedlist>
-
       </section>
 
       <section xml:id="dbdoclet.50569368_10192">
@@ -2329,7 +2327,7 @@
             <emphasis role="bold"><literal>&#8220;ibm,client-architecture-support&#8221;</literal></emphasis>
             and invoke that method with the
             <!-- TODO: complete/correct this sentence -->
-            <emphasis role="bold"><literal>>ibm,???</literal></emphasis> compatible (wording???) with the Real Base and Real Size constraints of the
+            <emphasis role="bold"><literal>>ibm,???</literal></emphasis> compatible with the Real Base and Real Size constraints of the
             kernel being loaded.</para>
           </listitem>
 
@@ -3267,7 +3265,7 @@
                   value indicates that the client supports the I/O Super Page
                   Option (Support of &gt;4K I/O pages) (Includes extensions to
                   H_MIGRATE_DMA for &gt;4K I/O pages and &gt;256 xlates).
-                  See <xref linkend="LoPAR.Virtualization" />.</para>
+                  See <xref linkend="dbdoclet.50569344_19308" />.</para>
                   <para>In the
                   <emphasis role="bold"><literal>ibm,architecture-vec-5</literal></emphasis> property of the
                   <emphasis role="bold"><literal>/chosen</literal></emphasis> node, a non-zero value indicates
@@ -3287,7 +3285,7 @@
                   <emphasis role="bold"><literal>/chosen</literal></emphasis> node, this field represents the
                   implementation dependent number of xlates entries supported per
                   migration operation as: 256 * 2**N.
-                  See <xref linkend="LoPAR.Virtualization" />.</para>
+                  See <xref linkend="dbdoclet.50569344_19308" />.</para>
                 </entry>
               </row>
               <row>
@@ -3302,7 +3300,7 @@
                   <emphasis role="bold"><literal>/chosen</literal></emphasis> node, this field represents the
                   implementation dependent number of simultaneous migration
                   options supported as: 2**N.
-                  See <xref linkend="LoPAR.Virtualization" />.</para>
+                  See <xref linkend="dbdoclet.50569344_19308" />.</para>
                 </entry>
               </row>
               <row>
@@ -3364,7 +3362,7 @@
                   <para>= the &#8220;Form value&#8221; of the
                   <emphasis role="bold"><literal>&#8220;ibm,associativity&#8221;</literal></emphasis> and
                   <emphasis role="bold"><literal>&#8220;ibm,associativity-reference-points&#8221;</literal></emphasis>
-                  properties. See <xref linkend="LoPAR.Platform" /> for further details.</para>
+                  properties. See <xref linkend="dbdoclet.50569346_35960" /> for further details.</para>
                 </entry>
               </row>
               <row>
@@ -3399,7 +3397,7 @@
                 <entry>
                   <para>Enable MTT Option</para>
                   <para>See
-                  <xref linkend="LoPAR.Virtualization" />.</para>
+                  <xref linkend="dbdoclet.50569344_50921" />.</para>
                 </entry>
               </row>
               <row>
@@ -3449,7 +3447,7 @@
                 </entry>
                 <entry>
                   <para>Enable Hotplug Interrupts<?linebreak?>
-                  See Hot Plug Events in <xref linkend="LoPAR.Error" />.</para>
+                  See Hot Plug Events in <xref linkend="Hot_Plug_Events" />.</para>
                 </entry>
               </row>
               <row>
@@ -4388,7 +4386,7 @@
                 <emphasis>token</emphasis>) for the defined indicators and the number of
                 indicators (
                 <emphasis>maxindex</emphasis>) for that token which are implemented (see
-                <xref linkend="LoPAR.RTAS" />) on the platform.</para>
+                <xref linkend="dbdoclet.50569332_13537" />) on the platform.</para>
                 <para>
                 <emphasis role="bold">Note:</emphasis> The indicator indices for a given token are
                 numbered 0... maxindex-1.</para>
@@ -4410,7 +4408,7 @@
                 <emphasis>token</emphasis>) for the defined sensors and the number of
                 sensors (
                 <emphasis>maxindex</emphasis>) for that token which are implemented (see
-                <xref linkend="LoPAR.RTAS" />) on the platform.</para>
+                <xref linkend="dbdoclet.50569332_13537" />) on the platform.</para>
                 <para>
                 <emphasis role="bold">Note:</emphasis> The sensor indices for a given token are
                 numbered 0 ... maxindex-1.</para>
@@ -4933,7 +4931,7 @@
                 <para>
                 <emphasis>prop-encoded-array</emphasis>: Contains the description of the
                 registered kernel dump in the format described in
-                <xref linkend="LoPAR.RTAS" />.</para>
+                <xref linkend="dbdoclet.50569332_76933" />.</para>
               </listitem>
   			  </varlistentry>
 
@@ -4949,7 +4947,7 @@
                 the first 3 inputs and the first 4 outputs (
                 <emphasis>Number Inputs</emphasis> is required to be 3 and the
                 <emphasis>Number Outputs</emphasis> is required to be 4), as defined in
-                <xref linkend="LoPAR.RTAS" />.</para>
+                <xref linkend="dbdoclet.50569332_80186" />.</para>
                 <para>
                 <emphasis>prop-encoded-array</emphasis>: Contains a 32 bit cell, with the
                 bits defined as follows:</para>
@@ -4958,13 +4956,13 @@
                 <emphasis>ibm,read-slot-reset-state2</emphasis> RTAS call checks the
                 <emphasis>Number Outputs</emphasis> and the implements the 5th output (
                 <emphasis>Number Outputs</emphasis> of 5), as defined by
-                <xref linkend="LoPAR.RTAS" />.</para>
+                <xref linkend="dbdoclet.50569332_80186" />.</para>
                 <para>Bit 31: When a value of 1, the
                 <emphasis>ibm,read-slot-reset-state2</emphasis> RTAS call implements the
                 first 3 inputs and the first 4 outputs (
                 <emphasis>Number Inputs</emphasis> of 3 and the
                 <emphasis>Number Outputs</emphasis> of 4), as defined in
-                <xref linkend="LoPAR.RTAS" />. This bit is always required
+                <xref linkend="dbdoclet.50569332_80186" />. This bit is always required
                 to be a value of 1 when this property is implemented.</para>
               </listitem>
   			  </varlistentry>
@@ -5035,7 +5033,7 @@
                 <para><emphasis>property-name</emphasis> indicating that the platform supports
                 extended
                 <emphasis>ibm,os-term</emphasis> behavior as described in
-                <xref linkend="LoPAR.RTAS" />.</para>
+                <xref linkend="dbdoclet.50569332_42118" />.</para>
                 <para><emphasis>prop-encoded-array</emphasis>: encode-null</para>
               </listitem>
   			  </varlistentry>
@@ -5048,8 +5046,8 @@
 
         <para>This section defines the property names associated with the various
         RTAS functions defined by
-        <xref linkend="LoPAR.RTAS" />.
-        <xref linkend="LoPAR.RTAS" /> should be used as the reference
+        <xref linkend="dbdoclet.50569332_20008" />.
+        <xref linkend="dbdoclet.50569332_20008" /> should be used as the reference
         for RTAS Functions currently implemented. Each RTAS function that a
         platform implements shall
          be represented by its own function property,
@@ -5076,7 +5074,7 @@
                 <emphasis>rtas-call</emphasis> interface (see below), invokes the named
                 RTAS function. If a RTAS function is not implemented, there will not be a
                 property corresponding to that function name. See the
-                <xref linkend="LoPAR.RTAS" /> for more information about RTAS
+                <xref linkend="dbdoclet.50569332_13537" /> for more information about RTAS
                 functions.</para>
               </listitem>
   			  </varlistentry>
@@ -5502,7 +5500,7 @@
                   <para>The first specification shall specify the configured address and
                   size of this PHB&#8217;s I/O Space. (I/O Space is shown as
                   &#8220;BIOn&#8221; to &#8220;TIOn&#8221; in
-                  <xref linkend="LoPAR.Platform" /> "Address Map" section.) The
+                  <xref linkend="dbdoclet.50569328_Address-Map" />.) The
                   second specification shall specify the configured address and size of
                   this PHB&#8217;s Memory Space. (Memory Space is shown as
                   &#8220;BPMn&#8221; to &#8220;TPMn&#8221; in the Common Hardware Reference
@@ -5595,7 +5593,7 @@
                   <para><emphasis>prop-encoded-array</emphasis>: Integer, encoded as with
                   <emphasis role="bold"><literal>encode-int</literal></emphasis>.</para>
                   <para>This property, when present (for example, see Requirement
-                  <xref linkend="LoPAR.Platform" />), indicates the maximum DMA
+                  <xref linkend="dbdoclet.50569335_65475" />), indicates the maximum DMA
                   Read completion latency for IOAs under this PHB, in microseconds. For
                   plug-in adapters, the latency value does not include latency of any
                   additional PCI fabric (for example, PCI Express switches) on the plug-in
@@ -5974,7 +5972,7 @@
                     as a token for an additional RTAS call or an architectural level of an
                     extended interface. The value of one indicates that only a single
                     extension is implemented as specified by the second integer in the list.
-                    <xref linkend="LoPAR.RTAS" /> provides the definition of the
+                    <xref linkend="dbdoclet.50569332_25585" /> provides the definition of the
                     subsequent integers as defined for the LoPAR level of the DDW
                     option.</para>
                   </listitem>
@@ -7452,7 +7450,7 @@
               <listitem>
                 <para><emphasis>property name</emphasis> to provide Vital Product Data (VPD)
                 information as defined in
-                <xref linkend="LoPAR.Platform" />.</para>
+                <xref linkend="dbdoclet.50569341_29745" />.</para>
                 <para>
                 <emphasis>prop-encoded-array</emphasis>: the concatenation, with
                 <emphasis role="bold"><literal>encode+</literal></emphasis>, of one or more pairs of elements, the first
@@ -7831,7 +7829,7 @@
 
       </section>
 
-      <section>
+      <section xml:id="sec_papr_bindings_hot_plug_events">
         <title>hot-plug-events</title>
 
           <para>The presence of the node indicates that all or some of the function
@@ -8367,7 +8365,7 @@
                     </tgroup>
                   </table>
                   <para>See
-                  <xref linkend="LoPAR.Error" /> for further detail on this
+                  <xref linkend="dbdoclet.50569352_15379" /> for further detail on this
                   virtual device.</para>
                 </listitem>
     			  </varlistentry>
@@ -8412,7 +8410,7 @@
       <emphasis role="bold"><literal>&#8220;reg&#8221;</literal></emphasis> property value. The following
       properties are the minimum required, optional support such as dynamic
       reconfiguration will add properties per requirements called out in the
-      <xref linkend="LoPAR.Virtualization" />.</para>
+      <xref linkend="dbdoclet.50569342_82208" />.</para>
 
       <variablelist>
         <varlistentry>
@@ -10643,7 +10641,7 @@ where:
       power management related information shall be resident in the OF device
       tree prior to the transfer phase of software operation (see the
       definition of transfer phase in
-      <xref linkend="LoPAR.Platform" />). Dummy devices shall be
+      <xref linkend="dbdoclet.50569327_31987" />). Dummy devices shall be
       placed in the device tree for all standard I/O bus connectors which are
       not in use to provide a node to assign the slot-names, power-domains, and
       power-sources properties.</para>

@@ -704,7 +704,7 @@
         location of resources) to the processor are preserved by the device tree
         once presented upon boot. For a list of properties that may change before
         a reboot, see
-        <xref linkend="LoPAR.RTAS" />.</para>
+        <xref linkend="dbdoclet.50569332_71049" />.</para>
 
         <variablelist>
           <varlistentry>

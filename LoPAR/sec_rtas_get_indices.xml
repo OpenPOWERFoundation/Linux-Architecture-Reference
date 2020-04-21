@@ -43,8 +43,8 @@
     <para>This RTAS call is not used for DR indicators (9001, 9002, and 9003)
     or DR sensors (9003). See the following sections in the DR chapter for more
     information:
-    <xref linkend="LoPAR.Virtualization" /> and
-    <xref linkend="LoPAR.Virtualization" />.</para>
+    <xref linkend="dbdoclet.50569342_85040" /> and
+    <xref linkend="dbdoclet.50569342_61130" />.</para>
     <para>It may require several calls to the
     <emphasis>ibm,get-indices</emphasis> RTAS routine to get the entire list of
     indicators or sensors of a particular type. Each call may specify a

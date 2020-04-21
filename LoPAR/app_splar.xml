@@ -7,7 +7,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
     <para>This appendix defines the string that is returned by the
     ibm,get-system-parameter RTAS call when the parameter token value of 20
     (SPLPAR Characteristics) is specified on the ibm,get-system-parameter RTAS
-    call as per <xref linkend="LoPAR.RTAS" />.</para>
+    call as per <xref linkend="dbdoclet.50569332_24237" />.</para>
   </section>
   <section>
     <title>SPLPAR Terms</title>

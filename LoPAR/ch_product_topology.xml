@@ -10,7 +10,7 @@ xml:lang="en">
     <title>VPD and Location Code OF Properties</title>
     <para>A set of OF properties is defined to facilitate asset protection and
     RAS capabilities in LoPAR systems. The following properties are defined in
-<xref linkend="LoPAR.DeviceTree"/>):</para>
+<xref linkend="dbdoclet.50569368_31220"/>):</para>
 
     <itemizedlist>
       <listitem>
@@ -137,7 +137,7 @@ xml:lang="en">
 
   <section xml:id="dbdoclet.50569341_23269">
     <title>System Identification</title>
-    <para><xref linkend="LoPAR.DeviceTree"/> provides properties in the
+    <para><xref linkend="dbdoclet.50569368_91814"/> provides properties in the
     &#x201C;OF Root Node&#x201D; section called <emphasis role="bold"><literal>&#x201C;system-id&#x201D;</literal></emphasis>
     and<emphasis role="bold"><literal>&#x201C;model&#x201D;</literal></emphasis>.</para>
 
@@ -4707,7 +4707,7 @@ xml:lang="en">
                   <para> Up to 56</para>
                 </entry>
                 <entry>
-                  <para> Processor CoD Capacity Card Info per <xref linkend="LoPAR.RTAS"/></para>
+                  <para> Processor CoD Capacity Card Info per <xref linkend="dbdoclet.50569332_47931"/></para>
                 </entry>
               </row>
               <row>
@@ -4721,7 +4721,7 @@ xml:lang="en">
                   <para> Up to 56</para>
                 </entry>
                 <entry>
-                  <para> Memory CoD Capacity Card Info per <xref linkend="LoPAR.RTAS"/></para>
+                  <para> Memory CoD Capacity Card Info per <xref linkend="dbdoclet.50569332_47931"/></para>
                 </entry>
               </row>
               <row>
