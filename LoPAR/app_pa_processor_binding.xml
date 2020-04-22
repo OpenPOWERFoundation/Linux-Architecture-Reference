@@ -3524,7 +3524,7 @@
             </thead>
             <tbody valign="middle" >
               <row>
-                <entry>
+                <entry morerows="8">
                   <para>msr</para>
                 </entry>
                 <entry>
@@ -3536,9 +3536,6 @@
               </row>
               <row>
                 <entry>
-                  <para>&#160;</para>
-                </entry>
-                <entry>
                   <para>PR = 0, supervisor state</para>
                 </entry>
                 <entry>
@@ -3546,9 +3543,6 @@
                 </entry>
               </row>
               <row>
-                <entry>
-                  <para>&#160;</para>
-                </entry>
                 <entry>
                   <para>FP = 1, floating point enabled</para>
                 </entry>
@@ -3558,9 +3552,6 @@
               </row>
               <row>
                 <entry>
-                  <para>&#160;</para>
-                </entry>
-                <entry>
                   <para>ME = 1, machine checks enabled</para>
                 </entry>
                 <entry>
@@ -3569,9 +3560,6 @@
               </row>
               <row>
                 <entry>
-                  <para>&#160;</para>
-                </entry>
-                <entry>
                   <para>FE0, FE1 = 0, floating point exceptions disabled</para>
                 </entry>
                 <entry>
@@ -3579,9 +3567,6 @@
                 </entry>
               </row>
               <row>
-                <entry>
-                  <para>&#160;</para>
-                </entry>
                 <entry>
                   <para>IP, see
                   <xref linkend="dbdoclet.50569374_27751" /></para>
@@ -3592,9 +3577,6 @@
               </row>
               <row>
                 <entry>
-                  <para>&#160;</para>
-                </entry>
-                <entry>
                   <para>IR,DR, see
                   <xref linkend="dbdoclet.50569374_25139" /></para>
                 </entry>
@@ -3604,9 +3586,6 @@
               </row>
               <row>
                 <entry>
-                  <para>&#160;</para>
-                </entry>
-                <entry>
                   <para>SF=0, 32-bit mode</para>
                 </entry>
                 <entry>
@@ -3614,9 +3593,6 @@
                 </entry>
               </row>
               <row>
-                <entry>
-                  <para>&#160;</para>
-                </entry>
                 <entry>
                   <para>ILE,LE, little endian support</para>
                 </entry>

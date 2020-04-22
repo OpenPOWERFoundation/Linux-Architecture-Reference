@@ -7171,7 +7171,7 @@ hcall ( const uint64 H_ENTER,
               </listitem>
 
               <listitem>
-                <para><literallayout>If the MUI option is enabled
+                <para><programlisting><![CDATA[If the MUI option is enabled
   {
     Switch (HBA flags field)
     {
@@ -7188,7 +7188,7 @@ hcall ( const uint64 H_ENTER,
     }
     If the Affinity-Clear flag is on clear the MUI ALA for the page;
     If the Page-Age-Clear flag is on clear the MUI PAG for the page;
-  }</literallayout></para>
+  }]]></programlisting></para>
               </listitem>
             </itemizedlist>
 
@@ -9574,7 +9574,7 @@ hcall ( const uint64 H_SET_MODE, /* Set the mode of the specified processing */
 
           <simplesect>
             <title>Semantics:</title>
-            <para><literallayout>switch (resource) {
+            <para><programlisting><![CDATA[switch (resource) {
     case 0: /* not used /
         return H_P2;
         break;
@@ -9634,7 +9634,7 @@ hcall ( const uint64 H_SET_MODE, /* Set the mode of the specified processing */
             break;
     default:
     return H_P2;
-    break; }</literallayout></para>
+    break; }]]></programlisting></para>
 
             <table frame="all" pgwide="1" xml:id="dbdoclet.50569344_68462">
               <title>H_SET_MODE Parameters per ISA Level</title>
@@ -23825,7 +23825,7 @@ hcall ( const uint64 H_RESET_MEMSTATS, uint64 flags, int64 lpx1, int64 lpx2,
               <para>If (Flags AND ACA) and reference rate array not enabled, returns H_Not_Available.</para>
             </listitem>
             <listitem>
-              <para><literallayout>for each of lpx1..6
+              <para><programlisting><![CDATA[for each of lpx1..6
   Exits for each if lpx is FFFF_FFFF_FFFF_FFFF.
 
   If the lpx is not owned by the calling partition, return H_P(2..7)
@@ -23835,7 +23835,7 @@ hcall ( const uint64 H_RESET_MEMSTATS, uint64 flags, int64 lpx1, int64 lpx2,
   If (Flags AND Page-Age)
     Clear the page age counter for the lpx
   If (Flags AND HBA)
-    Sets the configured Number of Ref Bits in the Reference History Bit Array for the lpx </literallayout></para>
+    Sets the configured Number of Ref Bits in the Reference History Bit Array for the lpx ]]></programlisting></para>
             </listitem>
             <listitem>
               <para>Return H_Success.</para>
@@ -24261,7 +24261,7 @@ hcall ( const uint64 H_RETURN_PAGEINFO,
               <para>count = 0; /* number of entries matching in dest */</para>
             </listitem>
             <listitem>
-              <para><literallayout>if (Range_Search = 1) // lpn0..lpn1 range case
+              <para><programlisting><![CDATA[if (Range_Search = 1) // lpn0..lpn1 range case
   {
   if(lpx0 is not a page owned by the calling partition) return H_P3;
   if(lpx1 is less than lpx0 or outside of the LMB containing lpx0) return H_P4;
@@ -24277,10 +24277,10 @@ hcall ( const uint64 H_RETURN_PAGEINFO,
     }
   R4 = count ; R5 = mem;
   If (mem > lpx1) then return H_Success else return H_CONTINUE;
-  }</literallayout></para>
+  }]]></programlisting></para>
             </listitem>
             <listitem>
-              <para><literallayout>if (Range_Search = 0) // memory buffer case
+              <para><programlisting><![CDATA[if (Range_Search = 0) // memory buffer case
   {
   dest = buffer; count = 0;
   for each of lpx0..4
@@ -24293,7 +24293,7 @@ hcall ( const uint64 H_RETURN_PAGEINFO,
       Increment dest to next record (+32 bytes);
       }
   R4 = count; return H_Success;
-  }</literallayout></para>
+  }]]></programlisting></para>
             </listitem>
           </itemizedlist>
         </simplesect>
@@ -24387,14 +24387,14 @@ hcall ( const uint64 H_BULK_READ_HBA, uint64 flags, int64 lpx1, int64 lpx2,
               <para>If a reserved flags bit is set return appropriate H_UNSUPPORTED_FLAG value.</para>
             </listitem>
             <listitem>
-              <para><literallayout>for each of lpx1..6
+              <para><programlisting><![CDATA[for each of lpx1..6
   Exits for each if the LPX is FFFF_FFFF_FFFF_FFFF.
     If lpn1..6 not owned by the calling partition, return H_P2..7 as appropriate
     Load HBA corresponding to the LPX into the high-order bits of R5-R10
       (corresponding to lpx1..6), zero out remaining lower bits of the register
       and shift the register right (zero insert) by the difference between the current
       time and the page’s PUT timestamp.
-    // end of for each lpx1..6</literallayout></para>
+    // end of for each lpx1..6]]></programlisting></para>
             </listitem>
             <listitem>
               <para>Return H_Success.</para>

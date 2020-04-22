@@ -4900,13 +4900,13 @@
           <title>Defined Indicators</title>
           <tgroup cols="8">
             <colspec colname="c1" colwidth="12*" align="center" />
-            <colspec colname="c2" colwidth="12*" align="center" />
+            <colspec colname="c2" colwidth="6*" align="center" />
             <colspec colname="c3" colwidth="12*" align="center" />
             <colspec colname="c4" colwidth="12*" align="center" />
-            <colspec colname="c5" colwidth="12*" align="center" />
-            <colspec colname="c6" colwidth="12*" align="center" />
+            <colspec colname="c5" colwidth="6*" align="center" />
+            <colspec colname="c6" colwidth="18*" align="center" />
             <colspec colname="c7" colwidth="12*" align="center" />
-            <colspec colname="c8" colwidth="12*" />
+            <colspec colname="c8" colwidth="18*" />
             <thead>
               <row>
                 <entry>
@@ -5426,7 +5426,7 @@
                   <para>Vendor Specific</para>
                 </entry>
                 <entry>
-                  <para>9100-9999</para>
+                  <para>9100- 9999</para>
                 </entry>
                 <entry>
                   <para>&#160;</para>
@@ -5819,12 +5819,12 @@
           <title>Defined Sensors</title>
           <tgroup cols="7">
             <colspec colname="c1" colwidth="14*" align="center" />
-            <colspec colname="c2" colwidth="14*" align="center" />
-            <colspec colname="c3" colwidth="14*" align="center" />
-            <colspec colname="c4" colwidth="14*" align="center" />
+            <colspec colname="c2" colwidth="6*" align="center" />
+            <colspec colname="c3" colwidth="20*" align="center" />
+            <colspec colname="c4" colwidth="6*" align="center" />
             <colspec colname="c5" colwidth="14*" align="center" />
-            <colspec colname="c6" colwidth="14*" align="center" />
-            <colspec colname="c7" colwidth="14*" />
+            <colspec colname="c6" colwidth="20*" align="center" />
+            <colspec colname="c7" colwidth="20*" />
             <thead>
               <row>
                 <entry>
@@ -6408,7 +6408,7 @@
                   <para>Vendor Specific</para>
                 </entry>
                 <entry>
-                  <para>9100-9999</para>
+                  <para>9100- 9999</para>
                 </entry>
                 <entry>
                   <para>&#160;</para>
@@ -12425,6 +12425,7 @@
                 <para>(Normal Operations)</para>
               </entry>
               <entry>
+                <?dbhtml bgcolor="#87878a" ?><?dbfo bgcolor="#87878a" ?>
                 <para>&#160;</para>
               </entry>
               <entry>
@@ -12545,6 +12546,7 @@
                 </emphasis></para>
               </entry>
               <entry>
+                <?dbhtml bgcolor="#87878a" ?><?dbfo bgcolor="#87878a" ?>
                 <para>&#160;</para>
               </entry>
               <entry>
@@ -12607,6 +12609,7 @@
                 error recovery action</para>
               </entry>
               <entry>
+                <?dbhtml bgcolor="#87878a" ?><?dbfo bgcolor="#87878a" ?>
                 <para>&#160;</para>
               </entry>
               <entry>
@@ -12649,6 +12652,7 @@
                 <para>transition</para>
               </entry>
               <entry>
+                <?dbhtml bgcolor="#87878a" ?><?dbfo bgcolor="#87878a" ?>
                 <para>&#160;</para>
               </entry>
               <entry>
@@ -12689,6 +12693,7 @@
                 <para>Not a valid transition</para>
               </entry>
               <entry>
+                <?dbhtml bgcolor="#87878a" ?><?dbfo bgcolor="#87878a" ?>
                 <para>&#160;</para>
               </entry>
             </row>
@@ -18227,7 +18232,7 @@
                 <para>22</para>
               </entry>
               <entry>
-                <para>platform_auto_power_restart</para>
+                <para>platform_auto_power_<?linebreak?>restart</para>
               </entry>
               <entry>
                 <para>
@@ -18407,7 +18412,7 @@
                 <para>31</para>
               </entry>
               <entry>
-                <para>sp-current-flash-image</para>
+                <para>sp-current-flash-<?linebreak?>image</para>
               </entry>
               <entry>
                 <para>
@@ -18427,7 +18432,7 @@
                 <para>32</para>
               </entry>
               <entry>
-                <para>platform-dump-max-size</para>
+                <para>platform-dump-max-<?linebreak?>size</para>
               </entry>
               <entry>
                 <para>
@@ -19256,15 +19261,15 @@
                 </entry>
               </row>
               <row>
-                <entry morerows="1">
+                <entry>
                   <para>Out</para>
                 </entry>
-                <entry morerows="1">
+                <entry>
                   <para>
                     <emphasis>Status</emphasis>
                   </para>
                 </entry>
-                <entry morerows="0">
+                <entry>
                   <para>0: Success</para>
                   <para>-1: Hardware Error</para>
                   <para>-2: Busy, Try again later</para>
@@ -19273,11 +19278,6 @@
                   <para>-9999: Parameter Error</para>
                   <para>990x: Extended delay where x is a number 0-5 (see text
                   below)</para>
-                </entry>
-              </row>
-              <row>
-                <entry>
-                  <para />
                 </entry>
               </row>
             </tbody>
@@ -19393,15 +19393,15 @@
                 </entry>
               </row>
               <row>
-                <entry morerows="1">
+                <entry>
                   <para>Out</para>
                 </entry>
-                <entry morerows="1">
+                <entry>
                   <para>
                     <emphasis>Status</emphasis>
                   </para>
                 </entry>
-                <entry morerows="0">
+                <entry>
                   <para>0: Success</para>
                   <para>-1: Hardware Error</para>
                   <para>-2: Busy, Try again later</para>
@@ -19410,11 +19410,6 @@
                   <para>-9999: Parameter Error</para>
                   <para>990x:Extended delay where x is a number 0-5 (see text
                   below)</para>
-                </entry>
-              </row>
-              <row>
-                <entry>
-                  <para />
                 </entry>
               </row>
             </tbody>
