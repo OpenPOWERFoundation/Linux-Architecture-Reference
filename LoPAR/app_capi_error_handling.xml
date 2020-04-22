@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright (c) 2016 OpenPOWER Foundation
+  Copyright (c) 2016, 2020 OpenPOWER Foundation
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -16,7 +16,10 @@
 
 -->
 <appendix xmlns="http://docbook.org/ns/docbook"
-xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="app_coherent_platform_facility_error_handling_recovery">
+          xmlns:xl="http://www.w3.org/1999/xlink"
+          version="5.0"
+          xml:lang="en"
+          xml:id="app_coherent_platform_facility_error_handling_recovery">
   <title>Coherent Platform Facility Error Handling and Recovery</title>
 
   <para>During the course of operation, a coherent platform function can encounter errors.

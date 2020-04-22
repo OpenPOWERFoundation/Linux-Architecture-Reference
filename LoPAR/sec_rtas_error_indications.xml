@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright (c) 2016 OpenPOWER Foundation
-  
+  Copyright (c) 2016, 2020 OpenPOWER Foundation
+
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
@@ -13,21 +13,21 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-  
+
 -->
-<section xmlns="http://docbook.org/ns/docbook" 
+<section xmlns="http://docbook.org/ns/docbook"
          xmlns:xi="http://www.w3.org/2001/XInclude"
-         xmlns:xlink="http://www.w3.org/1999/xlink" 
-         version="5.0" 
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         version="5.0"
          xml:id="Internal_Error_Indications">
-         
+
   <title>Internal Error Indications</title>
-  
+
   <para>Hardware may detect a variety of problems during operation, ranging
   from soft errors which have already been corrected by the time they are
   reported, to hard errors of such severity that the OS (and perhaps the
   hardware) cannot meaningfully continue operation. The mechanisms
-  described in 
+  described in
   <xref linkend="dbdoclet.50569337_66258"/> are used to report such errors to the
   OS. This section describes the architectural sources of errors, and
   describes a method that platforms can use to report the error. All OSs
@@ -36,7 +36,7 @@
   may be introduced via RTAS, and the OS may not have to handle the error
   directly. More robust error detection, reporting, and correcting are at
   the option of the hardware vendor.</para>
-  
+
   <para>
   <anchor xml:id="dbdoclet.50569337_marker-13885" xreflabel="" />
   <anchor xml:id="dbdoclet.50569337_marker-13886" xreflabel="" />The
@@ -51,12 +51,12 @@
   handle such cases, a special hardware mechanism may be provided to gather
   and store residual error data, to be analyzed when the system goes
   through a subsequent successful reboot.</para>
-  
+
   <para>Less critical internal errors may also be signaled to the OS
   through a platform-specific interrupt in the &#8220;Internal
-  Errors&#8221; class, or by periodic polling with the 
+  Errors&#8221; class, or by periodic polling with the
   <emphasis>event-scan</emphasis> RTAS function.</para>
-  
+
   <para><emphasis role="bold">Architecture Note:</emphasis> The machine check interrupt will not be listed
   in the OF node for the &#8220;Internal Errors&#8221; class, since it is a
   standard architectural mechanism. The machine check interrupt mechanism
@@ -69,55 +69,55 @@
   connection to the processor machine check interrupt pin, or via a system
   bus error indicator (for example, Transfer Error Acknowledge -
   TEA).</para>
-  
+
   <variablelist>
-  
+
   	<varlistentry xml:id="dbdoclet.50569337_38528">
-  		<term><emphasis role="bold">R1-<xref linkend="Internal_Error_Indications" 
+  		<term><emphasis role="bold">R1-<xref linkend="Internal_Error_Indications"
 			xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
   			<listitem>
 		      <para>OSs must set
 		      MSRME=1 prior to the occurrence of a machine check interrupt in order to
 		      enable machine check processing via the
 		      <emphasis>check-exception</emphasis> RTAS function.</para>
-		      
+
 		      <para>
-		      <emphasis role="bold">Architecture Note:</emphasis> Requirement 
+		      <emphasis role="bold">Architecture Note:</emphasis> Requirement
 		      <xref linkend="dbdoclet.50569337_38528"/> is not applicable when the FWNMI
 		      option is used.</para>
-		      
+
   			</listitem>
   	</varlistentry>
-  
+
   	<varlistentry xml:id="dbdoclet.50569337_36603">
-  		<term><emphasis role="bold">R1-<xref linkend="Internal_Error_Indications" 
+  		<term><emphasis role="bold">R1-<xref linkend="Internal_Error_Indications"
 			xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
   			<listitem>
 		      <para>For
 		      hardware-detected errors, platforms must generate error indications as
-		      described in 
+		      described in
 		      <xref linkend="dbdoclet.50569337_30773"/>, unless the error can be handled
 		      through a less severe platform-specific interrupt, or the nature of the
 		      error forces a checkstop condition.</para>
   			</listitem>
   	</varlistentry>
-  
+
   	<varlistentry>
-  		<term><emphasis role="bold">R1-<xref linkend="Internal_Error_Indications" 
+  		<term><emphasis role="bold">R1-<xref linkend="Internal_Error_Indications"
 			xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
   			<listitem>
 		      <para>Platforms which detect and report the
-		      errors described in 
+		      errors described in
 		      <xref linkend="dbdoclet.50569337_30773"/> must provide information to the OS
-		      via the RTAS 
+		      via the RTAS
 		      <emphasis>check-exception</emphasis> function, using the reporting format
-		      described in 
+		      described in
 		      <xref linkend="dbdoclet.50569337_21249"/>.</para>
   			</listitem>
   	</varlistentry>
-  
+
   	<varlistentry xml:id="dbdoclet.50569337_16228">
-  		<term><emphasis role="bold">R1-<xref linkend="Internal_Error_Indications" 
+  		<term><emphasis role="bold">R1-<xref linkend="Internal_Error_Indications"
 			xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
   			<listitem>
 		      <para>To prevent error
@@ -126,7 +126,7 @@
 		      interrupt signaled via the external machine check interrupt pin.</para>
   			</listitem>
   	</varlistentry>
-  
+
   </variablelist>
 
   <para>
@@ -135,8 +135,8 @@
 
   <orderedlist>
     <listitem>
-          
-      <para>The intent of Requirement 
+
+      <para>The intent of Requirement
       <xref linkend="dbdoclet.50569337_36603"/> is to define standard error
       notification mechanisms for different hardware error types. For most
       hardware errors, the signaling mechanism is the machine check interrupt,
@@ -156,15 +156,15 @@
       summarize, platforms should not use platform-specific interrupts to
       signal hardware errors unless there is a complete hardware/RTAS platform
       solution for handling such errors.</para>
-      
+
     </listitem>
     <listitem>
 
-      <para>The intent of Requirement 
+      <para>The intent of Requirement
       <xref linkend="dbdoclet.50569337_16228"/> is that most hardware errors would be
       signaled simultaneously to all processors, so that processors could
       synchronize the error handling process; that is, one processor would be
-      chosen to do the call to 
+      chosen to do the call to
       <emphasis>check-exception</emphasis>, while the other processors remained
       idle so that they would not interfere with RTAS while it gathered machine
       check error data. While this is a straightforward wiring solution for
@@ -178,13 +178,13 @@
       such propagation should be avoided, and such errors should be signaled
       through the machine check interrupt pin to ensure proper error
       handling.</para>
-  
+
     </listitem>
   </orderedlist>
-  
+
   <section xml:id="dbdoclet.50569337_52952">
     <title>Error Indication Mechanisms</title>
-    
+
     <para>
     <xref linkend="dbdoclet.50569337_30773"/> describes the mechanisms by
     which software will be notified of the occurrence of operational failures
@@ -198,12 +198,12 @@
     <table frame="all" pgwide="1" xml:id="dbdoclet.50569337_30773">
       <title>Error Indications for System Operations</title>
       <tgroup cols="6">
-        <colspec colname="c1" colwidth="10*" />
-        <colspec colname="c2" colwidth="10*" />
-        <colspec colname="c3" colwidth="20*" />
-        <colspec colname="c4" colwidth="20*" />
-        <colspec colname="c5" colwidth="20*" />
-        <colspec colname="c6" colwidth="20*" />
+        <colspec colname="c1" colwidth="10*" align="center" />
+        <colspec colname="c2" colwidth="10*" align="center" />
+        <colspec colname="c3" colwidth="20*" align="center" />
+        <colspec colname="c4" colwidth="20*" align="center" />
+        <colspec colname="c5" colwidth="20*" align="center" />
+        <colspec colname="c6" colwidth="20*" align="center" />
         <thead>
           <row>
             <entry>
@@ -238,7 +238,7 @@
             </entry>
           </row>
         </thead>
-        <tbody>
+        <tbody valign="middle" >
           <row>
             <entry>
               <para>Processor</para>
@@ -451,7 +451,7 @@
             </entry>
             <entry>
               <para>Firmware receives a machine check, OS receives
-              all=1&#8217;s data along with a 
+              all=1&#8217;s data along with a
               <emphasis>Status</emphasis> of -1 from the RTAS call</para>
             </entry>
             <entry>
@@ -466,7 +466,7 @@
             </entry>
             <entry>
               <para>All-1&#8217;s data returned, along with a
-              &#8220;Success&#8221; 
+              &#8220;Success&#8221;
               <emphasis>Status</emphasis> from the RTAS call</para>
             </entry>
             <entry>
@@ -482,7 +482,7 @@
               <para>Various, except no response from IOA</para>
             </entry>
             <entry>
-              <para>Firmware receives a machine check, OS receives a 
+              <para>Firmware receives a machine check, OS receives a
               <emphasis>Status</emphasis> of -1 from the RTAS call</para>
             </entry>
             <entry>
@@ -496,7 +496,7 @@
               <para>No response from an IOA</para>
             </entry>
             <entry>
-              <para>Operation ignored, OS receives a &#8220;Success&#8221; 
+              <para>Operation ignored, OS receives a &#8220;Success&#8221;
               <emphasis>Status</emphasis> from the RTAS call</para>
             </entry>
             <entry>
@@ -603,21 +603,21 @@
             </entry>
             <entry>
               <para>Various, including but not limited to:</para>
-              
-              <itemizedlist>		      
+
+              <itemizedlist>
                 <listitem>
                   <para>Invalid addr accepted by a bridge</para>
                 </listitem>
-                
+
                 <listitem>
                   <para>TCE extent</para>
                 </listitem>
-                
+
                 <listitem>
                   <para>TCE Page Mapping and Control mis-match or invalid
                   TCE</para>
                 </listitem>
-              </itemizedlist>		      
+              </itemizedlist>
 
             </entry>
             <entry>
@@ -696,7 +696,7 @@
         </tbody>
       </tgroup>
     </table>
-    
+
     <para><emphasis role="bold">Implementation Note:</emphasis> IOAs should, whenever possible, detect the
     occurrence of PCI errors on DMA and report them via an external interrupt
     (for possible device driver recovery) or retry the operation. Since
@@ -705,7 +705,7 @@
     cause a catastrophic error. Systems which wish to recover from these
     types of errors should choose devices and device drivers which are
     designed to handle them correctly.</para>
-    
+
   </section>
 
 </section>

@@ -1,9 +1,25 @@
-<?xml version="1.0"?>
-<chapter xmlns="http://docbook.org/ns/docbook"
-xmlns:xl="http://www.w3.org/1999/xlink"
-xml:id="dbdoclet.50569331_37856"
-version="5.0"
-xml:lang="en">
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2016, 2020 OpenPOWER Foundation
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<chapter  xmlns="http://docbook.org/ns/docbook"
+          xmlns:xl="http://www.w3.org/1999/xlink"
+          xml:id="dbdoclet.50569331_37856"
+          version="5.0"
+          xml:lang="en">
   <title>Interrupt Controller</title>
 
   <para>This chapter specifies the requirements for the LoPAR interrupt
@@ -306,7 +322,7 @@ xml:lang="en">
       particular, these calls assign additional MSI resources to an IOA function (as
       defined by its PCI configuration address: <emphasis>PHB_Unit_ID_Hi,
       PHB_Unit_ID_Low, and config_addr</emphasis>), when supported by the platform.
-      See <xref linkend="dbdoclet.50569332_61719"/> for more information on theses RTAS calls for 
+      See <xref linkend="dbdoclet.50569332_61719"/> for more information on theses RTAS calls for
       MSI management.</para>
       <para>This architecture will refer generically to the MSI and MSI-X
       capabilities as simply &#x201C;MSI,&#x201D; except where differentiation is

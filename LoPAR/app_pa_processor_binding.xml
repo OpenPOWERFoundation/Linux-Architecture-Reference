@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright (c) 2016 OpenPOWER Foundation
+  Copyright (c) 2016, 2020 OpenPOWER Foundation
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -592,7 +592,7 @@
                   </entry>
                 </row>
               </thead>
-              <tbody>
+              <tbody valign="middle" >
                 <row>
                   <entry>
                     <para>phys.lo cell:</para>
@@ -810,7 +810,7 @@
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry>
                           <para>2.04</para>
@@ -1135,7 +1135,7 @@
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry>
                           <para>0</para>
@@ -1456,7 +1456,7 @@
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="7">
                           <para>0</para>
@@ -2181,7 +2181,7 @@
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="3">
                           <para>0</para>
@@ -2328,7 +2328,7 @@
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="1">
                           <para>0</para>
@@ -2440,7 +2440,7 @@
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="1">
                           <para>0</para>
@@ -2554,7 +2554,7 @@
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry>
                           <para>0</para>
@@ -3103,7 +3103,7 @@
               </entry>
             </row>
           </thead>
-          <tbody>
+          <tbody valign="middle" >
             <row>
               <entry>
                 <para>&#160;</para>
@@ -3522,7 +3522,7 @@
                 </entry>
               </row>
             </thead>
-            <tbody>
+            <tbody valign="middle" >
               <row>
                 <entry>
                   <para>msr</para>

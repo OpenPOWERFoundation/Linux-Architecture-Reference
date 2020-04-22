@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright (c) 2016 OpenPOWER Foundation
-  
+  Copyright (c) 2016, 2020 OpenPOWER Foundation
+
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
@@ -13,16 +13,16 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-  
+
 -->
-<section xmlns="http://docbook.org/ns/docbook" 
+<section xmlns="http://docbook.org/ns/docbook"
          xmlns:xi="http://www.w3.org/2001/XInclude"
-         xmlns:xlink="http://www.w3.org/1999/xlink" 
-         version="5.0" 
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         version="5.0"
          xml:id="dbdoclet.50569337_17513">
-         
+
   <title>Environmental and Power Warnings</title>
-  
+
   <para>Environmental and Power Warnings (EPOW) is an option that provides
   a means for the platform to inform the OS of these types of events. The
   intent is to enable the OS to provide basic information to the user about
@@ -32,86 +32,86 @@
   the loss of power. Even on platforms that provide hardware protection of
   data during environmental events, EPOW notification allows discrimination
   between I/O errors caused by hardware failures versus EPOW events.</para>
-  
+
   <para>These warnings include action codes that the platform can use to
   influence the OS behavior when various hardware components fail. For
   example, a fan failure where the system can continue to operate in the
   safe cooling range may just generate an action code of WARN_COOLING, but
   a fan failure where the system cannot operate in the safe cooling range
   may generate an action code of SYSTEM_HALT.</para>
-  
+
   <para><emphasis role="bold">Implementation Note:</emphasis> Hardware cannot assume that the OS will
   process or take action on these warnings. These warnings are only
   provided to the OS in order to allow the OS a chance to cleanly abort
   operations in progress at the time of the warning. Hardware still assumes
   responsibility for preventing hardware damage due to environmental or
   power problems.</para>
-  
-  <para>An OS that wants to be EPOW-aware will look for the 
+
+  <para>An OS that wants to be EPOW-aware will look for the
   <emphasis>epow-events</emphasis> node in the OF device tree, enable the
-  interrupts listed in its 
+  interrupts listed in its
   <literal>&#8220;interrupts&#8221;</literal> property, and provide an
-  interrupt handler to call 
+  interrupt handler to call
   <emphasis>check-exception</emphasis> when one of those interrupts are
   received.</para>
-  
-  <para>When an EPOW event occurs, whether reported by 
-  <emphasis>check-exception</emphasis> or 
+
+  <para>When an EPOW event occurs, whether reported by
+  <emphasis>check-exception</emphasis> or
   <emphasis>event-scan</emphasis>, RTAS will directly pass back the EPOW
-  sensor value as part of the Extended Error Log format as described in 
+  sensor value as part of the Extended Error Log format as described in
   <xref linkend="dbdoclet.50569337_39498"/>, assuming the extended log is
   requested. Doing so avoids the need for the OS to make an extra RTAS call
-  to obtain the sensor value. For critical power problems, the 
+  to obtain the sensor value. For critical power problems, the
   <emphasis>check-exception</emphasis> function is used to immediately
-  report changes of state to the OS, while the 
+  report changes of state to the OS, while the
   <emphasis>get-sensor-state</emphasis> function allows the OS to monitor
   the condition (for example, loss of AC power) to see if the problem
   corrects itself.</para>
-  
+
   <variablelist>
-  
+
   	<varlistentry>
-  		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_17513" 
+  		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_17513"
 			xrefstyle="select: labelnumber nopage"/>-1.</emphasis></term>
   			<listitem>
   				<para> If the platform supports Environmental and
 		      Power Warnings by including a EPOW device tree entry, then the platform
-		      must support the EPOW sensor for the 
+		      must support the EPOW sensor for the
 		      <emphasis>get-sensor-state</emphasis> RTAS function.</para>
   			</listitem>
   	</varlistentry>
-  
+
   	<varlistentry>
-  		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_17513" 
+  		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_17513"
 			xrefstyle="select: labelnumber nopage"/>-2.</emphasis></term>
   			<listitem>
   				<para> The EPOW sensor, if provided, must contain
-		      the EPOW action code (defined in 
+		      the EPOW action code (defined in
 		      <xref linkend="dbdoclet.50569337_45557"/>) in the least significant 4
 		      bits. In cases where multiple EPOW actions are required, the action code
 		      with the highest numerical value (where 0 is lowest and 7 is highest)
 		      must be presented to the OS. The platform may implement any subset of
-		      these action codes, but must operate as described in 
+		      these action codes, but must operate as described in
 		      <xref linkend="dbdoclet.50569337_45557"/> for those it does implement.</para>
   			</listitem>
   	</varlistentry>
-  
+
   	<varlistentry>
-  		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_17513" 
+  		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_17513"
 			xrefstyle="select: labelnumber nopage"/>-3.</emphasis></term>
   			<listitem>
   				<para>To ensure adequate response time,
 		      platforms which implement the EPOW_MAIN_ENCLOSURE or EPOW_POWER_OFF
-		      action codes must do so via interrupt and 
-		      <emphasis>check-exception</emphasis> notification, rather than by 
-		      <emphasis>event-scan</emphasis> notification. 
-		      <emphasis>(Except as modified by Requirement 
+		      action codes must do so via interrupt and
+		      <emphasis>check-exception</emphasis> notification, rather than by
+		      <emphasis>event-scan</emphasis> notification.
+		      <emphasis>(Except as modified by Requirement
 		      <xref linkend="dbdoclet.50569337_83439"/>)</emphasis></para>
   			</listitem>
   	</varlistentry>
-  
+
   	<varlistentry xml:id="dbdoclet.50569337_83439">
-  		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_17513" 
+  		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_17513"
 			xrefstyle="select: labelnumber nopage"/>-4.</emphasis></term>
   			<listitem>
 		      <para>If the platform
@@ -120,54 +120,54 @@
 		      to the EPOW event.</para>
   			</listitem>
   	</varlistentry>
-  
+
   	<varlistentry>
-  		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_17513" 
+  		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_17513"
 			xrefstyle="select: labelnumber nopage"/>-5.</emphasis></term>
   			<listitem>
 		      <para>For interrupt-driven EPOW events, the
 		      platform must ensure that an EPOW interrupt is not lost in the case where
-		      a numerically higher-priority EPOW event occurs between the time when 
+		      a numerically higher-priority EPOW event occurs between the time when
 		      <emphasis>check-exception</emphasis> gathers the sensor value and when it
 		      resets the interrupt.</para>
   			</listitem>
   	</varlistentry>
-  
+
   	<varlistentry>
-  		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_17513" 
+  		<term><emphasis role="bold">R1-<xref linkend="dbdoclet.50569337_17513"
 			xrefstyle="select: labelnumber nopage"/>-6.</emphasis></term>
   			<listitem>
 		      <para>For SYSTEM_SHUTDOWN EPOW class 3, after a
 		      SYSTEM_SHUTDOWN EPOW commences and when the delay interval timer expires,
-		      if an 
+		      if an
 		      <emphasis role="bold"><literal>&#8220;ibm,recoverable-epow3&#8221;</literal></emphasis>
 		       encode-null
-		      property in the 
+		      property in the
 		      <emphasis role="bold"><literal>/rtas</literal></emphasis> node is present, then the OS code that manages
-		      preserving storage must check the EPOW sensor state and the 
+		      preserving storage must check the EPOW sensor state and the
 		      <emphasis role="bold"><literal>&#8220;ibm,request-partition-shutdown&#8221;</literal></emphasis>
 		      property if present. A normal boot must only occur when the EPOW sensor state
 		      indicates that the EPOW condition requiring a shutdown no longer exists
-		      (EPOW 0) and the 
-		      <emphasis role="bold"><literal>&#8220;ibm,request-partition-shutdown&#8221;</literal></emphasis> 
+		      (EPOW 0) and the
+		      <emphasis role="bold"><literal>&#8220;ibm,request-partition-shutdown&#8221;</literal></emphasis>
 		      is not present. Otherwise, the code that manages preserving storage must take
 		      the action as identified by the property.</para>
   			</listitem>
   	</varlistentry>
-  
+
   </variablelist>
-				      
+
   <para><emphasis role="bold">Implementation Note:</emphasis> One way for hardware to prevent the loss of an
   EPOW interrupt is by deferring the generation of a new EPOW interrupt
-  until the existing EPOW interrupt is reset by a call to the RTAS 
+  until the existing EPOW interrupt is reset by a call to the RTAS
   <emphasis>check-exception</emphasis> function. Another way is to ignore
   resets to the interrupt until all EPOW events have been reported.</para>
-  
+
   <table frame="all" pgwide="1" xml:id="dbdoclet.50569337_45557">
     <title>EPOW Action Codes</title>
     <tgroup cols="3">
-      <colspec colname="c1" colwidth="30*" />
-      <colspec colname="c2" colwidth="10*" />
+      <colspec colname="c1" colwidth="30*" align="center" />
+      <colspec colname="c2" colwidth="10*" align="center" />
       <colspec colname="c3" colwidth="60*" />
       <thead>
         <row>
@@ -181,14 +181,14 @@
               <emphasis role="bold">Value</emphasis>
             </para>
           </entry>
-          <entry>
+          <entry align="center">
             <para>
               <emphasis role="bold">Description</emphasis>
             </para>
           </entry>
         </row>
       </thead>
-      <tbody>
+      <tbody valign="middle" >
         <row>
           <entry>
             <para>EPOW_RESET/MESSAGE</para>
@@ -289,32 +289,32 @@
       </tbody>
     </tgroup>
   </table>
-  
+
   <para><emphasis role="bold">Software Implementation Note:</emphasis> A recommended OS processing method
   for an EPOW_MAIN_ENCLOSURE event is as follows:</para>
-  
+
   <itemizedlist>
     <listitem>
-  
+
       <para>Prepare for shutdown, mask the EPOW interrupt, and wait for 50
       milliseconds. Then call get-sensor-state to read the EPOW sensor.</para>
 
     </listitem>
     <listitem>
-          
+
       <para>If the EPOW action code is unchanged, wait an additional 50
       milliseconds.</para>
 
     </listitem>
     <listitem>
-  
+
       <para>If the action code is EPOW_POWER_OFF, attempt to power off.
       Otherwise, the power condition may have stabilized, so interrupts may be
       enabled and normal operation resumed.</para>
 
     </listitem>
   </itemizedlist>
-  
+
   <para>
   <emphasis role="bold">Implementation Note:</emphasis> EPOW_RESET (EPOW action code 0)
   may be used to indicate that a previously reported EPOW condition is no
@@ -324,7 +324,7 @@
   error log that specified the type of WARN_POWER EPOW generated would be
   set in the EPOW_RESET error log to indicate the specific EPOW event that
   was reset.</para>
-  
+
   <para>Systems that do not support an EPOW interrupt would generally be
   unable to support the EPOW action codes 5 and 7. In those cases, there
   could not be an EPOW event to indicate a loss of power. However, after
@@ -332,5 +332,5 @@
   the system had lost power previously and the power had been restored. The
   EPOW_RESET should only be used in this way if the system is unable to
   generate an EPOW class 5 or class 7.</para>
-  
+
 </section>

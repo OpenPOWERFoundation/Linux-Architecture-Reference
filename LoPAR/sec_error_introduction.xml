@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright (c) 2016 OpenPOWER Foundation
+  Copyright (c) 2016, 2020 OpenPOWER Foundation
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@
   via two RTAS functions,
   <emphasis>event-scan</emphasis> and
   <emphasis>check-exception</emphasis>, which are described further in
-  <xref linkend="dbdoclet.50569332_16852"/>. A further RTAS function, 
+  <xref linkend="dbdoclet.50569332_16852"/>. A further RTAS function,
   <emphasis>rtas-last-error</emphasis>, is also provided to return
   information about hardware failures detected specifically within an RTAS
   call.</para>

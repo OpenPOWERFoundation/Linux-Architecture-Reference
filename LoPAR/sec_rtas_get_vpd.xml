@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright (c) 2016 OpenPOWER Foundation
+  Copyright (c) 2016, 2020 OpenPOWER Foundation
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -54,11 +54,10 @@
             <xref linkend="dbdoclet.50569332_62393" />.</para>
 
             <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_62393">
-              <title>Argument Call Buffer
-              <emphasis>ibm,get-vpd</emphasis></title>
+              <title><emphasis>ibm,get-vpd</emphasis> Argument Call Buffer</title>
               <tgroup cols="3">
-                <colspec colname="c1" colwidth="1*" />
-                <colspec colname="c2" colwidth="2*" />
+                <colspec colname="c1" colwidth="1*" align="center" />
+                <colspec colname="c2" colwidth="2*" align="center" />
                 <colspec colname="c3" colwidth="4*" />
                 <thead>
                   <row>
@@ -72,14 +71,14 @@
                         <emphasis role="bold">Name</emphasis>
                       </para>
                     </entry>
-                    <entry>
+                    <entry align="center">
                       <para>
                         <emphasis role="bold">Values</emphasis>
                       </para>
                     </entry>
                   </row>
                 </thead>
-                <tbody>
+                <tbody valign="middle" >
                   <row>
                     <entry morerows="6" valign="middle">
                       <para>In</para>

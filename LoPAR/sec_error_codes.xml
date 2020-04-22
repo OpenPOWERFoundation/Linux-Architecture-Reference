@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright (c) 2016 OpenPOWER Foundation
+  Copyright (c) 2016, 2020 OpenPOWER Foundation
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -147,14 +147,14 @@
       <?dbhtml table-width="50%" ?>
       <?dbfo table-width="50%" ?>
       <tgroup cols="8">
-        <colspec colname="c1" colwidth="12*" />
-        <colspec colname="c2" colwidth="12*" />
-        <colspec colname="c3" colwidth="12*" />
-        <colspec colname="c4" colwidth="12*" />
-        <colspec colname="c5" colwidth="12*" />
-        <colspec colname="c6" colwidth="12*" />
-        <colspec colname="c7" colwidth="12*" />
-        <colspec colname="c8" colwidth="12*" />
+        <colspec colname="c1" colwidth="12*" align="center" />
+        <colspec colname="c2" colwidth="12*" align="center" />
+        <colspec colname="c3" colwidth="12*" align="center" />
+        <colspec colname="c4" colwidth="12*" align="center" />
+        <colspec colname="c5" colwidth="12*" align="center" />
+        <colspec colname="c6" colwidth="12*" align="center" />
+        <colspec colname="c7" colwidth="12*" align="center" />
+        <colspec colname="c8" colwidth="12*" align="center" />
         <thead>
           <row>
             <entry nameend="c5" namest="c1">
@@ -169,7 +169,7 @@
             </entry>
           </row>
         </thead>
-        <tbody>
+        <tbody valign="middle" >
           <row>
             <entry nameend="c2" namest="c1">
               <para>
@@ -228,7 +228,7 @@
       <?dbhtml table-width="80%" ?>
       <?dbfo table-width="80%" ?>
       <tgroup cols="2">
-        <colspec colname="c1" colwidth="15*" />
+        <colspec colname="c1" colwidth="15*" align="center" />
         <colspec colname="c2" colwidth="85*" />
         <thead>
           <row>
@@ -237,14 +237,14 @@
                 <emphasis role="bold">Field</emphasis>
               </para>
             </entry>
-            <entry>
+            <entry align="center">
               <para>
                 <emphasis role="bold">Description</emphasis>
               </para>
             </entry>
           </row>
         </thead>
-        <tbody>
+        <tbody valign="middle" >
           <row>
             <entry>
               <para>S1</para>
@@ -349,8 +349,8 @@
       <?dbhtml table-width="75%" ?>
       <?dbfo table-width="75%" ?>
       <tgroup cols="3">
-        <colspec colname="c1" colwidth="20*" />
-        <colspec colname="c2" colwidth="20*" />
+        <colspec colname="c1" colwidth="20*" align="center" />
+        <colspec colname="c2" colwidth="20*" align="center" />
         <colspec colname="c3" colwidth="60*" />
         <thead>
           <row>
@@ -365,19 +365,19 @@
                 <emphasis role="bold">PCI Sub-ClassS3-S4</emphasis>
               </para>
             </entry>
-            <entry>
+            <entry align="center">
               <para>
                 <emphasis role="bold">Description</emphasis>
               </para>
             </entry>
           </row>
         </thead>
-        <tbody>
+        <tbody valign="middle" >
           <row>
             <entry morerows="2">
               <para>0</para>
             </entry>
-            <entry nameend="c3" namest="c2">
+            <entry nameend="c3" namest="c2" align="center">
               <para>Devices that were built before the class code field was
               defined</para>
             </entry>
@@ -403,7 +403,7 @@
             <entry morerows="6">
               <para>1</para>
             </entry>
-            <entry nameend="c3" namest="c2">
+            <entry nameend="c3" namest="c2" align="center">
               <para>Mass storage controller.</para>
             </entry>
           </row>
@@ -461,7 +461,7 @@
             <entry morerows="5">
               <para>2</para>
             </entry>
-            <entry nameend="c3" namest="c2">
+            <entry nameend="c3" namest="c2" align="center">
               <para>Network controller.</para>
             </entry>
           </row>
@@ -509,7 +509,7 @@
             <entry morerows="3">
               <para>3</para>
             </entry>
-            <entry nameend="c3" namest="c2">
+            <entry nameend="c3" namest="c2" align="center">
               <para>Display controller.</para>
             </entry>
           </row>
@@ -541,7 +541,7 @@
             <entry morerows="3">
               <para>4</para>
             </entry>
-            <entry nameend="c3" namest="c2">
+            <entry nameend="c3" namest="c2" align="center">
               <para>Multimedia device</para>
             </entry>
           </row>
@@ -573,7 +573,7 @@
             <entry morerows="3">
               <para>5</para>
             </entry>
-            <entry nameend="c3" namest="c2">
+            <entry nameend="c3" namest="c2" align="center">
               <para>Memory controller.</para>
             </entry>
           </row>
@@ -605,7 +605,7 @@
             <entry morerows="9">
               <para>6</para>
             </entry>
-            <entry nameend="c3" namest="c2">
+            <entry nameend="c3" namest="c2" align="center">
               <para>Bridge IOAs.</para>
             </entry>
           </row>
@@ -685,7 +685,7 @@
             <entry morerows="3">
               <para>7</para>
             </entry>
-            <entry nameend="c3" namest="c2">
+            <entry nameend="c3" namest="c2" align="center">
               <para>Simple communication controllers.</para>
             </entry>
           </row>
@@ -717,7 +717,7 @@
             <entry morerows="5">
               <para>8</para>
             </entry>
-            <entry nameend="c3" namest="c2">
+            <entry nameend="c3" namest="c2" align="center">
               <para>Generic system peripherals</para>
             </entry>
           </row>
@@ -765,7 +765,7 @@
             <entry morerows="4">
               <para>9</para>
             </entry>
-            <entry nameend="c3" namest="c2">
+            <entry nameend="c3" namest="c2" align="center">
               <para>Input devices</para>
             </entry>
           </row>
@@ -805,7 +805,7 @@
             <entry morerows="2">
               <para>A</para>
             </entry>
-            <entry nameend="c3" namest="c2">
+            <entry nameend="c3" namest="c2" align="center">
               <para>Docking stations</para>
             </entry>
           </row>
@@ -829,7 +829,7 @@
             <entry morerows="2">
               <para>B</para>
             </entry>
-            <entry nameend="c3" namest="c2">
+            <entry nameend="c3" namest="c2" align="center">
               <para>Processors</para>
             </entry>
           </row>
@@ -853,7 +853,7 @@
             <entry morerows="2">
               <para>C</para>
             </entry>
-            <entry nameend="c3" namest="c2">
+            <entry nameend="c3" namest="c2" align="center">
               <para>Serial bus controllers</para>
             </entry>
           </row>
@@ -883,8 +883,8 @@
       <?dbhtml table-width="75%" ?>
       <?dbfo table-width="75%" ?>
       <tgroup cols="3">
-        <colspec colname="c1" colwidth="20*" />
-        <colspec colname="c2" colwidth="20*" />
+        <colspec colname="c1" colwidth="20*" align="center" />
+        <colspec colname="c2" colwidth="20*" align="center" />
         <colspec colname="c3" colwidth="60*" />
         <thead>
           <row>
@@ -898,14 +898,14 @@
                 <emphasis role="bold">Sub-ClassS3-S4</emphasis>
               </para>
             </entry>
-            <entry>
+            <entry align="center">
               <para>
                 <emphasis role="bold">Description</emphasis>
               </para>
             </entry>
           </row>
         </thead>
-        <tbody>
+        <tbody valign="middle" >
           <row>
             <entry morerows="13">
               <para>0</para>

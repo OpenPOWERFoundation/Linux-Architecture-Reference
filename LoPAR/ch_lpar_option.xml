@@ -1,5 +1,25 @@
-<chapter xmlns="http://docbook.org/ns/docbook"
-xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en" xml:id="dbdoclet.50569344_14591">
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2016, 2020 OpenPOWER Foundation
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<chapter  xmlns="http://docbook.org/ns/docbook"
+          xmlns:xl="http://www.w3.org/1999/xlink"
+          version="5.0"
+          xml:lang="en"
+          xml:id="dbdoclet.50569344_14591">
   <title>Logical Partitioning Option</title>
 
   <section>
@@ -8077,7 +8097,7 @@ hcall ( const int64 H_BLOCK_REMOVE, /* Function Code */
                     <entry><para role="font-size:6pt">7</para></entry>
                   </row>
                 </thead>
-                <tbody>
+                <tbody valign="middle" >
                   <row>
                     <entry namest="c1" nameend="c8">
                       <para role="font-size:6pt">Control</para>
@@ -8117,7 +8137,7 @@ hcall ( const int64 H_BLOCK_REMOVE, /* Function Code */
                     </entry>
                   </row>
                 </thead>
-                <tbody>
+                <tbody valign="middle" >
                   <row>
                     <entry><para>Type</para></entry>
                     <entry><para>&#160;</para></entry>
@@ -23176,7 +23196,7 @@ hcall ( const H_STOP_COP_OP,
               </entry>
             </row>
           </thead>
-          <tbody>
+          <tbody valign="middle" >
             <row>
               <entry morerows="3">
                 <para>43:44</para>
@@ -23410,7 +23430,7 @@ hcall ( const uint64 H_MEMSTAT_CTRL, uint64 flags);]]></programlisting>
                   <entry><para>31</para></entry>
                 </row>
               </thead>
-              <tbody>
+              <tbody valign="middle" >
                 <row>
                   <entry><para>0</para></entry>
                   <entry><para>R</para></entry>
@@ -23477,7 +23497,7 @@ hcall ( const uint64 H_MEMSTAT_CTRL, uint64 flags);]]></programlisting>
                   </entry>
                 </row>
               </thead>
-              <tbody>
+              <tbody valign="middle" >
                 <row>
                   <entry>
                     <para>0</para>
@@ -23569,7 +23589,7 @@ hcall ( const uint64 H_MEMSTAT_CTRL, uint64 flags);]]></programlisting>
                   </entry>
                 </row>
               </thead>
-              <tbody>
+              <tbody valign="middle" >
                 <row>
                   <entry>
                     <para>0</para>
@@ -23644,7 +23664,7 @@ hcall ( const uint64 H_MEMSTAT_CTRL, uint64 flags);]]></programlisting>
                   </entry>
                 </row>
               </thead>
-              <tbody>
+              <tbody valign="middle" >
                 <row>
                   <entry>
                     <para>0</para>
@@ -23954,7 +23974,7 @@ hcall ( const uint64 H_RETURN_PAGEINFO,
                           <entry><para>7</para></entry>
                         </row>
                       </thead>
-                      <tbody>
+                      <tbody valign="middle" >
                         <row>
                           <entry><para>0</para></entry>
                           <entry namest="c2" nameend="c3"><para>Ar</para></entry>
@@ -24140,7 +24160,7 @@ hcall ( const uint64 H_RETURN_PAGEINFO,
                   </entry>
                 </row>
               </thead>
-              <tbody>
+              <tbody valign="middle" >
                 <row>
                   <entry>
                     <para>lpx</para>

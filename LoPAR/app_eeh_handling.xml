@@ -1,116 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2016, 2020 OpenPOWER Foundation
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
 <appendix xmlns="http://docbook.org/ns/docbook" 
-xmlns:xl="http://www.w3.org/1999/xlink" 
-xml:id="dbdoclet.50569381_46906"
-version="5.0" 
-xml:lang="en">
+          xmlns:xl="http://www.w3.org/1999/xlink"
+          xml:id="dbdoclet.50569381_46906"
+          version="5.0"
+          xml:lang="en">
 
   <title>EEH Error Processing</title>
 
-  <para>This appendix describes the architectural intent for EEH error processing. 
-  This appendix does not attempt to illustrate all possible scenarios, and other 
+  <para>This appendix describes the architectural intent for EEH error processing.
+  This appendix does not attempt to illustrate all possible scenarios, and other
   implementations are possible.</para>
 
   <section xml:id="dbdoclet.50569381_11923">
     <title>General Scenarios</title>
-    <para>In general, the device driver recovery consists of issuing an 
-    <emphasis>ibm,read-slot-reset-state2</emphasis> call prior to doing any recovery 
-    to determine if (1) the IOA is in the MMIO Stopped and DMA Stopped state (that is, 
-    that an error has occurred which has put it into this state), and (2) whether or 
-    not the PE has been reset by the platform in the process of entering the MMIO 
+    <para>In general, the device driver recovery consists of issuing an
+    <emphasis>ibm,read-slot-reset-state2</emphasis> call prior to doing any recovery
+    to determine if (1) the IOA is in the MMIO Stopped and DMA Stopped state (that is,
+    that an error has occurred which has put it into this state), and (2) whether or
+    not the PE has been reset by the platform in the process of entering the MMIO
     Stopped and DMA Stopped state, and then doing one of the following:</para>
 
-    <orderedlist>		      
+    <orderedlist>
       <listitem>
         <para>Simplest approach: </para>
-        <itemizedlist>		      
+        <itemizedlist>
           <listitem>
             <para>Reset the PE</para>
           </listitem>
-          
+
           <listitem>
             <para>Reconfigure the PE</para>
           </listitem>
-        </itemizedlist>		      
+        </itemizedlist>
       </listitem>
 
       <listitem xml:id="dbdoclet.50569381_39262">
         <para>Most general approach (detailed more in <xref linkend="dbdoclet.50569381_38095"/>): </para>
-        <itemizedlist>		      
+        <itemizedlist>
           <listitem>
             <para>Release the PE for <emphasis>Load</emphasis> /<emphasis>Store</emphasis></para>
           </listitem>
-          
+
           <listitem>
             <para>Issue <emphasis>Load</emphasis> /<emphasis> Store</emphasis> instructions t
             o get any desired state information from the IOA</para>
           </listitem>
-          
+
           <listitem>
-            <para>Call the <emphasis>ibm,slot-error-detail</emphasis> RTAS call to get the 
+            <para>Call the <emphasis>ibm,slot-error-detail</emphasis> RTAS call to get the
             platform error information</para>
           </listitem>
-          
+
           <listitem>
             <para>Log the error information</para>
           </listitem>
-          
+
           <listitem>
             <para>Reset the PE</para>
           </listitem>
-          
+
           <listitem>
             <para>Reconfigure the PE</para>
           </listitem>
-        </itemizedlist>		      
+        </itemizedlist>
       </listitem>
 
       <listitem>
         <para>Most robust (no reset unless necessary): </para>
-        <itemizedlist>		      
+        <itemizedlist>
           <listitem>
             <para>Release the PE for <emphasis>Load</emphasis> /<emphasis>Store</emphasis></para>
           </listitem>
-          
+
           <listitem>
-            <para>Issue <emphasis> Load</emphasis> /<emphasis> Store</emphasis> instructions 
+            <para>Issue <emphasis> Load</emphasis> /<emphasis> Store</emphasis> instructions
             to get any desired state information from the IOA</para>
           </listitem>
-          
+
           <listitem>
-            <para>Call the <emphasis> ibm,slot-error-detail</emphasis> RTAS call to get the 
+            <para>Call the <emphasis> ibm,slot-error-detail</emphasis> RTAS call to get the
             platform error information</para>
           </listitem>
-          
+
           <listitem>
             <para>Log the error information</para>
           </listitem>
-          
+
           <listitem>
             <para>Device driver does IOA cleanup</para>
           </listitem>
-          
+
           <listitem>
             <para>Release the PE for DMA and restart operations (no reset) </para>
           </listitem>
-        </itemizedlist>		      
+        </itemizedlist>
       </listitem>
-    </orderedlist>		      
+    </orderedlist>
 
-    <para>In any scenario, after several retries of a recoverable operation, the OS 
-    may determine that further recovery efforts should cease. In such a case, 
-    calling <emphasis>ibm,slot-error-detail</emphasis> with <emphasis>Function</emphasis> 2 
-    (Permanent Error), in addition to returning error information, marks that the PE is 
+    <para>In any scenario, after several retries of a recoverable operation, the OS
+    may determine that further recovery efforts should cease. In such a case,
+    calling <emphasis>ibm,slot-error-detail</emphasis> with <emphasis>Function</emphasis> 2
+    (Permanent Error), in addition to returning error information, marks that the PE is
     no longer accessible due to previous errors.</para>
   </section>
 
   <section xml:id="dbdoclet.50569381_38095">
     <title>More Detail on the Most General Approach</title>
-    <para>The following gives a more detailed look at scenario #<xref linkend="dbdoclet.50569381_39262"/> 
-    in <xref linkend="dbdoclet.50569381_11923"/>. This will be broken up into two groups of operations: 
+    <para>The following gives a more detailed look at scenario #<xref linkend="dbdoclet.50569381_39262"/>
+    in <xref linkend="dbdoclet.50569381_11923"/>. This will be broken up into two groups of operations:
     error logging and error recovery.</para>
     <para>These scenarios assume that:</para>
 
-    <orderedlist>		      
+    <orderedlist>
       <listitem>
         <para>The <emphasis> ibm,configure-pe</emphasis> RTAS call is implemented.</para>
       </listitem>
@@ -118,18 +135,18 @@ xml:lang="en">
       <listitem>
         <para>The attempts at recovery stop when Max_Retries_Exceeded is true.</para>
       </listitem>
-    </orderedlist>		      
+    </orderedlist>
 
     <section>
       <title>Error Logging</title>
 
-      <orderedlist>		      
+      <orderedlist>
         <listitem>
-          <para>If the device driver is going to capture internal IOA-specific information 
-          as a part of the error logging process or if the IOA controlled by the device driver 
-          requires a longer wait after reset than the normal PCI specified minimum wait time, 
-          then the device driver determines whether its IOA has been reset as a result of entering 
-          EEH Stopped State, by looking at the <emphasis>PE Recovery Info</emphasis> output of 
+          <para>If the device driver is going to capture internal IOA-specific information
+          as a part of the error logging process or if the IOA controlled by the device driver
+          requires a longer wait after reset than the normal PCI specified minimum wait time,
+          then the device driver determines whether its IOA has been reset as a result of entering
+          EEH Stopped State, by looking at the <emphasis>PE Recovery Info</emphasis> output of
           the <emphasis>ibm,read-slot-reset-state2</emphasis> RTAS call.</para>
         </listitem>
 
@@ -138,106 +155,106 @@ xml:lang="en">
         </listitem>
 
         <listitem>
-          <para>If the IOA requires longer wait after reset times than the specified minimum, 
-          and the PE was reset (see step #1) as a result of the EEH event, then wait the 
+          <para>If the IOA requires longer wait after reset times than the specified minimum,
+          and the PE was reset (see step #1) as a result of the EEH event, then wait the
           additional necessary time before continuing.</para>
         </listitem>
 
         <listitem xml:id="dbdoclet.50569381_59303">
-          <para>The OS or device driver 
-          enables PE MMIOs by calling the <emphasis>ibm,set-eeh-option</emphasis> RTAS call 
+          <para>The OS or device driver
+          enables PE MMIOs by calling the <emphasis>ibm,set-eeh-option</emphasis> RTAS call
           with <emphasis>Function</emphasis> 2. </para>
         </listitem>
 
         <listitem>
           <para>The OS or device driver calls the <emphasis>ibm,configure-pe</emphasis> RTAS call. </para>
-          <orderedlist numeration="loweralpha">		      
+          <orderedlist numeration="loweralpha">
             <listitem>
-              <para>If the PCI fabric does not need configuring (the PE was not reset previous to the 
-              call or was reset but was previously configured with <emphasis>ibm,configure-pe</emphasis> ), 
-              then the call returns without doing anything, otherwise it attempts to configure 
+              <para>If the PCI fabric does not need configuring (the PE was not reset previous to the
+              call or was reset but was previously configured with <emphasis>ibm,configure-pe</emphasis> ),
+              then the call returns without doing anything, otherwise it attempts to configure
               the fabric up to but not including the endpoint IOA configuration registers.</para>
             </listitem>
 
             <listitem>
-              <para>If an EEH event occurs as a result of probing during the 
-              <emphasis>ibm,configure-pe</emphasis> RTAS call that results in a 
-              reset of the PE, the PE will be returned in the PE state of 2. Software 
-              does not necessarily need to check this on return from the call. The case 
-              where this occurs is expected to be rare, and probably signals a non-transient error. 
-              In this case the software can continue on with the recovery phase of the EEH processing, 
+              <para>If an EEH event occurs as a result of probing during the
+              <emphasis>ibm,configure-pe</emphasis> RTAS call that results in a
+              reset of the PE, the PE will be returned in the PE state of 2. Software
+              does not necessarily need to check this on return from the call. The case
+              where this occurs is expected to be rare, and probably signals a non-transient error.
+              In this case the software can continue on with the recovery phase of the EEH processing,
               and will eventually hit the same EEH event on further processing.</para>
             </listitem>
-          </orderedlist>		      
+          </orderedlist>
         </listitem>
 
         <listitem xml:id="dbdoclet.50569381_74560">
-          <para>If the PE was 
-          reset (see step #1) as a result of the EEH event, then if the device driver is 
-          going to gather IOA-specific information for logging, it needs to finish the 
-          configuration of the IOA PCI configuration registers, by restoring the PCI 
-          configuration space registers of the IOA(s) in the PE (for example, BARs, 
+          <para>If the PE was
+          reset (see step #1) as a result of the EEH event, then if the device driver is
+          going to gather IOA-specific information for logging, it needs to finish the
+          configuration of the IOA PCI configuration registers, by restoring the PCI
+          configuration space registers of the IOA(s) in the PE (for example, BARs,
           Memory Space Enable, etc.). </para>
         </listitem>
 
         <listitem xml:id="dbdoclet.50569381_29191">
-          <para>If desired, the 
+          <para>If desired, the
           device driver gathers IOA-specific information via MMIOs, by doing MMIOs to its IOA.</para>
         </listitem>
 
         <listitem>
-          <para>The OS or device driver calls <emphasis>ibm,slot-error-detail</emphasis> . 
-          Any data captured in step #<xref linkend="dbdoclet.50569381_29191"/> is passed in the 
-          call. Note that maximum amount of data will be captured in some cases only when the 
-          <emphasis>ibm,slot-error-detail</emphasis> call is made with PE not in the MMIO Stopped 
+          <para>The OS or device driver calls <emphasis>ibm,slot-error-detail</emphasis> .
+          Any data captured in step #<xref linkend="dbdoclet.50569381_29191"/> is passed in the
+          call. Note that maximum amount of data will be captured in some cases only when the
+          <emphasis>ibm,slot-error-detail</emphasis> call is made with PE not in the MMIO Stopped
           State (as it should be in step #<xref linkend="dbdoclet.50569381_59303"/>). </para>
-          <orderedlist numeration="loweralpha">		      
+          <orderedlist numeration="loweralpha">
             <listitem>
-              <para>If Max_Retries_Exceeded is true, then call <emphasis>ibm,slot-error-detail</emphasis> 
+              <para>If Max_Retries_Exceeded is true, then call <emphasis>ibm,slot-error-detail</emphasis>
               with <emphasis> Function</emphasis> 2 (Permanent Error).</para>
             </listitem>
 
             <listitem>
-              <para>If Max_Retries_Exceeded is not true, then call <emphasis>ibm,slot-error-detail</emphasis> 
+              <para>If Max_Retries_Exceeded is not true, then call <emphasis>ibm,slot-error-detail</emphasis>
               with <emphasis>Function</emphasis> 1(Temporary Error).</para>
             </listitem>
-          </orderedlist>		      
+          </orderedlist>
         </listitem>
 
         <listitem>
-          <para>The <emphasis>ibm,slot-error-detail</emphasis> RTAS call captures whatever 
-          PCI config space registers it can between the configuration address passed in the call 
-          and the system (PHB), and including at the configuration address and at the PHB, and 
-          returns them along with the device specific data in an error log in the return information 
-          from the call. This call may encounter another EEH event, in which case it returns what 
+          <para>The <emphasis>ibm,slot-error-detail</emphasis> RTAS call captures whatever
+          PCI config space registers it can between the configuration address passed in the call
+          and the system (PHB), and including at the configuration address and at the PHB, and
+          returns them along with the device specific data in an error log in the return information
+          from the call. This call may encounter another EEH event, in which case it returns what
           information it can in the call, with a <emphasis>Status</emphasis> of 0 (Success).</para>
         </listitem>
 
         <listitem>
-          <para>The OS or device driver logs the log entry returned from the 
+          <para>The OS or device driver logs the log entry returned from the
           <emphasis>ibm,slot-error-detail</emphasis> RTAS call.</para>
         </listitem>
 
         <listitem>
-          <para>If Max_Retries_Exceeded is not true, then the next step is PE Recovery, 
+          <para>If Max_Retries_Exceeded is not true, then the next step is PE Recovery,
           otherwise stop and mark the IOA(s) in the PE as unusable.</para>
         </listitem>
-      </orderedlist>		      
+      </orderedlist>
     </section>
 
     <section>
       <title>PE Recovery</title>
 
-      <orderedlist>		      
+      <orderedlist>
         <listitem>
-          <para>OS or device driver does a PE reset sequence. Note that this step is 
-          required even if the PE was reset as a result of the initial EEH event, because 
-          the error logging steps (for example, the <emphasis>ibm,configure-pe</emphasis> 
-          or <emphasis> ibm,slot-error-detail</emphasis> calls) could have encountered 
+          <para>OS or device driver does a PE reset sequence. Note that this step is
+          required even if the PE was reset as a result of the initial EEH event, because
+          the error logging steps (for example, the <emphasis>ibm,configure-pe</emphasis>
+          or <emphasis> ibm,slot-error-detail</emphasis> calls) could have encountered
           another EEH event. </para>
-          <orderedlist numeration="loweralpha">		      
+          <orderedlist numeration="loweralpha">
             <listitem>
-              <para>The device driver or OS calls <emphasis>ibm,set-slot-reset</emphasis> with 
+              <para>The device driver or OS calls <emphasis>ibm,set-slot-reset</emphasis> with
               <emphasis>Function</emphasis> 1 or 3 to activate the reset.</para>
             </listitem>
 
@@ -246,26 +263,26 @@ xml:lang="en">
             </listitem>
 
             <listitem>
-              <para>The device driver or OS calls <emphasis>ibm,set-slot-reset</emphasis> with 
+              <para>The device driver or OS calls <emphasis>ibm,set-slot-reset</emphasis> with
               <emphasis>Function</emphasis> 0 to deactivate the reset.</para>
             </listitem>
 
             <listitem>
-              <para>The minimum reset inactive to first configuration cycles is waited. 
-              If the IOA requires more than the standard PCI specified time, then wait that 
+              <para>The minimum reset inactive to first configuration cycles is waited.
+              If the IOA requires more than the standard PCI specified time, then wait that
               longer time, instead.</para>
             </listitem>
-          </orderedlist>		      
+          </orderedlist>
         </listitem>
 
         <listitem>
           <para>The OS or device driver calls <emphasis>ibm,configure-pe.</emphasis>
-              <note><para>If an EEH event occurs as a result of probing 
-              during the <emphasis>ibm,configure-pe</emphasis> RTAS call that results in a reset 
-              of the PE, the PE will be returned in the PE state of 2. Software does not necessarily 
-              need to check this on return from the call. The case where this occurs is expected to 
-              be rare, and probably signals a non-transient error. In this case the software can 
-              continue on with the recovery phase of the EEH processing, and will eventually hit 
+              <note><para>If an EEH event occurs as a result of probing
+              during the <emphasis>ibm,configure-pe</emphasis> RTAS call that results in a reset
+              of the PE, the PE will be returned in the PE state of 2. Software does not necessarily
+              need to check this on return from the call. The case where this occurs is expected to
+              be rare, and probably signals a non-transient error. In this case the software can
+              continue on with the recovery phase of the EEH processing, and will eventually hit
               the same EEH event on further processing.</para></note>
            </para>
         </listitem>
@@ -277,7 +294,7 @@ xml:lang="en">
         <listitem>
           <para>The device driver initializes the IOA for operations.</para>
         </listitem>
-      </orderedlist>		      
+      </orderedlist>
 
       </section>
     </section>

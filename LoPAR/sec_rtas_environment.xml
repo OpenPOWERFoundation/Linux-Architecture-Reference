@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright (c) 2016 OpenPOWER Foundation
+  Copyright (c) 2016, 2020 OpenPOWER Foundation
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -308,9 +308,9 @@
                 <title>Use of
                 <emphasis role="bold"><literal>&#8220;used-by-rtas&#8221;</literal></emphasis></title>
                 <tgroup cols="3">
-                  <colspec colname="c1" colwidth="33*" />
-                  <colspec colname="c2" colwidth="33*" />
-                  <colspec colname="c3" colwidth="33*" />
+                  <colspec colname="c1" colwidth="33*" align="center" />
+                  <colspec colname="c2" colwidth="33*" align="center" />
+                  <colspec colname="c3" colwidth="33*" align="center" />
                   <thead>
                     <row>
                       <entry>
@@ -330,7 +330,7 @@
                       </entry>
                     </row>
                   </thead>
-                  <tbody>
+                  <tbody valign="middle" >
                     <row>
                       <entry>
                         <para>Only used by OS</para>
@@ -663,8 +663,8 @@
                 <emphasis role="bold"><literal>instantiate-rtas-64</literal></emphasis>
                 Argument Call Buffer</title>
                 <tgroup cols="3">
-                  <colspec colname="c1" colwidth="1*" />
-                  <colspec colname="c2" colwidth="2*" />
+                  <colspec colname="c1" colwidth="1*" align="center" />
+                  <colspec colname="c2" colwidth="2*" align="center" />
                   <colspec colname="c3" colwidth="4*" />
                   <thead>
                     <row>
@@ -673,7 +673,7 @@
                           <emphasis role="bold">Parameter Type</emphasis>
                         </para>
                       </entry>
-                      <entry>
+                      <entry align="center">
                         <para>
                           <emphasis role="bold">Name</emphasis>
                         </para>
@@ -685,7 +685,7 @@
                       </entry>
                     </row>
                   </thead>
-                  <tbody>
+                  <tbody valign="middle" >
                     <row>
                       <entry>
                         <para>In</para>
@@ -774,8 +774,8 @@
               <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_20008">
                 <title>RTAS Tokens for Functions</title>
                 <tgroup cols="3">
-                  <colspec colname="c1" colwidth="33*" />
-                  <colspec colname="c2" colwidth="33*" />
+                  <colspec colname="c1" colwidth="33*" align="center" />
+                  <colspec colname="c2" colwidth="33*" align="center" />
                   <colspec colname="c3" colwidth="33*" />
                   <thead>
                     <row>
@@ -789,21 +789,19 @@
                           <emphasis role="bold">Required?</emphasis>
                         </para>
                       </entry>
-                      <entry>
+                      <entry align="center" >
                         <para>
                           <emphasis role="bold">Notes</emphasis>
                         </para>
                       </entry>
                     </row>
                   </thead>
-                  <tbody>
+                  <tbody valign="middle" >
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;nvram-fetch&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_96529" />
+                          <emphasis role="bold"><literal>&#8220;nvram-fetch&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_96529" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -816,10 +814,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;nvram-store&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_57392" />
+                          <emphasis role="bold"><literal>&#8220;nvram-store&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_57392" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -832,10 +828,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;get-time-of-day&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_88127" />
+                          <emphasis role="bold"><literal>&#8220;get-time-of-day&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_88127" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -848,10 +842,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;set-time-of-day&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_35194" />
+                          <emphasis role="bold"><literal>&#8220;set-time-of-day&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_35194" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -864,10 +856,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;set-time-for-power-on&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_13743" />
+                          <emphasis role="bold"><literal>&#8220;set-time-for-power-on&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_13743" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -880,10 +870,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;event-scan&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_24845" />
+                          <emphasis role="bold"><literal>&#8220;event-scan&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_24845" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -896,10 +884,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;check-exception&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_71287" />
+                          <emphasis role="bold"><literal>&#8220;check-exception&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_71287" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -912,10 +898,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;rtas-last-error&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_71223" />
+                          <emphasis role="bold"><literal>&#8220;rtas-last-error&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_71223" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -928,10 +912,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,platform-dump&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_98203" />
+                          <emphasis role="bold"><literal>&#8220;ibm,platform-dump&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_98203" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -944,10 +926,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,read-pci-config&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_59536" />
+                          <emphasis role="bold"><literal>&#8220;ibm,read-pci-config&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_59536" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry morerows="1">
@@ -960,20 +940,16 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,write-pci-config&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_54555" />
+                          <emphasis role="bold"><literal>&#8220;ibm,write-pci-config&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_54555" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                     </row>
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;display-character&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_10053" />
+                          <emphasis role="bold"><literal>&#8220;display-character&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_10053" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -986,10 +962,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;set-indicator&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_32164" />
+                          <emphasis role="bold"><literal>&#8220;set-indicator&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_32164" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1003,10 +977,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;get-sensor-state&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_10754" />
+                          <emphasis role="bold"><literal>&#8220;get-sensor-state&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_10754" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1019,10 +991,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,set-system-parameter&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_31665" />
+                          <emphasis role="bold"><literal>&#8220;ibm,set-system-parameter&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_31665" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1035,10 +1005,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,get-system-parameter&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_62190" />
+                          <emphasis role="bold"><literal>&#8220;ibm,get-system-parameter&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_62190" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1051,10 +1019,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;set-power-level&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_45884" />
+                          <emphasis role="bold"><literal>&#8220;set-power-level&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_45884" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry morerows="1">
@@ -1068,10 +1034,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;get-power-level&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_67298" />
+                          <emphasis role="bold"><literal>&#8220;get-power-level&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_67298" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1081,10 +1045,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;power-off&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_79728" />
+                          <emphasis role="bold"><literal>&#8220;power-off&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_79728" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1098,10 +1060,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,power-off-ups&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_50770" />
+                          <emphasis role="bold"><literal>&#8220;ibm,power-off-ups&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_50770" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1115,10 +1075,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;system-reboot&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_50284" />
+                          <emphasis role="bold"><literal>&#8220;system-reboot&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_50284" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1131,10 +1089,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,update-flash-64-and-reboot&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_77103" />
+                          <emphasis role="bold"><literal>&#8220;ibm,update-flash-64-and-reboot&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_77103" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1147,10 +1103,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,manage-flash-image&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_81833" />
+                          <emphasis role="bold"><literal>&#8220;ibm,manage-flash-image&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_81833" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1163,10 +1117,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,validate-flash-image&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_40640" />
+                          <emphasis role="bold"><literal>&#8220;ibm,validate-flash-image&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_40640" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1179,10 +1131,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,activate-firmware&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_28163" />
+                          <emphasis role="bold"><literal>&#8220;ibm,activate-firmware&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_28163" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1195,10 +1145,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;stop-self&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_68497" />
+                          <emphasis role="bold"><literal>&#8220;stop-self&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_68497" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry morerows="2">
@@ -1211,10 +1159,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;start-cpu&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_39014" />
+                          <emphasis role="bold"><literal>&#8220;start-cpu&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_39014" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1224,10 +1170,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;query-cpu-stopped-state&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_81575" />
+                          <emphasis role="bold"><literal>&#8220;query-cpu-stopped-state&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_81575" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1237,10 +1181,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,os-term&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_42118" />
+                          <emphasis role="bold"><literal>&#8220;ibm,os-term&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_42118" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1253,10 +1195,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,exti2c&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_19739" />
+                          <emphasis role="bold"><literal>&#8220;ibm,exti2c&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_19739" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1269,10 +1209,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,get-xive&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_48295" />
+                          <emphasis role="bold"><literal>&#8220;ibm,get-xive&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_48295" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry morerows="3">
@@ -1285,10 +1223,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,set-xive&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_13631" />
+                          <emphasis role="bold"><literal>&#8220;ibm,set-xive&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_13631" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1298,10 +1234,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,int-off&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_95487" />
+                          <emphasis role="bold"><literal>&#8220;ibm,int-off&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_95487" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1311,10 +1245,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,int-on&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_61000" />
+                          <emphasis role="bold"><literal>&#8220;ibm,int-on&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_61000" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1324,10 +1256,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,configure-connector&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569342_39636" />
+                          <emphasis role="bold"><literal>&#8220;ibm,configure-connector&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569342_39636" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1341,10 +1271,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,set-eeh-option&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_27269" />
+                          <emphasis role="bold"><literal>&#8220;ibm,set-eeh-option&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_27269" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry morerows="1">
@@ -1357,10 +1285,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,set-slot-reset&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_86249" />
+                          <emphasis role="bold"><literal>&#8220;ibm,set-slot-reset&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_86249" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1387,10 +1313,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,read-slot-reset-state2&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_87326" />
+                          <emphasis role="bold"><literal>&#8220;ibm,read-slot-reset-state2&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_87326" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1403,10 +1327,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,get-config-addr-info2&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_68098" />
+                          <emphasis role="bold"><literal>&#8220;ibm,get-config-addr-info2&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_68098" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1419,10 +1341,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,slot-error-detail&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_43482" />
+                          <emphasis role="bold"><literal>&#8220;ibm,slot-error-detail&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_43482" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1435,10 +1355,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,open-errinjct&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_22302" />
+                          <emphasis role="bold"><literal>&#8220;ibm,open-errinjct&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_22302" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry morerows="2">
@@ -1451,10 +1369,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,errinjct&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_22302" />
+                          <emphasis role="bold"><literal>&#8220;ibm,errinjct&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_22302" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1464,10 +1380,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,close-errinjct&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_22302" />
+                          <emphasis role="bold"><literal>&#8220;ibm,close-errinjct&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_22302" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1477,10 +1391,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,nmi-register&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_12478" />
+                          <emphasis role="bold"><literal>&#8220;ibm,nmi-register&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_12478" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry morerows="1">
@@ -1493,10 +1405,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,nmi-interlock&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_12478" />
+                          <emphasis role="bold"><literal>&#8220;ibm,nmi-interlock&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_12478" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1506,10 +1416,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,configure-bridge&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_65423" />
+                          <emphasis role="bold"><literal>&#8220;ibm,configure-bridge&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_65423" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1522,10 +1430,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,configure-pe&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_45262" />
+                          <emphasis role="bold"><literal>&#8220;ibm,configure-pe&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_45262" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1538,10 +1444,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,get-indices&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="sec_get_indices_rtas_call" />
+                          <emphasis role="bold"><literal>&#8220;ibm,get-indices&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="sec_get_indices_rtas_call" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1555,10 +1459,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,get-vpd&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_72964" />
+                          <emphasis role="bold"><literal>&#8220;ibm,get-vpd&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_72964" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1571,10 +1473,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,manage-storage-preservation&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_28221" />
+                          <emphasis role="bold"><literal>&#8220;ibm,manage-storage-preservation&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_28221" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1587,10 +1487,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,get-dynamic-sensor-state&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_61055" />
+                          <emphasis role="bold"><literal>&#8220;ibm,get-dynamic-sensor-state&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_61055" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1604,10 +1502,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,set-dynamic-indicator&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_30542" />
+                          <emphasis role="bold"><literal>&#8220;ibm,set-dynamic-indicator&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_30542" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1621,10 +1517,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,change-msi&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_16274" />
+                          <emphasis role="bold"><literal>&#8220;ibm,change-msi&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_16274" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1638,10 +1532,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,suspend-me&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_45918" />
+                          <emphasis role="bold"><literal>&#8220;ibm,suspend-me&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_45918" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1654,10 +1546,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,update-nodes&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_84414" />
+                          <emphasis role="bold"><literal>&#8220;ibm,update-nodes&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_84414" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1670,10 +1560,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,update-properties&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_40069" />
+                          <emphasis role="bold"><literal>&#8220;ibm,update-properties&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_40069" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1686,10 +1574,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,configure-kernel-dump&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_67111" />
+                          <emphasis role="bold"><literal>&#8220;ibm,configure-kernel-dump&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_67111" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1703,10 +1589,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,query-pe-dma-window&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_99826" />
+                          <emphasis role="bold"><literal>&#8220;ibm,query-pe-dma-window&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_99826" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry morerows="2">
@@ -1719,10 +1603,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,create-pe-dma-window&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_49009" />
+                          <emphasis role="bold"><literal>&#8220;ibm,create-pe-dma-window&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_49009" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1732,10 +1614,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,remove-pe-dma-window&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_60545" />
+                          <emphasis role="bold"><literal>&#8220;ibm,remove-pe-dma-window&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_60545" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1745,10 +1625,8 @@
                     <row>
                       <entry>
                         <para>
-                          <emphasis role="bold"><literal>&#8220;ibm,reset-pe-dma-windows&#8221;</literal></emphasis>
-                        </para>
-                        <para>
-                          <xref linkend="dbdoclet.50569332_60545" />
+                          <emphasis role="bold"><literal>&#8220;ibm,reset-pe-dma-windows&#8221;</literal></emphasis><?linebreak?>
+                          <xref linkend="dbdoclet.50569332_60545" xrefstyle="select: labelnumber pagenumber" />
                         </para>
                       </entry>
                       <entry>
@@ -1787,7 +1665,7 @@
               <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_38140">
                 <title>OF Device Tree Properties</title>
                 <tgroup cols="2">
-                  <colspec colname="c1" colwidth="50*" />
+                  <colspec colname="c1" colwidth="50*" align="center" />
                   <colspec colname="c2" colwidth="50*" />
                   <thead>
                     <row>
@@ -1796,14 +1674,14 @@
                           <emphasis role="bold">name</emphasis>
                         </para>
                       </entry>
-                      <entry>
+                      <entry align="center">
                         <para>
                           <emphasis role="bold">value</emphasis>
                         </para>
                       </entry>
                     </row>
                   </thead>
-                  <tbody>
+                  <tbody valign="middle" >
                     <row>
                       <entry>
                         <para>
@@ -2189,7 +2067,7 @@
               <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_22280">
                 <title>RTAS Argument Call Buffer</title>
                 <tgroup cols="2">
-                  <colspec colname="c1" colwidth="50*" />
+                  <colspec colname="c1" colwidth="50*" align="center" />
                   <colspec colname="c2" colwidth="50*" />
                   <thead>
                     <row>
@@ -2198,14 +2076,14 @@
                           <emphasis role="bold">Cell Number</emphasis>
                         </para>
                       </entry>
-                      <entry>
+                      <entry align="center" >
                         <para>
                           <emphasis role="bold">Use</emphasis>
                         </para>
                       </entry>
                     </row>
                   </thead>
-                  <tbody>
+                  <tbody valign="middle" >
                     <row>
                       <entry>
                         <para>1</para>
@@ -2407,7 +2285,7 @@
                 <title>RTAS
                 <emphasis>Status</emphasis> Word Values</title>
                 <tgroup cols="2">
-                  <colspec colname="c1" colwidth="50*" />
+                  <colspec colname="c1" colwidth="50*" align="center" />
                   <colspec colname="c2" colwidth="50*" />
                   <thead>
                     <row>
@@ -2416,7 +2294,7 @@
                           <emphasis role="bold">Values</emphasis>
                         </para>
                       </entry>
-                      <entry>
+                      <entry align="center">
                         <para>
                           <emphasis role="bold">
                           <emphasis>Status</emphasis> Word Meanings</emphasis>
@@ -2424,7 +2302,7 @@
                       </entry>
                     </row>
                   </thead>
-                  <tbody>
+                  <tbody valign="middle" >
                     <row>
                       <entry>
                         <para>0</para>

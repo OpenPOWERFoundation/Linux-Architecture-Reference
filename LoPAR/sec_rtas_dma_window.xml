@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright (c) 2016 OpenPOWER Foundation
+  Copyright (c) 2016, 2020 OpenPOWER Foundation
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -227,11 +227,10 @@
               <xref linkend="dbdoclet.50569332_53901" />.</para>
 
               <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_53901">
-                <title>Argument Call Buffer
-                <emphasis>ibm,query-pe-dma-window</emphasis></title>
+                <title><emphasis>ibm,query-pe-dma-window</emphasis> Argument Call Buffer</title>
                 <tgroup cols="3">
-                  <colspec colname="c1" colwidth="1*" />
-                  <colspec colname="c2" colwidth="2*" />
+                  <colspec colname="c1" colwidth="1*" align="center" />
+                  <colspec colname="c2" colwidth="2*" align="center" />
                   <colspec colname="c3" colwidth="4*" />
                   <thead>
                     <row>
@@ -245,14 +244,14 @@
                           <emphasis role="bold">Name</emphasis>
                         </para>
                       </entry>
-                      <entry>
+                      <entry align="center">
                         <para>
                           <emphasis role="bold">Values</emphasis>
                         </para>
                       </entry>
                     </row>
                   </thead>
-                  <tbody>
+                  <tbody valign="middle" >
                     <row>
                       <entry morerows="5" valign="middle">
                         <para>In</para>
@@ -457,11 +456,10 @@
               <xref linkend="dbdoclet.50569332_26269" />.</para>
 
               <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_26269">
-                <title>Argument Call Buffer
-                <emphasis>ibm,create-pe-dma-window</emphasis></title>
+                <title><emphasis>ibm,create-pe-dma-window</emphasis> Argument Call Buffer</title>
                 <tgroup cols="3">
-                  <colspec colname="c1" colwidth="1*" />
-                  <colspec colname="c2" colwidth="2*" />
+                  <colspec colname="c1" colwidth="1*" align="center" />
+                  <colspec colname="c2" colwidth="2*" align="center" />
                   <colspec colname="c3" colwidth="4*" />
                   <thead>
                     <row>
@@ -475,14 +473,14 @@
                           <emphasis role="bold">Name</emphasis>
                         </para>
                       </entry>
-                      <entry>
+                      <entry align="center">
                         <para>
                           <emphasis role="bold">Values</emphasis>
                         </para>
                       </entry>
                     </row>
                   </thead>
-                  <tbody>
+                  <tbody valign="middle" >
                     <row>
                       <entry morerows="7" valign="middle">
                         <para>In</para>
@@ -684,11 +682,10 @@
               <xref linkend="dbdoclet.50569332_36074" />.</para>
 
               <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_36074">
-                <title>Argument Call Buffer
-                <emphasis>ibm,remove-pe-dma-window</emphasis></title>
+                <title><emphasis>ibm,remove-pe-dma-window</emphasis> Argument Call Buffer</title>
                 <tgroup cols="3">
-                  <colspec colname="c1" colwidth="1*" />
-                  <colspec colname="c2" colwidth="2*" />
+                  <colspec colname="c1" colwidth="1*" align="center" />
+                  <colspec colname="c2" colwidth="2*" align="center" />
                   <colspec colname="c3" colwidth="4*" />
                   <thead>
                     <row>
@@ -702,14 +699,14 @@
                           <emphasis role="bold">Name</emphasis>
                         </para>
                       </entry>
-                      <entry>
+                      <entry align="center">
                         <para>
                           <emphasis role="bold">Values</emphasis>
                         </para>
                       </entry>
                     </row>
                   </thead>
-                  <tbody>
+                  <tbody valign="middle" >
                     <row>
                       <entry morerows="3" valign="middle">
                         <para>In</para>
@@ -853,9 +850,9 @@
       <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_25585">
         <title>DDW Option Extensions</title>
         <tgroup cols="3">
-          <colspec colname="c1" colwidth="33*" />
-          <colspec colname="c2" colwidth="33*" />
-          <colspec colname="c3" colwidth="33*" />
+          <colspec colname="c1" colwidth="15*" align="center" />
+          <colspec colname="c2" colwidth="30*" align="center" />
+          <colspec colname="c3" colwidth="55*" align="center" />
           <thead>
             <row>
               <entry>
@@ -877,7 +874,7 @@
               </entry>
             </row>
           </thead>
-          <tbody>
+          <tbody valign="middle" >
             <row>
               <entry>
                 <para>2.7</para>
@@ -954,11 +951,10 @@
                 <xref linkend="dbdoclet.50569332_68052" />.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_68052">
-                  <title>Argument Call Buffer
-                  <emphasis>ibm,reset-pe-dma-windows</emphasis></title>
+                  <title><emphasis>ibm,reset-pe-dma-windows</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -972,14 +968,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="5" valign="middle">
                           <para>In</para>

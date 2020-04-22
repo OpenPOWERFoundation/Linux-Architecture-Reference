@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright (c) 2016 OpenPOWER Foundation
+  Copyright (c) 2016, 2020 OpenPOWER Foundation
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -311,10 +311,9 @@
       indicated in decimal unless noted otherwise.</para>
 
       <table frame="all" pgwide="1" xml:id="dbdoclet.50569337_21249">
-        <title>RTAS Event Return Format (Fixed Part)
-        <emphasis>(Continued)</emphasis></title>
+        <title>RTAS Event Return Format (Fixed Part)</title>
         <tgroup cols="2">
-          <colspec colname="c1" colwidth="30*" />
+          <colspec colname="c1" colwidth="30*" align="center" />
           <colspec colname="c2" colwidth="70*" />
           <thead>
             <row>
@@ -324,7 +323,7 @@
                   number(s))</emphasis>
                 </para>
               </entry>
-              <entry>
+              <entry align="center">
                 <para>
                   <emphasis role="bold">Description, Values (Described in
                   <xref linkend="dbdoclet.50569337_75663"/>)</emphasis>
@@ -332,7 +331,7 @@
               </entry>
             </row>
           </thead>
-          <tbody>
+          <tbody valign="middle" >
             <row>
               <entry>
                 <para>Version (0:7)</para>
@@ -664,8 +663,8 @@
       <table frame="all" pgwide="1" xml:id="dbdoclet.50569337_85491">
         <title>RTAS General Extended Event Log Format, Version 6</title>
         <tgroup cols="3">
-          <colspec colname="c1" colwidth="10*" />
-          <colspec colname="c2" colwidth="10*" />
+          <colspec colname="c1" colwidth="10*" align="center" />
+          <colspec colname="c2" colwidth="10*" align="center" />
           <colspec colname="c3" colwidth="80*" />
           <thead>
             <row>
@@ -675,12 +674,12 @@
               <entry>
                 <para><emphasis role="bold">Bit</emphasis></para>
               </entry>
-              <entry>
+              <entry align="center">
                 <para><emphasis role="bold">Description</emphasis></para>
               </entry>
             </row>
           </thead>
-          <tbody>
+          <tbody valign="middle" >
             <row>
               <entry morerows="7">
                 <para>0</para>
@@ -861,8 +860,8 @@
         <title>Overview of Platform Event Log Format, Version
         6</title>
         <tgroup cols="3">
-          <colspec colname="c1" colwidth="10*" />
-          <colspec colname="c2" colwidth="10*" />
+          <colspec colname="c1" colwidth="10*" align="center" />
+          <colspec colname="c2" colwidth="10*" align="center" />
           <colspec colname="c3" colwidth="80*" />
           <thead>
             <row>
@@ -872,12 +871,12 @@
               <entry>
                 <para><emphasis role="bold">Length in Bytes</emphasis></para>
               </entry>
-              <entry>
+              <entry align="center">
                 <para><emphasis role="bold">Description</emphasis></para>
               </entry>
             </row>
           </thead>
-          <tbody>
+          <tbody valign="middle" >
             <row>
               <entry>
                 <para>12-15</para>
@@ -1076,8 +1075,8 @@
         <title>Platform Event Log Format, Version 6, Main-A
         Section</title>
         <tgroup cols="3">
-          <colspec colname="c1" colwidth="10*" />
-          <colspec colname="c2" colwidth="10*" />
+          <colspec colname="c1" colwidth="10*" align="center" />
+          <colspec colname="c2" colwidth="10*" align="center" />
           <colspec colname="c3" colwidth="80*" />
           <thead>
             <row>
@@ -1087,12 +1086,12 @@
               <entry>
                 <para><emphasis role="bold">Length in Bytes</emphasis></para>
               </entry>
-              <entry>
+              <entry align="center">
                 <para><emphasis role="bold">Description</emphasis></para>
               </entry>
             </row>
           </thead>
-          <tbody>
+          <tbody valign="middle" >
             <row>
               <entry>
                 <para>0x00</para>
@@ -1288,8 +1287,8 @@
         <title>Platform Event Log Format, Version 6, Main-B
         Section</title>
         <tgroup cols="3">
-          <colspec colname="c1" colwidth="10*" />
-          <colspec colname="c2" colwidth="10*" />
+          <colspec colname="c1" colwidth="10*" align="center" />
+          <colspec colname="c2" colwidth="10*" align="center" />
           <colspec colname="c3" colwidth="80*" />
           <thead>
             <row>
@@ -1299,12 +1298,12 @@
               <entry>
                 <para><emphasis role="bold">Length in Bytes</emphasis></para>
               </entry>
-              <entry>
+              <entry align="center">
                 <para><emphasis role="bold">Description</emphasis></para>
               </entry>
             </row>
           </thead>
-          <tbody>
+          <tbody valign="middle" >
             <row>
               <entry>
                 <para>0x00</para>
@@ -1897,8 +1896,8 @@
         <title>Platform Event Log Format, Version 6, Logical
         Resource Identification Section</title>
         <tgroup cols="3">
-          <colspec colname="c1" colwidth="10*" />
-          <colspec colname="c2" colwidth="10*" />
+          <colspec colname="c1" colwidth="10*" align="center" />
+          <colspec colname="c2" colwidth="10*" align="center" />
           <colspec colname="c3" colwidth="80*" />
           <thead>
             <row>
@@ -1908,12 +1907,12 @@
               <entry>
                 <para><emphasis role="bold">Length in Bytes</emphasis></para>
               </entry>
-              <entry>
+              <entry align="center">
                 <para><emphasis role="bold">Description</emphasis></para>
               </entry>
             </row>
           </thead>
-          <tbody>
+          <tbody valign="middle" >
             <row>
               <entry>
                 <para>0x00</para>
@@ -2052,8 +2051,8 @@
         <title>Platform Event Log Format, Version 6, Primary SRC
         Section</title>
         <tgroup cols="3">
-          <colspec colname="c1" colwidth="10*" />
-          <colspec colname="c2" colwidth="10*" />
+          <colspec colname="c1" colwidth="10*" align="center" />
+          <colspec colname="c2" colwidth="10*" align="center" />
           <colspec colname="c3" colwidth="80*" />
           <thead>
             <row>
@@ -2063,12 +2062,12 @@
               <entry>
                 <para><emphasis role="bold">Length in Bytes</emphasis></para>
               </entry>
-              <entry>
+              <entry align="center">
                 <para><emphasis role="bold">Description</emphasis></para>
               </entry>
             </row>
           </thead>
-          <tbody>
+          <tbody valign="middle" >
             <row>
               <entry>
                 <para>0x00</para>
@@ -2357,8 +2356,8 @@
         <title>Platform Event Log Format, Version 6, FRU Call-out
         Structure</title>
         <tgroup cols="3">
-          <colspec colname="c1" colwidth="10*" />
-          <colspec colname="c2" colwidth="10*" />
+          <colspec colname="c1" colwidth="10*" align="center" />
+          <colspec colname="c2" colwidth="10*" align="center" />
           <colspec colname="c3" colwidth="80*" />
           <thead>
             <row>
@@ -2368,12 +2367,12 @@
               <entry>
                 <para><emphasis role="bold">Length in Bytes</emphasis></para>
               </entry>
-              <entry>
+              <entry align="center">
                 <para><emphasis role="bold">Description</emphasis></para>
               </entry>
             </row>
           </thead>
-          <tbody>
+          <tbody valign="middle" >
             <row>
               <entry>
                 <para>0x00</para>
@@ -2747,8 +2746,8 @@
         <title>Platform Event Log Format, Version 6, Dump Locator
         Section</title>
         <tgroup cols="3">
-          <colspec colname="c1" colwidth="10*" />
-          <colspec colname="c2" colwidth="10*" />
+          <colspec colname="c1" colwidth="10*" align="center" />
+          <colspec colname="c2" colwidth="10*" align="center" />
           <colspec colname="c3" colwidth="80*" />
           <thead>
             <row>
@@ -2758,12 +2757,12 @@
               <entry>
                 <para><emphasis role="bold">Length in Bytes</emphasis></para>
               </entry>
-              <entry>
+              <entry align="center">
                 <para><emphasis role="bold">Description</emphasis></para>
               </entry>
             </row>
           </thead>
-          <tbody>
+          <tbody valign="middle" >
             <row>
               <entry>
                 <para>0x00</para>
@@ -2928,8 +2927,8 @@
         <title>Platform Event Log Format, Version 6, EPOW
         Section</title>
         <tgroup cols="3">
-          <colspec colname="c1" colwidth="10*" />
-          <colspec colname="c2" colwidth="10*" />
+          <colspec colname="c1" colwidth="10*" align="center" />
+          <colspec colname="c2" colwidth="10*" align="center" />
           <colspec colname="c3" colwidth="80*" />
           <thead>
             <row>
@@ -2939,12 +2938,12 @@
               <entry>
                 <para><emphasis role="bold">Length in Bytes</emphasis></para>
               </entry>
-              <entry>
+              <entry align="center">
                 <para><emphasis role="bold">Description</emphasis></para>
               </entry>
             </row>
           </thead>
-          <tbody>
+          <tbody valign="middle" >
             <row>
               <entry>
                 <para>0x00</para>
@@ -3089,8 +3088,8 @@
         <title>Platform Event Log Format, Version 6, IO Events
         Section</title>
         <tgroup cols="3">
-          <colspec colname="c1" colwidth="10*" />
-          <colspec colname="c2" colwidth="10*" />
+          <colspec colname="c1" colwidth="10*" align="center" />
+          <colspec colname="c2" colwidth="10*" align="center" />
           <colspec colname="c3" colwidth="80*" />
           <thead>
             <row>
@@ -3100,12 +3099,12 @@
               <entry>
                 <para><emphasis role="bold">Length in Bytes</emphasis></para>
               </entry>
-              <entry>
+              <entry align="center">
                 <para><emphasis role="bold">Description</emphasis></para>
               </entry>
             </row>
           </thead>
-          <tbody>
+          <tbody valign="middle" >
             <row>
               <entry>
                 <para>0x00</para>
@@ -3287,8 +3286,8 @@
         <title>Platform Event Log Format, Version 6, Failing
         Enclosure MTMS</title>
         <tgroup cols="3">
-          <colspec colname="c1" colwidth="10*" />
-          <colspec colname="c2" colwidth="10*" />
+          <colspec colname="c1" colwidth="10*" align="center" />
+          <colspec colname="c2" colwidth="10*" align="center" />
           <colspec colname="c3" colwidth="80*" />
           <thead>
             <row>
@@ -3298,12 +3297,12 @@
               <entry>
                 <para><emphasis role="bold">Length in Bytes</emphasis></para>
               </entry>
-              <entry>
+              <entry align="center">
                 <para><emphasis role="bold">Description</emphasis></para>
               </entry>
             </row>
           </thead>
-          <tbody>
+          <tbody valign="middle" >
             <row>
               <entry>
                 <para>0x00</para>
@@ -3432,12 +3431,12 @@
         <title>Platform Event Log Format, Version 6, Impacted
         Partitions</title>
         <tgroup cols="6">
-          <colspec colname="c1" colwidth="10*" />
-          <colspec colname="c2" colwidth="10*" />
-          <colspec colname="c3" colwidth="20*" />
-          <colspec colname="c4" colwidth="20*" />
-          <colspec colname="c5" colwidth="20*" />
-          <colspec colname="c6" colwidth="20*" />
+          <colspec colname="c1" colwidth="10*" align="center" />
+          <colspec colname="c2" colwidth="10*" align="center" />
+          <colspec colname="c3" colwidth="20*" align="center" />
+          <colspec colname="c4" colwidth="20*" align="center" />
+          <colspec colname="c5" colwidth="20*" align="center" />
+          <colspec colname="c6" colwidth="20*" align="center" />
           <thead>
             <row>
               <entry>
@@ -3460,7 +3459,7 @@
               </entry>
             </row>
           </thead>
-          <tbody>
+          <tbody valign="middle" >
             <row>
               <entry>
                 <para>0</para>
@@ -3584,8 +3583,8 @@
         <title>Platform Error Event Log Format, Version 6, Failing
         Memory Address</title>
         <tgroup cols="3">
-          <colspec colname="c1" colwidth="10*" />
-          <colspec colname="c2" colwidth="10*" />
+          <colspec colname="c1" colwidth="10*" align="center" />
+          <colspec colname="c2" colwidth="10*" align="center" />
           <colspec colname="c3" colwidth="80*" />
           <thead>
             <row>
@@ -3595,12 +3594,12 @@
               <entry>
                 <para><emphasis role="bold">Length in Bytes</emphasis></para>
               </entry>
-              <entry>
+              <entry align="center">
                 <para><emphasis role="bold">Description</emphasis></para>
               </entry>
             </row>
           </thead>
-          <tbody>
+          <tbody valign="middle" >
             <row>
               <entry>
                 <para>0x00</para>
@@ -3721,8 +3720,8 @@
       <table frame="all" pgwide="1">
         <title>UE Error Information</title>
         <tgroup cols="3">
-          <colspec colname="c1" colwidth="10*" />
-          <colspec colname="c2" colwidth="10*" />
+          <colspec colname="c1" colwidth="10*" align="center" />
+          <colspec colname="c2" colwidth="10*" align="center" />
           <colspec colname="c3" colwidth="80*" />
           <thead>
             <row>
@@ -3732,12 +3731,12 @@
               <entry>
                 <para><emphasis role="bold">Length in Bytes</emphasis></para>
               </entry>
-              <entry>
+              <entry align="center">
                 <para><emphasis role="bold">Description</emphasis></para>
               </entry>
             </row>
           </thead>
-          <tbody>
+          <tbody valign="middle" >
             <row>
               <entry>
                 <para>0x11</para>
@@ -3820,8 +3819,8 @@
       <table frame="all" pgwide="1">
         <title>SLB Error Information</title>
         <tgroup cols="3">
-          <colspec colname="c1" colwidth="10*" />
-          <colspec colname="c2" colwidth="10*" />
+          <colspec colname="c1" colwidth="10*" align="center" />
+          <colspec colname="c2" colwidth="10*" align="center" />
           <colspec colname="c3" colwidth="80*" />
           <thead>
             <row>
@@ -3831,12 +3830,12 @@
               <entry>
                 <para><emphasis role="bold">Length in Bytes</emphasis></para>
               </entry>
-              <entry>
+              <entry align="center">
                 <para><emphasis role="bold">Description</emphasis></para>
               </entry>
             </row>
           </thead>
-          <tbody>
+          <tbody valign="middle" >
             <row>
               <entry>
                 <para>0x11</para>
@@ -3902,8 +3901,8 @@
       <table frame="all" pgwide="1">
         <title>ERAT Error Information</title>
         <tgroup cols="3">
-          <colspec colname="c1" colwidth="10*" />
-          <colspec colname="c2" colwidth="10*" />
+          <colspec colname="c1" colwidth="10*" align="center" />
+          <colspec colname="c2" colwidth="10*" align="center" />
           <colspec colname="c3" colwidth="80*" />
           <thead>
             <row>
@@ -3913,12 +3912,12 @@
               <entry>
                 <para><emphasis role="bold">Length in Bytes</emphasis></para>
               </entry>
-              <entry>
+              <entry align="center">
                 <para><emphasis role="bold">Description</emphasis></para>
               </entry>
             </row>
           </thead>
-          <tbody>
+          <tbody valign="middle" >
             <row>
               <entry>
                 <para>0x11</para>
@@ -3984,8 +3983,8 @@
       <table frame="all" pgwide="1">
         <title>TLB Error Information</title>
         <tgroup cols="3">
-          <colspec colname="c1" colwidth="10*" />
-          <colspec colname="c2" colwidth="10*" />
+          <colspec colname="c1" colwidth="10*" align="center" />
+          <colspec colname="c2" colwidth="10*" align="center" />
           <colspec colname="c3" colwidth="80*" />
           <thead>
             <row>
@@ -3995,12 +3994,12 @@
               <entry>
                 <para><emphasis role="bold">Length in Bytes</emphasis></para>
               </entry>
-              <entry>
+              <entry align="center">
                 <para><emphasis role="bold">Description</emphasis></para>
               </entry>
             </row>
           </thead>
-          <tbody>
+          <tbody valign="middle" >
             <row>
               <entry>
                 <para>0x11</para>

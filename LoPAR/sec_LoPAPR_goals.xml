@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright (c) 2016 OpenPOWER Foundation
-  
+  Copyright (c) 2016, 2020 OpenPOWER Foundation
+
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
@@ -13,73 +13,76 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-  
+
 -->
-<section xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude"
-  xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" xml:id="section_PAPR_goals">
-  <?dbhtml stop-chunking?>
-  
+<section  xmlns="http://docbook.org/ns/docbook"
+          xmlns:xi="http://www.w3.org/2001/XInclude"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          version="5.0" xml:id="section_PAPR_goals">
+
+    <?dbhtml stop-chunking?>
+
     <title> Goals of This Specification</title>
-      
+
       <para>The specific goals of this specification are as follows:</para>
-      
+
       <itemizedlist>
-      
+
 	    <listitem>
-          <para>To create a stable platform architecture to be used by platforms based on processors 
-          defined by <xref linkend="dbdoclet.50569387_99718"/>. <emphasis>Processor</emphasis> 
-          implementations based on this 
+          <para>To create a stable platform architecture to be used by platforms based on processors
+          defined by <xref linkend="dbdoclet.50569387_99718"/>. <emphasis>Processor</emphasis>
+          implementations based on this
           architecture include IBM POWER8&#8482; processors and their successors. </para>
 	    </listitem>
-	    
+
 	    <listitem>
-          <para>To create an architecture which will allow platforms to operate with previous versions 
+          <para>To create an architecture which will allow platforms to operate with previous versions
           of the OS (&#8220;n-1&#8221; capability). </para>
 	    </listitem>
 
 	    <listitem>
           <para>To leverage existing and future industry-standard buses and interfaces.</para>
 	    </listitem>
-	    
+
 	    <listitem>
-          <para>To provide a flexible address map. Another key attribute of this specification 
-          is the relocatability of devices and subsystems within the Processor Architecture (PA) 
-          address space. Subsystem address information, which defines where I/O Adapters (IOAs) 
-          reside, is detected by the OF and passed to the OS in the device tree. This architecture 
-          accommodates the use of multiple identical buses and IOAs in the same platform without 
+          <para>To provide a flexible address map. Another key attribute of this specification
+          is the relocatability of devices and subsystems within the Processor Architecture (PA)
+          address space. Subsystem address information, which defines where I/O Adapters (IOAs)
+          reside, is detected by the OF and passed to the OS in the device tree. This architecture
+          accommodates the use of multiple identical buses and IOAs in the same platform without
           address conflicts.</para>
 	    </listitem>
 
 	    <listitem>
-          <para>To build upon the OF boot environment defined in 
+          <para>To build upon the OF boot environment defined in
           <xref linkend="dbdoclet.50569387_45524"/>.</para>
 	    </listitem>
-	    
+
 	    <listitem>
           <para>To provide an architecture which can evolve as technology changes. </para>
 	    </listitem>
-	    
+
 	    <listitem>
-          <para>To minimize the support cost for multiple OS versions through the definition of common 
-          platform abstraction techniques. Common and compatible approaches to the abstraction of 
+          <para>To minimize the support cost for multiple OS versions through the definition of common
+          platform abstraction techniques. Common and compatible approaches to the abstraction of
           hardware will reduce the burden on hardware developers who produce differentiated machines.</para>
 	    </listitem>
 
 	    <listitem>
-          <para>To architect a mechanism for error handling, error reporting, and fault isolation. This 
-          architecture provides for the implementation of more robust systems, if desired by the system 
+          <para>To architect a mechanism for error handling, error reporting, and fault isolation. This
+          architecture provides for the implementation of more robust systems, if desired by the system
           developers.</para>
 	    </listitem>
-	    
+
 	    <listitem>
           <para>To architect a mechanism for Dynamic Reconfiguration of the hardware.</para>
 	    </listitem>
-	    
+
 	    <listitem>
-          <para>To provide an architecture which allows for the logical partitioning of system resources, 
+          <para>To provide an architecture which allows for the logical partitioning of system resources,
           in order to execute multiple concurrent OS instances.</para>
 	    </listitem>
       </itemizedlist>
-          
-          
+
+
 </section>

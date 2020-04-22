@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright (c) 2016 OpenPOWER Foundation
-  
+  Copyright (c) 2016, 2020 OpenPOWER Foundation
+
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
@@ -13,36 +13,36 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-  
+
 -->
-<section xmlns="http://docbook.org/ns/docbook" 
+<section xmlns="http://docbook.org/ns/docbook"
          xmlns:xi="http://www.w3.org/2001/XInclude"
-         xmlns:xlink="http://www.w3.org/1999/xlink" 
-         version="5.0" 
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         version="5.0"
          xml:id="section_PAPR_audience">
-  <?dbhtml stop-chunking?>
-  
+         <?dbhtml stop-chunking?>
+
           <title> Audience for This Document</title>
-          
-          <para>This document defines the platform and system requirements for designing 
-          LoPAR platforms. This document is the primary source of information that a platform, 
-          OS, or hardware component developer would need to create compatible products. 
-          Additional requirements are defined by the industry standards referenced in this 
+
+          <para>This document defines the platform and system requirements for designing
+          LoPAR platforms. This document is the primary source of information that a platform,
+          OS, or hardware component developer would need to create compatible products.
+          Additional requirements are defined by the industry standards referenced in this
           document.</para>
-          
-          <para>This document describes the platform to OS interface which must be provided 
-          in these platforms. Platform designers must assemble components and firmware which 
-          match this interface. Also, the document defines minimum system configuration 
-          requirements. Platform designers must meet or exceed these minimums to build a 
+
+          <para>This document describes the platform to OS interface which must be provided
+          in these platforms. Platform designers must assemble components and firmware which
+          match this interface. Also, the document defines minimum system configuration
+          requirements. Platform designers must meet or exceed these minimums to build a
           standard platform. </para>
-          
-          <para>This document must be used by those designing compatible software including 
-          the OS, boot software, or firmware. If a function is supported, software developers 
-          must provide support for the interfaces described in this document. This software 
-          must provide the mandatory functions and capabilities as described in the requirements 
-          in this document. However, this document does not limit this software from going beyond 
-          the specification through software tailored to specific hardware. For example, the OS 
-          must implement the interface to the required abstracted interfaces to hardware, but the 
+
+          <para>This document must be used by those designing compatible software including
+          the OS, boot software, or firmware. If a function is supported, software developers
+          must provide support for the interfaces described in this document. This software
+          must provide the mandatory functions and capabilities as described in the requirements
+          in this document. However, this document does not limit this software from going beyond
+          the specification through software tailored to specific hardware. For example, the OS
+          must implement the interface to the required abstracted interfaces to hardware, but the
           OS may also implement fast paths to specific hardware that it recognizes.</para>
-          
+
 </section>

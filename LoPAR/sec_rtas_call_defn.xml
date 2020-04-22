@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright (c) 2016 OpenPOWER Foundation
+  Copyright (c) 2016, 2020 OpenPOWER Foundation
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -58,11 +58,10 @@
                 <xref linkend="dbdoclet.50569332_28551" />.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_28551">
-                  <title>Argument Call Buffer
-                  <emphasis>nvram-fetch</emphasis></title>
+                  <title><emphasis>nvram-fetch</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*"/>
                     <thead>
                       <row>
@@ -76,14 +75,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center" >
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="5">
                           <para>In</para>
@@ -199,11 +198,10 @@
                 <xref linkend="dbdoclet.50569332_28984" />.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_28984">
-                  <title>Argument Call Buffer
-                  <emphasis>nvram-store</emphasis></title>
+                  <title><emphasis>nvram-store</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -217,14 +215,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="5">
                           <para>In</para>
@@ -421,11 +419,10 @@
                 <xref linkend="dbdoclet.50569332_28377" />.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_28377">
-                  <title>Argument Call Buffer
-                  <emphasis>get-time-of-day</emphasis></title>
+                  <title><emphasis>get-time-of-day</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -439,14 +436,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="2">
                           <para>In</para>
@@ -606,11 +603,10 @@
                 <xref linkend="dbdoclet.50569332_19230" />.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_19230">
-                  <title>Argument Call Buffer
-                  <emphasis>set-time-of-day</emphasis></title>
+                  <title><emphasis>set-time-of-day</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -624,14 +620,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="9">
                           <para>In</para>
@@ -811,11 +807,10 @@
                 <xref linkend="dbdoclet.50569332_62200" />.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_62200">
-                  <title>Argument Call Buffer
-                  <emphasis>set-time-for-power-on</emphasis></title>
+                  <title><emphasis>set-time-for-power-on</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -829,14 +824,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="9">
                           <para>In</para>
@@ -1104,11 +1099,10 @@
                 <xref linkend="dbdoclet.50569332_23686" />.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_23686">
-                  <title>Argument Call Buffer
-                  <emphasis>event-scan</emphasis></title>
+                  <title><emphasis>event-scan</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -1122,14 +1116,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="6">
                           <para>In</para>
@@ -1359,11 +1353,10 @@
                 <xref linkend="dbdoclet.50569332_42307" />.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_42307">
-                  <title>Argument Call Buffer
-                  <emphasis>check-exception</emphasis></title>
+                  <title><emphasis>check-exception</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -1377,14 +1370,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="9">
                           <para>In</para>
@@ -1537,7 +1530,7 @@
                   <title>Additional Information Provided to
                   <emphasis>check-exception</emphasis> call</title>
                   <tgroup cols="2">
-                    <colspec colname="c1" colwidth="50*" />
+                    <colspec colname="c1" colwidth="50*" align="center" />
                     <colspec colname="c2" colwidth="50*" />
                     <thead>
                       <row>
@@ -1546,7 +1539,7 @@
                             <emphasis role="bold">Source of Interrupt</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Value of &#8220;Additional
                             Information&#8221; Variable</emphasis>
@@ -1554,7 +1547,7 @@
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry>
                           <para>External Interrupt</para>
@@ -1682,11 +1675,10 @@
                 <xref linkend="dbdoclet.50569332_20789" />.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_20789">
-                  <title>Argument Call Buffer
-                  <emphasis>rtas-last-error</emphasis></title>
+                  <title><emphasis>rtas-last-error</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -1700,14 +1692,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="4">
                           <para>In</para>
@@ -1855,11 +1847,10 @@
                   <xref linkend="dbdoclet.50569332_26410" />.</para>
 
                   <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_26410">
-                    <title>Argument Call Buffer
-                    <emphasis>ibm,platform-dump</emphasis></title>
+                    <title><emphasis>ibm,platform-dump</emphasis> Argument Call Buffer</title>
                     <tgroup cols="3">
-                      <colspec colname="c1" colwidth="1*" />
-                      <colspec colname="c2" colwidth="2*" />
+                      <colspec colname="c1" colwidth="1*" align="center" />
+                      <colspec colname="c2" colwidth="2*" align="center"/>
                       <colspec colname="c3" colwidth="4*" />
                       <thead>
                         <row>
@@ -1873,14 +1864,14 @@
                               <emphasis role="bold">Name</emphasis>
                             </para>
                           </entry>
-                          <entry>
+                          <entry align="center" >
                             <para>
                               <emphasis role="bold">Values</emphasis>
                             </para>
                           </entry>
                         </row>
                       </thead>
-                      <tbody>
+                      <tbody valign="middle" >
                         <row>
                           <entry morerows="8">
                             <para>In</para>
@@ -2250,9 +2241,9 @@
           <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_35075">
             <title>Platform Dump File Directory Entry Format</title>
             <tgroup cols="4">
-              <colspec colname="c1" colwidth="25*" />
-              <colspec colname="c2" colwidth="25*" />
-              <colspec colname="c3" colwidth="25*" />
+              <colspec colname="c1" colwidth="25*" align="center" />
+              <colspec colname="c2" colwidth="25*" align="center" />
+              <colspec colname="c3" colwidth="25*" align="center" />
               <colspec colname="c4" colwidth="25*" />
               <thead>
                 <row>
@@ -2271,14 +2262,14 @@
                       <emphasis role="bold">Values</emphasis>
                     </para>
                   </entry>
-                  <entry>
+                  <entry align="center">
                     <para>
                       <emphasis role="bold">Discussion</emphasis>
                     </para>
                   </entry>
                 </row>
               </thead>
-              <tbody>
+              <tbody valign="middle" >
                 <row>
                   <entry>
                     <para>Entry Header</para>
@@ -2396,9 +2387,9 @@
           <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_69092">
             <title>Dump Section Directory Entry Format</title>
             <tgroup cols="4">
-              <colspec colname="c1" colwidth="25*" />
-              <colspec colname="c2" colwidth="25*" />
-              <colspec colname="c3" colwidth="25*" />
+              <colspec colname="c1" colwidth="25*" align="center" />
+              <colspec colname="c2" colwidth="25*" align="center" />
+              <colspec colname="c3" colwidth="25*" align="center" />
               <colspec colname="c4" colwidth="25*" />
               <thead>
                 <row>
@@ -2417,14 +2408,14 @@
                       <emphasis role="bold">Values</emphasis>
                     </para>
                   </entry>
-                  <entry>
+                  <entry align="center">
                     <para>
                       <emphasis role="bold">Discussion</emphasis>
                     </para>
                   </entry>
                 </row>
               </thead>
-              <tbody>
+              <tbody valign="middle" >
                 <row>
                   <entry>
                     <para>Entry Header</para>
@@ -2573,9 +2564,9 @@
           <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_24173">
             <title>Dump File Format Directory Options</title>
             <tgroup cols="4">
-              <colspec colname="c1" colwidth="25*" />
-              <colspec colname="c2" colwidth="25*" />
-              <colspec colname="c3" colwidth="25*" />
+              <colspec colname="c1" colwidth="25*" align="center" />
+              <colspec colname="c2" colwidth="25*" align="center" />
+              <colspec colname="c3" colwidth="25*" align="center" />
               <colspec colname="c4" colwidth="25*" />
               <thead>
                 <row>
@@ -2594,14 +2585,14 @@
                       <emphasis role="bold">Definition</emphasis>
                     </para>
                   </entry>
-                  <entry>
+                  <entry align="center" >
                     <para>
                       <emphasis role="bold">Discussion</emphasis>
                     </para>
                   </entry>
                 </row>
               </thead>
-              <tbody>
+              <tbody valign="middle" >
                 <row>
                   <entry>
                     <para>last_flag</para>
@@ -2748,7 +2739,7 @@
                 <title>Definition
                 <emphasis>Config_addr</emphasis></title>
                 <tgroup cols="2">
-                  <colspec colname="c1" colwidth="50*" />
+                  <colspec colname="c1" colwidth="50*" align="center" />
                   <colspec colname="c2" colwidth="50*" />
                   <thead>
                     <row>
@@ -2757,14 +2748,14 @@
                           <emphasis role="bold">Bit</emphasis>
                         </para>
                       </entry>
-                      <entry>
+                      <entry align="center" >
                         <para>
                           <emphasis role="bold">Definition</emphasis>
                         </para>
                       </entry>
                     </row>
                   </thead>
-                  <tbody>
+                  <tbody valign="middle" >
                     <row>
                       <entry>
                         <para>0:3</para>
@@ -2887,11 +2878,10 @@
                 <xref linkend="dbdoclet.50569332_28668" />.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_28668">
-                  <title>Argument Call Buffer
-                  <emphasis>ibm,read-pci-config</emphasis></title>
+                  <title><emphasis>ibm,read-pci-config</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -2905,14 +2895,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center" >
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="6">
                           <para>In</para>
@@ -3087,11 +3077,10 @@
                 <xref linkend="dbdoclet.50569332_14382" />.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_14382">
-                  <title>Argument Call Buffer
-                  <emphasis>ibm,write-pci-config</emphasis></title>
+                  <title><emphasis>ibm,write-pci-config</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -3105,14 +3094,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="7">
                           <para>In</para>
@@ -3835,11 +3824,10 @@
                 <emphasis>rtas-display-device</emphasis>.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_26403">
-                  <title>Argument Call Buffer
-                  <emphasis>display-character</emphasis></title>
+                  <title><emphasis>display-character</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -3853,14 +3841,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="3">
                           <para>In</para>
@@ -3962,18 +3950,18 @@
                 <table frame="none" pgwide="1" xml:id="dbdoclet.50569332_48893">
                   <title>Display ASCII Characters</title>
                   <tgroup cols="12">
-                    <colspec colname="c1" colwidth="8*" />
-                    <colspec colname="c2" colwidth="8*" />
-                    <colspec colname="c3" colwidth="8*" />
-                    <colspec colname="c4" colwidth="8*" />
-                    <colspec colname="c5" colwidth="8*" />
-                    <colspec colname="c6" colwidth="8*" />
-                    <colspec colname="c7" colwidth="8*" />
-                    <colspec colname="c8" colwidth="8*" />
-                    <colspec colname="c9" colwidth="8*" />
-                    <colspec colname="c10" colwidth="8*" />
-                    <colspec colname="c11" colwidth="8*" />
-                    <colspec colname="c12" colwidth="8*" />
+                    <colspec colname="c1" colwidth="8*" align="center" />
+                    <colspec colname="c2" colwidth="8*" align="center" />
+                    <colspec colname="c3" colwidth="8*" align="center" />
+                    <colspec colname="c4" colwidth="8*" align="center" />
+                    <colspec colname="c5" colwidth="8*" align="center" />
+                    <colspec colname="c6" colwidth="8*" align="center" />
+                    <colspec colname="c7" colwidth="8*" align="center" />
+                    <colspec colname="c8" colwidth="8*" align="center" />
+                    <colspec colname="c9" colwidth="8*" align="center" />
+                    <colspec colname="c10" colwidth="8*" align="center" />
+                    <colspec colname="c11" colwidth="8*" align="center" />
+                    <colspec colname="c12" colwidth="8*" align="center" />
                     <thead>
                       <row>
                         <entry>
@@ -4038,7 +4026,7 @@
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry>
                           <para>20</para>
@@ -4736,11 +4724,10 @@
                 <xref linkend="dbdoclet.50569332_32237" />.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_27587">
-                  <title>Argument Call Buffer
-                  <emphasis>set-indicator</emphasis></title>
+                  <title><emphasis>set-indicator</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -4754,14 +4741,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="5">
                           <para>In</para>
@@ -4912,13 +4899,13 @@
         <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_32237">
           <title>Defined Indicators</title>
           <tgroup cols="8">
-            <colspec colname="c1" colwidth="12*" />
-            <colspec colname="c2" colwidth="12*" />
-            <colspec colname="c3" colwidth="12*" />
-            <colspec colname="c4" colwidth="12*" />
-            <colspec colname="c5" colwidth="12*" />
-            <colspec colname="c6" colwidth="12*" />
-            <colspec colname="c7" colwidth="12*" />
+            <colspec colname="c1" colwidth="12*" align="center" />
+            <colspec colname="c2" colwidth="12*" align="center" />
+            <colspec colname="c3" colwidth="12*" align="center" />
+            <colspec colname="c4" colwidth="12*" align="center" />
+            <colspec colname="c5" colwidth="12*" align="center" />
+            <colspec colname="c6" colwidth="12*" align="center" />
+            <colspec colname="c7" colwidth="12*" align="center" />
             <colspec colname="c8" colwidth="12*" />
             <thead>
               <row>
@@ -4966,14 +4953,14 @@
                     </footnote></emphasis>
                   </para>
                 </entry>
-                <entry>
+                <entry align="center" >
                   <para>
                     <emphasis role="bold">Examples/Comments</emphasis>
                   </para>
                 </entry>
               </row>
             </thead>
-            <tbody>
+            <tbody valign="middle" >
               <row>
                 <entry>
                   <para>Tone Frequency</para>
@@ -5599,8 +5586,8 @@
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_20789.1">
                   <title><emphasis>get-sensor-state</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -5614,14 +5601,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center" >
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="4">
                           <para>In</para>
@@ -5831,12 +5818,12 @@
         <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_23534">
           <title>Defined Sensors</title>
           <tgroup cols="7">
-            <colspec colname="c1" colwidth="14*" />
-            <colspec colname="c2" colwidth="14*" />
-            <colspec colname="c3" colwidth="14*" />
-            <colspec colname="c4" colwidth="14*" />
-            <colspec colname="c5" colwidth="14*" />
-            <colspec colname="c6" colwidth="14*" />
+            <colspec colname="c1" colwidth="14*" align="center" />
+            <colspec colname="c2" colwidth="14*" align="center" />
+            <colspec colname="c3" colwidth="14*" align="center" />
+            <colspec colname="c4" colwidth="14*" align="center" />
+            <colspec colname="c5" colwidth="14*" align="center" />
+            <colspec colname="c6" colwidth="14*" align="center" />
             <colspec colname="c7" colwidth="14*" />
             <thead>
               <row>
@@ -5878,14 +5865,14 @@
                     </footnote></emphasis>
                   </para>
                 </entry>
-                <entry>
+                <entry align="center" >
                   <para>
                     <emphasis role="bold">Description</emphasis>
                   </para>
                 </entry>
               </row>
             </thead>
-            <tbody>
+            <tbody valign="middle" >
               <row>
                 <entry>
                   <para>Key Switch</para>
@@ -6511,8 +6498,8 @@
               <title>Example - Contents of
               <emphasis role="bold"><literal>&#8220;rtas-sensors&#8221;</literal></emphasis> property</title>
               <tgroup cols="2">
-                <colspec colname="c1" colwidth="50*" />
-                <colspec colname="c2" colwidth="50*" />
+                <colspec colname="c1" colwidth="50*" align="center" />
+                <colspec colname="c2" colwidth="50*" align="center" />
                 <thead>
                   <row>
                     <entry>
@@ -6527,7 +6514,7 @@
                     </entry>
                   </row>
                 </thead>
-                <tbody>
+                <tbody valign="middle" >
                   <row>
                     <entry>
                       <para>
@@ -6575,9 +6562,9 @@
             <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_17894">
               <title>Example - Sensor Definitions</title>
               <tgroup cols="4">
-                <colspec colname="c1" colwidth="25*" />
-                <colspec colname="c2" colwidth="25*" />
-                <colspec colname="c3" colwidth="25*" />
+                <colspec colname="c1" colwidth="25*" align="center" />
+                <colspec colname="c2" colwidth="25*" align="center" />
+                <colspec colname="c3" colwidth="25*" align="center" />
                 <colspec colname="c4" colwidth="25*" />
                 <thead>
                   <row>
@@ -6596,14 +6583,14 @@
                         <emphasis role="bold">index</emphasis>
                       </para>
                     </entry>
-                    <entry>
+                    <entry align="center" >
                       <para>
                         <emphasis role="bold">value</emphasis>
                       </para>
                     </entry>
                   </row>
                 </thead>
-                <tbody>
+                <tbody valign="middle" >
                   <row>
                     <entry>
                       <para>surveillance</para>
@@ -6767,8 +6754,8 @@
             <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_74695">
               <title>Power Supply Sensor Values</title>
               <tgroup cols="2">
-                <colspec colname="c1" colwidth="50*" />
-                <colspec colname="c2" colwidth="50*" />
+                <colspec colname="c1" colwidth="50*" align="center" />
+                <colspec colname="c2" colwidth="50*" align="center" />
                 <thead>
                   <row>
                     <entry>
@@ -6783,7 +6770,7 @@
                     </entry>
                   </row>
                 </thead>
-                <tbody>
+                <tbody valign="middle" >
                   <row>
                     <entry>
                       <para>0</para>
@@ -6946,11 +6933,10 @@
                 <xref linkend="dbdoclet.50569332_41166" />.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_41166">
-                  <title>Argument Call Buffer
-                  <emphasis>set-power-level</emphasis></title>
+                  <title><emphasis>set-power-level</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -6964,14 +6950,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center" >
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="4">
                           <para>In</para>
@@ -7193,11 +7179,10 @@
                 <xref linkend="dbdoclet.50569332_25657" />.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_25657">
-                  <title>Argument Call Buffer
-                  <emphasis>get-power-level</emphasis></title>
+                  <title><emphasis>get-power-level</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -7211,14 +7196,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center" >
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="3">
                           <para>In</para>
@@ -7330,8 +7315,8 @@
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_40594">
                   <title><emphasis>power-off</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -7345,14 +7330,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center" >
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="4">
                           <para>In</para>
@@ -7464,8 +7449,8 @@
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_77910">
                   <title>Defined Power On Triggers</title>
                   <tgroup cols="2">
-                    <colspec colname="c1" colwidth="50*" />
-                    <colspec colname="c2" colwidth="50*" />
+                    <colspec colname="c1" colwidth="50*" align="center" />
+                    <colspec colname="c2" colwidth="50*" align="center" />
                     <thead>
                       <row>
                         <entry>
@@ -7480,7 +7465,7 @@
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry>
                           <para>0</para>
@@ -7616,11 +7601,10 @@
                 <xref linkend="dbdoclet.50569332_63746" />.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_63746">
-                  <title>Argument Call Buffer
-                  <emphasis>ibm,power-off-ups</emphasis></title>
+                  <title><emphasis>ibm,power-off-ups</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -7634,14 +7618,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center" >
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="2">
                           <para>In</para>
@@ -7799,11 +7783,10 @@
                 <xref linkend="dbdoclet.50569332_20680" />.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_20680">
-                  <title>Argument Call Buffer
-                  <emphasis>system-reboot</emphasis></title>
+                  <title><emphasis>system-reboot</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -7817,14 +7800,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center" >
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="2">
                           <para>In</para>
@@ -7909,11 +7892,10 @@
                 <xref linkend="dbdoclet.50569332_14715" />.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_14715">
-                  <title>Argument Call Buffer
-                  <emphasis>ibm,update-flash-64-and-reboot</emphasis></title>
+                  <title><emphasis>ibm,update-flash-64-and-reboot</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -7927,14 +7909,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="3">
                           <para>In</para>
@@ -8060,7 +8042,7 @@
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_53334">
                   <title>Format of Block List</title>
                   <tgroup cols="1">
-                    <colspec colname="c1" colwidth="100*" />
+                    <colspec colname="c1" colwidth="100*" align="center" />
                     <thead>
                       <row>
                         <entry>
@@ -8069,7 +8051,7 @@
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry>
                           <para>Address of memory area 1</para>
@@ -8221,8 +8203,8 @@
           <title>Format of Discontiguous
           <emphasis>Block_list</emphasis></title>
           <tgroup cols="2">
-            <colspec colname="c1" colwidth="50*" />
-            <colspec colname="c2" colwidth="50*" />
+            <colspec colname="c1" colwidth="50*" align="center" />
+            <colspec colname="c2" colwidth="50*" align="center" />
             <thead>
               <row>
                 <entry>
@@ -8234,7 +8216,7 @@
                 </entry>
               </row>
             </thead>
-            <tbody>
+            <tbody valign="middle" >
               <row>
                 <entry nameend="c2" namest="c1">
                   <para>Address of
@@ -8400,11 +8382,10 @@
                 <xref linkend="dbdoclet.50569332_55815" />.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_55815">
-                  <title>Argument Call Buffer
-                  <emphasis>ibm,manage-flash-image</emphasis></title>
+                  <title><emphasis>ibm,manage-flash-image</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -8418,14 +8399,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="3">
                           <para>In</para>
@@ -8556,11 +8537,10 @@
                 <xref linkend="dbdoclet.50569332_35397" />.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_35397">
-                  <title>Argument Call Buffer
-                  <emphasis>ibm,validate-flash-image</emphasis></title>
+                  <title><emphasis>ibm,validate-flash-image</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -8574,14 +8554,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="4">
                           <para>In</para>
@@ -8786,7 +8766,7 @@
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_52431">
                   <title>Update Results Token Values</title>
                   <tgroup cols="2">
-                    <colspec colname="c1" colwidth="50*" />
+                    <colspec colname="c1" colwidth="50*" align="center" />
                     <colspec colname="c2" colwidth="50*" />
                     <thead>
                       <row>
@@ -8795,14 +8775,14 @@
                             <emphasis role="bold">Token</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Description</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry>
                           <para>1</para>
@@ -8904,11 +8884,10 @@
                 <xref linkend="dbdoclet.50569332_51420" />.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_51420">
-                  <title>Argument Call Buffer
-                  <emphasis>ibm,activate-firmware</emphasis></title>
+                  <title><emphasis>ibm,activate-firmware</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -8922,14 +8901,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="2">
                           <para>In</para>
@@ -9064,11 +9043,10 @@
                 <emphasis>stopped</emphasis> state.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_32280">
-                  <title>Argument Call Buffer
-                  <emphasis>stop-self</emphasis></title>
+                  <title><emphasis>stop-self</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -9082,14 +9060,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="2">
                           <para>In</para>
@@ -9242,11 +9220,10 @@
                 are indeterminate.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_41442">
-                  <title>Argument Call Buffer
-                  <emphasis>start-cpu</emphasis></title>
+                  <title><emphasis>start-cpu</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -9260,14 +9237,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="5">
                           <para>In</para>
@@ -9371,11 +9348,11 @@
           <title>Machine State Register (MSR) State in Started
           Processor</title>
           <tgroup cols="6">
-            <colspec colname="c1" colwidth="16*" />
-            <colspec colname="c2" colwidth="16*" />
+            <colspec colname="c1" colwidth="16*" align="center" />
+            <colspec colname="c2" colwidth="16*" align="center" />
             <colspec colname="c3" colwidth="16*" />
-            <colspec colname="c4" colwidth="16*" />
-            <colspec colname="c5" colwidth="16*" />
+            <colspec colname="c4" colwidth="16*" align="center" />
+            <colspec colname="c5" colwidth="16*" align="center" />
             <colspec colname="c6" colwidth="16*" />
             <thead>
               <row>
@@ -9389,7 +9366,7 @@
                     <emphasis role="bold">Name</emphasis>
                   </para>
                 </entry>
-                <entry>
+                <entry align="center">
                   <para>
                     <emphasis role="bold">Initial Value upon start by
                     start-cpu</emphasis>
@@ -9405,7 +9382,7 @@
                     <emphasis role="bold">Name</emphasis>
                   </para>
                 </entry>
-                <entry>
+                <entry align="center">
                   <para>
                     <emphasis role="bold">Initial Value upon start by
                     start-cpu</emphasis>
@@ -9413,7 +9390,7 @@
                 </entry>
               </row>
             </thead>
-            <tbody>
+            <tbody valign="middle" >
               <row>
                 <entry>
                   <para>0</para>
@@ -9660,11 +9637,10 @@
                 <xref linkend="dbdoclet.50569332_17977" />.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_17977">
-                  <title>Argument Call Buffer
-                  <emphasis>query-cpu-stopped-state</emphasis></title>
+                  <title><emphasis>query-cpu-stopped-state</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -9678,14 +9654,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="3">
                           <para>In</para>
@@ -9900,11 +9876,10 @@
                 from the OS.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_38756">
-                  <title>Argument Call Buffer
-                  <emphasis>ibm,os-term</emphasis></title>
+                  <title><emphasis>ibm,os-term</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -9918,14 +9893,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="3">
                           <para>In</para>
@@ -10115,8 +10090,8 @@
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_29660">
                   <title>ibm,exti2c Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -10130,14 +10105,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="3">
                           <para>In</para>
@@ -10227,9 +10202,9 @@
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_58395">
                   <title>EXTI2C Buffer Write Operation Format</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="33*" align="center" />
+                    <colspec colname="c2" colwidth="33*" align="center" />
+                    <colspec colname="c3" colwidth="33*" align="center" />
                     <thead>
                       <row>
                         <entry>
@@ -10249,7 +10224,7 @@
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="3">
                           <para>On Call</para>
@@ -10363,9 +10338,9 @@
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_76635">
                   <title>EXTI2C Buffer Read Operation Format (Optional)</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="33*" align="center" />
+                    <colspec colname="c2" colwidth="33*" align="center" />
+                    <colspec colname="c3" colwidth="33*" align="center" />
                     <thead>
                       <row>
                         <entry>
@@ -10385,7 +10360,7 @@
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="3">
                           <para>On Call</para>
@@ -10621,11 +10596,10 @@
                 &#8220;ibm,plat-res-int-priorities&#8221;</literal></emphasis> property).</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_27983">
-                  <title>Argument Call Buffer
-                  <emphasis>ibm,get-xive</emphasis></title>
+                  <title><emphasis>ibm,get-xive</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -10639,14 +10613,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="3">
                           <para>In</para>
@@ -10817,11 +10791,10 @@
                 &#8220;ibm,plat-res-int-priorities&#8221;</literal></emphasis> property).</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_93043">
-                  <title>Argument Call Buffer
-                  <emphasis>ibm,set-xive</emphasis></title>
+                  <title><emphasis>ibm,set-xive</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -10835,14 +10808,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="5">
                           <para>In</para>
@@ -11010,11 +10983,10 @@
                 Interrupt number.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_28484">
-                  <title>Argument Call Buffer
-                  <emphasis>ibm,int-off</emphasis></title>
+                  <title><emphasis>ibm,int-off</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -11028,14 +11000,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="3">
                           <para>In</para>
@@ -11180,11 +11152,10 @@
                 Interrupt number.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_91226">
-                  <title>Argument Call Buffer
-                  <emphasis>ibm,int-on</emphasis></title>
+                  <title><emphasis>ibm,int-on</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -11198,14 +11169,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="3">
                           <para>In</para>
@@ -11385,8 +11356,8 @@
                   <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_69854">
                     <title><emphasis>ibm,change-msi</emphasis> Argument Call Buffer</title>
                     <tgroup cols="3">
-                      <colspec colname="c1" colwidth="1*" />
-                      <colspec colname="c2" colwidth="2*" />
+                      <colspec colname="c1" colwidth="1*" align="center" />
+                      <colspec colname="c2" colwidth="2*" align="center" />
                       <colspec colname="c3" colwidth="4*" />
                       <thead>
                         <row>
@@ -11400,14 +11371,14 @@
                               <emphasis role="bold">Name</emphasis>
                             </para>
                           </entry>
-                          <entry>
+                          <entry align="center">
                             <para>
                               <emphasis role="bold">Values</emphasis>
                             </para>
                           </entry>
                         </row>
                       </thead>
-                      <tbody>
+                      <tbody valign="middle" >
                         <row>
                           <entry morerows="8">
                             <para>In</para>
@@ -11895,11 +11866,10 @@
                   <para>
                   &#160;</para>
                   <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_13934">
-                    <title>Argument Call Buffer
-                    <emphasis>ibm,query-interrupt-source-number</emphasis></title>
+                    <title><emphasis>ibm,query-interrupt-source-number</emphasis> Argument Call Buffer</title>
                     <tgroup cols="3">
-                      <colspec colname="c1" colwidth="1*" />
-                      <colspec colname="c2" colwidth="2*" />
+                      <colspec colname="c1" colwidth="1*" align="center" />
+                      <colspec colname="c2" colwidth="2*" align="center" />
                       <colspec colname="c3" colwidth="4*" />
                       <thead>
                         <row>
@@ -11913,14 +11883,14 @@
                               <emphasis role="bold">Name</emphasis>
                             </para>
                           </entry>
-                          <entry>
+                          <entry align="center">
                             <para>
                               <emphasis role="bold">Values</emphasis>
                             </para>
                           </entry>
                         </row>
                       </thead>
-                      <tbody>
+                      <tbody valign="middle" >
                         <row>
                           <entry morerows="6">
                             <para>In</para>
@@ -12282,13 +12252,13 @@
       <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_19683">
         <title>PE State Transition Table</title>
         <tgroup cols="7" align="center">
-          <colspec colname="c1" colwidth="14*" />
-          <colspec colname="c2" colwidth="14*" />
-          <colspec colname="c3" colwidth="14*" />
-          <colspec colname="c4" colwidth="14*" />
-          <colspec colname="c5" colwidth="14*" />
-          <colspec colname="c6" colwidth="14*" />
-          <colspec colname="c7" colwidth="14*" />
+          <colspec colname="c1" colwidth="14*" align="center" />
+          <colspec colname="c2" colwidth="14*" align="center" />
+          <colspec colname="c3" colwidth="14*" align="center" />
+          <colspec colname="c4" colwidth="14*" align="center" />
+          <colspec colname="c5" colwidth="14*" align="center" />
+          <colspec colname="c6" colwidth="14*" align="center" />
+          <colspec colname="c7" colwidth="14*" align="center" />
           <thead valign="middle">
             <row>
               <entry morerows="1">
@@ -12772,15 +12742,15 @@
       <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_49282">
         <title>PE State Control</title>
         <tgroup cols="9" align="center">
-          <colspec colname="c1" colwidth="5*" />
-          <colspec colname="c2" colwidth="17*" />
-          <colspec colname="c3" colwidth="11*" />
-          <colspec colname="c4" colwidth="11*" />
-          <colspec colname="c5" colwidth="11*" />
-          <colspec colname="c6" colwidth="11*" />
-          <colspec colname="c7" colwidth="11*" />
-          <colspec colname="c8" colwidth="11*" />
-          <colspec colname="c9" colwidth="11*" />
+          <colspec colname="c1" colwidth="5*" align="center" />
+          <colspec colname="c2" colwidth="17*" align="center" />
+          <colspec colname="c3" colwidth="11*" align="center" />
+          <colspec colname="c4" colwidth="11*" align="center" />
+          <colspec colname="c5" colwidth="11*" align="center" />
+          <colspec colname="c6" colwidth="11*" align="center" />
+          <colspec colname="c7" colwidth="11*" align="center" />
+          <colspec colname="c8" colwidth="11*" align="center" />
+          <colspec colname="c9" colwidth="11*" align="center" />
           <thead valign="middle">
             <row>
               <entry morerows="1"><?dbfo orientation="90"?><?dbfo rotated-width="1.5in"?>
@@ -13243,11 +13213,10 @@
                 <xref linkend="dbdoclet.50569332_28980" />.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_28980">
-                  <title>Argument Call Buffer
-                  <emphasis>ibm,set-eeh-option</emphasis></title>
+                  <title><emphasis>ibm,set-eeh-option</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -13261,14 +13230,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="6">
                           <para>In</para>
@@ -13580,11 +13549,10 @@
 
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_42044">
-                  <title>Argument Call Buffer
-                  <emphasis>ibm,set-slot-reset</emphasis></title>
+                  <title><emphasis>ibm,set-slot-reset</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -13598,14 +13566,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="6">
                           <para>In</para>
@@ -13919,11 +13887,10 @@
                 <xref linkend="dbdoclet.50569332_80186" />.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_80186">
-                  <title>Argument Call Buffer
-                  <emphasis>ibm,read-slot-reset-state2</emphasis></title>
+                  <title><emphasis>ibm,read-slot-reset-state2</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -13937,14 +13904,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="5">
                           <para>In</para>
@@ -14360,11 +14327,10 @@
                 <xref linkend="dbdoclet.50569332_14652" />.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_14652">
-                  <title>Argument Call Buffer
-                  <emphasis>ibm,get-config-addr-info2</emphasis></title>
+                  <title><emphasis>ibm,get-config-addr-info2</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -14378,14 +14344,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="6">
                           <para>In</para>
@@ -14513,9 +14479,9 @@
                   <emphasis>ibm,get-config-addr-info2 Function</emphasis>
                   <emphasis>Info</emphasis> Output</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="15*" align="center" />
+                    <colspec colname="c2" colwidth="30*" align="center" />
+                    <colspec colname="c3" colwidth="55*" />
                     <thead>
                       <row>
                         <entry>
@@ -14529,7 +14495,7 @@
                             <emphasis role="bold">Definition</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">
                             <emphasis>Info</emphasis> Output</emphasis>
@@ -14537,7 +14503,7 @@
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry>
                           <para>0</para>
@@ -14649,11 +14615,10 @@
                 <xref linkend="dbdoclet.50569332_46549" />.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_46549">
-                  <title>Argument Call Buffer
-                  <emphasis>ibm,slot-error-detail</emphasis></title>
+                  <title><emphasis>ibm,slot-error-detail</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -14667,14 +14632,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="10">
                           <para>In</para>
@@ -15070,9 +15035,9 @@
                   <emphasis>ibm,slot-error-detail</emphasis>
                   </title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="40*" align="center" />
+                    <colspec colname="c2" colwidth="20*" align="center" />
+                    <colspec colname="c3" colwidth="40*" />
                     <thead>
                       <row>
                         <entry>
@@ -15086,14 +15051,14 @@
                             Structure</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Register</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="5">
                           <para>Base PCI Configuration Space Header</para>
@@ -15532,11 +15497,10 @@
                 <xref linkend="dbdoclet.50569332_75436" />.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_75436">
-                  <title>Argument Call Buffer
-                  <emphasis>ibm,configure-bridge</emphasis></title>
+                  <title><emphasis>ibm,configure-bridge</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -15550,14 +15514,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="5">
                           <para>In</para>
@@ -15821,11 +15785,10 @@
                 <xref linkend="dbdoclet.50569332_13087" />.</para>
 
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_13087">
-                  <title>Argument Call Buffer
-                  <emphasis>ibm,configure-pe</emphasis></title>
+                  <title><emphasis>ibm,configure-pe</emphasis> Argument Call Buffer</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="1*" />
-                    <colspec colname="c2" colwidth="2*" />
+                    <colspec colname="c1" colwidth="1*" align="center" />
+                    <colspec colname="c2" colwidth="2*" align="center" />
                     <colspec colname="c3" colwidth="4*" />
                     <thead>
                       <row>
@@ -15839,14 +15802,14 @@
                             <emphasis role="bold">Name</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Values</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry morerows="5">
                           <para>In</para>
@@ -16167,11 +16130,10 @@
               <xref linkend="dbdoclet.50569332_92988" />.</para>
 
               <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_92988">
-                <title>Argument Call Buffer
-                <emphasis>ibm,open-errinjct</emphasis></title>
+                <title><emphasis>ibm,open-errinjct</emphasis> Argument Call Buffer</title>
                 <tgroup cols="3">
-                  <colspec colname="c1" colwidth="1*" />
-                  <colspec colname="c2" colwidth="2*" />
+                  <colspec colname="c1" colwidth="1*" align="center" />
+                  <colspec colname="c2" colwidth="2*" align="center" />
                   <colspec colname="c3" colwidth="4*" />
                   <thead>
                     <row>
@@ -16185,14 +16147,14 @@
                           <emphasis role="bold">Name</emphasis>
                         </para>
                       </entry>
-                      <entry>
+                      <entry align="center">
                         <para>
                           <emphasis role="bold">Values</emphasis>
                         </para>
                       </entry>
                     </row>
                   </thead>
-                  <tbody>
+                  <tbody valign="middle" >
                     <row>
                       <entry morerows="2">
                         <para>In</para>
@@ -16316,11 +16278,10 @@
               <xref linkend="dbdoclet.50569332_41203" />.</para>
 
               <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_41203">
-                <title>Argument Call Buffer
-                <emphasis>ibm,close-errinjct</emphasis></title>
+                <title><emphasis>ibm,close-errinjct</emphasis> Argument Call Buffer</title>
                 <tgroup cols="3">
-                  <colspec colname="c1" colwidth="1*" />
-                  <colspec colname="c2" colwidth="2*" />
+                  <colspec colname="c1" colwidth="1*" align="center" />
+                  <colspec colname="c2" colwidth="2*" align="center" />
                   <colspec colname="c3" colwidth="4*" />
                   <thead>
                     <row>
@@ -16334,14 +16295,14 @@
                           <emphasis role="bold">Name</emphasis>
                         </para>
                       </entry>
-                      <entry>
+                      <entry align="center">
                         <para>
                           <emphasis role="bold">Values</emphasis>
                         </para>
                       </entry>
                     </row>
                   </thead>
-                  <tbody>
+                  <tbody valign="middle" >
                     <row>
                       <entry morerows="3">
                         <para>In</para>
@@ -16444,11 +16405,10 @@
               <xref linkend="dbdoclet.50569332_12614" />.</para>
 
               <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_12614">
-                <title>Argument Call Buffer
-                <emphasis>ibm,errinjct</emphasis></title>
+                <title><emphasis>ibm,errinjct</emphasis> Argument Call Buffer</title>
                 <tgroup cols="3">
-                  <colspec colname="c1" colwidth="1*" />
-                  <colspec colname="c2" colwidth="2*" />
+                  <colspec colname="c1" colwidth="1*" align="center" />
+                  <colspec colname="c2" colwidth="2*" align="center" />
                   <colspec colname="c3" colwidth="4*" />
                   <thead>
                     <row>
@@ -16462,14 +16422,14 @@
                           <emphasis role="bold">Name</emphasis>
                         </para>
                       </entry>
-                      <entry>
+                      <entry align="center">
                         <para>
                           <emphasis role="bold">Values</emphasis>
                         </para>
                       </entry>
                     </row>
                   </thead>
-                  <tbody>
+                  <tbody valign="middle" >
                     <row>
                       <entry morerows="5">
                         <para>In</para>
@@ -16609,8 +16569,8 @@
               <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_35100.1">
                 <title>Errinjct-token-names</title>
                 <tgroup cols="2">
-                  <colspec colname="c1" colwidth="50*" />
-                  <colspec colname="c2" colwidth="50*" />
+                  <colspec colname="c1" colwidth="30*" align="center" />
+                  <colspec colname="c2" colwidth="70*" />
                   <thead>
                     <row>
                       <entry>
@@ -16618,14 +16578,14 @@
                           <emphasis role="bold">Errinjct-token-name</emphasis>
                         </para>
                       </entry>
-                      <entry>
+                      <entry align="center">
                         <para>
                           <emphasis role="bold">Errinjct function</emphasis>
                         </para>
                       </entry>
                     </row>
                   </thead>
-                  <tbody>
+                  <tbody valign="middle" >
                     <row>
                       <entry>
                         <para>fatal</para>
@@ -16777,8 +16737,8 @@
               <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_33582">
                 <title>Errinjct Work Buffer Formats</title>
                 <tgroup cols="2">
-                  <colspec colname="c1" colwidth="50*" />
-                  <colspec colname="c2" colwidth="50*" />
+                  <colspec colname="c1" colwidth="30*" align="center" />
+                  <colspec colname="c2" colwidth="70*" />
                   <thead>
                     <row>
                       <entry>
@@ -16786,14 +16746,14 @@
                           <emphasis role="bold">Errinjct-token-name</emphasis>
                         </para>
                       </entry>
-                      <entry>
+                      <entry align="center">
                         <para>
                           <emphasis role="bold">Errinjct work buffer format</emphasis>
                         </para>
                       </entry>
                     </row>
                   </thead>
-                  <tbody>
+                  <tbody valign="middle" >
                     <row>
                       <entry>
                         <para>fatal</para>
@@ -17113,11 +17073,11 @@
                 <emphasis>ioa-bus-error</emphasis> Sixth Word and
                 <emphasis>ioa-bus-error-64</emphasis> Eighth Word Values 0-19</title>
                 <tgroup cols="5">
-                  <colspec colname="c1" colwidth="20*" />
-                  <colspec colname="c2" colwidth="20*" />
-                  <colspec colname="c3" colwidth="20*" />
-                  <colspec colname="c4" colwidth="20*" />
-                  <colspec colname="c5" colwidth="20*" />
+                  <colspec colname="c1" colwidth="15*" align="center" />
+                  <colspec colname="c2" colwidth="30*" align="center" />
+                  <colspec colname="c3" colwidth="10*" align="center" />
+                  <colspec colname="c4" colwidth="27*" align="center" />
+                  <colspec colname="c5" colwidth="27*" align="center" />
                   <thead>
                     <row>
                       <entry>
@@ -17148,7 +17108,7 @@
                       </entry>
                     </row>
                   </thead>
-                  <tbody>
+                  <tbody valign="middle" >
                     <row>
                       <entry morerows="5">
                         <para>
@@ -17600,11 +17560,10 @@
               <xref linkend="dbdoclet.50569332_32304" />.</para>
 
               <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_32304">
-                <title>Argument Call Buffer
-                <emphasis>ibm,nmi-register or ibm,nmi-register-2</emphasis></title>
+                <title><emphasis>ibm,nmi-register or ibm,nmi-register-2</emphasis> Argument Call Buffer</title>
                 <tgroup cols="3">
-                  <colspec colname="c1" colwidth="1*" />
-                  <colspec colname="c2" colwidth="2*" />
+                  <colspec colname="c1" colwidth="1*" align="center" />
+                  <colspec colname="c2" colwidth="2*" align="center" />
                   <colspec colname="c3" colwidth="4*" />
                   <thead>
                     <row>
@@ -17618,14 +17577,14 @@
                           <emphasis role="bold">Name</emphasis>
                         </para>
                       </entry>
-                      <entry>
+                      <entry align="center">
                         <para>
                           <emphasis role="bold">Values</emphasis>
                         </para>
                       </entry>
                     </row>
                   </thead>
-                  <tbody>
+                  <tbody valign="middle" >
                     <row>
                       <entry morerows="4">
                         <para>In</para>
@@ -17857,8 +17816,8 @@
               <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_42152">
                 <title>Unsafe Processor Recovery Options</title>
                 <tgroup cols="2">
-                  <colspec colname="c1" colwidth="50*" />
-                  <colspec colname="c2" colwidth="50*" />
+                  <colspec colname="c1" colwidth="20*" align="center" />
+                  <colspec colname="c2" colwidth="80*" />
                   <thead>
                     <row>
                       <entry>
@@ -17866,7 +17825,7 @@
                           <emphasis role="bold">Option Number</emphasis>
                         </para>
                       </entry>
-                      <entry>
+                      <entry align="center">
                         <para>
                           <emphasis role="bold">Implementation Option for handling an
                           unsafe processor.</emphasis>
@@ -17874,7 +17833,7 @@
                       </entry>
                     </row>
                   </thead>
-                  <tbody>
+                  <tbody valign="middle" >
                     <row>
                       <entry>
                         <para>1</para>
@@ -17933,11 +17892,10 @@
               machine check work and reporting area in page 7.</para>
 
               <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_20517">
-                <title>Argument Call Buffer
-                <emphasis>ibm,nmi-interlock</emphasis></title>
+                <title><emphasis>ibm,nmi-interlock</emphasis> Argument Call Buffer</title>
                 <tgroup cols="3">
-                  <colspec colname="c1" colwidth="1*" />
-                  <colspec colname="c2" colwidth="2*" />
+                  <colspec colname="c1" colwidth="1*" align="center" />
+                  <colspec colname="c2" colwidth="2*" align="center" />
                   <colspec colname="c3" colwidth="4*" />
                   <thead>
                     <row>
@@ -17951,14 +17909,14 @@
                           <emphasis role="bold">Name</emphasis>
                         </para>
                       </entry>
-                      <entry>
+                      <entry align="center">
                         <para>
                           <emphasis role="bold">Values</emphasis>
                         </para>
                       </entry>
                     </row>
                   </thead>
-                  <tbody>
+                  <tbody valign="middle" >
                     <row>
                       <entry morerows="2">
                         <para>In</para>
@@ -18069,11 +18027,11 @@
       <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_59020">
         <title>Defined Parameters</title>
         <tgroup cols="5">
-          <colspec colname="c1" colwidth="20*" />
-          <colspec colname="c2" colwidth="20*" />
-          <colspec colname="c3" colwidth="20*" />
-          <colspec colname="c4" colwidth="20*" />
-          <colspec colname="c5" colwidth="20*" />
+          <colspec colname="c1" colwidth="20*" align="center" />
+          <colspec colname="c2" colwidth="20*" align="center" />
+          <colspec colname="c3" colwidth="20*" align="center" />
+          <colspec colname="c4" colwidth="20*" align="center" />
+          <colspec colname="c5" colwidth="20*" align="center" />
           <thead>
             <row>
               <entry>
@@ -18103,7 +18061,7 @@
               </entry>
             </row>
           </thead>
-          <tbody>
+          <tbody valign="middle" >
             <row>
               <entry>
                 <para>0</para>
@@ -19208,11 +19166,10 @@
         <title><emphasis>ibm,get-system-parameter</emphasis></title>
 
         <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_32515">
-          <title>Argument Call Buffer
-          <emphasis>ibm,get-system-parameter</emphasis></title>
+          <title><emphasis>ibm,get-system-parameter</emphasis> Argument Call Buffer</title>
           <tgroup cols="3">
-            <colspec colname="c1" colwidth="1*" />
-            <colspec colname="c2" colwidth="2*" />
+            <colspec colname="c1" colwidth="1*" align="center" />
+            <colspec colname="c2" colwidth="2*" align="center" />
             <colspec colname="c3" colwidth="4*" />
             <thead>
               <row>
@@ -19226,14 +19183,14 @@
                     <emphasis role="bold">Name</emphasis>
                   </para>
                 </entry>
-                <entry>
+                <entry align="center">
                   <para>
                     <emphasis role="bold">Values</emphasis>
                   </para>
                 </entry>
               </row>
             </thead>
-            <tbody>
+            <tbody valign="middle" >
               <row>
                 <entry morerows="5">
                   <para>In</para>
@@ -19356,11 +19313,10 @@
         <title><emphasis>ibm,set-system-parameter</emphasis></title>
 
         <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_81222">
-          <title>Argument Call Buffer
-          <emphasis>ibm,set-system-parameter</emphasis></title>
+          <title><emphasis>ibm,set-system-parameter</emphasis> Argument Call Buffer</title>
           <tgroup cols="3">
-            <colspec colname="c1" colwidth="1*" />
-            <colspec colname="c2" colwidth="2*" />
+            <colspec colname="c1" colwidth="1*" align="center" />
+            <colspec colname="c2" colwidth="2*" align="center" />
             <colspec colname="c3" colwidth="4*" />
             <thead>
               <row>
@@ -19374,14 +19330,14 @@
                     <emphasis role="bold">Name</emphasis>
                   </para>
                 </entry>
-                <entry>
+                <entry align="center">
                   <para>
                     <emphasis role="bold">Values</emphasis>
                   </para>
                 </entry>
               </row>
             </thead>
-            <tbody>
+            <tbody valign="middle" >
               <row>
                 <entry morerows="4">
                   <para>In</para>
@@ -19658,8 +19614,8 @@
           <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_50150">
             <title>CoD Capacity Card Info String Packed Fields</title>
             <tgroup cols="2">
-              <colspec colname="c1" colwidth="50*" />
-              <colspec colname="c2" colwidth="50*" />
+              <colspec colname="c1" colwidth="30*" align="center" />
+              <colspec colname="c2" colwidth="70*" />
               <thead>
                 <row>
                   <entry>
@@ -19667,14 +19623,14 @@
                       <emphasis role="bold">Field Number</emphasis>
                     </para>
                   </entry>
-                  <entry>
+                  <entry align="center">
                     <para>
                       <emphasis role="bold">Definition</emphasis>
                     </para>
                   </entry>
                 </row>
               </thead>
-              <tbody>
+              <tbody valign="middle" >
                 <row>
                   <entry>
                     <para>1</para>
@@ -19883,11 +19839,11 @@
                     <title>Enhanced CoD Processor Capacity Info, Version
                     1</title>
                     <tgroup cols="5">
-                      <colspec colname="c1" colwidth="20*" />
-                      <colspec colname="c2" colwidth="20*" />
-                      <colspec colname="c3" colwidth="20*" />
-                      <colspec colname="c4" colwidth="20*" />
-                      <colspec colname="c5" colwidth="20*" />
+                      <colspec colname="c1" colwidth="15*" align="center" />
+                      <colspec colname="c2" colwidth="15*" align="center" />
+                      <colspec colname="c3" colwidth="15*" align="center" />
+                      <colspec colname="c4" colwidth="27*" />
+                      <colspec colname="c5" colwidth="27*" />
                       <thead>
                         <row>
                           <entry>
@@ -19905,19 +19861,19 @@
                               <emphasis role="bold">Section</emphasis>
                             </para>
                           </entry>
-                          <entry>
+                          <entry align="center">
                             <para>
                               <emphasis role="bold">Description</emphasis>
                             </para>
                           </entry>
-                          <entry>
+                          <entry align="center">
                             <para>
                               <emphasis role="bold">Format</emphasis>
                             </para>
                           </entry>
                         </row>
                       </thead>
-                      <tbody>
+                      <tbody valign="middle" >
                         <row>
                           <entry>
                             <para>0</para>
@@ -21191,11 +21147,11 @@
                   <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_26496">
                     <title>Enhanced CoD Memory Capacity Info, Version 1</title>
                     <tgroup cols="5">
-                      <colspec colname="c1" colwidth="20*" />
-                      <colspec colname="c2" colwidth="20*" />
-                      <colspec colname="c3" colwidth="20*" />
-                      <colspec colname="c4" colwidth="20*" />
-                      <colspec colname="c5" colwidth="20*" />
+                      <colspec colname="c1" colwidth="15*" align="center" />
+                      <colspec colname="c2" colwidth="15*" align="center" />
+                      <colspec colname="c3" colwidth="15*" align="center" />
+                      <colspec colname="c4" colwidth="27*" />
+                      <colspec colname="c5" colwidth="27*" />
                       <thead>
                         <row>
                           <entry>
@@ -21213,19 +21169,19 @@
                               <emphasis role="bold">Section</emphasis>
                             </para>
                           </entry>
-                          <entry>
+                          <entry align="center">
                             <para>
                               <emphasis role="bold">Description</emphasis>
                             </para>
                           </entry>
-                          <entry>
+                          <entry align="center">
                             <para>
                               <emphasis role="bold">Format</emphasis>
                             </para>
                           </entry>
                         </row>
                       </thead>
-                      <tbody>
+                      <tbody valign="middle" >
                         <row>
                           <entry>
                             <para>0</para>
@@ -22749,11 +22705,11 @@
                 <table frame="all" pgwide="1" xml:id="dbdoclet.50569332_38612">
                   <title>sp-call-home Strings</title>
                   <tgroup cols="5">
-                    <colspec colname="c1" colwidth="20*" />
-                    <colspec colname="c2" colwidth="20*" />
-                    <colspec colname="c3" colwidth="20*" />
-                    <colspec colname="c4" colwidth="20*" />
-                    <colspec colname="c5" colwidth="20*" />
+                    <colspec colname="c1" colwidth="15*" align="center" />
+                    <colspec colname="c2" colwidth="15*" align="center" />
+                    <colspec colname="c3" colwidth="15*" align="center" />
+                    <colspec colname="c4" colwidth="20*" align="center" />
+                    <colspec colname="c5" colwidth="35*" />
                     <thead>
                       <row>
                         <entry>
@@ -22777,14 +22733,14 @@
                             Data</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Description</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry>
                           <para>sp-rt-s&lt;N&gt;</para>
@@ -23776,9 +23732,9 @@
                   <title>CoD Options System Parameter Keyword and
                   Values</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="20*" align="center" />
+                    <colspec colname="c2" colwidth="20*" align="center" />
+                    <colspec colname="c3" colwidth="60*" />
                     <thead>
                       <row>
                         <entry>
@@ -23791,14 +23747,14 @@
                             <emphasis role="bold">Permitted Values</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Definition</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry>
                           <para>LPoptions</para>
@@ -23927,9 +23883,9 @@
                   <title>Firmware Boot Options System Parameter Keywords and
                   Values</title>
                   <tgroup cols="3">
-                    <colspec colname="c1" colwidth="33*" />
-                    <colspec colname="c2" colwidth="33*" />
-                    <colspec colname="c3" colwidth="33*" />
+                    <colspec colname="c1" colwidth="20*" align="center" />
+                    <colspec colname="c2" colwidth="20*" align="center" />
+                    <colspec colname="c3" colwidth="60*" />
                     <thead>
                       <row>
                         <entry>
@@ -23942,14 +23898,14 @@
                             <emphasis role="bold">Permitted Values</emphasis>
                           </para>
                         </entry>
-                        <entry>
+                        <entry align="center">
                           <para>
                             <emphasis role="bold">Definition</emphasis>
                           </para>
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry>
                           <para>PlatformBootSpeed</para>
@@ -24171,10 +24127,10 @@
                   <title>Byte definitions within a cede latency setting
                   record</title>
                   <tgroup cols="4">
-                    <colspec colname="c1" colwidth="25*" />
-                    <colspec colname="c2" colwidth="25*" />
-                    <colspec colname="c3" colwidth="25*" />
-                    <colspec colname="c4" colwidth="25*" />
+                    <colspec colname="c1" colwidth="25*" align="center" />
+                    <colspec colname="c2" colwidth="25*" align="center" />
+                    <colspec colname="c3" colwidth="25*" align="center" />
+                    <colspec colname="c4" colwidth="25*" align="center" />
                     <thead>
                       <row>
                         <entry>
@@ -24200,7 +24156,7 @@
                         </entry>
                       </row>
                     </thead>
-                    <tbody>
+                    <tbody valign="middle" >
                       <row>
                         <entry>
                           <para>Cede Latency Specifier Value</para>
@@ -24368,8 +24324,8 @@
           <title>Performance Boost Modes Vector Bits
           Definitions</title>
           <tgroup cols="2">
-            <colspec colname="c1" colwidth="50*" />
-            <colspec colname="c2" colwidth="50*" />
+            <colspec colname="c1" colwidth="50*" align="center" />
+            <colspec colname="c2" colwidth="50*" align="center" />
             <thead>
               <row>
                 <entry>
@@ -24385,7 +24341,7 @@
                 </entry>
               </row>
             </thead>
-            <tbody>
+            <tbody valign="middle" >
               <row>
                 <entry>
                   <para>1</para>

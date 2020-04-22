@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright (c) 2016 OpenPOWER Foundation
-  
+  Copyright (c) 2016, 2020 OpenPOWER Foundation
+
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
@@ -13,26 +13,30 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-  
+
 -->
-<section xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude"
-  xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" xml:id="section_PAPR_reading">
-  <?dbhtml stop-chunking?>
-  
+<section  xmlns="http://docbook.org/ns/docbook"
+          xmlns:xi="http://www.w3.org/2001/XInclude"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          version="5.0"
+          xml:id="section_PAPR_reading">
+
+    <?dbhtml stop-chunking?>
+
     <title> Suggested Reading</title>
-    
-      <para><xref linkend="dbdoclet.50569387_27251"/> provides a full list of references and ordering information 
+
+      <para><xref linkend="dbdoclet.50569387_27251"/> provides a full list of references and ordering information
       for these references.</para>
 
-      <para>This document assumes the reader has an understanding of computer architecture in general, 
-      the Processor Architecture, the various Peripheral Component Interconnect (PCI) specifications, 
-      and OF. Some understanding of the current personal computer and workstation architectures is also 
+      <para>This document assumes the reader has an understanding of computer architecture in general,
+      the Processor Architecture, the various Peripheral Component Interconnect (PCI) specifications,
+      and OF. Some understanding of the current personal computer and workstation architectures is also
       useful. A list of suggested background reading includes:</para>
-      
+
       <itemizedlist>
         <listitem>
-          <para><citetitle><xref linkend="dbdoclet.50569387_99718"/></citetitle>. 
-          Note that this specification is referred to as the &#8220;Processor Architecture,&#8221; or &#8220;PA,&#8221; 
+          <para><citetitle><xref linkend="dbdoclet.50569387_99718"/></citetitle>.
+          Note that this specification is referred to as the &#8220;Processor Architecture,&#8221; or &#8220;PA,&#8221;
           in the body of this document.</para>
         </listitem>
         <listitem>
@@ -48,5 +52,5 @@
           <para><citetitle><xref linkend="dbdoclet.50569387_45524"/></citetitle> and relevant bindings</para>
         </listitem>
       </itemizedlist>
-          
+
 </section>
