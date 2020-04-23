@@ -21,7 +21,6 @@
          version="5.0" xml:lang="en">
 
   <title>Run-Time Abstration Services</title>
-  <?dbhtml stop-chunking?>
 
   <xi:include href="sec_rtas_introduction.xml"/>
   <xi:include href="sec_rtas_environment.xml"/>

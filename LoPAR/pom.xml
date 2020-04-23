@@ -82,7 +82,7 @@
                             </generateToc>
                             <!-- The following elements sets the autonumbering of sections in output for chapter numbers but no numbered sections-->
                             <sectionAutolabel>1</sectionAutolabel>
-                            <tocSectionDepth>3</tocSectionDepth>
+                            <tocSectionDepth>10</tocSectionDepth>
                             <sectionLabelIncludesComponentLabel>1</sectionLabelIncludesComponentLabel>
 
                             <!-- TODO: Rename the webhelpDirname field to the new directory for new document -->
