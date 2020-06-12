@@ -118,7 +118,7 @@
                                                                 other Foundation members or the public
 
                                        The appropriate starting security for a new document is "workgroupConfidential". -->
-                            <security>workgroupConfidential</security>
+                            <security>public</security>
                             <!-- security>foundationConfidential</security -->
                             <!-- security>public</security -->
 
