@@ -53,10 +53,8 @@ Document library at [TBD](http://openpowerfoundation.org/?resource_lib=tbd)
 
 
 ## Contributions
-To contribute to the OpenPOWER Foundation template document project, contact Jeff Scheel \([scheel@us.ibm.com](mailto://scheel@us.ibm.com)\) or 
-Jeff Brown \([jeffdb@us.ibm.com](mailto://jeffdb@us.ibm.com)\).
-
-Contributions to this project should conform to the `Developer Certificate
+Contributions to this project should be done in the fork/pull-request model,
+and also conform to the `Developer Certificate
 of Origin` as defined at http://elinux.org/Developer_Certificate_Of_Origin.
 Commits to this project need to contain the following line to indicate
 the submitter accepts the DCO:
