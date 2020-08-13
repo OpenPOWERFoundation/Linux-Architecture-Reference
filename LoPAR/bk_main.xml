@@ -41,7 +41,7 @@
       <holder>OpenPOWER Foundation</holder>
     </copyright>
     <!-- TODO: Set the correct document releaseinfo -->
-    <releaseinfo>Revision 2.9_pre7</releaseinfo>
+    <releaseinfo>Revision 2.9</releaseinfo>
     <productname>OpenPOWER</productname>
     <pubdate/>
 
@@ -77,6 +77,20 @@
 
     <revhistory>
       <!-- TODO: Update as new revisions created -->
+       <revision>
+        <date>2020-08-12</date>
+        <revdescription>
+          <itemizedlist spacing="compact">
+            <listitem>
+              <para>Revision 2.9:
+                <itemizedlist spacing="compact">
+                  <listitem><para>First published Workgroup Note</para></listitem>
+                </itemizedlist>
+              </para>
+            </listitem>
+          </itemizedlist>
+        </revdescription>
+      </revision>
       <revision>
         <date>2020-06-11</date>
         <revdescription>
